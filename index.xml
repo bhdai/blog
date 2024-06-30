@@ -55,29 +55,15 @@
   <pubDate>Wed, 26 Jun 2024 17:00:00 GMT</pubDate>
 </item>
 <item>
-  <title></title>
+  <title>My First Blog Post</title>
+  <dc:creator>Your Name</dc:creator>
   <link>https://buidai123.github.io/blog/posts/first-post/</link>
   <description><![CDATA[ 
 
 
 
 
-<table class="caption-top table">
-<tbody>
-<tr class="odd">
-<td>title: “My First Blog Post”</td>
-</tr>
-<tr class="even">
-<td>author: “Your Name”</td>
-</tr>
-<tr class="odd">
-<td>date: “2023-06-30”</td>
-</tr>
-<tr class="even">
-<td>categories: [test, quarto]</td>
-</tr>
-</tbody>
-</table>
+
 <section id="welcome-to-my-blog" class="level1">
 <h1>Welcome to My Blog</h1>
 <p>This is my first blog post using Quarto and Jupyter Notebook. I’m excited to start sharing my thoughts and experiences here.</p>
@@ -105,8 +91,10 @@
 </section>
 
  ]]></description>
+  <category>test</category>
+  <category>quarto</category>
   <guid>https://buidai123.github.io/blog/posts/first-post/</guid>
-  <pubDate>Sun, 30 Jun 2024 07:42:45 GMT</pubDate>
+  <pubDate>Thu, 29 Jun 2023 17:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>
