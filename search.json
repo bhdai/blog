@@ -7,18 +7,11 @@
     "text": "Welcome to my blog! To learn more about me, check out my website here."
   },
   {
-    "objectID": "posts/post-with-code/index.html",
-    "href": "posts/post-with-code/index.html",
-    "title": "Post With Code",
-    "section": "",
-    "text": "This is a post with executable code."
-  },
-  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "Dai’s blog",
     "section": "",
-    "text": "My First Blog Post\n\n\n\n\n\n\ntest\n\n\nquarto\n\n\n\n\n\n\n\n\n\nJun 30, 2024\n\n\nBui Huu Dai\n\n\n\n\n\n\n\n\n\n\n\n\nPost With Code\n\n\n\n\n\n\nnews\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\nJun 30, 2024\n\n\nHarlow Malloc\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nJun 27, 2024\n\n\nTristan O’Malley\n\n\n\n\n\n\nNo matching items"
+    "text": "My First Blog Post\n\n\n\n\n\n\ntest\n\n\nquarto\n\n\n\n\n\n\n\n\n\nJun 30, 2024\n\n\nBui Huu Dai\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/first-post/index.html",
@@ -40,12 +33,5 @@
     "title": "My First Blog Post",
     "section": "What to Expect",
     "text": "What to Expect\nIn this blog, you can expect to find:\n\nTutorials and guides on various topics\nPersonal reflections and experiences\nInteresting projects and experiments\n\nStay tuned for more content coming soon!"
-  },
-  {
-    "objectID": "posts/welcome/index.html",
-    "href": "posts/welcome/index.html",
-    "title": "Welcome To My Blog",
-    "section": "",
-    "text": "This is the first post in a Quarto blog. Welcome!\n\nSince this post doesn’t specify an explicit image, the first image in the post will be used in the listing page of posts."
   }
 ]
