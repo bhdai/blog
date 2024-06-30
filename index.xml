@@ -54,5 +54,59 @@
   <guid>https://buidai123.github.io/blog/posts/welcome/</guid>
   <pubDate>Wed, 26 Jun 2024 17:00:00 GMT</pubDate>
 </item>
+<item>
+  <title></title>
+  <link>https://buidai123.github.io/blog/posts/first-post/</link>
+  <description><![CDATA[ 
+
+
+
+
+<table class="caption-top table">
+<tbody>
+<tr class="odd">
+<td>title: “My First Blog Post”</td>
+</tr>
+<tr class="even">
+<td>author: “Your Name”</td>
+</tr>
+<tr class="odd">
+<td>date: “2023-06-30”</td>
+</tr>
+<tr class="even">
+<td>categories: [test, quarto]</td>
+</tr>
+</tbody>
+</table>
+<section id="welcome-to-my-blog" class="level1">
+<h1>Welcome to My Blog</h1>
+<p>This is my first blog post using Quarto and Jupyter Notebook. I’m excited to start sharing my thoughts and experiences here.</p>
+<section id="why-i-started-this-blog" class="level2">
+<h2 class="anchored" data-anchor-id="why-i-started-this-blog">Why I Started This Blog</h2>
+<p>I decided to create this blog for a few reasons:</p>
+<ul>
+<li>To document my learning journey</li>
+<li>To share interesting insights and ideas</li>
+<li>To connect with like-minded individuals</li>
+</ul>
+</section>
+<section id="what-to-expect" class="level2">
+<h2 class="anchored" data-anchor-id="what-to-expect">What to Expect</h2>
+<p>In this blog, you can expect to find:</p>
+<ul>
+<li>Tutorials and guides on various topics</li>
+<li>Personal reflections and experiences</li>
+<li>Interesting projects and experiments</li>
+</ul>
+<p>Stay tuned for more content coming soon!</p>
+
+
+</section>
+</section>
+
+ ]]></description>
+  <guid>https://buidai123.github.io/blog/posts/first-post/</guid>
+  <pubDate>Sun, 30 Jun 2024 07:42:45 GMT</pubDate>
+</item>
 </channel>
 </rss>

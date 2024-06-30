@@ -18,7 +18,28 @@
     "href": "index.html",
     "title": "Dai’s blog",
     "section": "",
-    "text": "Post With Code\n\n\n\n\n\n\nnews\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\nJun 30, 2024\n\n\nHarlow Malloc\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nJun 27, 2024\n\n\nTristan O’Malley\n\n\n\n\n\n\nNo matching items"
+    "text": "Welcome to My Blog\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nPost With Code\n\n\n\n\n\n\nnews\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\nJun 30, 2024\n\n\nHarlow Malloc\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nJun 27, 2024\n\n\nTristan O’Malley\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "posts/first-post/index.html",
+    "href": "posts/first-post/index.html",
+    "title": "Welcome to My Blog",
+    "section": "",
+    "text": "title: “My First Blog Post”\n\n\nauthor: “Your Name”\n\n\ndate: “2023-06-30”\n\n\ncategories: [test, quarto]"
+  },
+  {
+    "objectID": "posts/first-post/index.html#why-i-started-this-blog",
+    "href": "posts/first-post/index.html#why-i-started-this-blog",
+    "title": "Welcome to My Blog",
+    "section": "Why I Started This Blog",
+    "text": "Why I Started This Blog\nI decided to create this blog for a few reasons:\n\nTo document my learning journey\nTo share interesting insights and ideas\nTo connect with like-minded individuals"
+  },
+  {
+    "objectID": "posts/first-post/index.html#what-to-expect",
+    "href": "posts/first-post/index.html#what-to-expect",
+    "title": "Welcome to My Blog",
+    "section": "What to Expect",
+    "text": "What to Expect\nIn this blog, you can expect to find:\n\nTutorials and guides on various topics\nPersonal reflections and experiences\nInteresting projects and experiments\n\nStay tuned for more content coming soon!"
   },
   {
     "objectID": "posts/welcome/index.html",
