@@ -12,6 +12,54 @@
 <generator>quarto-1.4.557</generator>
 <lastBuildDate>Sat, 29 Jun 2024 17:00:00 GMT</lastBuildDate>
 <item>
+  <title>My First Blog Post</title>
+  <dc:creator>Bui Huu Dai</dc:creator>
+  <link>https://buidai123.github.io/blog/posts/first-post/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://buidai123.github.io/blog/posts/first-post/index_files/figure-html/cell-1-1-image.png" class="img-fluid figure-img"></p>
+<figcaption>image.png</figcaption>
+</figure>
+</div>
+<section id="welcome-to-my-blog" class="level1">
+<h1>Welcome to My Blog</h1>
+<p>This is my first blog post using Quarto and Jupyter Notebook. I’m excited to start sharing my thoughts and experiences here.</p>
+<section id="why-i-started-this-blog" class="level2">
+<h2 class="anchored" data-anchor-id="why-i-started-this-blog">Why I Started This Blog</h2>
+<p>I decided to create this blog for a few reasons:</p>
+<ul>
+<li>To document my learning journey</li>
+<li>To share interesting insights and ideas</li>
+<li>To connect with like-minded individuals</li>
+</ul>
+</section>
+<section id="what-to-expect" class="level2">
+<h2 class="anchored" data-anchor-id="what-to-expect">What to Expect</h2>
+<p>In this blog, you can expect to find:</p>
+<ul>
+<li>Tutorials and guides on various topics</li>
+<li>Personal reflections and experiences</li>
+<li>Interesting projects and experiments</li>
+</ul>
+<p>Stay tuned for more content coming soon!</p>
+
+
+</section>
+</section>
+
+ ]]></description>
+  <category>test</category>
+  <category>quarto</category>
+  <guid>https://buidai123.github.io/blog/posts/first-post/</guid>
+  <pubDate>Sat, 29 Jun 2024 17:00:00 GMT</pubDate>
+</item>
+<item>
   <title>Post With Code</title>
   <dc:creator>Harlow Malloc</dc:creator>
   <link>https://buidai123.github.io/blog/posts/post-with-code/</link>
@@ -53,48 +101,6 @@
   <category>news</category>
   <guid>https://buidai123.github.io/blog/posts/welcome/</guid>
   <pubDate>Wed, 26 Jun 2024 17:00:00 GMT</pubDate>
-</item>
-<item>
-  <title>My First Blog Post</title>
-  <dc:creator>Your Name</dc:creator>
-  <link>https://buidai123.github.io/blog/posts/first-post/</link>
-  <description><![CDATA[ 
-
-
-
-
-
-<section id="welcome-to-my-blog" class="level1">
-<h1>Welcome to My Blog</h1>
-<p>This is my first blog post using Quarto and Jupyter Notebook. I’m excited to start sharing my thoughts and experiences here.</p>
-<section id="why-i-started-this-blog" class="level2">
-<h2 class="anchored" data-anchor-id="why-i-started-this-blog">Why I Started This Blog</h2>
-<p>I decided to create this blog for a few reasons:</p>
-<ul>
-<li>To document my learning journey</li>
-<li>To share interesting insights and ideas</li>
-<li>To connect with like-minded individuals</li>
-</ul>
-</section>
-<section id="what-to-expect" class="level2">
-<h2 class="anchored" data-anchor-id="what-to-expect">What to Expect</h2>
-<p>In this blog, you can expect to find:</p>
-<ul>
-<li>Tutorials and guides on various topics</li>
-<li>Personal reflections and experiences</li>
-<li>Interesting projects and experiments</li>
-</ul>
-<p>Stay tuned for more content coming soon!</p>
-
-
-</section>
-</section>
-
- ]]></description>
-  <category>test</category>
-  <category>quarto</category>
-  <guid>https://buidai123.github.io/blog/posts/first-post/</guid>
-  <pubDate>Thu, 29 Jun 2023 17:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>

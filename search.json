@@ -18,28 +18,28 @@
     "href": "index.html",
     "title": "Dai’s blog",
     "section": "",
-    "text": "Post With Code\n\n\n\n\n\n\nnews\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\nJun 30, 2024\n\n\nHarlow Malloc\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nJun 27, 2024\n\n\nTristan O’Malley\n\n\n\n\n\n\n\n\n\n\n\n\nMy First Blog Post\n\n\n\n\n\n\ntest\n\n\nquarto\n\n\n\n\n\n\n\n\n\nJun 30, 2023\n\n\nYour Name\n\n\n\n\n\n\nNo matching items"
+    "text": "My First Blog Post\n\n\n\n\n\n\ntest\n\n\nquarto\n\n\n\n\n\n\n\n\n\nJun 30, 2024\n\n\nBui Huu Dai\n\n\n\n\n\n\n\n\n\n\n\n\nPost With Code\n\n\n\n\n\n\nnews\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\nJun 30, 2024\n\n\nHarlow Malloc\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nJun 27, 2024\n\n\nTristan O’Malley\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/first-post/index.html",
     "href": "posts/first-post/index.html",
     "title": "My First Blog Post",
     "section": "",
-    "text": "This is my first blog post using Quarto and Jupyter Notebook. I’m excited to start sharing my thoughts and experiences here.\n\n\nI decided to create this blog for a few reasons:\n\nTo document my learning journey\nTo share interesting insights and ideas\nTo connect with like-minded individuals\n\n\n\n\nIn this blog, you can expect to find:\n\nTutorials and guides on various topics\nPersonal reflections and experiences\nInteresting projects and experiments\n\nStay tuned for more content coming soon!"
+    "text": "image.png"
   },
   {
     "objectID": "posts/first-post/index.html#why-i-started-this-blog",
     "href": "posts/first-post/index.html#why-i-started-this-blog",
     "title": "My First Blog Post",
-    "section": "",
-    "text": "I decided to create this blog for a few reasons:\n\nTo document my learning journey\nTo share interesting insights and ideas\nTo connect with like-minded individuals"
+    "section": "Why I Started This Blog",
+    "text": "Why I Started This Blog\nI decided to create this blog for a few reasons:\n\nTo document my learning journey\nTo share interesting insights and ideas\nTo connect with like-minded individuals"
   },
   {
     "objectID": "posts/first-post/index.html#what-to-expect",
     "href": "posts/first-post/index.html#what-to-expect",
     "title": "My First Blog Post",
-    "section": "",
-    "text": "In this blog, you can expect to find:\n\nTutorials and guides on various topics\nPersonal reflections and experiences\nInteresting projects and experiments\n\nStay tuned for more content coming soon!"
+    "section": "What to Expect",
+    "text": "What to Expect\nIn this blog, you can expect to find:\n\nTutorials and guides on various topics\nPersonal reflections and experiences\nInteresting projects and experiments\n\nStay tuned for more content coming soon!"
   },
   {
     "objectID": "posts/welcome/index.html",
