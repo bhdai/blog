@@ -1,0 +1,24 @@
+project:
+  type: website
+
+website:
+  title: "Bui Huu Dai"
+  twitter-card: true
+  open-graph: true
+  google-analytics: G-6JR4N915S6
+  site-url: https://buidai123.github.io/blog/
+  description: "Dai's blog."
+  navbar:
+    right:
+      - about.qmd
+      - icon: github
+        href: https://github.com/buidai123
+      - icon: twitter
+        href: https://x.com/daibui1234
+format:
+  html:
+    theme: litera
+    css: styles.css
+
+
+

@@ -1,0 +1,16 @@
+---
+title: "About"
+image: Github_bird.png
+about:
+  template: jolla
+  links:
+    - icon: twitter
+      text: Twitter
+      href: https://x.com/daibui1234
+    - icon: github
+      text: Github
+      href: https://github.com/buidai123
+
+---
+
+Welcome to my blog! To learn more about me, check out my website [here](https://buidai123.github.io).
