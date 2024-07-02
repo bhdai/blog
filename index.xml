@@ -323,23 +323,7 @@ font-style: inherit;">256</span>)</span></code></pre></div>
 </div>
 </div>
 </div>
-<ol type="1">
-<li><code>fastdownload</code> and <code>download_url</code>:
-<ul>
-<li><code>fastdownload</code>: This is a library that helps with downloading files and dataset easily.</li>
-<li><code>download_url</code>: A function from <code>fastdownload</code> that download a file from a URL. In our example, it downloads an image and saves it as a <code>bird.jpg</code></li>
-</ul></li>
-<li><code>fastai.vision.all</code>:
-<ul>
-<li>This module from fastai library provides all the necessary tools for vision task, including data loaders, transformation functions, and model architectures.</li>
-</ul></li>
-<li><code>to_thumb</code>:
-<ul>
-<li>A method from the <code>PIL.Image</code> class, which is quite handy. It resizes an image to a thumbnail while mainting the espect rato. In this case it resizes the download image to a 256x256 thumbnail.</li>
-</ul></li>
-</ol>
-<p>These libraries and function streamline the process of getting and preparing the images for our model. For more detailed documentation, you can refer to the <a href="https://fastdownload.fast.ai/">fastdownload</a>, <a href="https://docs.fast.ai/tutorial.vision.html">fastai vision</a>, and <a href="https://pillow.readthedocs.io/en/stable/">Pillow</a> documentation.</p>
-<div id="cell-14" class="cell" data-execution_count="4">
+<div id="cell-13" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1">download_url(search_images(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'forest photos'</span>, max_images<span class="op" style="color: #5E5E5E;
@@ -375,6 +359,22 @@ font-style: inherit;">256</span>)</span></code></pre></div>
 </div>
 </div>
 </div>
+<ol type="1">
+<li><code>fastdownload</code> and <code>download_url</code>:
+<ul>
+<li><code>fastdownload</code>: This is a library that helps with downloading files and dataset easily.</li>
+<li><code>download_url</code>: A function from <code>fastdownload</code> that download a file from a URL. In our example, it downloads an image and saves it as a <code>bird.jpg</code></li>
+</ul></li>
+<li><code>fastai.vision.all</code>:
+<ul>
+<li>This module from fastai library provides all the necessary tools for vision task, including data loaders, transformation functions, and model architectures.</li>
+</ul></li>
+<li><code>to_thumb</code>:
+<ul>
+<li>A method from the <code>PIL.Image</code> class, which is quite handy. It resizes an image to a thumbnail while mainting the espect rato. In this case it resizes the download image to a 256x256 thumbnail.</li>
+</ul></li>
+</ol>
+<p>These libraries and function streamline the process of getting and preparing the images for our model. For more detailed documentation, you can refer to the <a href="https://fastdownload.fast.ai/">fastdownload</a>, <a href="https://docs.fast.ai/tutorial.vision.html">fastai vision</a>, and <a href="https://pillow.readthedocs.io/en/stable/">Pillow</a> documentation.</p>
 <div id="cell-15" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1">searches <span class="op" style="color: #5E5E5E;
 background-color: null;
