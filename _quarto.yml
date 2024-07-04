@@ -13,7 +13,7 @@ website:
       - about.qmd
       - icon: github
         href: https://github.com/buidai123
-      - icon: twitter
+      - icon: twitter-x
         href: https://x.com/daibui1234
 format:
   html:
