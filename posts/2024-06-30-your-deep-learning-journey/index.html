@@ -131,7 +131,7 @@ gtag('config', 'G-6JR4N915S6', { 'anonymize_ip': true});
 <meta name="twitter:card" content="summary_large_image">
 </head>
 
-<body class="nav-fixed fullcontent">
+<body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top quarto-banner">
@@ -205,7 +205,48 @@ gtag('config', 'G-6JR4N915S6', { 'anonymize_ip': true});
   </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#the-xkcd-joke-and-debunking-deep-learning-myths" id="toc-the-xkcd-joke-and-debunking-deep-learning-myths" class="nav-link" data-scroll-target="#the-xkcd-joke-and-debunking-deep-learning-myths">The XKCD Joke and Debunking Deep Learning Myths</a></li>
+  <li><a href="#top-down-learning-approach" id="toc-top-down-learning-approach" class="nav-link" data-scroll-target="#top-down-learning-approach">Top-Down Learning Approach</a></li>
+  <li><a href="#understanding-deep-learning" id="toc-understanding-deep-learning" class="nav-link" data-scroll-target="#understanding-deep-learning">Understanding Deep learning</a></li>
+  <li><a href="#a-brief-history-of-deep-learning" id="toc-a-brief-history-of-deep-learning" class="nav-link" data-scroll-target="#a-brief-history-of-deep-learning">A Brief History of Deep Learning</a></li>
+  <li><a href="#the-sofware-pytorch-fastai-and-jupyter" id="toc-the-sofware-pytorch-fastai-and-jupyter" class="nav-link" data-scroll-target="#the-sofware-pytorch-fastai-and-jupyter">The Sofware: Pytorch, Fastai, and Jupyter</a></li>
+  <li><a href="#exploring-the-is-it-a-bird-classifier" id="toc-exploring-the-is-it-a-bird-classifier" class="nav-link" data-scroll-target="#exploring-the-is-it-a-bird-classifier">Exploring the “Is it a Bird?” Classifier</a>
+  <ul class="collapse">
+  <li><a href="#searching-for-images-duckduckgo-search" id="toc-searching-for-images-duckduckgo-search" class="nav-link" data-scroll-target="#searching-for-images-duckduckgo-search">Searching for images: DuckDuckGo Search</a></li>
+  <li><a href="#downloading-and-preparing-images" id="toc-downloading-and-preparing-images" class="nav-link" data-scroll-target="#downloading-and-preparing-images">Downloading and Preparing Images</a></li>
+  <li><a href="#verifying-and-leaning-images" id="toc-verifying-and-leaning-images" class="nav-link" data-scroll-target="#verifying-and-leaning-images">Verifying and Leaning Images</a></li>
+  <li><a href="#the-datablock-api" id="toc-the-datablock-api" class="nav-link" data-scroll-target="#the-datablock-api">The DataBlock API</a></li>
+  <li><a href="#training-the-model-welcome-to-the-learner-world" id="toc-training-the-model-welcome-to-the-learner-world" class="nav-link" data-scroll-target="#training-the-model-welcome-to-the-learner-world">Training the Model: Welcome to the Learner World</a></li>
+  <li><a href="#making-predictions" id="toc-making-predictions" class="nav-link" data-scroll-target="#making-predictions">Making Predictions</a></li>
+  </ul></li>
+  <li><a href="#what-is-machine-learning" id="toc-what-is-machine-learning" class="nav-link" data-scroll-target="#what-is-machine-learning">What Is Machine Learning</a>
+  <ul class="collapse">
+  <li><a href="#traditional-programming" id="toc-traditional-programming" class="nav-link" data-scroll-target="#traditional-programming">Traditional Programming</a></li>
+  <li><a href="#program-using-weight-and-assignment" id="toc-program-using-weight-and-assignment" class="nav-link" data-scroll-target="#program-using-weight-and-assignment">Program Using Weight And Assignment</a></li>
+  <li><a href="#training-a-machine-learning-model" id="toc-training-a-machine-learning-model" class="nav-link" data-scroll-target="#training-a-machine-learning-model">Training a Machine Learning Model</a></li>
+  <li><a href="#using-a-trained-model" id="toc-using-a-trained-model" class="nav-link" data-scroll-target="#using-a-trained-model">Using a Trained Model</a></li>
+  </ul></li>
+  <li><a href="#what-our-image-recognizer-learned" id="toc-what-our-image-recognizer-learned" class="nav-link" data-scroll-target="#what-our-image-recognizer-learned">What Our Image Recognizer Learned</a></li>
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"></a>
+  <ul class="collapse">
+  <li><a href="#beyond-image-classification-other-application-of-deep-learning" id="toc-beyond-image-classification-other-application-of-deep-learning" class="nav-link" data-scroll-target="#beyond-image-classification-other-application-of-deep-learning">Beyond Image Classification: Other Application of Deep Learning</a></li>
+  <li><a href="#the-important-of-validation-and-test-sets" id="toc-the-important-of-validation-and-test-sets" class="nav-link" data-scroll-target="#the-important-of-validation-and-test-sets">The Important of Validation and Test Sets</a>
+  <ul class="collapse">
+  <li><a href="#why-do-we-need-a-validation-set" id="toc-why-do-we-need-a-validation-set" class="nav-link" data-scroll-target="#why-do-we-need-a-validation-set">Why Do We Need a Validation set?</a></li>
+  <li><a href="#preventing-overfitting-with-a-test-set" id="toc-preventing-overfitting-with-a-test-set" class="nav-link" data-scroll-target="#preventing-overfitting-with-a-test-set">Preventing Overfitting with a Test set</a></li>
+  </ul></li>
+  <li><a href="#wrapping-up" id="toc-wrapping-up" class="nav-link" data-scroll-target="#wrapping-up">Wrapping Up</a></li>
+  <li><a href="#final-thoughts" id="toc-final-thoughts" class="nav-link" data-scroll-target="#final-thoughts">Final Thoughts</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
 <main class="content quarto-banner-title-block" id="quarto-document-content">
 
@@ -406,9 +447,8 @@ Biological Neurons vs.&nbsp;Artificial Neural Network
 <p><code>to_thumb</code>: - A method from the <code>PIL.Image</code> class, which is quite handy it resizes an image to a thumbnail while maintaining the aspect rato. Kind of like shrinking your favourate sweater but in a good way</p>
 <p>These libraries and function streamline the process of getting and preparing the images for our model. For more detailed documentation, you can refer to the <a href="https://fastdownload.fast.ai/">fastdownload</a>, <a href="https://docs.fast.ai/tutorial.vision.html">fastai vision</a>, and <a href="https://pillow.readthedocs.io/en/stable/">Pillow</a> documentation.</p>
 </section>
-</section>
-<section id="downloading-and-preparing-images" class="level2">
-<h2 class="anchored" data-anchor-id="downloading-and-preparing-images">Downloading and Preparing Images</h2>
+<section id="downloading-and-preparing-images" class="level3">
+<h3 class="anchored" data-anchor-id="downloading-and-preparing-images">Downloading and Preparing Images</h3>
 <p>To build our dataset, we need to download images for the categories we are interested in (‘forest’ and ‘bird’). Here’s how we did it:</p>
 <div id="cell-16" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>searches <span class="op">=</span> <span class="st">'forest'</span>,<span class="st">'bird'</span></span>
@@ -452,8 +492,8 @@ Searching for 'bird shade photo'</code></pre>
 </ul>
 <p>For more details on these tools, you can refer to the <a href="https://docs.python.org/3/library/pathlib.html">pathlib</a>, <a href="https://docs.fast.ai/vision.utils.html">Vision utils</a> documentation.</p>
 </section>
-<section id="verifying-and-leaning-images" class="level2">
-<h2 class="anchored" data-anchor-id="verifying-and-leaning-images">Verifying and Leaning Images</h2>
+<section id="verifying-and-leaning-images" class="level3">
+<h3 class="anchored" data-anchor-id="verifying-and-leaning-images">Verifying and Leaning Images</h3>
 <p>After download images, it’s enssential to verify them and remove corrupt or invalid images.</p>
 <div id="cell-19" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>failed <span class="op">=</span> verify_images(get_image_files(path))</span>
@@ -477,8 +517,8 @@ Searching for 'bird shade photo'</code></pre>
 </ul>
 <p>Fortunately, in my case, all downloaded images were valid, so <code>len(failed)</code> return <code>0</code>–no bad apples in our dataset!</p>
 </section>
-<section id="the-datablock-api" class="level2">
-<h2 class="anchored" data-anchor-id="the-datablock-api">The DataBlock API</h2>
+<section id="the-datablock-api" class="level3">
+<h3 class="anchored" data-anchor-id="the-datablock-api">The DataBlock API</h3>
 <p>Creating our data loarder is a critical step. The <code>DataBlock</code> API in fastai allows us to define how to transform and manage our data easily.</p>
 <div id="cell-22" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>dls <span class="op">=</span> DataBlock(</span>
@@ -526,8 +566,8 @@ Searching for 'bird shade photo'</code></pre>
 <p>The <code>show_batch</code> method is handy way to visialize a batch of data items. It’s like a quick preview to make sure everything looks good.</p>
 <p>For more details, checkout the fastai <a href="https://docs.fast.ai/data.block.html">DataBlock API documentation</a>.</p>
 </section>
-<section id="training-the-model-welcome-to-the-learner-world" class="level2">
-<h2 class="anchored" data-anchor-id="training-the-model-welcome-to-the-learner-world">Training the Model: Welcome to the Learner World</h2>
+<section id="training-the-model-welcome-to-the-learner-world" class="level3">
+<h3 class="anchored" data-anchor-id="training-the-model-welcome-to-the-learner-world">Training the Model: Welcome to the Learner World</h3>
 <p>After preparing our dataset, it’s time to train our model. We use the <code>vision_learner</code> function to setup a learner and the powerful <code>fine_tune</code> method to train the model.</p>
 <div id="cell-25" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>learn <span class="op">=</span> vision_learner(dls, resnet18, metrics<span class="op">=</span>error_rate)</span>
@@ -650,8 +690,8 @@ Searching for 'bird shade photo'</code></pre>
 </ul>
 <p>The <code>fine_tune</code> method is particularly powerful because it starts with a model that already knows a lot (thanks to pre-training) and fine-tune it to specific task. This approach often yields better results, faster and with less data, compared to tranning a model from scratch.</p>
 </section>
-<section id="making-predictions" class="level2">
-<h2 class="anchored" data-anchor-id="making-predictions">Making Predictions</h2>
+<section id="making-predictions" class="level3">
+<h3 class="anchored" data-anchor-id="making-predictions">Making Predictions</h3>
 <p>Finally, let’s make our bird classifier predict whether or not an image contain a bird.</p>
 <div id="cell-28" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>is_bird,_,probs <span class="op">=</span> learn.predict(PILImage.create(<span class="st">'bird.jpg'</span>))</span>
@@ -697,10 +737,8 @@ Probability it's a bird: 0.9988</code></pre>
 </ul></li>
 </ul>
 <p>When we print out the predicted label and the probability. If the model says it’s a bird with a high probability, you can feel pretty confident your model knows its bird!</p>
-</section>
-<section id="wrapping-up" class="level2">
-<h2 class="anchored" data-anchor-id="wrapping-up">Wrapping Up</h2>
 <p>Building the “Is it a Bird?” classifier was hands-on way to introduce the principles of deep learning. By leveraging fastai and Pytorch, we could quickly create an effective model with minimal code. This approach of starting with practical, top-down learning ensures that we see immediately results and understand the real world applicability of deep learning from the get-go.</p>
+</section>
 </section>
 <section id="what-is-machine-learning" class="level2">
 <h2 class="anchored" data-anchor-id="what-is-machine-learning">What Is Machine Learning</h2>
@@ -766,9 +804,8 @@ Probability it's a bird: 0.9988</code></pre>
 </div>
 <p>Think of it as trial and error. The model tries to bake a cake, and if it’s to salty, it adjusts the recipe (update the weights). Over time, it learns the perfect proportions.</p>
 </section>
-</section>
-<section id="using-a-trained-model" class="level2">
-<h2 class="anchored" data-anchor-id="using-a-trained-model">Using a Trained Model</h2>
+<section id="using-a-trained-model" class="level3">
+<h3 class="anchored" data-anchor-id="using-a-trained-model">Using a Trained Model</h3>
 <p>Once the model is trained, it can be used just like a tranditional program, taking inputs and producing results predictably.</p>
 <div id="cell-41" class="cell" data-execution_count="11">
 <details class="code-fold">
@@ -785,6 +822,7 @@ Probability it's a bird: 0.9988</code></pre>
 </div>
 </div>
 <p>Now, you have reliable recipe that consistently makes the perfect cake. The model processes new inputs(ingredients) and produces outputs(cakes) with the learned adjustments.</p>
+</section>
 </section>
 <section id="what-our-image-recognizer-learned" class="level2">
 <h2 class="anchored" data-anchor-id="what-our-image-recognizer-learned">What Our Image Recognizer Learned</h2>
@@ -1048,8 +1086,8 @@ Example of overfitting
 <p>For instance, if you writting a handwriteen digit classifier (as we will very soon) and use it to recognize numbers on checks, you won’t see the same numbers the model was trained on–checks will have different variations of handwriting to deal with.</p>
 </section>
 </section>
-<section id="wrapping-up-1" class="level2">
-<h2 class="anchored" data-anchor-id="wrapping-up-1">Wrapping Up</h2>
+<section id="wrapping-up" class="level2">
+<h2 class="anchored" data-anchor-id="wrapping-up">Wrapping Up</h2>
 <p>Deep learning is an exciting field that extends far beyond simple image classification. From understand speech to translate langugaes and detecting malware, it’s applications are vast. Through this blog post, we’ve seen how to build a bird classifier using the fastai library-an accessible, powrful tool that simplifies the complexities of machine learning.</p>
 <p>By spllitting our data into traning and validation sets, we ensure our model doesn’t cheat and genuinely learns the task at hand. With powerful tools like fastai and the aibility to handle the deverse tasks, deep learning truly has potential to transform numerous industries.</p>
 <p>I hope you enjoyed this journey as much as I did. Remember, the key to mastering deep learing is to keep experimenting and learning. So go ahead, build that next big thing, and maybe teach your computer to recognize your pet fish or translate cat’s meows!</p>
