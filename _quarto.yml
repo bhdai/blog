@@ -17,7 +17,7 @@ website:
         href: https://x.com/daibui1234
 format:
   html:
-    theme: litera
+    theme: cosmo
     css: styles.css
 
 
