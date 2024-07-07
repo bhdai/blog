@@ -15,10 +15,24 @@ website:
         href: https://github.com/buidai123
       - icon: twitter-x
         href: https://x.com/daibui1234
+      - icon: rss
+        href: index.xml
+#
+#  page-footer:
+#    right: "This blog is built with ❤️ and [Quarto](https://quarto.org/)."
+#
+
 format:
   html:
-    theme: cosmo
-    css: styles.css
+    theme:
+      light: [cosmo, styles.scss]
+      dark: [darkly, styles-dark.scss]
+    highlight-style: a11y-dark
+    mainfont: "Atkinson Hyperlegible"
+    code-copy: true
+    code-overflow: wrap
+
+editor: visual
 
 
 
