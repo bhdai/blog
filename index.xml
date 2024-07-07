@@ -10,7 +10,930 @@
 <atom:link href="https://buidai123.github.io/blog/index.xml" rel="self" type="application/rss+xml"/>
 <description>Dai&#39;s blog.</description>
 <generator>quarto-1.4.557</generator>
-<lastBuildDate>Wed, 03 Jul 2024 17:00:00 GMT</lastBuildDate>
+<lastBuildDate>Thu, 04 Jul 2024 17:00:00 GMT</lastBuildDate>
+<item>
+  <title>From Notebook to Web App: Deploying Your Models with fastai Lesson 2</title>
+  <dc:creator>Bui Huu Dai</dc:creator>
+  <link>https://buidai123.github.io/blog/posts/2024-07-07-from-notebook-to-web-app/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>Welcome back to our deep learning adventure with fastai! In <a href="https://course.fast.ai/Lessons/lesson2.html">Lesson 2</a>, we dive into the exciting world of putting model into production. Whether you’re a beginner looking to get your feet or an experienced practitioner wanting to brush up on your deployment skills, this lesson is packed with practial tips and hands-on technquies to take your models from the notebook to the real world.</p>
+<p>In this blog post, we’ll covering everything from gathering images to training and deploying models, using tools like Jupyter Notebooks, Gradio, and Hugging Face Spaces. Get ready to explore essential concepts like data augmentation, resizing methods, and handling overfitting. We’ll also delve into the important of validation and test sets, and see how different deployment platforms stack up against each other.</p>
+<p>Buckle up and let’s get started on this journey and bring your deep learning models to life!</p>
+</section>
+<section id="gathering-and-cleaning-data" class="level2">
+<h2 class="anchored" data-anchor-id="gathering-and-cleaning-data">Gathering and Cleaning Data</h2>
+<p>In this section we’ll walk through the process of gathering and cleaning data, leveraging some handy tools and methods introduced in Lesson 2.</p>
+<section id="importing-and-setting-up" class="level3">
+<h3 class="anchored" data-anchor-id="importing-and-setting-up">Importing and Setting Up</h3>
+<p>First ensure that you have all necessary libraries and modules in place. If you haven’t already, run the following command to install the fastbook module:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">conda</span> install <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-y</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-c</span> fastai fastbook</span></code></pre></div>
+<p>Now you can import the required functions from fastbook:</p>
+<div id="cell-3" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> fastbook <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span></span>
+<span id="cb2-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> fastai.vision.widgets <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span></span></code></pre></div>
+</div>
+</section>
+<section id="gathering-images-with-duckduckgo" class="level3">
+<h3 class="anchored" data-anchor-id="gathering-images-with-duckduckgo">Gathering Images with DuckDuckGo</h3>
+<p>Using DuckDuckGo(ddg) for image searches simplifies the process, as it doesn’t require an API key. here’s the code to create our dataset of bear images:</p>
+<div id="cell-5" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1">bear_types <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'grizzly'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'black'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'teddy'</span></span>
+<span id="cb3-2">path <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Path(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'bear'</span>)</span>
+<span id="cb3-3"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">not</span> path.exists():</span>
+<span id="cb3-4">    path.mkdir()</span>
+<span id="cb3-5">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> o <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> bear_types:</span>
+<span id="cb3-6">        dest <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (path<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span>o)</span>
+<span id="cb3-7">        dest.mkdir(exist_ok<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>)</span>
+<span id="cb3-8">        results <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> search_images_ddg(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>o<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;"> bear"</span>)</span>
+<span id="cb3-9">        download_images(dest, urls<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>results)</span></code></pre></div>
+</div>
+<p>This code snippet sets up directories for different bear types and download images into respective folders.</p>
+<p>Next, we verify and clean the downloaded images:</p>
+<div id="cell-7" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1">failed <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> verify_images(get_image_files(path))</span>
+<span id="cb4-2">failed</span></code></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="3">
+<pre><code>(#24) [Path('bear/black/b8d71ddf-a84d-4054-8088-bb08e8cbd814.jpg'),Path('bear/black/bbe19bf5-3d28-4d7e-b8bf-3e7f8afff5af.jpg'),Path('bear/teddy/ee833f9f-ff26-4435-a4cc-89208236c442.jpg'),Path('bear/teddy/f6f4f901-c873-46a6-8ef7-bbd65da2c910.jpg'),Path('bear/teddy/e3c4fc0d-e494-4c8a-9dc5-8510f8407cac.jpg'),Path('bear/teddy/3309df18-2a7f-4d67-b2e8-9f08eea06025.jpg'),Path('bear/teddy/99377b04-a870-4798-9e6a-02543a495395.JPG'),Path('bear/teddy/fbf4430d-0643-444b-a0c5-7d13c43d92b6.jpg'),Path('bear/teddy/4c576f46-fa7e-4800-bb89-9eea7662ab10.jpg'),Path('bear/teddy/50d2e017-49b9-49a1-9538-5e402932e463.jpg')...]</code></pre>
+</div>
+</div>
+<div id="cell-8" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1">failed.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">map</span>(Path.unlink)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span></code></pre></div>
+</div>
+<p>This step ensures that any currupt images are identified and removed.</p>
+</section>
+<section id="structuring-data-with-datablock-api" class="level3">
+<h3 class="anchored" data-anchor-id="structuring-data-with-datablock-api">Structuring Data with DataBlock API</h3>
+<p>We use <code>DataBlock</code> API to structure our data, making it ready for training:</p>
+<div id="cell-11" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1">bears <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> DataBlock(</span>
+<span id="cb7-2">    blocks<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>(ImageBlock, CategoryBlock), </span>
+<span id="cb7-3">    get_items<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>get_image_files, </span>
+<span id="cb7-4">    splitter<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>RandomSplitter(valid_pct<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.2</span>, seed<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">42</span>),</span>
+<span id="cb7-5">    get_y<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>parent_label,</span>
+<span id="cb7-6">    item_tfms<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>Resize(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">128</span>)</span>
+<span id="cb7-7">)</span>
+<span id="cb7-8"></span>
+<span id="cb7-9">dls <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> bears.dataloaders(path)</span>
+<span id="cb7-10">dls.valid.show_batch(max_n<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>, nrows<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span></code></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://buidai123.github.io/blog/posts/2024-07-07-from-notebook-to-web-app/index_files/figure-html/cell-6-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This show a batch of images using the default resizing method. Different resizing startegies can impact the dataset in various ways.</p>
+</section>
+</section>
+<section id="exploring-resizing-methods" class="level2">
+<h2 class="anchored" data-anchor-id="exploring-resizing-methods">Exploring Resizing Methods</h2>
+<p>Resizing plays a crucial role in preparing your images for model training. Let’s explore three different resizing methods:</p>
+<section id="standard-resize" class="level3">
+<h3 class="anchored" data-anchor-id="standard-resize">Standard Resize</h3>
+<p>The standard resize method adjust the image size for model while maintaining a specific aspect rato. Here, we pad the images with zeros(black) to ensure the entire image is included:</p>
+<div id="cell-14" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1">bears <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> bears.new(item_tfms<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>Resize(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">128</span>, ResizeMethod.Pad, pad_mode<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'zeros'</span>))</span>
+<span id="cb8-2">dls <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> bears.dataloaders(path)</span>
+<span id="cb8-3">dls.valid.show_batch(max_n<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>, nrows<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span></code></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://buidai123.github.io/blog/posts/2024-07-07-from-notebook-to-web-app/index_files/figure-html/cell-7-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This approach, padding with zeros maintains the aspect rato and ensures that the entire image fit within the frame.</p>
+</section>
+<section id="randomresizedcrop" class="level3">
+<h3 class="anchored" data-anchor-id="randomresizedcrop">RandomResizedCrop</h3>
+<p>Another effective method is <code>RandomResizedCrop</code>, which crops different parts of an image each time, providing varied views:</p>
+<div id="cell-17" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1">bears <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> bears.new(item_tfms<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>RandomResizedCrop(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">128</span>, min_scale<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.3</span>))</span>
+<span id="cb9-2">dls <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> bears.dataloaders(path)</span>
+<span id="cb9-3">dls.train.show_batch(max_n<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>, nrows<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, unique<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>)</span></code></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://buidai123.github.io/blog/posts/2024-07-07-from-notebook-to-web-app/index_files/figure-html/cell-8-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><code>RandomResizedCrop</code> is excellent for generating diverse training data. It explores different regions of the same image, enhancing the robustless of your model.</p>
+</section>
+</section>
+<section id="applying-data-augmentation" class="level2">
+<h2 class="anchored" data-anchor-id="applying-data-augmentation">Applying Data Augmentation</h2>
+<p>Data Augmentation increases the diversity of your training data by applying various transformations, such as rotation and flipping:</p>
+<div id="cell-20" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1">bears <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> bears.new(</span>
+<span id="cb10-2">    item_tfms<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>Resize(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">128</span>),</span>
+<span id="cb10-3">    batch_tfms<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>aug_transforms(mult<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)</span>
+<span id="cb10-4">)</span>
+<span id="cb10-5">dls <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> bears.dataloaders(path)</span>
+<span id="cb10-6">dls.train.show_batch(max_n<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span>, nrows<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, unique<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>)</span></code></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://buidai123.github.io/blog/posts/2024-07-07-from-notebook-to-web-app/index_files/figure-html/cell-9-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Using <code>aug_transforms</code>, we can dynamically modify images during training. This process, called data augmentation, helps the model generalize better by exposing it to various versions of the same iamge. The <code>mult=2</code> parameter exaggerates the transformations for better visualization.</p>
+</section>
+<section id="traning-the-model" class="level2">
+<h2 class="anchored" data-anchor-id="traning-the-model">Traning the Model</h2>
+<p>With our data ready, we can proceed to train a model using a pre-trained <code>resnet18</code>:</p>
+<div id="cell-23" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1">bears <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> bears.new(</span>
+<span id="cb11-2">    item_tfms<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>RandomResizedCrop(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">224</span>, min_scale<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>),</span>
+<span id="cb11-3">    batch_tfms<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>aug_transforms()</span>
+<span id="cb11-4">)</span>
+<span id="cb11-5">dls <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> bears.dataloaders(path)</span>
+<span id="cb11-6">learn <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> vision_learner(dls, resnet18, metrics<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>error_rate)</span>
+<span id="cb11-7">learn.fine_tune(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>)</span></code></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Downloading: "https://download.pytorch.org/models/resnet18-f37072fd.pth" to /root/.cache/torch/hub/checkpoints/resnet18-f37072fd.pth
+100%|██████████| 44.7M/44.7M [00:00&lt;00:00, 131MB/s] </code></pre>
+</div>
+<div class="cell-output cell-output-display">
+
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div>
+<div class="cell-output cell-output-display">
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">epoch</th>
+<th data-quarto-table-cell-role="th">train_loss</th>
+<th data-quarto-table-cell-role="th">valid_loss</th>
+<th data-quarto-table-cell-role="th">error_rate</th>
+<th data-quarto-table-cell-role="th">time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>1.010127</td>
+<td>0.147814</td>
+<td>0.066038</td>
+<td>00:15</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="cell-output cell-output-display">
+
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div>
+<div class="cell-output cell-output-display">
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">epoch</th>
+<th data-quarto-table-cell-role="th">train_loss</th>
+<th data-quarto-table-cell-role="th">valid_loss</th>
+<th data-quarto-table-cell-role="th">error_rate</th>
+<th data-quarto-table-cell-role="th">time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>0.187663</td>
+<td>0.105568</td>
+<td>0.037736</td>
+<td>00:13</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>0.165576</td>
+<td>0.146279</td>
+<td>0.037736</td>
+<td>00:13</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>0.140621</td>
+<td>0.171902</td>
+<td>0.047170</td>
+<td>00:14</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>0.117243</td>
+<td>0.166212</td>
+<td>0.047170</td>
+<td>00:13</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>In this case we use <code>RandomSizedCrop</code> and <code>aug_transforms</code> to create robust data loaders. Traning a model for four epochs results in an error rate of under three percent-quite impressive!</p>
+</section>
+<section id="evaludating-the-model" class="level2">
+<h2 class="anchored" data-anchor-id="evaludating-the-model">Evaludating the Model</h2>
+<p>Evaluating the trained model is crucial for understanding its perfoemance and identifying areas for improvement. Lesson 2 introduces several important techniques for model evaluation.</p>
+<section id="confusion-matrix-explaination" class="level3">
+<h3 class="anchored" data-anchor-id="confusion-matrix-explaination">Confusion Matrix Explaination</h3>
+<p>The confusion matrix is powerful tool for examining the perfomance of classification models. It provide insights into which catetgories are commonly confused by the model:</p>
+<div id="cell-26" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1">interp <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> ClassificationInterpretation.from_learner(learn)</span>
+<span id="cb13-2">interp.plot_confusion_matrix()</span></code></pre></div>
+<div class="cell-output cell-output-display">
+
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div>
+<div class="cell-output cell-output-display">
+
+</div>
+<div class="cell-output cell-output-display">
+
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div>
+<div class="cell-output cell-output-display">
+
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://buidai123.github.io/blog/posts/2024-07-07-from-notebook-to-web-app/index_files/figure-html/cell-11-output-5.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The confusion matrix shows the model’s predictions against the actual labels. Here’s what it tells us: - The diagonal represents correct predictions (e.g., 289 black bears correctly predicted as black bears). - Off-diagonal elements reveal misclassifications (e.g., 2 black bears predicted as grizzly bears)</p>
+<p>For instance, if our bear classifier mislabels a grizzly bear as a black bear, the coressponding cell in the matrix indicates how often this mistaken occurs. It’s a visual representation of “where did we go wrong?” and is essential for refining the model.</p>
+<p>Jeremy pointed out that such insight help: - Identify which categories are inherently difficult to distinguish(e.g., black bears and grizzly bears). - Understand if certain errors systematics and need targeted improvements.</p>
+<p>Here’s my model shows: - <strong>High accuracy in identifying grizzly bears and teddy bears</strong>: There are only a couple of misclassification. - <strong>Some confusion between black bears and grizzly bears</strong>: This is evident from the few off-diagonal elements</p>
+<p>Understand these errors hepls us focus on areas that need more training data or better distigushing features.</p>
+</section>
+<section id="plot_top_losses-explaination" class="level3">
+<h3 class="anchored" data-anchor-id="plot_top_losses-explaination"><code>plot_top_losses</code> Explaination</h3>
+<p>The <code>plot_top_losses</code> function highlights the individual images where your model made the worst predictions:</p>
+<div id="cell-29" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1">interp.plot_top_losses(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>, nrows<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, figsize<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">17</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>))</span></code></pre></div>
+<div class="cell-output cell-output-display">
+
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div>
+<div class="cell-output cell-output-display">
+
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://buidai123.github.io/blog/posts/2024-07-07-from-notebook-to-web-app/index_files/figure-html/cell-12-output-3.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The results show specific cases where the model was either: - <strong>Highly confident but wrong</strong>: E.g., the model predicted “teddy” with high confidence when it actually “black”. - <strong>Correct but not confident</strong>: E.g., predicting the right class but with low confidence.</p>
+<p>By examining these top losses, you gain insights into why the model might be confused. Here, my model misclassified a black bear as a grizzly bear with high confidence which might indicate that the features used to distigush between these classes are not prominent enough.</p>
+<p>These insights can help in refining your data and possibly augmenting it to address these specific weaknesses.</p>
+</section>
+</section>
+<section id="clean-the-data-with-imageclassifiercleaner" class="level2">
+<h2 class="anchored" data-anchor-id="clean-the-data-with-imageclassifiercleaner">Clean the Data with <code>ImageClassifierCleaner</code></h2>
+<p>Once we’ve evaluated our model, the next important step is data cleaning. Surprisingly, Jeremy suggests cleaning the data <strong>after</strong> training the initial model. This counterintuitive approach allows the model to highlight problematic data points</p>
+<section id="imageclassifiercleaner-demonstration" class="level3">
+<h3 class="anchored" data-anchor-id="imageclassifiercleaner-demonstration"><code>ImageClassifierCleaner</code> Demonstration</h3>
+<p>The <code>ImageClassifierCleaner</code> widget is a fantastic tool for this purpose. It helps you manually review and clean your dataset based on the model’s predictions:</p>
+<div id="cell-32" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1">cleaner <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> ImageClassifierCleaner(learn)</span>
+<span id="cb15-2">cleaner</span></code></pre></div>
+</div>
+<p><img src="https://buidai123.github.io/blog/posts/2024-07-07-from-notebook-to-web-app/cleaner_widget.png" style="width:100%;"></p>
+<p>When you run this widget, it launches an interactive interface where you can:</p>
+<ul>
+<li><strong>Sort Image by Loss</strong>: Images are ordered by the model’s confidence, making it easy to identify incorrect or ambiguous labels.</li>
+<li><strong>Correct Labels</strong>: Reassign images to the correct categories if they were mislabeled.</li>
+<li><strong>Delete Incorrect Images</strong>: Remove images that don’t belong in any category.</li>
+</ul>
+<p>Jeremy explained how he used it to clean the bear dataset:</p>
+<ul>
+<li>By seleting “teddy bears”, the widget displayed all images classified as teddy bears.</li>
+<li>He manually review the images, reassigning or deleting those that were incorrecly labeled.</li>
+</ul>
+<p>Here’s how you can apply the changes:</p>
+<div id="cell-34" class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1">fns <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> get_image_files(path)</span>
+<span id="cb16-2"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> idx <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> cleaner.delete(): cleaner.fns[idx].unlink()</span>
+<span id="cb16-3"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> idx, cat <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> cleaner.change(): shutil.move(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">str</span>(cleaner.fns[idx]), path<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span>cat)</span></code></pre></div>
+</div>
+<p>This code snippet updates the dataset based on your interaction with the <code>ImageClassifierCleaner</code>: - <strong>Delete</strong>: Removes files marked for deletion. - <strong>Move</strong>: Reassigns files to the correct categories.</p>
+</section>
+<section id="why-clean-after-training" class="level3">
+<h3 class="anchored" data-anchor-id="why-clean-after-training">Why Clean After Training?</h3>
+<p>Cleaning the data after training might seems backward, but it has significant advantages: - <strong>Model-Assisted Cleaning</strong>: The initial model helps identify problematic data points that might be hard to spot manually. - <strong>Focus on Hard Cases</strong>: The confusion matrix and top losses highlight the hight areas that need most attention, making your cleaning effort more efficient.</p>
+<p>This process ensures a high quality dataset for subsequent training iterations, leading to better model performance.</p>
+<p>By incorporating thorough evaluation and cleaning steps, you refine you dataset and improve your model’s accuracy and reliability. These insights are invaluable for building robust deep learning models that perform well on real-world data.</p>
+</section>
+</section>
+<section id="deployment-building-and-deploying-a-model" class="level2">
+<h2 class="anchored" data-anchor-id="deployment-building-and-deploying-a-model">Deployment: Building and Deploying a Model</h2>
+<p>After cleaning our data, the next exciting step is to put our model into production. While <a href="https://www.amazon.com/Deep-Learning-Coders-fastai-PyTorch/dp/1492045527">the book</a> introduces Voilà for creating interactive web application using Jupyter Notebooks, there’s another powerful tool that’s becoming increasingly popular: <strong>HuggingFace Spaces</strong>. Together with <strong>Gradio</strong>, they offer an intuitive and powerful way to deploy machine learning models as web applications.</p>
+<section id="introducing-huggingface-spaces-and-gradio." class="level3">
+<h3 class="anchored" data-anchor-id="introducing-huggingface-spaces-and-gradio.">Introducing HuggingFace Spaces and Gradio.</h3>
+<p>HuggingFace Spaces is a platform that allows you to host machine learning model and their interfaces for free. On the other hand, Gradio make it easy to create customizable web interfaces with a few linese of Python code.</p>
+</section>
+<section id="a-shortout-of-tanishq-abraham" class="level3">
+<h3 class="anchored" data-anchor-id="a-shortout-of-tanishq-abraham">A shortout of Tanishq Abraham</h3>
+<p>Before diving into techinical details, let’s give a shortout to Tanishq Abraham, one of the most remarkable individuals in the fastai community. Know as a child prodigy, Tanishq has contributed immensely to the community, making complex topics accessable to everyone. I’ve learned a lot from his work and highly recommend checking out his <a href="https://www.tanishq.ai/">website</a> and his <a href="https://x.com/iScienceLuvr">Twitter</a> for more insightful resources.</p>
+<p>Tanshiq has also written an exellent blog post the cover everything you need to know about using Gradio and HuggingFace Spaces. You can read his detail guide <a href="https://www.tanishq.ai/blog/posts/2021-11-16-gradio-huggingface.html">here</a></p>
+</section>
+<section id="setting-up-and-deploying-your-model-using-gradio-and-huggingface-spaces" class="level3">
+<h3 class="anchored" data-anchor-id="setting-up-and-deploying-your-model-using-gradio-and-huggingface-spaces">Setting Up and Deploying Your Model using Gradio and HuggingFace Spaces</h3>
+<p>To deploy our model, we’ll use HuggingFace Spaces. The set up process is straightforward and free of charge. Follow these step to get started:</p>
+<p><strong>Step 1: Sign Up and Create a New Space</strong></p>
+<ol type="1">
+<li><p>Go to the <a href="https://huggingface.co/spaces">HuggingFace Spaces page</a> and sign up for an account if you haven’t already.</p></li>
+<li><p>Click “Create a new space”.</p></li>
+<li><p>Give you space a name and chose a template (you can start with Gradio template).</p></li>
+</ol>
+<p>Congrats! You’ve created a new space. Now, what’s next?</p>
+<p><strong>Step 2: Getting Familiar with Git</strong></p>
+<p>HuggingFace Spaces works through Git, which many developers are already familiar with. Using Git is also a good practice, and Jeremy recommends using <a href="https://desktop.github.com/download/">Github Desktop</a> and WSL2. Refer to the guide for <a href="https://learn.microsoft.com/en-us/windows/wsl/install">WSL2 installation</a> to get started.</p>
+<p>Cloning the Repository</p>
+<p>To start working on HuggingFace Spaces you need to clone the repository locally, you have two options for cloning: <strong>HTTPs</strong> and <strong>SSH</strong></p>
+<table class="table-striped table-hover caption-top table">
+<colgroup>
+<col style="width: 17%">
+<col style="width: 41%">
+<col style="width: 41%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Pros / Cons</th>
+<th style="text-align: center;">HTTPS</th>
+<th style="text-align: center;">SSH</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Pros</strong></td>
+<td style="text-align: center;">Easier for beginners, no SSH key setup required</td>
+<td style="text-align: center;">More secure, no need to enter credentials each time</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Cons</strong></td>
+<td style="text-align: center;">Requires authentication each time you push</td>
+<td style="text-align: center;">Requires SSH key setup</td>
+</tr>
+</tbody>
+</table>
+<p>Since I’m using SSH, if you follow along please make sure your SSH key is properly set up in your HuggingFace Spaces user setting</p>
+<div class="sourceCode" id="cb17" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Clone the repository using SSH</span></span>
+<span id="cb17-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">git</span> clone git@huggingface.co:USERNAME/YOUR_REPO_NAME.git</span>
+<span id="cb17-3"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">cd</span> YOUR_REPO_NAME</span></code></pre></div>
+<p><strong>Step 3: Prepare Your Model</strong></p>
+<p>Make sure to export your trained model from the notebook:</p>
+<div id="cell-37" class="cell">
+<div class="sourceCode cell-code" id="cb18" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># in your bear classifier notebook</span></span>
+<span id="cb18-2">learn.export(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"model.pkl"</span>)</span></code></pre></div>
+</div>
+<p>This saves the trained model as <code>model.pkl</code>, which you’ll need for the deployment.</p>
+<p><strong>Step 4: Building the Gradio Interface</strong></p>
+<p>Gradio makes it easy to build an interactive interface. You can use Jupyter Notebook for experimentation and then use <code>nbdev.export.nb_export</code> to convert the notebook into Python script. This tool is very handly for such conversions. Alright, but first make sure you run <code>pip install gradio</code> in your terminal if you haven’t already.</p>
+<p><strong>1. Import Required Libraries</strong>:</p>
+<div id="cell-39" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb19" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> gradio <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> gr</span>
+<span id="cb19-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> fastai.vision.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">all</span> <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span></span></code></pre></div>
+</div>
+<p>And so we can create a python image library image from that black bear</p>
+<div id="cell-41" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb20" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1">im <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> PILImage.create(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'black.jpg'</span>)</span>
+<span id="cb20-2">im.thumbnail((<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">192</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">192</span>))</span>
+<span id="cb20-3">im</span></code></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<div>
+<figure class="figure">
+<p><img src="https://buidai123.github.io/blog/posts/2024-07-07-from-notebook-to-web-app/index_files/figure-html/cell-17-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Turn it into silghtly smaller one so it doesn’t overwhelm my whole screen and there’s is a picture of a black bear so we will use it for experimenting</p>
+<p><strong>2. Load the Model</strong>:</p>
+<div id="cell-43" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb21" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1">learn <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> load_learner(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'model.pkl'</span>)</span></code></pre></div>
+</div>
+<p>One of the methods that the learner has is a <code>predict</code> method</p>
+<div id="cell-45" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb22" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1">learn.predict(im)</span></code></pre></div>
+<div class="cell-output cell-output-display">
+
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div>
+<div class="cell-output cell-output-display">
+
+</div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<pre><code>('black', tensor(0), tensor([9.9995e-01, 4.9545e-05, 3.8379e-06]))</code></pre>
+</div>
+</div>
+<p>So if you run it, you can see, even on a laptop, it’s basically instant. It’s took a really short time to figure out this is a black bear</p>
+<p><strong>3. Define the Prediction Function</strong>:</p>
+<p>Gradio requires us to give it a function that it’s going to call but first we need to what labels do we have?</p>
+<div id="cell-48" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb24" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1">learn.dls.vocab</span></code></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<pre><code>['black', 'grizzly', 'teddy']</code></pre>
+</div>
+</div>
+<div id="cell-49" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb26" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#create our categories</span></span>
+<span id="cb26-2">categories <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> learn.dls.vocab</span></code></pre></div>
+</div>
+<p>So here’s our function:</p>
+<div id="cell-51" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb27" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> classify_image(img):</span>
+<span id="cb27-2">    img <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> PILImage.create(img)</span>
+<span id="cb27-3">    pred, idx, probs <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> learn.predict(img)</span>
+<span id="cb27-4">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">return</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">dict</span>(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">zip</span>(categories, <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">map</span>(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">float</span>, probs)))</span></code></pre></div>
+</div>
+<p>So we called <code>predict</code> and that returns three things: the prediction as a string, the index of that, and the probabilities of whether it’s black or grizzly or teddy bear. And what Gradio wants is it wants to get back a dictionary containing each of the possible categories-which is in this case grizzly, black and teddy bear-and the probabilities of each one.</p>
+<p><strong>4. Create the Gradio Interface</strong>:</p>
+<div id="cell-54" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb28" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1">image <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> gr.Image(height<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">512</span>, width<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">512</span>)</span>
+<span id="cb28-2">labels <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> gr.Label()</span>
+<span id="cb28-3">examples <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"grizzly.jpg"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"black.jpg"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"teddy.jpg"</span>]</span>
+<span id="cb28-4"></span>
+<span id="cb28-5">intf <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> gr.Interface(fn<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>classify_image, inputs<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>image, outputs<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>labels, examples<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>examples)</span>
+<span id="cb28-6">intf.launch(inline<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>)</span></code></pre></div>
+</div>
+<pre><code>Running on local URL:  http://127.0.0.1:7860
+To create a public link, set `share=True` in `launch()`.</code></pre>
+<p><img src="https://buidai123.github.io/blog/posts/2024-07-07-from-notebook-to-web-app/huggingfacespaces.png" class="img-fluid"></p>
+<p>This code creates a simple Gradio interface where user can upload images, and the model will predict whether it’s a grizzly, black or teddy bear. you can run the interface inline in you Jupyter Notebook for testing.</p>
+<p><strong>Step 5: Export the Notebook to a Python script</strong>:</p>
+<p>We will use nbdev to convert the Jupyter Notebook to a Python script.</p>
+<p><strong>1. Add Metadata and Export Tags</strong>:</p>
+<pre><code>- Add `#| default_exp app` to the first cell
+- Add `#| export` to every cell you want to convert</code></pre>
+<p><strong>2. Run the Conversion</strong>:</p>
+<div id="cell-57" class="cell">
+<div class="sourceCode cell-code" id="cb31" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> nbdev.export</span>
+<span id="cb31-2">nbdev.export.nb_export(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'app.ipynb'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'.'</span>)</span></code></pre></div>
+</div>
+<p>This command converts the notebook <code>app.ipynb</code> to a python script <code>app.py</code>.</p>
+<p><strong>Step 6: Push Your Changes to HuggingFace Spaces</strong>:</p>
+<p>Handle large files like <code>model.pkl</code> uising <a href="https://git-lfs.com/">Git LFS</a> (Large File Storage).</p>
+<p><strong>1. Set up Git LFS</strong>:</p>
+<div id="cell-59" class="cell" data-vscode="{&quot;languageId&quot;:&quot;shellscript&quot;}">
+<div class="sourceCode cell-code" id="cb32" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1">git lfs install</span>
+<span id="cb32-2">git lfs track <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"*.pkl"</span></span>
+<span id="cb32-3">git add .gitattributes</span>
+<span id="cb32-4">git commit <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>m <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Track .pkl files with Git LFS"</span> <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># To be honest, when initializing git lfs, the .gitattributes already supports .pkl files, and in my repo when initialized, it already had .gitattributes file. I don't know why, but I didn't need to commit it anyway, but I still write it here for the sake of completeness. 😉</span></span></code></pre></div>
+</div>
+<p><strong>2. Commit and Push Your Changes</strong>:</p>
+<div id="cell-61" class="cell" data-vscode="{&quot;languageId&quot;:&quot;shellscript&quot;}">
+<div class="sourceCode cell-code" id="cb33" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1">git add .</span>
+<span id="cb33-2">git commit <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>m <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Deploy bear classifier with Gradio interface🐻🎉"</span></span>
+<span id="cb33-3">git push</span></code></pre></div>
+</div>
+</section>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>By following this guide, you’ve successfully built and deployed your bear classifier using Gradio and HuggingFace Spaces. This powerful combination not only make you model accessible for everyone through the user-friendly web interface but also leverages cutting-edge tool to ensure it easy to maintain and extend.</p>
+<p>Deploying machine learning models in real-world applications is an exciting milestone. It transform your hard work and complex algorithms into actionable insights and tools that can be used by anyone, anywhere. Whether you’re a begginer or an experienced partitioner, the ability to take a model from Jupyter Noteook to a live web app is an invaluable skill in today’s AI driven world.</p>
+<p>In case you want to explore more about Gradio and HuggingFace, here are some valuable resources:</p>
+<ul>
+<li><strong>Gradio Documentation</strong>: For more on Gradio, refer to the <a href="https://www.gradio.app/docs/python-client/introduction">Gradio documentation</a>.</li>
+<li><strong>My HuggingFace Spaces Bear Classifier</strong>: Checkout my deployed bear classifier on HuggingFace Spaces <a href="https://huggingface.co/spaces/TheMonarch/bear_classifier">here</a>.</li>
+<li><strong>Tanishq Abraham’s Blog</strong>: For an in-depth look at deploying model using Gradio and HuggingFace Spaces, make sure to read Tanishq’s excellent <a href="https://www.tanishq.ai/blog/posts/2021-11-16-gradio-huggingface.html">blog post</a>.</li>
+</ul>
+<p>Although I initially planned to look into the HuggingFace Spaces API and deploying your own web app via JavasScript, sometimes technical hitches happend. Whether it’s a client-side issue or just part of the learning curve, don’t let it discourage you. Every challenge is learning opportunity, and with the fast-placed advencements in AI and deployment tools, there’s always something new and exciting around the corner.</p>
+<p>Thank you for joining me on this journey to bring deep learning model to life. Embrace the power of open-source tools, keep experimenting, and never stop learing. Happy coding, and may your models alwasy be accurate!</p>
+
+
+</section>
+
+ ]]></description>
+  <category>blogging</category>
+  <category>fastai</category>
+  <guid>https://buidai123.github.io/blog/posts/2024-07-07-from-notebook-to-web-app/</guid>
+  <pubDate>Thu, 04 Jul 2024 17:00:00 GMT</pubDate>
+  <media:content url="https://buidai123.github.io/blog/posts/2024-07-07-from-notebook-to-web-app/deployment.png" medium="image" type="image/png" height="96" width="144"/>
+</item>
 <item>
   <title>First Step in AI: My Experience with fast.ai Lesson 1</title>
   <dc:creator>Bui Huu Dai</dc:creator>
