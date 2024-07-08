@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Bui Huu Dai">
-<meta name="dcterms.date" content="2024-07-05">
+<meta name="dcterms.date" content="2024-07-07">
 
 <title>Bui Huu Dai - From Notebook to Web App: Deploying Your Models with fastai Lesson 2</title>
 <style>
@@ -120,15 +120,15 @@ gtag('config', 'G-6JR4N915S6', { 'anonymize_ip': true});
 
 <meta property="og:title" content="Bui Huu Dai - From Notebook to Web App: Deploying Your Models with fastai Lesson 2">
 <meta property="og:description" content="Dai’s blog.">
-<meta property="og:image" content="https://buidai123.github.io/blog/posts/2024-07-07-from-notebook-to-web-app/deployment.png">
+<meta property="og:image" content="https://buidai123.github.io/blog/posts/2024-07-07-from-notebook-to-web-app/huggingfacespaces.png">
 <meta property="og:site_name" content="Bui Huu Dai">
-<meta property="og:image:height" content="800">
-<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="828">
+<meta property="og:image:width" content="1485">
 <meta name="twitter:title" content="Bui Huu Dai - From Notebook to Web App: Deploying Your Models with fastai Lesson 2">
 <meta name="twitter:description" content="Dai’s blog.">
-<meta name="twitter:image" content="https://buidai123.github.io/blog/posts/2024-07-07-from-notebook-to-web-app/deployment.png">
-<meta name="twitter:image-height" content="800">
-<meta name="twitter:image-width" content="1200">
+<meta name="twitter:image" content="https://buidai123.github.io/blog/posts/2024-07-07-from-notebook-to-web-app/huggingfacespaces.png">
+<meta name="twitter:image-height" content="828">
+<meta name="twitter:image-width" content="1485">
 <meta name="twitter:card" content="summary_large_image">
 </head>
 
@@ -184,6 +184,8 @@ gtag('config', 'G-6JR4N915S6', { 'anonymize_ip': true});
                                 <div class="quarto-categories">
                 <div class="quarto-category">blogging</div>
                 <div class="quarto-category">fastai</div>
+                <div class="quarto-category">huggingface spaces</div>
+                <div class="quarto-category">gradio</div>
               </div>
                   </div>
   </div>
@@ -201,7 +203,7 @@ gtag('config', 'G-6JR4N915S6', { 'anonymize_ip': true});
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">July 5, 2024</p>
+        <p class="date">July 7, 2024</p>
       </div>
     </div>
     
@@ -260,8 +262,8 @@ gtag('config', 'G-6JR4N915S6', { 'anonymize_ip': true});
 
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
-<p>Welcome back to our deep learning adventure with fastai! In <a href="https://course.fast.ai/Lessons/lesson2.html">Lesson 2</a>, we dive into the exciting world of putting model into production. Whether you’re a beginner looking to get your feet or an experienced practitioner wanting to brush up on your deployment skills, this lesson is packed with practial tips and hands-on technquies to take your models from the notebook to the real world.</p>
-<p>In this blog post, we’ll covering everything from gathering images to training and deploying models, using tools like Jupyter Notebooks, Gradio, and Hugging Face Spaces. Get ready to explore essential concepts like data augmentation, resizing methods, and handling overfitting. We’ll also delve into the important of validation and test sets, and see how different deployment platforms stack up against each other.</p>
+<p>Welcome back to our deep learning adventure with fastai! In <a href="https://course.fast.ai/Lessons/lesson2.html">Lesson 2</a>, we dive into the exciting world of putting model into production. Whether you’re a beginner looking to get your feet wet or an experienced practitioner wanting to brush up on your deployment skills, this lesson is packed with practial tips and hands-on technquies to take your models from the notebook to the real world.</p>
+<p>In this blog post, we’ll cover everything from gathering images to training and deploying models, using tools like Jupyter Notebooks, Gradio, and Hugging Face Spaces. Get ready to explore essential concepts like how to clean your data and see how different deployment platforms stack up against each other.</p>
 <p>Buckle up and let’s get started on this journey and bring your deep learning models to life!</p>
 </section>
 <section id="gathering-and-cleaning-data" class="level2">
@@ -279,7 +281,7 @@ gtag('config', 'G-6JR4N915S6', { 'anonymize_ip': true});
 </section>
 <section id="gathering-images-with-duckduckgo" class="level3">
 <h3 class="anchored" data-anchor-id="gathering-images-with-duckduckgo">Gathering Images with DuckDuckGo</h3>
-<p>Using DuckDuckGo(ddg) for image searches simplifies the process, as it doesn’t require an API key. here’s the code to create our dataset of bear images:</p>
+<p>Using DuckDuckGo(ddg) for image searches simplifies the process, as it doesn’t require an API key. Here’s the code to create our dataset of bear images:</p>
 <div id="cell-5" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>bear_types <span class="op">=</span> <span class="st">'grizzly'</span>, <span class="st">'black'</span>, <span class="st">'teddy'</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>path <span class="op">=</span> Path(<span class="st">'bear'</span>)</span>
@@ -505,11 +507,11 @@ gtag('config', 'G-6JR4N915S6', { 'anonymize_ip': true});
 </table>
 </div>
 </div>
-<p>In this case we use <code>RandomSizedCrop</code> and <code>aug_transforms</code> to create robust data loaders. Traning a model for four epochs results in an error rate of under three percent-quite impressive!</p>
+<p>In this case we use <code>RandomSizedCrop</code> and <code>aug_transforms</code> to create robust data loaders. Traning a model for four epochs results in an error rate of under five percent-quite impressive!</p>
 </section>
 <section id="evaludating-the-model" class="level2">
 <h2 class="anchored" data-anchor-id="evaludating-the-model">Evaludating the Model</h2>
-<p>Evaluating the trained model is crucial for understanding its perfoemance and identifying areas for improvement. Lesson 2 introduces several important techniques for model evaluation.</p>
+<p>Evaluating the trained model is crucial for understanding its performance and identifying areas for improvement. Lesson 2 introduces several important techniques for model evaluation.</p>
 <section id="confusion-matrix-explaination" class="level3">
 <h3 class="anchored" data-anchor-id="confusion-matrix-explaination">Confusion Matrix Explaination</h3>
 <p>The confusion matrix is powerful tool for examining the perfomance of classification models. It provide insights into which catetgories are commonly confused by the model:</p>
@@ -566,10 +568,22 @@ gtag('config', 'G-6JR4N915S6', { 'anonymize_ip': true});
 </div>
 </div>
 </div>
-<p>The confusion matrix shows the model’s predictions against the actual labels. Here’s what it tells us: - The diagonal represents correct predictions (e.g., 289 black bears correctly predicted as black bears). - Off-diagonal elements reveal misclassifications (e.g., 2 black bears predicted as grizzly bears)</p>
+<p>The confusion matrix shows the model’s predictions against the actual labels. Here’s what it tells us:</p>
+<ul>
+<li>The diagonal represents correct predictions (e.g., 29 black bears correctly predicted as black bears).</li>
+<li>Off-diagonal elements reveal misclassifications (e.g., 2 black bears predicted as grizzly bears)</li>
+</ul>
 <p>For instance, if our bear classifier mislabels a grizzly bear as a black bear, the coressponding cell in the matrix indicates how often this mistaken occurs. It’s a visual representation of “where did we go wrong?” and is essential for refining the model.</p>
-<p>Jeremy pointed out that such insight help: - Identify which categories are inherently difficult to distinguish(e.g., black bears and grizzly bears). - Understand if certain errors systematics and need targeted improvements.</p>
-<p>Here’s my model shows: - <strong>High accuracy in identifying grizzly bears and teddy bears</strong>: There are only a couple of misclassification. - <strong>Some confusion between black bears and grizzly bears</strong>: This is evident from the few off-diagonal elements</p>
+<p>Jeremy pointed out that such insight help:</p>
+<ul>
+<li>Identify which categories are inherently difficult to distinguish(e.g., black bears and grizzly bears).</li>
+<li>Understand if certain errors systematics and need targeted improvements.</li>
+</ul>
+<p>Here’s my model shows:</p>
+<ul>
+<li><strong>High accuracy in identifying grizzly bears and teddy bears</strong>: There are only a couple of misclassification.</li>
+<li><strong>Some confusion between black bears and grizzly bears</strong>: This is evident from the few off-diagonal elements</li>
+</ul>
 <p>Understand these errors hepls us focus on areas that need more training data or better distigushing features.</p>
 </section>
 <section id="plot_top_losses-explaination" class="level3">
@@ -606,7 +620,11 @@ gtag('config', 'G-6JR4N915S6', { 'anonymize_ip': true});
 </div>
 </div>
 </div>
-<p>The results show specific cases where the model was either: - <strong>Highly confident but wrong</strong>: E.g., the model predicted “teddy” with high confidence when it actually “black”. - <strong>Correct but not confident</strong>: E.g., predicting the right class but with low confidence.</p>
+<p>The results show specific cases where the model was either:</p>
+<ul>
+<li><strong>Highly confident but wrong</strong>: E.g., the model predicted “teddy” with high confidence when it actually “black”.</li>
+<li><strong>Correct but not confident</strong>: E.g., predicting the right class but with low confidence.</li>
+</ul>
 <p>By examining these top losses, you gain insights into why the model might be confused. Here, my model misclassified a black bear as a grizzly bear with high confidence which might indicate that the features used to distigush between these classes are not prominent enough.</p>
 <p>These insights can help in refining your data and possibly augmenting it to address these specific weaknesses.</p>
 </section>
@@ -643,7 +661,11 @@ gtag('config', 'G-6JR4N915S6', { 'anonymize_ip': true});
 </section>
 <section id="why-clean-after-training" class="level3">
 <h3 class="anchored" data-anchor-id="why-clean-after-training">Why Clean After Training?</h3>
-<p>Cleaning the data after training might seems backward, but it has significant advantages: - <strong>Model-Assisted Cleaning</strong>: The initial model helps identify problematic data points that might be hard to spot manually. - <strong>Focus on Hard Cases</strong>: The confusion matrix and top losses highlight the hight areas that need most attention, making your cleaning effort more efficient.</p>
+<p>Cleaning the data after training might seems backward, but it has significant advantages:</p>
+<ul>
+<li><strong>Model-Assisted Cleaning</strong>: The initial model helps identify problematic data points that might be hard to spot manually.</li>
+<li><strong>Focus on Hard Cases</strong>: The confusion matrix and top losses highlight the hight areas that need most attention, making your cleaning effort more efficient.</li>
+</ul>
 <p>This process ensures a high quality dataset for subsequent training iterations, leading to better model performance.</p>
 <p>By incorporating thorough evaluation and cleaning steps, you refine you dataset and improve your model’s accuracy and reliability. These insights are invaluable for building robust deep learning models that perform well on real-world data.</p>
 </section>
@@ -653,11 +675,11 @@ gtag('config', 'G-6JR4N915S6', { 'anonymize_ip': true});
 <p>After cleaning our data, the next exciting step is to put our model into production. While <a href="https://www.amazon.com/Deep-Learning-Coders-fastai-PyTorch/dp/1492045527">the book</a> introduces Voilà for creating interactive web application using Jupyter Notebooks, there’s another powerful tool that’s becoming increasingly popular: <strong>HuggingFace Spaces</strong>. Together with <strong>Gradio</strong>, they offer an intuitive and powerful way to deploy machine learning models as web applications.</p>
 <section id="introducing-huggingface-spaces-and-gradio." class="level3">
 <h3 class="anchored" data-anchor-id="introducing-huggingface-spaces-and-gradio.">Introducing HuggingFace Spaces and Gradio.</h3>
-<p>HuggingFace Spaces is a platform that allows you to host machine learning model and their interfaces for free. On the other hand, Gradio make it easy to create customizable web interfaces with a few linese of Python code.</p>
+<p>HuggingFace Spaces is a platform that allows you to host machine learning model and their interfaces for free. On the other hand, Gradio make it easy to create customizable web interfaces with a few lines of Python code.</p>
 </section>
 <section id="a-shortout-of-tanishq-abraham" class="level3">
 <h3 class="anchored" data-anchor-id="a-shortout-of-tanishq-abraham">A shortout of Tanishq Abraham</h3>
-<p>Before diving into techinical details, let’s give a shortout to Tanishq Abraham, one of the most remarkable individuals in the fastai community. Know as a child prodigy, Tanishq has contributed immensely to the community, making complex topics accessable to everyone. I’ve learned a lot from his work and highly recommend checking out his <a href="https://www.tanishq.ai/">website</a> and his <a href="https://x.com/iScienceLuvr">Twitter</a> for more insightful resources.</p>
+<p>Before diving into techinical details, let’s give a shortout to Tanishq Abraham, one of the most remarkable individuals in the fastai community. Known as a child prodigy, Tanishq has contributed immensely to the community, making complex topics accessable to everyone. I’ve learned a lot from his work and highly recommend checking out his <a href="https://www.tanishq.ai/">website</a> and his <a href="https://x.com/iScienceLuvr">Twitter</a> for more insightful resources.</p>
 <p>Tanshiq has also written an exellent blog post the cover everything you need to know about using Gradio and HuggingFace Spaces. You can read his detail guide <a href="https://www.tanishq.ai/blog/posts/2021-11-16-gradio-huggingface.html">here</a></p>
 </section>
 <section id="setting-up-and-deploying-your-model-using-gradio-and-huggingface-spaces" class="level3">
@@ -672,7 +694,7 @@ gtag('config', 'G-6JR4N915S6', { 'anonymize_ip': true});
 <p>Congrats! You’ve created a new space. Now, what’s next?</p>
 <p><strong>Step 2: Getting Familiar with Git</strong></p>
 <p>HuggingFace Spaces works through Git, which many developers are already familiar with. Using Git is also a good practice, and Jeremy recommends using <a href="https://desktop.github.com/download/">Github Desktop</a> and WSL2. Refer to the guide for <a href="https://learn.microsoft.com/en-us/windows/wsl/install">WSL2 installation</a> to get started.</p>
-<p>Cloning the Repository</p>
+<p><strong>Cloning the Repository</strong></p>
 <p>To start working on HuggingFace Spaces you need to clone the repository locally, you have two options for cloning: <strong>HTTPs</strong> and <strong>SSH</strong></p>
 <table class="table-striped table-hover caption-top table">
 <colgroup>
@@ -764,9 +786,9 @@ gtag('config', 'G-6JR4N915S6', { 'anonymize_ip': true});
 <pre><code>('black', tensor(0), tensor([9.9995e-01, 4.9545e-05, 3.8379e-06]))</code></pre>
 </div>
 </div>
-<p>So if you run it, you can see, even on a laptop, it’s basically instant. It’s took a really short time to figure out this is a black bear</p>
+<p>So if you run it, you can see, even on a laptop, it’s basically instant. It took a really short time to figure out this is a black bear</p>
 <p><strong>3. Define the Prediction Function</strong>:</p>
-<p>Gradio requires us to give it a function that it’s going to call but first we need to what labels do we have?</p>
+<p>Gradio requires us to give it a function that it’s going to call but first we need to know what labels do we have?</p>
 <div id="cell-48" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>learn.dls.vocab</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="7">
@@ -829,7 +851,7 @@ To create a public link, set `share=True` in `launch()`.</code></pre>
 <section id="conclusion" class="level2">
 <h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
 <p>By following this guide, you’ve successfully built and deployed your bear classifier using Gradio and HuggingFace Spaces. This powerful combination not only make you model accessible for everyone through the user-friendly web interface but also leverages cutting-edge tool to ensure it easy to maintain and extend.</p>
-<p>Deploying machine learning models in real-world applications is an exciting milestone. It transform your hard work and complex algorithms into actionable insights and tools that can be used by anyone, anywhere. Whether you’re a begginer or an experienced partitioner, the ability to take a model from Jupyter Noteook to a live web app is an invaluable skill in today’s AI driven world.</p>
+<p>Deploying machine learning models in real-world applications is an exciting milestone. It transform your hard work and complex algorithms into actionable insights and tools that can be used by anyone, anywhere. Whether you’re a beginner or an experienced partitioner, the ability to take a model from Jupyter Noteook to a live web app is an invaluable skill in today’s AI driven world.</p>
 <p>In case you want to explore more about Gradio and HuggingFace, here are some valuable resources:</p>
 <ul>
 <li><strong>Gradio Documentation</strong>: For more on Gradio, refer to the <a href="https://www.gradio.app/docs/python-client/introduction">Gradio documentation</a>.</li>
