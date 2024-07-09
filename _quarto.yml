@@ -17,10 +17,11 @@ website:
         href: https://x.com/daibui1234
       - icon: rss
         href: index.xml
-#
-#  page-footer:
-#    right: "This blog is built with ❤️ and [Quarto](https://quarto.org/)."
-#
+
+  page-footer:
+    left:
+      - text: "Copyright 2024, Bui Huu Dai"
+
 
 format:
   html:
