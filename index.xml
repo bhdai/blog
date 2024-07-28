@@ -14,7 +14,7 @@
 <item>
   <title>From Neurons to Gradients: Unpacking FastAI Lesson 3</title>
   <dc:creator>Bui Huu Dai</dc:creator>
-  <link>https://buidai123.github.io/blog/posts/thirdblogpost/</link>
+  <link>https://buidai123.github.io/blog/posts/2024-07-28-from-neuron-to-gradient/</link>
   <description><![CDATA[ 
 
 
@@ -140,7 +140,7 @@ font-style: inherit;">4</span>)</span></code></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://buidai123.github.io/blog/posts/thirdblogpost/index_files/figure-html/cell-4-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="https://buidai123.github.io/blog/posts/2024-07-28-from-neuron-to-gradient/index_files/figure-html/cell-4-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -4265,7 +4265,7 @@ font-style: inherit;">;</span></span>
 <h3 class="anchored" data-anchor-id="the-big-picture-adding-relus-and-gradient-descent-deep-learning">The Big Picture: Adding ReLus and Gradient Descent === Deep Learning</h3>
 <p>Believe it or not, this is the essence of <strong>deep learning</strong>. Everything else-every other tweak is just about making this process faster and more efficient, sparking those “a-ha!” moments.</p>
 <p>Quoting Jeremy Howard:</p>
-<p><img src="https://buidai123.github.io/blog/posts/thirdblogpost/how_to_draw_an_owl.jpg" style="width:40%;"></p>
+<p><img src="https://buidai123.github.io/blog/posts/2024-07-28-from-neuron-to-gradient/how_to_draw_an_owl.jpg" style="width:40%;"></p>
 <blockquote class="blockquote">
 <p>“Now I remember a few years ago when I said something like this in a class, somebody on the forum was like, this reminds me of that thing about how to draw an owl. Jeremy’s basically saying, okay, step one: draw two circles; step two: daw the rest of the owl”</p>
 </blockquote>
@@ -4281,9 +4281,9 @@ font-style: inherit;">;</span></span>
   <category>blogging</category>
   <category>fastai</category>
   <category>torch</category>
-  <guid>https://buidai123.github.io/blog/posts/thirdblogpost/</guid>
+  <guid>https://buidai123.github.io/blog/posts/2024-07-28-from-neuron-to-gradient/</guid>
   <pubDate>Sat, 27 Jul 2024 17:00:00 GMT</pubDate>
-  <media:content url="https://buidai123.github.io/blog/posts/thirdblogpost/xkcd_trained_a_neural_net.png" medium="image" type="image/png" height="212" width="144"/>
+  <media:content url="https://buidai123.github.io/blog/posts/2024-07-28-from-neuron-to-gradient/xkcd_trained_a_neural_net.png" medium="image" type="image/png" height="212" width="144"/>
 </item>
 <item>
   <title>From Notebook to Web App: Deploying Your Models with fastai Lesson 2</title>
