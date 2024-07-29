@@ -22,14 +22,14 @@
 
 
 <section id="introduction" class="level2">
-<h2 class="anchored" data-anchor-id="introduction">Introduction:</h2>
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
 <p>Hey there, fellow data adventurers! 👋 It’s been a couple of week since my last post - blame exams and and obsessive quest to tweak every configuration setting for my workflow (which is turned into a week-long habit hole - i regret nothing). But today, I’m excited to dive back into the world of AI and share my latest escapades from <a href="https://youtu.be/hBBOjCiFcuo?si=dfuUYTPelGOYCogb">Lesson 3</a> of the FastAI course taught by the indomitable Jeremy Horawd. Spoiler alert: it’s packed with enough neural wonders to make your brain do a happy dance.🕺</p>
 <p>In the coming post, I’ll guide you through:</p>
 <ul>
 <li>Picking of right AI model that’s just right for you</li>
 <li>Dissecting the anatomy of these models (paramedics not required)🧬</li>
 <li>The inner workings of neuron networks 🧠</li>
-<li>An insightful stroll through the Chapter 4 of the <a href="https://github.com/fastai/fastbook/blob/master/04_mnist_basics.ipynb">book</a> 📖</li>
+<li>The <a href="https://www.kaggle.com/competitions/titanic">Titanic competition</a></li>
 </ul>
 <p>So, hold onto your neural nets and let’s jump right into it, shall we?</p>
 </section>
@@ -4272,9 +4272,13 @@ font-style: inherit;">;</span></span>
 <p>This bit is pure gold because it distills deep learning down to its core components. When you have ReLUs being added together, gradient descent optimizing you parameters, and sample of inputs and outputs-voilà! The computer draws the owl.</p>
 <p>Remember when things get dense: keep coming back to what’s really happening. Deep learning, at it’s heart, is using gradient descent to tweak parameters, adding lots of ReLUs (or something similar) to match your data.</p>
 <p>And that’s it! You’ve just peeked under the hood of deep learning. Stay curious, keep playing with those ReLUs, and watch the neural magic unfold. 🚀</p>
-
-
 </section>
+</section>
+<section id="the-titanic-competition" class="level2">
+<h2 class="anchored" data-anchor-id="the-titanic-competition">The Titanic Competition</h2>
+<p>[updating …]</p>
+
+
 </section>
 
  ]]></description>
@@ -6353,54 +6357,6 @@ Example of overfitting
   <guid>https://buidai123.github.io/blog/posts/2024-06-30-your-deep-learning-journey/</guid>
   <pubDate>Wed, 03 Jul 2024 17:00:00 GMT</pubDate>
   <media:content url="https://buidai123.github.io/blog/posts/2024-06-30-your-deep-learning-journey/xkcd.png" medium="image" type="image/png" height="127" width="144"/>
-</item>
-<item>
-  <title>My First Blog Post</title>
-  <dc:creator>Bui Huu Dai</dc:creator>
-  <link>https://buidai123.github.io/blog/posts/first-post/</link>
-  <description><![CDATA[ 
-
-
-
-
-
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://buidai123.github.io/blog/posts/first-post/index_files/figure-html/cell-1-1-image.png" class="img-fluid figure-img"></p>
-<figcaption>image.png</figcaption>
-</figure>
-</div>
-<section id="welcome-to-my-blog" class="level1">
-<h1>Welcome to My Blog</h1>
-<p>This is my first blog post using Quarto and Jupyter Notebook. I’m excited to start sharing my thoughts and experiences here.</p>
-<section id="why-i-started-this-blog" class="level2">
-<h2 class="anchored" data-anchor-id="why-i-started-this-blog">Why I Started This Blog</h2>
-<p>I decided to create this blog for a few reasons:</p>
-<ul>
-<li>To document my learning journey</li>
-<li>To share interesting insights and ideas</li>
-<li>To connect with like-minded individuals</li>
-</ul>
-</section>
-<section id="what-to-expect" class="level2">
-<h2 class="anchored" data-anchor-id="what-to-expect">What to Expect</h2>
-<p>In this blog, you can expect to find:</p>
-<ul>
-<li>Tutorials and guides on various topics</li>
-<li>Personal reflections and experiences</li>
-<li>Interesting projects and experiments</li>
-</ul>
-<p>Stay tuned for more content coming soon!</p>
-
-
-</section>
-</section>
-
- ]]></description>
-  <category>test</category>
-  <category>quarto</category>
-  <guid>https://buidai123.github.io/blog/posts/first-post/</guid>
-  <pubDate>Sat, 29 Jun 2024 17:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>
