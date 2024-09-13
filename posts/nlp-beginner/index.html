@@ -1,0 +1,1589 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Bui Huu Dai">
+<meta name="dcterms.date" content="2024-09-13">
+
+<title>NLP For Noobs: Diving into Text Classification and Correlation Madness – Bui Huu Dai</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-6JR4N915S6"></script>
+
+<script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-6JR4N915S6', { 'anonymize_ip': true});
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+<script src="https://unpkg.com/@jupyter-widgets/html-manager@*/dist/embed-amd.js" crossorigin="anonymous"></script>
+
+
+<link rel="stylesheet" href="styles.css">
+<meta property="og:title" content="NLP For Noobs: Diving into Text Classification and Correlation Madness – Bui Huu Dai">
+<meta property="og:description" content="Dai’s blog.">
+<meta property="og:image" content="https://buidai123.github.io/blog/posts/nlp-beginner/nlp.jpg">
+<meta property="og:site_name" content="Bui Huu Dai">
+<meta name="twitter:title" content="NLP For Noobs: Diving into Text Classification and Correlation Madness – Bui Huu Dai">
+<meta name="twitter:description" content="Dai’s blog.">
+<meta name="twitter:image" content="https://buidai123.github.io/blog/posts/nlp-beginner/nlp.jpg">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Bui Huu Dai</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/buidai123"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://x.com/daibui1234"> <i class="bi bi-twitter-x" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml"> <i class="bi bi-rss" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">NLP For Noobs: Diving into Text Classification and Correlation Madness</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">kaggle</div>
+                <div class="quarto-category">huggingface spaces</div>
+                <div class="quarto-category">nlp</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Bui Huu Dai </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">September 13, 2024</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#data-preparation" id="toc-data-preparation" class="nav-link active" data-scroll-target="#data-preparation">Data Preparation</a></li>
+  <li><a href="#tokenization" id="toc-tokenization" class="nav-link" data-scroll-target="#tokenization">Tokenization</a>
+  <ul class="collapse">
+  <li><a href="#step-1-tokenization" id="toc-step-1-tokenization" class="nav-link" data-scroll-target="#step-1-tokenization">Step 1: Tokenization</a></li>
+  <li><a href="#step-2-numericalization" id="toc-step-2-numericalization" class="nav-link" data-scroll-target="#step-2-numericalization">Step 2: Numericalization</a></li>
+  <li><a href="#choosing-a-tokenizer" id="toc-choosing-a-tokenizer" class="nav-link" data-scroll-target="#choosing-a-tokenizer">Choosing a Tokenizer</a></li>
+  </ul></li>
+  <li><a href="#metric-and-loss" id="toc-metric-and-loss" class="nav-link" data-scroll-target="#metric-and-loss">Metric and Loss</a></li>
+  <li><a href="#pearson-correlation-coefficient" id="toc-pearson-correlation-coefficient" class="nav-link" data-scroll-target="#pearson-correlation-coefficient">Pearson Correlation Coefficient</a></li>
+  <li><a href="#training-with-hugging-face-transformers" id="toc-training-with-hugging-face-transformers" class="nav-link" data-scroll-target="#training-with-hugging-face-transformers">Training with Hugging Face Transformers</a></li>
+  <li><a href="#evaluating-model-predictions" id="toc-evaluating-model-predictions" class="nav-link" data-scroll-target="#evaluating-model-predictions">Evaluating Model Predictions</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<p>Hello and welcome, aspiring data scientist and NLP enthusiasts!</p>
+<p>Today, we’re going to explore the fascinating of Natural Language Processing (NLP) and its application in text classification.</p>
+<p>In this blog post, we’ll walk through the process of tackling a text similarity problem using modern NLP techniques. We’ll cover everything from data preparation to model training and evaluation. Along a way, we’ll also delve into correlation analysis using a classic dataset, helping us understand the importance of metrics in machine learning.</p>
+<p>We’ll be using popular libraries like Transformers, pandas, matplotlib to bring our data to life and gain meaningful insights.</p>
+<p>Alright enough chit chat, let’s roll up our sleeves and dive into the world of NLP.</p>
+<section id="data-preparation" class="level2">
+<h2 class="anchored" data-anchor-id="data-preparation">Data Preparation</h2>
+<p>Alright, let’s drive into the data preparation for the <a href="https://www.kaggle.com/c/us-patent-phrase-to-phrase-matching">U.S. Patent Phrase to Phrase Matching</a> challenge. To start, you need to download the dataset using the <a href="https://github.com/Kaggle/kaggle-api">Kaggle APi</a>. Follow the installation instruction in their Github page, and then you can grab the dataset with the following command:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">kaggle</span> competitions download <span class="at">-c</span> us-patent-phrase-to-phrase-matching</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>With the data in hand, let’s firer up python environment and take a closer look:</p>
+<div id="cell-2" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:27.553966Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:27.553574Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:28.047935Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:28.046907Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:27.553920Z&quot;}" data-trusted="true" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the path to the data</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>path <span class="op">=</span> Path(<span class="st">"./data"</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(path <span class="op">/</span> <span class="st">"train.csv"</span>)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the dataframe</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">id</th>
+<th data-quarto-table-cell-role="th">anchor</th>
+<th data-quarto-table-cell-role="th">target</th>
+<th data-quarto-table-cell-role="th">context</th>
+<th data-quarto-table-cell-role="th">score</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>37d61fd2272659b1</td>
+<td>abatement</td>
+<td>abatement of pollution</td>
+<td>A47</td>
+<td>0.50</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>7b9652b17b68b7a4</td>
+<td>abatement</td>
+<td>act of abating</td>
+<td>A47</td>
+<td>0.75</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>36d72442aefd8232</td>
+<td>abatement</td>
+<td>active catalyst</td>
+<td>A47</td>
+<td>0.25</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>5296b0c19e1ce60e</td>
+<td>abatement</td>
+<td>eliminating process</td>
+<td>A47</td>
+<td>0.50</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>54c1e3b9184cb5b6</td>
+<td>abatement</td>
+<td>forest region</td>
+<td>A47</td>
+<td>0.00</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Examining the data is always the first step. Let’s peek at some summery statics to get an initial sense of what we’re working with:</p>
+<div id="cell-4" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:28.050828Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:28.049953Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:28.138670Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:28.137731Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:28.050773Z&quot;}" data-trusted="true" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df.describe(include<span class="op">=</span><span class="st">"object"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="2">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">id</th>
+<th data-quarto-table-cell-role="th">anchor</th>
+<th data-quarto-table-cell-role="th">target</th>
+<th data-quarto-table-cell-role="th">context</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">count</td>
+<td>36473</td>
+<td>36473</td>
+<td>36473</td>
+<td>36473</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">unique</td>
+<td>36473</td>
+<td>733</td>
+<td>29340</td>
+<td>106</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">top</td>
+<td>8d135da0b55b8c88</td>
+<td>component composite coating</td>
+<td>composition</td>
+<td>H01</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">freq</td>
+<td>1</td>
+<td>152</td>
+<td>24</td>
+<td>2186</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Notice something interesting? The <code>anchor</code> field has only 733 unique values in a dataset of 36,000 entries. That’s a clear sign of repetition, suggesting some phrases appear frequently.</p>
+<p>Now, onto preparing data for our model. In this task, our goal is to determine if two phrases have similar meanings. To give our model more context. Let’s add structure labels like “TEXT1:” and “TEXt2:”. This helps in making data more informative, alright because we have to do the same thing to our test set so i will write a function for this:</p>
+<div id="cell-6" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:28.140148Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:28.139835Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:28.145008Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:28.143927Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:28.140115Z&quot;}" data-trusted="true" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> preprocess_function(examples):</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    examples[<span class="st">"input"</span>] <span class="op">=</span> <span class="st">'TEXT1: '</span> <span class="op">+</span> examples[<span class="st">"context"</span>] <span class="op">+</span> <span class="st">"; TEXT2: "</span> <span class="op">+</span> examples[<span class="st">"target"</span>] <span class="op">+</span> <span class="st">"; ANC1: "</span> <span class="op">+</span> examples[<span class="st">"anchor"</span>]</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> examples</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Adding context can be incredibly valuable providing the model with the background it need to understand nuanced of differences or similarities, especially in specialized field like patents.</p>
+<p>Next we convert our Pandas DataFrame into a Dataset Object and apply the process function:</p>
+<div id="cell-8" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:28.147941Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:28.147576Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:33.692824Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:33.691599Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:28.147905Z&quot;}" data-trusted="true" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> datasets <span class="im">import</span> Dataset, DatasetDict</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert the DataFrame to a Dataset</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>ds <span class="op">=</span> Dataset.from_pandas(df)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Apply the preprocessing function</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>ds <span class="op">=</span> ds.<span class="bu">map</span>(preprocess_function)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Show the first 5 preprocessed inputs</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ds[<span class="st">"input"</span>][:<span class="dv">5</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"7a825ce8cb0642a2bbdf994de7305847","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>['TEXT1: A47; TEXT2: abatement of pollution; ANC1: abatement', 'TEXT1: A47; TEXT2: act of abating; ANC1: abatement', 'TEXT1: A47; TEXT2: active catalyst; ANC1: abatement', 'TEXT1: A47; TEXT2: eliminating process; ANC1: abatement', 'TEXT1: A47; TEXT2: forest region; ANC1: abatement']</code></pre>
+</div>
+</div>
+<p>By structuring the data in this manner, we offer the model clear, consistent inputs, improving its ability to analyze and match the patent accurately</p>
+</section>
+<section id="tokenization" class="level2">
+<h2 class="anchored" data-anchor-id="tokenization">Tokenization</h2>
+<p>In the previous section, we got the data ready, Now, let’s dive into tokenization. a crucial step before feeding the data into a neuron network.</p>
+<p>As i already talk about it in the previous blog post, Neuron network work with numbers not text so how do we bridge this gab, there are to main steps: <strong>Tokenization</strong> and <strong>Numericalization</strong>.</p>
+<section id="step-1-tokenization" class="level3">
+<h3 class="anchored" data-anchor-id="step-1-tokenization">Step 1: Tokenization</h3>
+<p>Tokenizations involves splitting the text into smaller units called tokens. Tokens can be words, subwords or even character depending on the tokenization technique. For simplicity let’s think tokens are words</p>
+<p>Once we split the text into tokens, we compile a list of all unique tokens, this list is known as the <code>vocabulary</code>. Every token in this vocabulary gets assigned a unique number. This mapping from tokens to numbers allows a neural network to process the text data.</p>
+<p>However, there’s a catch! The larger the vocabulary, the more memory and data you need for training. To keep thing manageable, modern tokenization techniques often break words into subwords. which help to minimize the vocabulary size. This process of breaking text into smaller units is called tokenization, and the smaller units are referred as tokens.</p>
+</section>
+<section id="step-2-numericalization" class="level3">
+<h3 class="anchored" data-anchor-id="step-2-numericalization">Step 2: Numericalization</h3>
+<p>In this step each token is converted into its unique ID based on its position in the vocabulary this process is called numericalization</p>
+</section>
+<section id="choosing-a-tokenizer" class="level3">
+<h3 class="anchored" data-anchor-id="choosing-a-tokenizer">Choosing a Tokenizer</h3>
+<p>Choosing a tokenizer involves several little decisions. The good news? you don’t have to these decisions yourself. Pre-trained models come with their own tokenization methods, and to use these model effectively, you need to use same tokenization approach they were trained with.</p>
+<p>Enter HuggingFace’s <code>transformers</code> library. It provides a convenient way to load pre-trained models and their corresponding tokenizers. One highly versatile model is <code>deberta-v3</code></p>
+<p>Here’s how you can set it up:</p>
+<div id="cell-10" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:33.694602Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:33.694192Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:33.701758Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:33.700663Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:33.694553Z&quot;}" data-trusted="true" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>model_nm <span class="op">=</span> <span class="st">"microsoft/deberta-v3-base"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We choose this model to ensure our tokenization matches the pre-trained model’s tokenization process. This consistency is crucial.</p>
+<p>To load the tokenizer that correspond to our chosen model, we you <code>AutoTokenizer</code> from Hugging Face’s <em>transformer</em> library. This utility automatically fetches the correct tokenizer for our model:</p>
+<div id="cell-12" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:33.703615Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:33.703190Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:39.793473Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:39.792624Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:33.703539Z&quot;}" data-trusted="true" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> transformers <span class="im">import</span> AutoModelForSequenceClassification, AutoTokenizer</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the tokenizer for our model</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>tokz <span class="op">=</span> AutoTokenizer.from_pretrained(model_nm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"75afef4e5c204198a10dacf90de6db7d","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"b1cc4b63c5954fb9ad5e7c2fba389852","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"b14a9c4cd54e468bbdfc06137c23bbcf","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/opt/conda/lib/python3.10/site-packages/transformers/tokenization_utils_base.py:1601: FutureWarning: `clean_up_tokenization_spaces` was not set. It will be set to `True` by default. This behavior will be depracted in transformers v4.45, and will be then set to `False` by default. For more details check this issue: https://github.com/huggingface/transformers/issues/31884
+  warnings.warn(
+/opt/conda/lib/python3.10/site-packages/transformers/convert_slow_tokenizer.py:551: UserWarning: The sentencepiece tokenizer that you are converting to a fast tokenizer uses the byte fallback option which is not implemented in the fast tokenizers. In practice this means that the fast version of the tokenizer can produce unknown tokens whereas the sentencepiece version would have converted these unknown tokens into a sequence of byte tokens matching the original piece of text.
+  warnings.warn(</code></pre>
+</div>
+</div>
+<p>With the tokenizer loaded, you can now tokenize your text data in the same way the model was trained to do.</p>
+<p>Alright, at this point we can use our tokenization to process strings. Let’s start with a simple example. If we pass this string “Hi folks, I’m Dai from my mother!” to the tokenizer, we can see how it breaks the text in to tokens</p>
+<div id="cell-14" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:39.795000Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:39.794529Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:39.801779Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:39.800703Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:39.794968Z&quot;}" data-trusted="true" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>tokz.tokenize(<span class="st">"Hi folks, I'm Dai from my mother!"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<pre><code>['▁Hi', '▁folks', ',', '▁I', "'", 'm', '▁Dai', '▁from', '▁my', '▁mother', '!']</code></pre>
+</div>
+</div>
+<p>You’ll notice doesn’t just split the text into words. If you’ve wondered “I’m” is one word or two, you’ll find that it’s actually three tokens according to this tokenizer. These tokens include partial words and punctuations. The character looks like underscore here signify the start of the word</p>
+<p>Here’s a less common sentence: “A platypus is an ornithorhynchus anatinus”.</p>
+<div id="cell-16" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:39.803758Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:39.803341Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:39.810185Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:39.809254Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:39.803712Z&quot;}" data-trusted="true" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>tokz.tokenize(<span class="st">"A platypus is an ornithorhynchus anatinus."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<pre><code>['▁A',
+ '▁platypus',
+ '▁is',
+ '▁an',
+ '▁or',
+ 'ni',
+ 'tho',
+ 'rhynch',
+ 'us',
+ '▁an',
+ 'at',
+ 'inus',
+ '.']</code></pre>
+</div>
+</div>
+<p>In this vocabulary, “platypus” gets its own token, but “ornithorhynchus” is split into smaller parts. Each of these tokens corresponds to an entry in a predefined vocabulary list created during the model’s pre-training. Somewhere in that list, we’ll find “A”, and it will have a specific number. This process of converting tokens to numbers is called numericalization. To accomplish this for our dataset, we create a function that tokenizes the “input” field:</p>
+<div id="cell-18" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:39.811661Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:39.811196Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:39.817274Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:39.816323Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:39.811600Z&quot;}" data-trusted="true" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> tok_func(x): <span class="cf">return</span> tokz(x[<span class="st">"input"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Since tokenization can be time-consuming, especially for large dataset. Leveraging parallel processing can save time. we’ll utilize batching to process multiple entries simultaneously</p>
+<div id="cell-20" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:39.821290Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:39.820998Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:41.693450Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:41.692501Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:39.821258Z&quot;}" data-trusted="true" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>tok_ds <span class="op">=</span> ds.<span class="bu">map</span>(tok_func, batched<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"b020769c3cd44445ad730ebf9fa46a61","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+</div>
+<p>Ensure that <code>batched=True</code> is passed to enable batch processing. This approach uses the <code>tokenizer</code> library optimized for performance wit Rust. Batch processing can significantly speed up the tokenization process</p>
+<p>Now let’s examine a row from our tokenized dataset:</p>
+<div id="cell-22" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:41.700204Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:41.699928Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:41.709420Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:41.708449Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:41.700172Z&quot;}" data-trusted="true" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>tok_ds[<span class="dv">0</span>][<span class="st">"input"</span>], tok_ds[<span class="dv">0</span>][<span class="st">"input_ids"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="11">
+<pre><code>('TEXT1: A47; TEXT2: abatement of pollution; ANC1: abatement',
+ [1,
+  54453,
+  435,
+  294,
+  336,
+  5753,
+  346,
+  54453,
+  445,
+  294,
+  47284,
+  265,
+  6435,
+  346,
+  23702,
+  435,
+  294,
+  47284,
+  2])</code></pre>
+</div>
+</div>
+<p>The output show that the dataset retains the original string in the “input” field and includes a new “input_ids” field with the numerical representation of each token. The numbers here are the numerical positions of tokens in the vocabulary. This step efficiently convert our text into number, readying it for model input.</p>
+<p>Alright, we now need to prepare our labels. <code>Transformer</code> always assumes that your labels has column name <code>labels</code>, but it our data set there’s no <code>labels</code> but <code>score</code>, we need to rename it.</p>
+<div id="cell-24" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:41.710835Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:41.710479Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:41.719753Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:41.718805Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:41.710784Z&quot;}" data-trusted="true" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>tok_ds <span class="op">=</span> tok_ds.rename_column(<span class="st">"score"</span>, <span class="st">"labels"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now let’s split our dataset into train and validation set</p>
+<div id="cell-26" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:41.721333Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:41.721012Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:41.750278Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:41.749410Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:41.721296Z&quot;}" data-trusted="true" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>dds <span class="op">=</span> tok_ds.train_test_split(<span class="fl">0.2</span>, seed<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>dds</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="13">
+<pre><code>DatasetDict({
+    train: Dataset({
+        features: ['id', 'anchor', 'target', 'context', 'labels', 'input', 'input_ids', 'token_type_ids', 'attention_mask'],
+        num_rows: 29178
+    })
+    test: Dataset({
+        features: ['id', 'anchor', 'target', 'context', 'labels', 'input', 'input_ids', 'token_type_ids', 'attention_mask'],
+        num_rows: 7295
+    })
+})</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="metric-and-loss" class="level2">
+<h2 class="anchored" data-anchor-id="metric-and-loss">Metric and Loss</h2>
+<p>When working with a validation set, one of the key steps is to measure some metrics. A metric, such as “accuracy” gives us a quantifiable measure of how good our model is.</p>
+<p>For example, if you look at <a href="https://www.kaggle.com/competitions/us-patent-phrase-to-phrase-matching/overview/evaluation">the competition’s overview page</a>, you’ll see that they use the <a href="https://en.wikipedia.org/wiki/Pearson_correlation_coefficient">Pearson correlation coefficient</a> to evaluate submissions. Consequently, we will also use this metric to measure our model performance.</p>
+<p>A common question arises here: is the metric the same as the loss function? The answer is nuanced. The metric used to evaluate model performance isn’t necessarily the one to be used for optimization during the training. Taking the derivative of accuracy to find the gradient for parameter updates, for example, isn’t very effective.</p>
+<p>Why? You ask! Because accuracy doesn’t change significantly unless predictions switch from incorrect to correct, resulting in gradients being nearly zero everywhere. Instead, we prefer smooth functions like <em>MSE</em> or <em>MAE</em> for the loss function. These provide better gradients for optimization, helping improve the model more effectively.</p>
+</section>
+<section id="pearson-correlation-coefficient" class="level2">
+<h2 class="anchored" data-anchor-id="pearson-correlation-coefficient">Pearson Correlation Coefficient</h2>
+<p>Let’s focus on our metric of interest today, the <strong>Pearson Correlation Coefficient</strong> often abbreviated as <code>r</code>. This coefficient is a widely used measure that evaluates the similarity between two variable, if our predictions closely match the actual values, <code>r</code> will be high, ranging between -1 and 1. An <code>r</code> of -1 means predictions are exactly the wrong answers (which could still be useful, as reversing the answer would yield perfect results), while <code>r</code> of 1 signifies perfect predictions.</p>
+<p>You can read <a href="https://en.wikipedia.org/wiki/Pearson_correlation_coefficient">this</a> for more info about the formula and example but i think the best way to understand how data behaves is to look at real-life data. Scikit-learn offers numerous datasets, one of which is the “California housing” dataset. Here’s how you can explore this dataset:</p>
+<div id="cell-28" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:41.751720Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:41.751335Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:43.858980Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:43.857993Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:41.751667Z&quot;}" data-trusted="true" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> fetch_california_housing</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>housing <span class="op">=</span> fetch_california_housing(as_frame<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>housing <span class="op">=</span> housing[<span class="st">'data'</span>].join(housing[<span class="st">'target'</span>]).sample(<span class="dv">1000</span>, random_state<span class="op">=</span><span class="dv">52</span>)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>housing.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="14">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">MedInc</th>
+<th data-quarto-table-cell-role="th">HouseAge</th>
+<th data-quarto-table-cell-role="th">AveRooms</th>
+<th data-quarto-table-cell-role="th">AveBedrms</th>
+<th data-quarto-table-cell-role="th">Population</th>
+<th data-quarto-table-cell-role="th">AveOccup</th>
+<th data-quarto-table-cell-role="th">Latitude</th>
+<th data-quarto-table-cell-role="th">Longitude</th>
+<th data-quarto-table-cell-role="th">MedHouseVal</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">7506</td>
+<td>3.0550</td>
+<td>37.0</td>
+<td>5.152778</td>
+<td>1.048611</td>
+<td>729.0</td>
+<td>5.062500</td>
+<td>33.92</td>
+<td>-118.28</td>
+<td>1.054</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">4720</td>
+<td>3.0862</td>
+<td>35.0</td>
+<td>4.697897</td>
+<td>1.055449</td>
+<td>1159.0</td>
+<td>2.216061</td>
+<td>34.05</td>
+<td>-118.37</td>
+<td>3.453</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">12888</td>
+<td>2.5556</td>
+<td>24.0</td>
+<td>4.864905</td>
+<td>1.129222</td>
+<td>1631.0</td>
+<td>2.395007</td>
+<td>38.66</td>
+<td>-121.35</td>
+<td>1.057</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">13344</td>
+<td>3.0057</td>
+<td>32.0</td>
+<td>4.212687</td>
+<td>0.936567</td>
+<td>1378.0</td>
+<td>5.141791</td>
+<td>34.05</td>
+<td>-117.64</td>
+<td>0.969</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">7173</td>
+<td>1.9083</td>
+<td>42.0</td>
+<td>3.888554</td>
+<td>1.039157</td>
+<td>1535.0</td>
+<td>4.623494</td>
+<td>34.05</td>
+<td>-118.19</td>
+<td>1.192</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>To compute the Pearson correlation coefficient, Numpy provieds the <code>corrcoef()</code> function, which return a correlation matrix:</p>
+<div id="cell-30" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:43.860736Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:43.860257Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:43.870686Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:43.869672Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:43.860695Z&quot;}" data-trusted="true" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>np.set_printoptions(precision<span class="op">=</span><span class="dv">2</span>, suppress<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>np.corrcoef(housing, rowvar<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="15">
+<pre><code>array([[ 1.  , -0.12,  0.43, -0.08,  0.01, -0.07, -0.12,  0.04,  0.68],
+       [-0.12,  1.  , -0.17, -0.06, -0.31,  0.  ,  0.03, -0.13,  0.12],
+       [ 0.43, -0.17,  1.  ,  0.76, -0.09, -0.07,  0.12, -0.03,  0.21],
+       [-0.08, -0.06,  0.76,  1.  , -0.08, -0.07,  0.09,  0.  , -0.04],
+       [ 0.01, -0.31, -0.09, -0.08,  1.  ,  0.16, -0.15,  0.13,  0.  ],
+       [-0.07,  0.  , -0.07, -0.07,  0.16,  1.  , -0.16,  0.17, -0.27],
+       [-0.12,  0.03,  0.12,  0.09, -0.15, -0.16,  1.  , -0.93, -0.16],
+       [ 0.04, -0.13, -0.03,  0.  ,  0.13,  0.17, -0.93,  1.  , -0.03],
+       [ 0.68,  0.12,  0.21, -0.04,  0.  , -0.27, -0.16, -0.03,  1.  ]])</code></pre>
+</div>
+</div>
+<p>However, we need a single correlation number rather than a matrix. Fortunately, if we pass in a pair of variable, we could still get a matrix, from which we can extract the desired coefficient.</p>
+<div id="cell-32" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:43.872481Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:43.872056Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:43.880205Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:43.879019Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:43.872427Z&quot;}" data-trusted="true" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>np.corrcoef(housing.MedInc, housing.MedHouseVal)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="16">
+<pre><code>array([[1.  , 0.68],
+       [0.68, 1.  ]])</code></pre>
+</div>
+</div>
+<p>To get a specific correlation coefficient, simply select the zeroth row and the first column:</p>
+<div id="cell-34" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:43.882512Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:43.881745Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:43.890041Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:43.888916Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:43.882472Z&quot;}" data-trusted="true" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> corr(x, y):  <span class="cf">return</span> np.corrcoef(x, y)[<span class="dv">0</span>][<span class="dv">1</span>]</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>corr(housing.MedInc, housing.MedHouseVal)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="17">
+<pre><code>0.6760250732906</code></pre>
+</div>
+</div>
+<p>To visualize the correlation, we can plot the data and display the correlation coefficient <code>r</code>:</p>
+<div id="cell-36" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:43.891498Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:43.891191Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:43.897796Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:43.896695Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:43.891458Z&quot;}" data-trusted="true" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> show_corr(df, a, b):</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>    x, y <span class="op">=</span> df[a], df[b]</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>    plt.scatter(x, y, alpha<span class="op">=</span><span class="fl">0.5</span>, s<span class="op">=</span><span class="dv">4</span>)</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="ss">f'</span><span class="sc">{</span>a<span class="sc">}</span><span class="ss"> vs </span><span class="sc">{</span>b<span class="sc">}</span><span class="ss">; r: </span><span class="sc">{</span>corr(x, y)<span class="sc">:.2f}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>For instance, the plot of “median income” vs.&nbsp;“median house value” shows an r of 0.68.</p>
+<div id="cell-38" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:43.899464Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:43.899133Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:44.220457Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:44.219533Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:43.899422Z&quot;}" data-trusted="true" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>show_corr(housing, <span class="st">'MedInc'</span>, <span class="st">'MedHouseVal'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/cell-20-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Exploring other pairs, like “median income” vs.&nbsp;“number of rooms per house,” gives an r of 0.43.</p>
+<div id="cell-40" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:44.222199Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:44.221811Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:44.546412Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:44.545562Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:44.222156Z&quot;}" data-trusted="true" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>show_corr(housing, <span class="st">'MedInc'</span>, <span class="st">'AveRooms'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/cell-21-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This plot reveals interesting insights and anomalies. Certain houses have many rooms but lower incomes, potentialy indicate shared accommodations. Pearson’s <code>r</code> can be sensitive to outliers, and removing them can significatly change the correlation.</p>
+<div id="cell-42" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:44.547839Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:44.547515Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:44.855975Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:44.854993Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:44.547807Z&quot;}" data-trusted="true" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>subset <span class="op">=</span> housing[housing.AveRooms <span class="op">&lt;</span> <span class="dv">15</span>]</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>show_corr(subset, <span class="st">'MedInc'</span>, <span class="st">'AveRooms'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/cell-22-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>By removing outliers, the correlation increase fromm 0.43 to 0.68, emphasizing the importance of carefully considering outliers</p>
+<p>Here’s another example correlating “median hours value” with “average number of room”:</p>
+<div id="cell-44" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:44.857479Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:44.857171Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:45.148894Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:45.147911Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:44.857440Z&quot;}" data-trusted="true" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>show_corr(subset, <span class="st">'MedHouseVal'</span>, <span class="st">'AveRooms'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/cell-23-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>And another one correlating “house age” with “average number of rooms”:</p>
+<div id="cell-46" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:45.151139Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:45.150354Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:45.446860Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:45.446019Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:45.151088Z&quot;}" data-trusted="true" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>show_corr(subset, <span class="st">'MedHouseVal'</span>, <span class="st">'AveRooms'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/cell-24-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>To keep track of our training progress, it’s importaint to report the Pearson correlation coefficient after each epoch. Hugging Face’s Trainer API expects a dictionary as output, with keys labeling each metrics. Here’s how you can define a function to calculate and return the Pearson correlation coefficient:</p>
+<div id="cell-48" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:45.448445Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:45.448133Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:45.453322Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:45.452366Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:45.448403Z&quot;}" data-trusted="true" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> corr_d(eval_pred): <span class="cf">return</span> {<span class="st">'pearson'</span>: corr(<span class="op">*</span>eval_pred)}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="training-with-hugging-face-transformers" class="level2">
+<h2 class="anchored" data-anchor-id="training-with-hugging-face-transformers">Training with Hugging Face Transformers</h2>
+<p>In the world of Hugging Face, the concept of a “learner” in fast.ai is paralleled by the <code>trainer</code>. Let’s start by importing necessary components:</p>
+<div id="cell-50" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:45.454909Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:45.454503Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:58.129589Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:58.128824Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:45.454863Z&quot;}" data-trusted="true" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> transformers <span class="im">import</span> TrainingArguments, Trainer</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>When training a model, we don’t process the entire dataset at once; instead we use a “batch” or “mini-batch” of data for each training step. This approach leverages the parallel processing capabilities of GPUs.</p>
+<p>In our case, let’s set the batch size to 128. Large batch size speed up training by maximizing GPU utilization but beware of potential “out of memory” errors if set too high.</p>
+<p>Next, configure the training arguments:</p>
+<div id="cell-52" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:58.134662Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:58.134064Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:58.245326Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:58.244507Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:58.134614Z&quot;}" data-trusted="true" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>bs <span class="op">=</span> <span class="dv">80</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>epochs <span class="op">=</span> <span class="dv">4</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>lr <span class="op">=</span> <span class="fl">8e-5</span></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>args <span class="op">=</span> TrainingArguments(</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'outputs'</span>,</span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>    learning_rate<span class="op">=</span>lr,</span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>    warmup_ratio<span class="op">=</span><span class="fl">0.1</span>,</span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>    lr_scheduler_type<span class="op">=</span><span class="st">'cosine'</span>,</span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>    fp16<span class="op">=</span><span class="va">True</span>,  <span class="co"># Enable mixed precision training</span></span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>    eval_strategy<span class="op">=</span><span class="st">"epoch"</span>,</span>
+<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>    per_device_train_batch_size<span class="op">=</span>bs,</span>
+<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a>    per_device_eval_batch_size<span class="op">=</span>bs<span class="op">*</span><span class="dv">2</span>,</span>
+<span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a>    num_train_epochs<span class="op">=</span>epochs,</span>
+<span id="cb36-15"><a href="#cb36-15" aria-hidden="true" tabindex="-1"></a>    weight_decay<span class="op">=</span><span class="fl">0.01</span>,</span>
+<span id="cb36-16"><a href="#cb36-16" aria-hidden="true" tabindex="-1"></a>    report_to<span class="op">=</span><span class="st">'none'</span>,</span>
+<span id="cb36-17"><a href="#cb36-17" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Most of these arguments can be left as defaults, but the key ones to focus on are the batch size (<code>bs</code>), number of epoches (<code>epoches</code>), and learning rate (<code>lr</code>).</p>
+<p>To begin model training for sequence classification, we use <code>AutoModelForSequenceClassification</code>:</p>
+<div id="cell-54" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:58.246751Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:58.246384Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:25:01.429509Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:25:01.428680Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:58.246700Z&quot;}" data-trusted="true" data-execution_count="27">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> AutoModelForSequenceClassification.from_pretrained(model_nm, num_labels<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>trainer <span class="op">=</span> Trainer(</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>    model, args, </span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>    train_dataset<span class="op">=</span>dds[<span class="st">'train'</span>], eval_dataset<span class="op">=</span>dds[<span class="st">'test'</span>],</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>    tokenizer<span class="op">=</span>tokz, compute_metrics<span class="op">=</span>corr_d</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"7a6b7c81aedd412f847a410e75387083","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Some weights of DebertaV2ForSequenceClassification were not initialized from the model checkpoint at microsoft/deberta-v3-base and are newly initialized: ['classifier.bias', 'classifier.weight', 'pooler.dense.bias', 'pooler.dense.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+/opt/conda/lib/python3.10/site-packages/accelerate/accelerator.py:488: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  self.scaler = torch.cuda.amp.GradScaler(**kwargs)</code></pre>
+</div>
+</div>
+<p>This function sets up our model, instantiates the trainer with the relevant datasets and tokenizer, and specifies the metric function.</p>
+<p>Finally, we sart the trainign process:</p>
+<div id="cell-56" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:25:01.431521Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:25:01.430842Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:34:32.580031Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:34:32.579155Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:25:01.431474Z&quot;}" data-trusted="true" data-execution_count="28">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>trainer.train()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/opt/conda/lib/python3.10/site-packages/torch/nn/parallel/parallel_apply.py:79: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.device(device), torch.cuda.stream(stream), autocast(enabled=autocast_enabled):
+/opt/conda/lib/python3.10/site-packages/torch/nn/parallel/_functions.py:68: UserWarning: Was asked to gather along dimension 0, but all input tensors were scalars; will instead unsqueeze and return a vector.
+  warnings.warn('Was asked to gather along dimension 0, but all '</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+
+    <div>
+      
+      <progress value="732" max="732" style="width:300px; height:20px; vertical-align: middle;"></progress>
+      [732/732 09:27, Epoch 4/4]
+    </div>
+    
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">Epoch</th>
+<th data-quarto-table-cell-role="th">Training Loss</th>
+<th data-quarto-table-cell-role="th">Validation Loss</th>
+<th data-quarto-table-cell-role="th">Pearson</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>No log</td>
+<td>0.027016</td>
+<td>0.784697</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>No log</td>
+<td>0.022490</td>
+<td>0.818065</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>0.027900</td>
+<td>0.021511</td>
+<td>0.834274</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>0.027900</td>
+<td>0.021852</td>
+<td>0.836955</td>
+</tr>
+</tbody>
+</table>
+<p>
+</p></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/opt/conda/lib/python3.10/site-packages/torch/nn/parallel/parallel_apply.py:79: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.device(device), torch.cuda.stream(stream), autocast(enabled=autocast_enabled):
+/opt/conda/lib/python3.10/site-packages/torch/nn/parallel/_functions.py:68: UserWarning: Was asked to gather along dimension 0, but all input tensors were scalars; will instead unsqueeze and return a vector.
+  warnings.warn('Was asked to gather along dimension 0, but all '
+/opt/conda/lib/python3.10/site-packages/torch/nn/parallel/parallel_apply.py:79: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.device(device), torch.cuda.stream(stream), autocast(enabled=autocast_enabled):
+/opt/conda/lib/python3.10/site-packages/torch/nn/parallel/_functions.py:68: UserWarning: Was asked to gather along dimension 0, but all input tensors were scalars; will instead unsqueeze and return a vector.
+  warnings.warn('Was asked to gather along dimension 0, but all '</code></pre>
+</div>
+</div>
+<p>Upon starting the training, we achieve an inspiring correlation of 0.836. This impressive result was obtain in about ten minutes, demonstrating the power of leveraging pre-trained models.</p>
+<p>Achieving the high correlation score underscore the value of using a pre-trained model. The deberta-v3 model we used already possesses an immense amount of linguistic knowledge, allowing it to assess the similarity between phrases effectively right out of the box. By fine-tuning it on our specific task, we capitalized on this foundation, leading to rapid and accurate results</p>
+<p>As we continue training, monitoring the Pearson correlations coefficient helps ensure our model is moving in the right direction, improving its ability to match phrases accurately.</p>
+</section>
+<section id="evaluating-model-predictions" class="level2">
+<h2 class="anchored" data-anchor-id="evaluating-model-predictions">Evaluating Model Predictions</h2>
+<p>With our model trained and achieving a promising Pearson correlation coefficient, it’s time to evaluate its performance on the test set.</p>
+<p>Just as we did with the training data we need to load and preprocess our test dataset.</p>
+<div id="cell-58" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:34:32.581831Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:34:32.581404Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:34:32.673541Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:34:32.672609Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:34:32.581784Z&quot;}" data-trusted="true" data-execution_count="29">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>eval_df <span class="op">=</span> pd.read_csv(path<span class="op">/</span><span class="st">"test.csv"</span>)</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>eval_ds <span class="op">=</span> Dataset.from_pandas(eval_df)</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>eval_ds <span class="op">=</span> eval_ds.<span class="bu">map</span>(preprocess_function).<span class="bu">map</span>(tok_func, batched<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"2c1d5a2bc73540d2bcf4bcc7195704dc","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"8e3fb9cd89ef4ea3bcd6c3dc3c9c8647","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+</div>
+<p>Next we use trainer to make predictions on the test dataset, and at this point it crucial to inspect the predictions.</p>
+<div id="cell-60" class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>preds <span class="op">=</span> trainer.predict(eval_ds).predictions.astype(<span class="bu">float</span>)</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>preds</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-61" class="cell output" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:34:32.674982Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:34:32.674713Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:34:32.816702Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:34:32.815744Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:34:32.674952Z&quot;}" data-trusted="true" data-execution_count="30">
+<div class="cell-output cell-output-stderr">
+<pre><code>/opt/conda/lib/python3.10/site-packages/torch/nn/parallel/parallel_apply.py:79: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.device(device), torch.cuda.stream(stream), autocast(enabled=autocast_enabled):</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+
+</div>
+<div class="cell-output cell-output-display" data-execution_count="30">
+<pre><code>array([[ 0.7 ],
+       [ 0.73],
+       [ 0.58],
+       [ 0.37],
+       [-0.02],
+       [ 0.53],
+       [ 0.48],
+       [-0.01],
+       [ 0.25],
+       [ 1.06],
+       [ 0.26],
+       [ 0.24],
+       [ 0.8 ],
+       [ 0.8 ],
+       [ 0.81],
+       [ 0.41],
+       [ 0.27],
+       [-0.  ],
+       [ 0.66],
+       [ 0.41],
+       [ 0.55],
+       [ 0.23],
+       [ 0.09],
+       [ 0.23],
+       [ 0.53],
+       [ 0.  ],
+       [ 0.01],
+       [-0.01],
+       [ 0.  ],
+       [ 0.69],
+       [ 0.34],
+       [-0.  ],
+       [ 0.7 ],
+       [ 0.58],
+       [ 0.38],
+       [ 0.21]])</code></pre>
+</div>
+</div>
+<p>Observing the prediction might reveal that some value fall outside the [0, 1] range. This highlights the important of examining your data at every stage. To fix these out-of-bound predictions, we employ clamping:</p>
+<div id="cell-63" class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>preds <span class="op">=</span> np.clip(preds, <span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>preds</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-64" class="cell output" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:34:32.818248Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:34:32.817917Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:34:32.824993Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:34:32.824100Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:34:32.818216Z&quot;}" data-trusted="true" data-execution_count="31">
+<div class="cell-output cell-output-display" data-execution_count="31">
+<pre><code>array([[0.7 ],
+       [0.73],
+       [0.58],
+       [0.37],
+       [0.  ],
+       [0.53],
+       [0.48],
+       [0.  ],
+       [0.25],
+       [1.  ],
+       [0.26],
+       [0.24],
+       [0.8 ],
+       [0.8 ],
+       [0.81],
+       [0.41],
+       [0.27],
+       [0.  ],
+       [0.66],
+       [0.41],
+       [0.55],
+       [0.23],
+       [0.09],
+       [0.23],
+       [0.53],
+       [0.  ],
+       [0.01],
+       [0.  ],
+       [0.  ],
+       [0.69],
+       [0.34],
+       [0.  ],
+       [0.7 ],
+       [0.58],
+       [0.38],
+       [0.21]])</code></pre>
+</div>
+</div>
+<p>So, that’s a wrap! We’ve navigated through the essentials of training and evaluating a machine learning model using Hugging Face Transformer. From understanding metrics and loss functions to fine-tune a pre-trained model and keeping a close eye on our Pearson Correlation Coefficient we’ve covered a lot of ground.</p>
+<p>The key take a way? Always keep an eye on your data and metrics. Those little tweaks can make a big difference. Leveraging pre-trained models can save you tons of time and give you a major head start.</p>
+<p>Keep experimenting and stay curious, and don’t forget to have fun with your models. Machine learning is all about trying a new things and learn from each step.</p>
+<p>And hey, thanks nerds!</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/buidai123\.github\.io\/blog\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<script src="https://utteranc.es/client.js" repo="buidai123/buidai123.github.io.comments" issue-term="pathname" theme="github-light" crossorigin="anonymous" async="">
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+ Copyright 2024, Bui Huu Dai
+  </li>  
+</ul>
+    </div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

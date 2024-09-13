@@ -9,8 +9,1157 @@
 <link>https://buidai123.github.io/blog/</link>
 <atom:link href="https://buidai123.github.io/blog/index.xml" rel="self" type="application/rss+xml"/>
 <description>Dai&#39;s blog.</description>
-<generator>quarto-1.4.557</generator>
-<lastBuildDate>Wed, 31 Jul 2024 17:00:00 GMT</lastBuildDate>
+<generator>quarto-1.5.57</generator>
+<lastBuildDate>Thu, 12 Sep 2024 17:00:00 GMT</lastBuildDate>
+<item>
+  <title>NLP For Noobs: Diving into Text Classification and Correlation Madness</title>
+  <dc:creator>Bui Huu Dai</dc:creator>
+  <link>https://buidai123.github.io/blog/posts/nlp-beginner/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>Hello and welcome, aspiring data scientist and NLP enthusiasts!</p>
+<p>Today, we’re going to explore the fascinating of Natural Language Processing (NLP) and its application in text classification.</p>
+<p>In this blog post, we’ll walk through the process of tackling a text similarity problem using modern NLP techniques. We’ll cover everything from data preparation to model training and evaluation. Along a way, we’ll also delve into correlation analysis using a classic dataset, helping us understand the importance of metrics in machine learning.</p>
+<p>We’ll be using popular libraries like Transformers, pandas, matplotlib to bring our data to life and gain meaningful insights.</p>
+<p>Alright enough chit chat, let’s roll up our sleeves and dive into the world of NLP.</p>
+<section id="data-preparation" class="level2">
+<h2 class="anchored" data-anchor-id="data-preparation">Data Preparation</h2>
+<p>Alright, let’s drive into the data preparation for the <a href="https://www.kaggle.com/c/us-patent-phrase-to-phrase-matching">U.S. Patent Phrase to Phrase Matching</a> challenge. To start, you need to download the dataset using the <a href="https://github.com/Kaggle/kaggle-api">Kaggle APi</a>. Follow the installation instruction in their Github page, and then you can grab the dataset with the following command:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">kaggle</span> competitions download <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-c</span> us-patent-phrase-to-phrase-matching</span></code></pre></div>
+<p>With the data in hand, let’s firer up python environment and take a closer look:</p>
+<div id="cell-2" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:27.553966Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:27.553574Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:28.047935Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:28.046907Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:27.553920Z&quot;}" data-trusted="true" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> pathlib <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> Path</span>
+<span id="cb2-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> matplotlib.pyplot <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> plt</span>
+<span id="cb2-3"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> numpy <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> np</span>
+<span id="cb2-4"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> pandas <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> pd</span>
+<span id="cb2-5"></span>
+<span id="cb2-6"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Define the path to the data</span></span>
+<span id="cb2-7">path <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Path(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"./data"</span>)</span>
+<span id="cb2-8">df <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pd.read_csv(path <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"train.csv"</span>)</span>
+<span id="cb2-9"></span>
+<span id="cb2-10"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Display the dataframe</span></span>
+<span id="cb2-11">df.head()</span></code></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">id</th>
+<th data-quarto-table-cell-role="th">anchor</th>
+<th data-quarto-table-cell-role="th">target</th>
+<th data-quarto-table-cell-role="th">context</th>
+<th data-quarto-table-cell-role="th">score</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>37d61fd2272659b1</td>
+<td>abatement</td>
+<td>abatement of pollution</td>
+<td>A47</td>
+<td>0.50</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>7b9652b17b68b7a4</td>
+<td>abatement</td>
+<td>act of abating</td>
+<td>A47</td>
+<td>0.75</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>36d72442aefd8232</td>
+<td>abatement</td>
+<td>active catalyst</td>
+<td>A47</td>
+<td>0.25</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>5296b0c19e1ce60e</td>
+<td>abatement</td>
+<td>eliminating process</td>
+<td>A47</td>
+<td>0.50</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>54c1e3b9184cb5b6</td>
+<td>abatement</td>
+<td>forest region</td>
+<td>A47</td>
+<td>0.00</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Examining the data is always the first step. Let’s peek at some summery statics to get an initial sense of what we’re working with:</p>
+<div id="cell-4" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:28.050828Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:28.049953Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:28.138670Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:28.137731Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:28.050773Z&quot;}" data-trusted="true" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1">df.describe(include<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"object"</span>)</span></code></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="2">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">id</th>
+<th data-quarto-table-cell-role="th">anchor</th>
+<th data-quarto-table-cell-role="th">target</th>
+<th data-quarto-table-cell-role="th">context</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">count</td>
+<td>36473</td>
+<td>36473</td>
+<td>36473</td>
+<td>36473</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">unique</td>
+<td>36473</td>
+<td>733</td>
+<td>29340</td>
+<td>106</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">top</td>
+<td>8d135da0b55b8c88</td>
+<td>component composite coating</td>
+<td>composition</td>
+<td>H01</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">freq</td>
+<td>1</td>
+<td>152</td>
+<td>24</td>
+<td>2186</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Notice something interesting? The <code>anchor</code> field has only 733 unique values in a dataset of 36,000 entries. That’s a clear sign of repetition, suggesting some phrases appear frequently.</p>
+<p>Now, onto preparing data for our model. In this task, our goal is to determine if two phrases have similar meanings. To give our model more context. Let’s add structure labels like “TEXT1:” and “TEXt2:”. This helps in making data more informative, alright because we have to do the same thing to our test set so i will write a function for this:</p>
+<div id="cell-6" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:28.140148Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:28.139835Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:28.145008Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:28.143927Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:28.140115Z&quot;}" data-trusted="true" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> preprocess_function(examples):</span>
+<span id="cb4-2">    examples[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"input"</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'TEXT1: '</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> examples[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"context"</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"; TEXT2: "</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> examples[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"target"</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"; ANC1: "</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> examples[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"anchor"</span>]</span>
+<span id="cb4-3">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> examples</span></code></pre></div>
+</div>
+<p>Adding context can be incredibly valuable providing the model with the background it need to understand nuanced of differences or similarities, especially in specialized field like patents.</p>
+<p>Next we convert our Pandas DataFrame into a Dataset Object and apply the process function:</p>
+<div id="cell-8" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:28.147941Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:28.147576Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:33.692824Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:33.691599Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:28.147905Z&quot;}" data-trusted="true" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> datasets <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> Dataset, DatasetDict</span>
+<span id="cb5-2"></span>
+<span id="cb5-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Convert the DataFrame to a Dataset</span></span>
+<span id="cb5-4">ds <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Dataset.from_pandas(df)</span>
+<span id="cb5-5"></span>
+<span id="cb5-6"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Apply the preprocessing function</span></span>
+<span id="cb5-7">ds <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> ds.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">map</span>(preprocess_function)</span>
+<span id="cb5-8"></span>
+<span id="cb5-9"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Show the first 5 preprocessed inputs</span></span>
+<span id="cb5-10"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(ds[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"input"</span>][:<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>])</span></code></pre></div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"7a825ce8cb0642a2bbdf994de7305847","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>['TEXT1: A47; TEXT2: abatement of pollution; ANC1: abatement', 'TEXT1: A47; TEXT2: act of abating; ANC1: abatement', 'TEXT1: A47; TEXT2: active catalyst; ANC1: abatement', 'TEXT1: A47; TEXT2: eliminating process; ANC1: abatement', 'TEXT1: A47; TEXT2: forest region; ANC1: abatement']</code></pre>
+</div>
+</div>
+<p>By structuring the data in this manner, we offer the model clear, consistent inputs, improving its ability to analyze and match the patent accurately</p>
+</section>
+<section id="tokenization" class="level2">
+<h2 class="anchored" data-anchor-id="tokenization">Tokenization</h2>
+<p>In the previous section, we got the data ready, Now, let’s dive into tokenization. a crucial step before feeding the data into a neuron network.</p>
+<p>As i already talk about it in the previous blog post, Neuron network work with numbers not text so how do we bridge this gab, there are to main steps: <strong>Tokenization</strong> and <strong>Numericalization</strong>.</p>
+<section id="step-1-tokenization" class="level3">
+<h3 class="anchored" data-anchor-id="step-1-tokenization">Step 1: Tokenization</h3>
+<p>Tokenizations involves splitting the text into smaller units called tokens. Tokens can be words, subwords or even character depending on the tokenization technique. For simplicity let’s think tokens are words</p>
+<p>Once we split the text into tokens, we compile a list of all unique tokens, this list is known as the <code>vocabulary</code>. Every token in this vocabulary gets assigned a unique number. This mapping from tokens to numbers allows a neural network to process the text data.</p>
+<p>However, there’s a catch! The larger the vocabulary, the more memory and data you need for training. To keep thing manageable, modern tokenization techniques often break words into subwords. which help to minimize the vocabulary size. This process of breaking text into smaller units is called tokenization, and the smaller units are referred as tokens.</p>
+</section>
+<section id="step-2-numericalization" class="level3">
+<h3 class="anchored" data-anchor-id="step-2-numericalization">Step 2: Numericalization</h3>
+<p>In this step each token is converted into its unique ID based on its position in the vocabulary this process is called numericalization</p>
+</section>
+<section id="choosing-a-tokenizer" class="level3">
+<h3 class="anchored" data-anchor-id="choosing-a-tokenizer">Choosing a Tokenizer</h3>
+<p>Choosing a tokenizer involves several little decisions. The good news? you don’t have to these decisions yourself. Pre-trained models come with their own tokenization methods, and to use these model effectively, you need to use same tokenization approach they were trained with.</p>
+<p>Enter HuggingFace’s <code>transformers</code> library. It provides a convenient way to load pre-trained models and their corresponding tokenizers. One highly versatile model is <code>deberta-v3</code></p>
+<p>Here’s how you can set it up:</p>
+<div id="cell-10" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:33.694602Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:33.694192Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:33.701758Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:33.700663Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:33.694553Z&quot;}" data-trusted="true" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1">model_nm <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"microsoft/deberta-v3-base"</span></span></code></pre></div>
+</div>
+<p>We choose this model to ensure our tokenization matches the pre-trained model’s tokenization process. This consistency is crucial.</p>
+<p>To load the tokenizer that correspond to our chosen model, we you <code>AutoTokenizer</code> from Hugging Face’s <em>transformer</em> library. This utility automatically fetches the correct tokenizer for our model:</p>
+<div id="cell-12" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:33.703615Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:33.703190Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:39.793473Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:39.792624Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:33.703539Z&quot;}" data-trusted="true" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> transformers <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> AutoModelForSequenceClassification, AutoTokenizer</span>
+<span id="cb8-2"></span>
+<span id="cb8-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Load the tokenizer for our model</span></span>
+<span id="cb8-4">tokz <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> AutoTokenizer.from_pretrained(model_nm)</span></code></pre></div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"75afef4e5c204198a10dacf90de6db7d","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"b1cc4b63c5954fb9ad5e7c2fba389852","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"b14a9c4cd54e468bbdfc06137c23bbcf","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/opt/conda/lib/python3.10/site-packages/transformers/tokenization_utils_base.py:1601: FutureWarning: `clean_up_tokenization_spaces` was not set. It will be set to `True` by default. This behavior will be depracted in transformers v4.45, and will be then set to `False` by default. For more details check this issue: https://github.com/huggingface/transformers/issues/31884
+  warnings.warn(
+/opt/conda/lib/python3.10/site-packages/transformers/convert_slow_tokenizer.py:551: UserWarning: The sentencepiece tokenizer that you are converting to a fast tokenizer uses the byte fallback option which is not implemented in the fast tokenizers. In practice this means that the fast version of the tokenizer can produce unknown tokens whereas the sentencepiece version would have converted these unknown tokens into a sequence of byte tokens matching the original piece of text.
+  warnings.warn(</code></pre>
+</div>
+</div>
+<p>With the tokenizer loaded, you can now tokenize your text data in the same way the model was trained to do.</p>
+<p>Alright, at this point we can use our tokenization to process strings. Let’s start with a simple example. If we pass this string “Hi folks, I’m Dai from my mother!” to the tokenizer, we can see how it breaks the text in to tokens</p>
+<div id="cell-14" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:39.795000Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:39.794529Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:39.801779Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:39.800703Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:39.794968Z&quot;}" data-trusted="true" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1">tokz.tokenize(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Hi folks, I'm Dai from my mother!"</span>)</span></code></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<pre><code>['▁Hi', '▁folks', ',', '▁I', "'", 'm', '▁Dai', '▁from', '▁my', '▁mother', '!']</code></pre>
+</div>
+</div>
+<p>You’ll notice doesn’t just split the text into words. If you’ve wondered “I’m” is one word or two, you’ll find that it’s actually three tokens according to this tokenizer. These tokens include partial words and punctuations. The character looks like underscore here signify the start of the word</p>
+<p>Here’s a less common sentence: “A platypus is an ornithorhynchus anatinus”.</p>
+<div id="cell-16" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:39.803758Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:39.803341Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:39.810185Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:39.809254Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:39.803712Z&quot;}" data-trusted="true" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1">tokz.tokenize(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"A platypus is an ornithorhynchus anatinus."</span>)</span></code></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<pre><code>['▁A',
+ '▁platypus',
+ '▁is',
+ '▁an',
+ '▁or',
+ 'ni',
+ 'tho',
+ 'rhynch',
+ 'us',
+ '▁an',
+ 'at',
+ 'inus',
+ '.']</code></pre>
+</div>
+</div>
+<p>In this vocabulary, “platypus” gets its own token, but “ornithorhynchus” is split into smaller parts. Each of these tokens corresponds to an entry in a predefined vocabulary list created during the model’s pre-training. Somewhere in that list, we’ll find “A”, and it will have a specific number. This process of converting tokens to numbers is called numericalization. To accomplish this for our dataset, we create a function that tokenizes the “input” field:</p>
+<div id="cell-18" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:39.811661Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:39.811196Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:39.817274Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:39.816323Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:39.811600Z&quot;}" data-trusted="true" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> tok_func(x): <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> tokz(x[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"input"</span>])</span></code></pre></div>
+</div>
+<p>Since tokenization can be time-consuming, especially for large dataset. Leveraging parallel processing can save time. we’ll utilize batching to process multiple entries simultaneously</p>
+<div id="cell-20" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:39.821290Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:39.820998Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:41.693450Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:41.692501Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:39.821258Z&quot;}" data-trusted="true" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1">tok_ds <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> ds.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">map</span>(tok_func, batched<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>)</span></code></pre></div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"b020769c3cd44445ad730ebf9fa46a61","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+</div>
+<p>Ensure that <code>batched=True</code> is passed to enable batch processing. This approach uses the <code>tokenizer</code> library optimized for performance wit Rust. Batch processing can significantly speed up the tokenization process</p>
+<p>Now let’s examine a row from our tokenized dataset:</p>
+<div id="cell-22" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:41.700204Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:41.699928Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:41.709420Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:41.708449Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:41.700172Z&quot;}" data-trusted="true" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1">tok_ds[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>][<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"input"</span>], tok_ds[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>][<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"input_ids"</span>]</span></code></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="11">
+<pre><code>('TEXT1: A47; TEXT2: abatement of pollution; ANC1: abatement',
+ [1,
+  54453,
+  435,
+  294,
+  336,
+  5753,
+  346,
+  54453,
+  445,
+  294,
+  47284,
+  265,
+  6435,
+  346,
+  23702,
+  435,
+  294,
+  47284,
+  2])</code></pre>
+</div>
+</div>
+<p>The output show that the dataset retains the original string in the “input” field and includes a new “input_ids” field with the numerical representation of each token. The numbers here are the numerical positions of tokens in the vocabulary. This step efficiently convert our text into number, readying it for model input.</p>
+<p>Alright, we now need to prepare our labels. <code>Transformer</code> always assumes that your labels has column name <code>labels</code>, but it our data set there’s no <code>labels</code> but <code>score</code>, we need to rename it.</p>
+<div id="cell-24" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:41.710835Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:41.710479Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:41.719753Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:41.718805Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:41.710784Z&quot;}" data-trusted="true" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb18" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1">tok_ds <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> tok_ds.rename_column(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"score"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"labels"</span>)</span></code></pre></div>
+</div>
+<p>Now let’s split our dataset into train and validation set</p>
+<div id="cell-26" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:41.721333Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:41.721012Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:41.750278Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:41.749410Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:41.721296Z&quot;}" data-trusted="true" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb19" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1">dds <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> tok_ds.train_test_split(<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.2</span>, seed<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">42</span>)</span>
+<span id="cb19-2">dds</span></code></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="13">
+<pre><code>DatasetDict({
+    train: Dataset({
+        features: ['id', 'anchor', 'target', 'context', 'labels', 'input', 'input_ids', 'token_type_ids', 'attention_mask'],
+        num_rows: 29178
+    })
+    test: Dataset({
+        features: ['id', 'anchor', 'target', 'context', 'labels', 'input', 'input_ids', 'token_type_ids', 'attention_mask'],
+        num_rows: 7295
+    })
+})</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="metric-and-loss" class="level2">
+<h2 class="anchored" data-anchor-id="metric-and-loss">Metric and Loss</h2>
+<p>When working with a validation set, one of the key steps is to measure some metrics. A metric, such as “accuracy” gives us a quantifiable measure of how good our model is.</p>
+<p>For example, if you look at <a href="https://www.kaggle.com/competitions/us-patent-phrase-to-phrase-matching/overview/evaluation">the competition’s overview page</a>, you’ll see that they use the <a href="https://en.wikipedia.org/wiki/Pearson_correlation_coefficient">Pearson correlation coefficient</a> to evaluate submissions. Consequently, we will also use this metric to measure our model performance.</p>
+<p>A common question arises here: is the metric the same as the loss function? The answer is nuanced. The metric used to evaluate model performance isn’t necessarily the one to be used for optimization during the training. Taking the derivative of accuracy to find the gradient for parameter updates, for example, isn’t very effective.</p>
+<p>Why? You ask! Because accuracy doesn’t change significantly unless predictions switch from incorrect to correct, resulting in gradients being nearly zero everywhere. Instead, we prefer smooth functions like <em>MSE</em> or <em>MAE</em> for the loss function. These provide better gradients for optimization, helping improve the model more effectively.</p>
+</section>
+<section id="pearson-correlation-coefficient" class="level2">
+<h2 class="anchored" data-anchor-id="pearson-correlation-coefficient">Pearson Correlation Coefficient</h2>
+<p>Let’s focus on our metric of interest today, the <strong>Pearson Correlation Coefficient</strong> often abbreviated as <code>r</code>. This coefficient is a widely used measure that evaluates the similarity between two variable, if our predictions closely match the actual values, <code>r</code> will be high, ranging between -1 and 1. An <code>r</code> of -1 means predictions are exactly the wrong answers (which could still be useful, as reversing the answer would yield perfect results), while <code>r</code> of 1 signifies perfect predictions.</p>
+<p>You can read <a href="https://en.wikipedia.org/wiki/Pearson_correlation_coefficient">this</a> for more info about the formula and example but i think the best way to understand how data behaves is to look at real-life data. Scikit-learn offers numerous datasets, one of which is the “California housing” dataset. Here’s how you can explore this dataset:</p>
+<div id="cell-28" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:41.751720Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:41.751335Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:43.858980Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:43.857993Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:41.751667Z&quot;}" data-trusted="true" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb21" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> sklearn.datasets <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> fetch_california_housing</span>
+<span id="cb21-2">housing <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> fetch_california_housing(as_frame<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>)</span>
+<span id="cb21-3">housing <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> housing[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'data'</span>].join(housing[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'target'</span>]).sample(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1000</span>, random_state<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">52</span>)</span>
+<span id="cb21-4">housing.head()</span></code></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="14">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">MedInc</th>
+<th data-quarto-table-cell-role="th">HouseAge</th>
+<th data-quarto-table-cell-role="th">AveRooms</th>
+<th data-quarto-table-cell-role="th">AveBedrms</th>
+<th data-quarto-table-cell-role="th">Population</th>
+<th data-quarto-table-cell-role="th">AveOccup</th>
+<th data-quarto-table-cell-role="th">Latitude</th>
+<th data-quarto-table-cell-role="th">Longitude</th>
+<th data-quarto-table-cell-role="th">MedHouseVal</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">7506</td>
+<td>3.0550</td>
+<td>37.0</td>
+<td>5.152778</td>
+<td>1.048611</td>
+<td>729.0</td>
+<td>5.062500</td>
+<td>33.92</td>
+<td>-118.28</td>
+<td>1.054</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">4720</td>
+<td>3.0862</td>
+<td>35.0</td>
+<td>4.697897</td>
+<td>1.055449</td>
+<td>1159.0</td>
+<td>2.216061</td>
+<td>34.05</td>
+<td>-118.37</td>
+<td>3.453</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">12888</td>
+<td>2.5556</td>
+<td>24.0</td>
+<td>4.864905</td>
+<td>1.129222</td>
+<td>1631.0</td>
+<td>2.395007</td>
+<td>38.66</td>
+<td>-121.35</td>
+<td>1.057</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">13344</td>
+<td>3.0057</td>
+<td>32.0</td>
+<td>4.212687</td>
+<td>0.936567</td>
+<td>1378.0</td>
+<td>5.141791</td>
+<td>34.05</td>
+<td>-117.64</td>
+<td>0.969</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">7173</td>
+<td>1.9083</td>
+<td>42.0</td>
+<td>3.888554</td>
+<td>1.039157</td>
+<td>1535.0</td>
+<td>4.623494</td>
+<td>34.05</td>
+<td>-118.19</td>
+<td>1.192</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>To compute the Pearson correlation coefficient, Numpy provieds the <code>corrcoef()</code> function, which return a correlation matrix:</p>
+<div id="cell-30" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:43.860736Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:43.860257Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:43.870686Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:43.869672Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:43.860695Z&quot;}" data-trusted="true" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb22" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1">np.set_printoptions(precision<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, suppress<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>)</span>
+<span id="cb22-2">np.corrcoef(housing, rowvar<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>)</span></code></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="15">
+<pre><code>array([[ 1.  , -0.12,  0.43, -0.08,  0.01, -0.07, -0.12,  0.04,  0.68],
+       [-0.12,  1.  , -0.17, -0.06, -0.31,  0.  ,  0.03, -0.13,  0.12],
+       [ 0.43, -0.17,  1.  ,  0.76, -0.09, -0.07,  0.12, -0.03,  0.21],
+       [-0.08, -0.06,  0.76,  1.  , -0.08, -0.07,  0.09,  0.  , -0.04],
+       [ 0.01, -0.31, -0.09, -0.08,  1.  ,  0.16, -0.15,  0.13,  0.  ],
+       [-0.07,  0.  , -0.07, -0.07,  0.16,  1.  , -0.16,  0.17, -0.27],
+       [-0.12,  0.03,  0.12,  0.09, -0.15, -0.16,  1.  , -0.93, -0.16],
+       [ 0.04, -0.13, -0.03,  0.  ,  0.13,  0.17, -0.93,  1.  , -0.03],
+       [ 0.68,  0.12,  0.21, -0.04,  0.  , -0.27, -0.16, -0.03,  1.  ]])</code></pre>
+</div>
+</div>
+<p>However, we need a single correlation number rather than a matrix. Fortunately, if we pass in a pair of variable, we could still get a matrix, from which we can extract the desired coefficient.</p>
+<div id="cell-32" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:43.872481Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:43.872056Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:43.880205Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:43.879019Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:43.872427Z&quot;}" data-trusted="true" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb24" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1">np.corrcoef(housing.MedInc, housing.MedHouseVal)</span></code></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="16">
+<pre><code>array([[1.  , 0.68],
+       [0.68, 1.  ]])</code></pre>
+</div>
+</div>
+<p>To get a specific correlation coefficient, simply select the zeroth row and the first column:</p>
+<div id="cell-34" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:43.882512Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:43.881745Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:43.890041Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:43.888916Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:43.882472Z&quot;}" data-trusted="true" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb26" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> corr(x, y):  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> np.corrcoef(x, y)[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>][<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>]</span>
+<span id="cb26-2"></span>
+<span id="cb26-3">corr(housing.MedInc, housing.MedHouseVal)</span></code></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="17">
+<pre><code>0.6760250732906</code></pre>
+</div>
+</div>
+<p>To visualize the correlation, we can plot the data and display the correlation coefficient <code>r</code>:</p>
+<div id="cell-36" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:43.891498Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:43.891191Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:43.897796Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:43.896695Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:43.891458Z&quot;}" data-trusted="true" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb28" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> matplotlib.pyplot <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> plt</span>
+<span id="cb28-2"></span>
+<span id="cb28-3"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> show_corr(df, a, b):</span>
+<span id="cb28-4">    x, y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> df[a], df[b]</span>
+<span id="cb28-5">    plt.scatter(x, y, alpha<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>, s<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>)</span>
+<span id="cb28-6">    plt.title(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f'</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>a<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;"> vs </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>b<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">; r: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>corr(x, y)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:.2f}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span>)</span></code></pre></div>
+</div>
+<p>For instance, the plot of “median income” vs.&nbsp;“median house value” shows an r of 0.68.</p>
+<div id="cell-38" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:43.899464Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:43.899133Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:44.220457Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:44.219533Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:43.899422Z&quot;}" data-trusted="true" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb29" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1">show_corr(housing, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'MedInc'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'MedHouseVal'</span>)</span></code></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://buidai123.github.io/blog/posts/nlp-beginner/index_files/figure-html/cell-20-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Exploring other pairs, like “median income” vs.&nbsp;“number of rooms per house,” gives an r of 0.43.</p>
+<div id="cell-40" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:44.222199Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:44.221811Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:44.546412Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:44.545562Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:44.222156Z&quot;}" data-trusted="true" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb30" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1">show_corr(housing, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'MedInc'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'AveRooms'</span>)</span></code></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://buidai123.github.io/blog/posts/nlp-beginner/index_files/figure-html/cell-21-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This plot reveals interesting insights and anomalies. Certain houses have many rooms but lower incomes, potentialy indicate shared accommodations. Pearson’s <code>r</code> can be sensitive to outliers, and removing them can significatly change the correlation.</p>
+<div id="cell-42" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:44.547839Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:44.547515Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:44.855975Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:44.854993Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:44.547807Z&quot;}" data-trusted="true" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb31" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1">subset <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> housing[housing.AveRooms <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">15</span>]</span>
+<span id="cb31-2">show_corr(subset, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'MedInc'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'AveRooms'</span>)</span></code></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://buidai123.github.io/blog/posts/nlp-beginner/index_files/figure-html/cell-22-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>By removing outliers, the correlation increase fromm 0.43 to 0.68, emphasizing the importance of carefully considering outliers</p>
+<p>Here’s another example correlating “median hours value” with “average number of room”:</p>
+<div id="cell-44" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:44.857479Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:44.857171Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:45.148894Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:45.147911Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:44.857440Z&quot;}" data-trusted="true" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb32" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1">show_corr(subset, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'MedHouseVal'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'AveRooms'</span>)</span></code></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://buidai123.github.io/blog/posts/nlp-beginner/index_files/figure-html/cell-23-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>And another one correlating “house age” with “average number of rooms”:</p>
+<div id="cell-46" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:45.151139Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:45.150354Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:45.446860Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:45.446019Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:45.151088Z&quot;}" data-trusted="true" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb33" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1">show_corr(subset, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'MedHouseVal'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'AveRooms'</span>)</span></code></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://buidai123.github.io/blog/posts/nlp-beginner/index_files/figure-html/cell-24-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>To keep track of our training progress, it’s importaint to report the Pearson correlation coefficient after each epoch. Hugging Face’s Trainer API expects a dictionary as output, with keys labeling each metrics. Here’s how you can define a function to calculate and return the Pearson correlation coefficient:</p>
+<div id="cell-48" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:45.448445Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:45.448133Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:45.453322Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:45.452366Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:45.448403Z&quot;}" data-trusted="true" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb34" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> corr_d(eval_pred): <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> {<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'pearson'</span>: corr(<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>eval_pred)}</span></code></pre></div>
+</div>
+</section>
+<section id="training-with-hugging-face-transformers" class="level2">
+<h2 class="anchored" data-anchor-id="training-with-hugging-face-transformers">Training with Hugging Face Transformers</h2>
+<p>In the world of Hugging Face, the concept of a “learner” in fast.ai is paralleled by the <code>trainer</code>. Let’s start by importing necessary components:</p>
+<div id="cell-50" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:45.454909Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:45.454503Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:58.129589Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:58.128824Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:45.454863Z&quot;}" data-trusted="true" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb35" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> transformers <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> TrainingArguments, Trainer</span></code></pre></div>
+</div>
+<p>When training a model, we don’t process the entire dataset at once; instead we use a “batch” or “mini-batch” of data for each training step. This approach leverages the parallel processing capabilities of GPUs.</p>
+<p>In our case, let’s set the batch size to 128. Large batch size speed up training by maximizing GPU utilization but beware of potential “out of memory” errors if set too high.</p>
+<p>Next, configure the training arguments:</p>
+<div id="cell-52" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:58.134662Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:58.134064Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:58.245326Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:58.244507Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:58.134614Z&quot;}" data-trusted="true" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb36" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1">bs <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">80</span></span>
+<span id="cb36-2">epochs <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span></span>
+<span id="cb36-3">lr <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8e-5</span></span>
+<span id="cb36-4"></span>
+<span id="cb36-5">args <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> TrainingArguments(</span>
+<span id="cb36-6">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'outputs'</span>,</span>
+<span id="cb36-7">    learning_rate<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>lr,</span>
+<span id="cb36-8">    warmup_ratio<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.1</span>,</span>
+<span id="cb36-9">    lr_scheduler_type<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'cosine'</span>,</span>
+<span id="cb36-10">    fp16<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>,  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Enable mixed precision training</span></span>
+<span id="cb36-11">    eval_strategy<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"epoch"</span>,</span>
+<span id="cb36-12">    per_device_train_batch_size<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>bs,</span>
+<span id="cb36-13">    per_device_eval_batch_size<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>bs<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>,</span>
+<span id="cb36-14">    num_train_epochs<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>epochs,</span>
+<span id="cb36-15">    weight_decay<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.01</span>,</span>
+<span id="cb36-16">    report_to<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'none'</span>,</span>
+<span id="cb36-17">)</span></code></pre></div>
+</div>
+<p>Most of these arguments can be left as defaults, but the key ones to focus on are the batch size (<code>bs</code>), number of epoches (<code>epoches</code>), and learning rate (<code>lr</code>).</p>
+<p>To begin model training for sequence classification, we use <code>AutoModelForSequenceClassification</code>:</p>
+<div id="cell-54" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:58.246751Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:58.246384Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:25:01.429509Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:25:01.428680Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:58.246700Z&quot;}" data-trusted="true" data-execution_count="27">
+<div class="sourceCode cell-code" id="cb37" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1">model <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> AutoModelForSequenceClassification.from_pretrained(model_nm, num_labels<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span>
+<span id="cb37-2">trainer <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Trainer(</span>
+<span id="cb37-3">    model, args, </span>
+<span id="cb37-4">    train_dataset<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>dds[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'train'</span>], eval_dataset<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>dds[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'test'</span>],</span>
+<span id="cb37-5">    tokenizer<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>tokz, compute_metrics<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>corr_d</span>
+<span id="cb37-6">)</span></code></pre></div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"7a6b7c81aedd412f847a410e75387083","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Some weights of DebertaV2ForSequenceClassification were not initialized from the model checkpoint at microsoft/deberta-v3-base and are newly initialized: ['classifier.bias', 'classifier.weight', 'pooler.dense.bias', 'pooler.dense.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+/opt/conda/lib/python3.10/site-packages/accelerate/accelerator.py:488: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  self.scaler = torch.cuda.amp.GradScaler(**kwargs)</code></pre>
+</div>
+</div>
+<p>This function sets up our model, instantiates the trainer with the relevant datasets and tokenizer, and specifies the metric function.</p>
+<p>Finally, we sart the trainign process:</p>
+<div id="cell-56" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:25:01.431521Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:25:01.430842Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:34:32.580031Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:34:32.579155Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:25:01.431474Z&quot;}" data-trusted="true" data-execution_count="28">
+<div class="sourceCode cell-code" id="cb39" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1">trainer.train()<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span></code></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/opt/conda/lib/python3.10/site-packages/torch/nn/parallel/parallel_apply.py:79: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.device(device), torch.cuda.stream(stream), autocast(enabled=autocast_enabled):
+/opt/conda/lib/python3.10/site-packages/torch/nn/parallel/_functions.py:68: UserWarning: Was asked to gather along dimension 0, but all input tensors were scalars; will instead unsqueeze and return a vector.
+  warnings.warn('Was asked to gather along dimension 0, but all '</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+
+    <div>
+      
+      <progress value="732" max="732" style="width:300px; height:20px; vertical-align: middle;"></progress>
+      [732/732 09:27, Epoch 4/4]
+    </div>
+    
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">Epoch</th>
+<th data-quarto-table-cell-role="th">Training Loss</th>
+<th data-quarto-table-cell-role="th">Validation Loss</th>
+<th data-quarto-table-cell-role="th">Pearson</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>No log</td>
+<td>0.027016</td>
+<td>0.784697</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>No log</td>
+<td>0.022490</td>
+<td>0.818065</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>0.027900</td>
+<td>0.021511</td>
+<td>0.834274</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>0.027900</td>
+<td>0.021852</td>
+<td>0.836955</td>
+</tr>
+</tbody>
+</table>
+<p>
+</p></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/opt/conda/lib/python3.10/site-packages/torch/nn/parallel/parallel_apply.py:79: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.device(device), torch.cuda.stream(stream), autocast(enabled=autocast_enabled):
+/opt/conda/lib/python3.10/site-packages/torch/nn/parallel/_functions.py:68: UserWarning: Was asked to gather along dimension 0, but all input tensors were scalars; will instead unsqueeze and return a vector.
+  warnings.warn('Was asked to gather along dimension 0, but all '
+/opt/conda/lib/python3.10/site-packages/torch/nn/parallel/parallel_apply.py:79: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.device(device), torch.cuda.stream(stream), autocast(enabled=autocast_enabled):
+/opt/conda/lib/python3.10/site-packages/torch/nn/parallel/_functions.py:68: UserWarning: Was asked to gather along dimension 0, but all input tensors were scalars; will instead unsqueeze and return a vector.
+  warnings.warn('Was asked to gather along dimension 0, but all '</code></pre>
+</div>
+</div>
+<p>Upon starting the training, we achieve an inspiring correlation of 0.836. This impressive result was obtain in about ten minutes, demonstrating the power of leveraging pre-trained models.</p>
+<p>Achieving the high correlation score underscore the value of using a pre-trained model. The deberta-v3 model we used already possesses an immense amount of linguistic knowledge, allowing it to assess the similarity between phrases effectively right out of the box. By fine-tuning it on our specific task, we capitalized on this foundation, leading to rapid and accurate results</p>
+<p>As we continue training, monitoring the Pearson correlations coefficient helps ensure our model is moving in the right direction, improving its ability to match phrases accurately.</p>
+</section>
+<section id="evaluating-model-predictions" class="level2">
+<h2 class="anchored" data-anchor-id="evaluating-model-predictions">Evaluating Model Predictions</h2>
+<p>With our model trained and achieving a promising Pearson correlation coefficient, it’s time to evaluate its performance on the test set.</p>
+<p>Just as we did with the training data we need to load and preprocess our test dataset.</p>
+<div id="cell-58" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:34:32.581831Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:34:32.581404Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:34:32.673541Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:34:32.672609Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:34:32.581784Z&quot;}" data-trusted="true" data-execution_count="29">
+<div class="sourceCode cell-code" id="cb42" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1">eval_df <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pd.read_csv(path<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"test.csv"</span>)</span>
+<span id="cb42-2">eval_ds <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Dataset.from_pandas(eval_df)</span>
+<span id="cb42-3">eval_ds <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> eval_ds.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">map</span>(preprocess_function).<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">map</span>(tok_func, batched<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>)</span></code></pre></div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"2c1d5a2bc73540d2bcf4bcc7195704dc","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"8e3fb9cd89ef4ea3bcd6c3dc3c9c8647","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+</div>
+<p>Next we use trainer to make predictions on the test dataset, and at this point it crucial to inspect the predictions.</p>
+<div id="cell-60" class="cell">
+<div class="sourceCode cell-code" id="cb43" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1">preds <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> trainer.predict(eval_ds).predictions.astype(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">float</span>)</span>
+<span id="cb43-2">preds</span></code></pre></div>
+</div>
+<div id="cell-61" class="cell output" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:34:32.674982Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:34:32.674713Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:34:32.816702Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:34:32.815744Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:34:32.674952Z&quot;}" data-trusted="true" data-execution_count="30">
+<div class="cell-output cell-output-stderr">
+<pre><code>/opt/conda/lib/python3.10/site-packages/torch/nn/parallel/parallel_apply.py:79: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.device(device), torch.cuda.stream(stream), autocast(enabled=autocast_enabled):</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+
+</div>
+<div class="cell-output cell-output-display" data-execution_count="30">
+<pre><code>array([[ 0.7 ],
+       [ 0.73],
+       [ 0.58],
+       [ 0.37],
+       [-0.02],
+       [ 0.53],
+       [ 0.48],
+       [-0.01],
+       [ 0.25],
+       [ 1.06],
+       [ 0.26],
+       [ 0.24],
+       [ 0.8 ],
+       [ 0.8 ],
+       [ 0.81],
+       [ 0.41],
+       [ 0.27],
+       [-0.  ],
+       [ 0.66],
+       [ 0.41],
+       [ 0.55],
+       [ 0.23],
+       [ 0.09],
+       [ 0.23],
+       [ 0.53],
+       [ 0.  ],
+       [ 0.01],
+       [-0.01],
+       [ 0.  ],
+       [ 0.69],
+       [ 0.34],
+       [-0.  ],
+       [ 0.7 ],
+       [ 0.58],
+       [ 0.38],
+       [ 0.21]])</code></pre>
+</div>
+</div>
+<p>Observing the prediction might reveal that some value fall outside the [0, 1] range. This highlights the important of examining your data at every stage. To fix these out-of-bound predictions, we employ clamping:</p>
+<div id="cell-63" class="cell">
+<div class="sourceCode cell-code" id="cb46" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1">preds <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.clip(preds, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span>
+<span id="cb46-2">preds</span></code></pre></div>
+</div>
+<div id="cell-64" class="cell output" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:34:32.818248Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:34:32.817917Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:34:32.824993Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:34:32.824100Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:34:32.818216Z&quot;}" data-trusted="true" data-execution_count="31">
+<div class="cell-output cell-output-display" data-execution_count="31">
+<pre><code>array([[0.7 ],
+       [0.73],
+       [0.58],
+       [0.37],
+       [0.  ],
+       [0.53],
+       [0.48],
+       [0.  ],
+       [0.25],
+       [1.  ],
+       [0.26],
+       [0.24],
+       [0.8 ],
+       [0.8 ],
+       [0.81],
+       [0.41],
+       [0.27],
+       [0.  ],
+       [0.66],
+       [0.41],
+       [0.55],
+       [0.23],
+       [0.09],
+       [0.23],
+       [0.53],
+       [0.  ],
+       [0.01],
+       [0.  ],
+       [0.  ],
+       [0.69],
+       [0.34],
+       [0.  ],
+       [0.7 ],
+       [0.58],
+       [0.38],
+       [0.21]])</code></pre>
+</div>
+</div>
+<p>So, that’s a wrap! We’ve navigated through the essentials of training and evaluating a machine learning model using Hugging Face Transformer. From understanding metrics and loss functions to fine-tune a pre-trained model and keeping a close eye on our Pearson Correlation Coefficient we’ve covered a lot of ground.</p>
+<p>The key take a way? Always keep an eye on your data and metrics. Those little tweaks can make a big difference. Leveraging pre-trained models can save you tons of time and give you a major head start.</p>
+<p>Keep experimenting and stay curious, and don’t forget to have fun with your models. Machine learning is all about trying a new things and learn from each step.</p>
+<p>And hey, thanks nerds!</p>
+
+
+</section>
+
+ ]]></description>
+  <category>kaggle</category>
+  <category>huggingface spaces</category>
+  <category>nlp</category>
+  <guid>https://buidai123.github.io/blog/posts/nlp-beginner/</guid>
+  <pubDate>Thu, 12 Sep 2024 17:00:00 GMT</pubDate>
+  <media:content url="https://buidai123.github.io/blog/posts/nlp-beginner/nlp.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Sink or Swim: Navigating Deep Learning with the Titanic Competition</title>
   <dc:creator>Bui Huu Dai</dc:creator>
@@ -895,6 +2044,7 @@ font-style: inherit;">float</span>)</span></code></pre></div>
 <div id="cell-34" class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb18" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> preprocess_data(df):</span>
 <span id="cb18-2">    age_imputer <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1126,21 +2276,27 @@ background-color: null;
 font-style: inherit;">float</span>)</span>
 <span id="cb18-20">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> df</span></code></pre></div>
 </div>
 <p>Finally, let’s round up our feature posse:</p>
 <div id="cell-36" class="cell" data-execution_count="17">
 <div class="sourceCode cell-code" id="cb19" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> get_columns(name):</span>
 <span id="cb19-2">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> [col <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> col <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> trn_df.columns <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> col.startswith(name)]</span>
 <span id="cb19-3">added_cols <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1307,6 +2463,7 @@ font-style: inherit;">=</span> t_dep[trn_split], t_dep[val_split]</span></code><
 <div id="cell-46" class="cell" data-execution_count="21">
 <div class="sourceCode cell-code" id="cb25" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> init_coeffs(n_input, n_hidden<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
@@ -1336,6 +2493,7 @@ background-color: null;
 font-style: inherit;">0</span>]</span>
 <span id="cb25-6">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> (layer_1.requires_grad_(), layer_2.requires_grad_(), const.requires_grad_())</span></code></pre></div>
 </div>
 <p>Now, you might wondering, “Why only one hidden layer with 10 units?” Well, my friends, sometimes less is more? With a small dataset like Titanic, a simple architecture often works best - compact but effective!</p>
@@ -1344,6 +2502,7 @@ font-style: inherit;">return</span> (layer_1.requires_grad_(), layer_2.requires_
 <div id="cell-48" class="cell" data-execution_count="22">
 <div class="sourceCode cell-code" id="cb26" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> calc_preds(coeffs, indep):</span>
 <span id="cb26-2">    l1, l2, const <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1362,6 +2521,7 @@ background-color: null;
 font-style: inherit;">+</span> const</span>
 <span id="cb26-5">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> torch.sigmoid(res)</span></code></pre></div>
 </div>
 <p>This is where magic happens! We’re using matrix multiplication (that’s what the <code>@</code> symbol does) and applying our good friend RelLU. Remember our chat about ReLU earlier? This is where it comes into play! If you want to dive deeper into the power of ReLU, check out my previous blog post <a href="https://buidai123.github.io/blog/posts/2024-07-28-from-neuron-to-gradient/#the-magic-of-relus">here</a>.</p>
@@ -1369,9 +2529,11 @@ font-style: inherit;">return</span> torch.sigmoid(res)</span></code></pre></div>
 <div id="cell-50" class="cell" data-execution_count="23">
 <div class="sourceCode cell-code" id="cb27" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> calc_loss(coeffs, indeps, deps):</span>
 <span id="cb27-2">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> torch.<span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">abs</span>(calc_preds(coeffs, indeps)<span class="op" style="color: #5E5E5E;
@@ -1387,6 +2549,7 @@ font-style: inherit;">1</span>)).mean()</span></code></pre></div>
 <div id="cell-52" class="cell" data-execution_count="24">
 <div class="sourceCode cell-code" id="cb28" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> one_epoch(coeffs, lr, batch_size<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
@@ -1399,8 +2562,10 @@ background-color: null;
 font-style: inherit;">len</span>(trn_indep)</span>
 <span id="cb28-3">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> i <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">range</span>(<span class="dv" style="color: #AD0000;
@@ -1424,11 +2589,14 @@ font-style: inherit;">=</span> calc_loss(coeffs, batch_indep, batch_dep)</span>
 <span id="cb28-9"></span>
 <span id="cb28-10">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">with</span> torch.no_grad():</span>
 <span id="cb28-11">            <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> layer <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> coeffs:</span>
 <span id="cb28-12">                layer.sub_(layer.grad <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1440,6 +2608,7 @@ font-style: inherit;">*</span> lr)</span>
 <div id="cell-54" class="cell" data-execution_count="25">
 <div class="sourceCode cell-code" id="cb29" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> train_model(epochs<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
@@ -1477,14 +2646,17 @@ font-style: inherit;">0</span></span>
 <span id="cb29-7"></span>
 <span id="cb29-8">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> epoch <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">range</span>(epochs):</span>
 <span id="cb29-9">        one_epoch(coeffs, lr)</span>
 <span id="cb29-10">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">with</span> torch.no_grad():</span>
 <span id="cb29-11">            train_loss <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1495,6 +2667,7 @@ font-style: inherit;">=</span> calc_loss(coeffs, val_indep, val_dep)</span>
 <span id="cb29-13">        </span>
 <span id="cb29-14">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> val_loss <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">&lt;</span> best_val_loss:</span>
@@ -1505,8 +2678,10 @@ font-style: inherit;">=</span> val_loss</span>
 background-color: null;
 font-style: inherit;">=</span> [c.clone() <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> c <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> coeffs]</span>
 <span id="cb29-17">            counter <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1515,6 +2690,7 @@ background-color: null;
 font-style: inherit;">0</span></span>
 <span id="cb29-18">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">else</span>:</span>
 <span id="cb29-19">            counter <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1524,6 +2700,7 @@ font-style: inherit;">1</span></span>
 <span id="cb29-20">        </span>
 <span id="cb29-21">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> counter <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">&gt;</span> patience:</span>
@@ -1540,10 +2717,12 @@ background-color: null;
 font-style: inherit;">"</span>)</span>
 <span id="cb29-23">            <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">break</span></span>
 <span id="cb29-24"></span>
 <span id="cb29-25">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> epoch <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">%</span> <span class="dv" style="color: #AD0000;
@@ -1585,6 +2764,7 @@ background-color: null;
 font-style: inherit;"># learning rate schedule</span></span>
 <span id="cb29-28">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> best_coeffs</span></code></pre></div>
 </div>
 <p>This function is like the conductor of our neural orchestra. It initializes our model, trains it for a number of epochs, and learning rate scheduling (to help our model converge more precisely).</p>
@@ -1600,9 +2780,11 @@ background-color: null;
 font-style: inherit;"># Evaluate the model</span></span>
 <span id="cb30-2"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> acc(coeffs): </span>
 <span id="cb30-3">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> (val_dep.<span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">bool</span>() <span class="op" style="color: #5E5E5E;
@@ -1768,9 +2950,11 @@ font-style: inherit;">"submit to competition"</span></span></code></pre></div>
 <div id="cell-67" class="cell" data-execution_count="31">
 <div class="sourceCode cell-code" id="cb37" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">class</span> SimpleNN(torch.nn.Module):</span>
 <span id="cb37-2">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">__init__</span>(<span class="va" style="color: #111111;
@@ -1803,6 +2987,7 @@ font-style: inherit;">1</span>)</span>
 <span id="cb37-7">    </span>
 <span id="cb37-8">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> forward(<span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">self</span>, x):</span>
@@ -1820,6 +3005,7 @@ background-color: null;
 font-style: inherit;">self</span>.fc2(x))</span>
 <span id="cb37-11">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> x</span></code></pre></div>
 </div>
 <p>This little beauty is like our previous model’s cooler, more sophisticated cousin. It’s still simple, but it’s packing some extra punch:</p>
@@ -1834,6 +3020,7 @@ font-style: inherit;">return</span> x</span></code></pre></div>
 <div id="cell-69" class="cell" data-execution_count="32">
 <div class="sourceCode cell-code" id="cb38" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> train_model(model, X_train, y_train, X_val, y_val, epochs<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
@@ -1892,16 +3079,20 @@ font-style: inherit;">0</span></span>
 <span id="cb38-8">    </span>
 <span id="cb38-9">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> epoch <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">range</span>(epochs):</span>
 <span id="cb38-10">        model.train()</span>
 <span id="cb38-11">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> i <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">range</span>(<span class="dv" style="color: #AD0000;
@@ -1939,6 +3130,7 @@ background-color: null;
 font-style: inherit;">eval</span>()</span>
 <span id="cb38-24">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">with</span> torch.no_grad():</span>
 <span id="cb38-25">            val_outputs <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1951,6 +3143,7 @@ font-style: inherit;">1</span>))</span>
 <span id="cb38-27">            </span>
 <span id="cb38-28">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> val_loss <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">&lt;</span> best_val_loss:</span>
@@ -1967,6 +3160,7 @@ background-color: null;
 font-style: inherit;">0</span></span>
 <span id="cb38-32">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">else</span>:</span>
 <span id="cb38-33">            counter <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1976,6 +3170,7 @@ font-style: inherit;">1</span></span>
 <span id="cb38-34">        </span>
 <span id="cb38-35">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> counter <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">&gt;</span> patience:</span>
@@ -1992,10 +3187,12 @@ background-color: null;
 font-style: inherit;">"</span>)</span>
 <span id="cb38-37">            <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">break</span></span>
 <span id="cb38-38">        </span>
 <span id="cb38-39">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> epoch <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">%</span> <span class="dv" style="color: #AD0000;
@@ -2036,6 +3233,7 @@ font-style: inherit;">"</span>)</span>
 <span id="cb38-42">    model.load_state_dict(best_model)</span>
 <span id="cb38-43">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> model</span></code></pre></div>
 </div>
 <p>This function is like a personal trainer for our model. Here’s what’s new:</p>
@@ -2072,6 +3270,7 @@ background-color: null;
 font-style: inherit;">eval</span>()</span>
 <span id="cb41-2"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">with</span> torch.no_grad():</span>
 <span id="cb41-3">    val_outputs <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -2161,6 +3360,7 @@ background-color: null;
 font-style: inherit;">eval</span>()</span>
 <span id="cb42-22"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">with</span> torch.no_grad():</span>
 <span id="cb42-23">    val_outputs <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -2224,15 +3424,20 @@ background-color: null;
 font-style: inherit;"># Ensure test_df has all the necessary columns</span></span>
 <span id="cb44-6"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> col <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> indep_cols:</span>
 <span id="cb44-7">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> col <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">not</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> test_df.columns:</span>
 <span id="cb44-8">        test_df[col] <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -2262,6 +3467,7 @@ background-color: null;
 font-style: inherit;">eval</span>()</span>
 <span id="cb45-3"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">with</span> torch.no_grad():</span>
 <span id="cb45-4">    test_outputs <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -2658,6 +3864,7 @@ background-color: null;
 font-style: inherit;">=</span> {</span>
 <span id="cb6-6">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">let</span> df_results_processed <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> df_results<span class="op" style="color: #5E5E5E;
@@ -2666,6 +3873,7 @@ font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">map</span>(r <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">=&gt;</span> ({ <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">...</span>r<span class="op" style="color: #5E5E5E;
@@ -2702,6 +3910,7 @@ font-style: inherit;">;</span></span>
 <span id="cb6-7"></span>
 <span id="cb6-8">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">const</span> dfColumns <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="bu" style="color: null;
@@ -2717,6 +3926,7 @@ background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb6-9">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">const</span> dfResultsColumns <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="bu" style="color: null;
@@ -2733,15 +3943,18 @@ font-style: inherit;">;</span></span>
 <span id="cb6-10"></span>
 <span id="cb6-11">  <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> df<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">flatMap</span>(d <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">=&gt;</span> {</span>
 <span id="cb6-12">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">const</span> matches <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> df_results_processed<span class="op" style="color: #5E5E5E;
@@ -2750,6 +3963,7 @@ font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">filter</span>(r <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">=&gt;</span> r<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">.</span><span class="at" style="color: #657422;
@@ -2765,15 +3979,18 @@ background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb6-13">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> matches<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">map</span>(match <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">=&gt;</span> {</span>
 <span id="cb6-14">      <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">let</span> mergedRow <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> {}<span class="op" style="color: #5E5E5E;
@@ -2785,9 +4002,11 @@ font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">forEach</span>(col <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">=&gt;</span> {</span>
 <span id="cb6-16">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> (dfResultsColumns<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
@@ -2812,6 +4031,7 @@ font-style: inherit;">=</span> d[col]<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span> } <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">else</span> { mergedRow[col] <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> d[col]<span class="op" style="color: #5E5E5E;
@@ -2826,9 +4046,11 @@ font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">forEach</span>(col <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">=&gt;</span> {</span>
 <span id="cb6-19">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> (dfColumns<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
@@ -2853,6 +4075,7 @@ font-style: inherit;">=</span> match[col]<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span> } <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">else</span> { mergedRow[col] <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> match[col]<span class="op" style="color: #5E5E5E;
@@ -2863,6 +4086,7 @@ background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb6-21">      <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> mergedRow<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
@@ -2883,6 +4107,7 @@ font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">map</span>(d <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">=&gt;</span> ({<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">...</span>d<span class="op" style="color: #5E5E5E;
@@ -2908,9 +4133,11 @@ font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">map</span>(d <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">=&gt;</span> {</span>
 <span id="cb6-29">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">const</span> familyMatch <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> d<span class="op" style="color: #5E5E5E;
@@ -2948,6 +4175,7 @@ background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb6-30">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">let</span> family <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> familyMatch <span class="op" style="color: #5E5E5E;
@@ -2963,6 +4191,7 @@ background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb6-31">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> (d<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">.</span><span class="at" style="color: #657422;
@@ -2982,6 +4211,7 @@ background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb6-32">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> (d<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">.</span><span class="at" style="color: #657422;
@@ -3005,6 +4235,7 @@ background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb6-33">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> {<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">...</span>d<span class="op" style="color: #5E5E5E;
@@ -3023,6 +4254,7 @@ font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">filter</span>(d <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">=&gt;</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">!</span>d<span class="op" style="color: #5E5E5E;
@@ -3042,6 +4274,7 @@ font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">filter</span>(d <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">=&gt;</span> <span class="ss" style="color: #20794D;
 background-color: null;
 font-style: inherit;">/</span><span class="sc" style="color: #5E5E5E;
@@ -3094,12 +4327,14 @@ font-style: inherit;">;</span></span>
 <span id="cb6-37">{</span>
 <span id="cb6-38">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">const</span> uniqueFamilies <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> [<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">...</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">new</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">Set</span>(df_final<span class="op" style="color: #5E5E5E;
@@ -3108,6 +4343,7 @@ font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">map</span>(d <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">=&gt;</span> d<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">.</span><span class="at" style="color: #657422;
@@ -3117,6 +4353,7 @@ background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb6-39">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">const</span> colorScale <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> uniqueFamilies<span class="op" style="color: #5E5E5E;
@@ -3127,8 +4364,10 @@ font-style: inherit;">map</span>((family<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">,</span> index) <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">=&gt;</span> { <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> <span class="vs" style="color: #20794D;
 background-color: null;
 font-style: inherit;">`hsl(</span><span class="sc" style="color: #5E5E5E;
@@ -3154,6 +4393,7 @@ background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb6-40">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">const</span> traces <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> uniqueFamilies<span class="op" style="color: #5E5E5E;
@@ -3164,9 +4404,11 @@ font-style: inherit;">map</span>((family<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">,</span> index) <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">=&gt;</span> {</span>
 <span id="cb6-41">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">const</span> familyData <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> df_final<span class="op" style="color: #5E5E5E;
@@ -3175,6 +4417,7 @@ font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">filter</span>(d <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">=&gt;</span> d<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">.</span><span class="at" style="color: #657422;
@@ -3186,6 +4429,7 @@ background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb6-42">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> {</span>
 <span id="cb6-43">      <span class="dt" style="color: #AD0000;
 background-color: null;
@@ -3204,6 +4448,7 @@ font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">map</span>(d <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">=&gt;</span> d<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">.</span><span class="at" style="color: #657422;
@@ -3221,6 +4466,7 @@ font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">map</span>(d <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">=&gt;</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">Number</span>(d<span class="op" style="color: #5E5E5E;
@@ -3262,6 +4508,7 @@ font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">map</span>(d <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">=&gt;</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">Math</span><span class="op" style="color: #5E5E5E;
@@ -3303,6 +4550,7 @@ font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">map</span>(d <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">=&gt;</span> <span class="vs" style="color: #20794D;
 background-color: null;
 font-style: inherit;">`</span><span class="sc" style="color: #5E5E5E;
@@ -3408,6 +4656,7 @@ background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb6-54">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">const</span> layout <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> {</span>
@@ -3464,6 +4713,7 @@ font-style: inherit;">autorange</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">:</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">true</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">,</span> <span class="dt" style="color: #AD0000;
@@ -3527,6 +4777,7 @@ font-style: inherit;">showlegend</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">:</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">true</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">,</span></span>
@@ -3575,6 +4826,7 @@ background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb6-65">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">const</span> config <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> {<span class="dt" style="color: #AD0000;
@@ -3583,11 +4835,13 @@ font-style: inherit;">responsive</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">:</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">true</span>}<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb6-66">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">const</span> plot <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> DOM<span class="op" style="color: #5E5E5E;
@@ -3614,6 +4868,7 @@ background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb6-68">  <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> plot<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
@@ -4383,6 +5638,7 @@ font-style: inherit;">'&lt;script type="text/javascript" async src="https://cdnj
 <span id="cb21-11">)) </span>
 <span id="cb21-12"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> plot_function(f, title<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="va" style="color: #111111;
@@ -4416,6 +5672,7 @@ background-color: null;
 font-style: inherit;">=</span> f(x)</span>
 <span id="cb21-15">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> px.line(x<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>x, y<span class="op" style="color: #5E5E5E;
@@ -4428,8 +5685,10 @@ font-style: inherit;">=</span>title)</span></code></pre></div>
 <div id="cell-34" class="cell" data-execution_count="17">
 <div class="sourceCode cell-code" id="cb22" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> f(x): <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">3</span> <span class="op" style="color: #5E5E5E;
@@ -4458,6 +5717,7 @@ font-style: inherit;">r"$3x^2 + 2x + 1$"</span>)</span></code></pre></div>
 <div class="cell">
 <div class="sourceCode cell-code hidden" id="cb23" data-startfrom="1" data-source-offset="-0" style="background: #f1f3f5;"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb23-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">function</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">f</span>(x<span class="op" style="color: #5E5E5E;
@@ -4468,6 +5728,7 @@ font-style: inherit;">,</span> b<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">,</span> c) { <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> a<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">*</span>x<span class="op" style="color: #5E5E5E;
@@ -4485,6 +5746,7 @@ font-style: inherit;">+</span> c }</span>
 background-color: null;
 font-style: inherit;">=</span> { <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">Array</span><span class="op" style="color: #5E5E5E;
@@ -4503,6 +5765,7 @@ font-style: inherit;">,</span> (_<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">,</span> i) <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">=&gt;</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
@@ -4538,6 +5801,7 @@ font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">map</span>(element <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">=&gt;</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">f</span>(element<span class="op" style="color: #5E5E5E;
@@ -4550,6 +5814,7 @@ font-style: inherit;">,</span> c))</span>
 <span id="cb23-4">{</span>
 <span id="cb23-5">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">var</span> trace1 <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> { <span class="dt" style="color: #AD0000;
@@ -4583,6 +5848,7 @@ background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb23-6">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">var</span> data <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> [trace1]<span class="op" style="color: #5E5E5E;
@@ -4590,6 +5856,7 @@ background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb23-7">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">var</span> layout <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> { <span class="dt" style="color: #AD0000;
@@ -4618,6 +5885,7 @@ font-style: inherit;">zeroline</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">:</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">false</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">,</span> }<span class="op" style="color: #5E5E5E;
@@ -4639,6 +5907,7 @@ background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb23-8">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">const</span> div <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> DOM<span class="op" style="color: #5E5E5E;
@@ -4663,6 +5932,7 @@ background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb23-10">  <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> div<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
@@ -4708,8 +5978,10 @@ font-style: inherit;">import</span> partial</span>
 <span id="cb24-2"></span>
 <span id="cb24-3"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> quad(a, b, c, x): <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> a <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">*</span> x<span class="op" style="color: #5E5E5E;
@@ -4725,8 +5997,10 @@ background-color: null;
 font-style: inherit;">+</span> c</span>
 <span id="cb24-4"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> mkquad(a, b, c): <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> partial(quad, a, b, c)</span></code></pre></div>
 </div>
 <section id="introducing-noise" class="level3">
@@ -4735,8 +6009,10 @@ font-style: inherit;">return</span> partial(quad, a, b, c)</span></code></pre></
 <div id="cell-39" class="cell" data-execution_count="19">
 <div class="sourceCode cell-code" id="cb25" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> noise(x, scale): <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> np.random.normal(scale<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>scale, size<span class="op" style="color: #5E5E5E;
@@ -4744,8 +6020,10 @@ background-color: null;
 font-style: inherit;">=</span>x.shape)</span>
 <span id="cb25-2"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> add_noise(x, mult, add): <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> x <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">*</span> (<span class="dv" style="color: #AD0000;
@@ -4806,6 +6084,7 @@ font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">map</span>(item <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">=&gt;</span> item<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">.</span><span class="at" style="color: #657422;
@@ -4821,6 +6100,7 @@ font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">map</span>(item <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">=&gt;</span> item<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">.</span><span class="at" style="color: #657422;
@@ -4831,6 +6111,7 @@ font-style: inherit;">;</span></span>
 <span id="cb27-4">{</span>
 <span id="cb27-5">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">var</span> trace1 <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> { <span class="dt" style="color: #AD0000;
@@ -4864,6 +6145,7 @@ background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb27-6">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">var</span> data <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> [trace1]<span class="op" style="color: #5E5E5E;
@@ -4871,6 +6153,7 @@ background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb27-7">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">var</span> layout <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> { <span class="dt" style="color: #AD0000;
@@ -4912,6 +6195,7 @@ background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb27-8">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">const</span> div <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> DOM<span class="op" style="color: #5E5E5E;
@@ -4936,6 +6220,7 @@ background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb27-10">  <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> div<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
@@ -5069,6 +6354,7 @@ font-style: inherit;">0.1</span>})</span>
 <span id="cb28-4">{</span>
 <span id="cb28-5">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">var</span> trace1 <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> { <span class="dt" style="color: #AD0000;
@@ -5102,6 +6388,7 @@ background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb28-6">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">var</span> trace2 <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> { <span class="dt" style="color: #AD0000;
@@ -5135,6 +6422,7 @@ background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb28-7">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">var</span> data <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> [trace1<span class="op" style="color: #5E5E5E;
@@ -5144,6 +6432,7 @@ background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb28-8">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">var</span> layout <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> { <span class="dt" style="color: #AD0000;
@@ -5172,6 +6461,7 @@ font-style: inherit;">zeroline</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">:</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">false</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">,</span> }<span class="op" style="color: #5E5E5E;
@@ -5211,6 +6501,7 @@ background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb28-9">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">const</span> div <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> DOM<span class="op" style="color: #5E5E5E;
@@ -5235,6 +6526,7 @@ background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb28-11">  <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> div<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
@@ -5276,8 +6568,10 @@ font-style: inherit;">;</span></span>
 <div id="cell-45" class="cell" data-execution_count="21">
 <div class="sourceCode cell-code" id="cb29" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> mse(preds, acts): <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> ((preds <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">-</span> acts)<span class="op" style="color: #5E5E5E;
@@ -5290,6 +6584,7 @@ font-style: inherit;">2</span>).mean()</span></code></pre></div>
 <div class="cell">
 <div class="sourceCode cell-code hidden" id="cb30" data-startfrom="1" data-source-offset="-0" style="background: #f1f3f5;"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb30-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">function</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">mse</span>(preds<span class="op" style="color: #5E5E5E;
@@ -5297,6 +6592,7 @@ background-color: null;
 font-style: inherit;">,</span> acts) {</span>
 <span id="cb30-2">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">const</span> squared_error <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> []<span class="op" style="color: #5E5E5E;
@@ -5304,8 +6600,10 @@ background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb30-3">  <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> (<span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">let</span> i<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
@@ -5325,6 +6623,7 @@ background-color: null;
 font-style: inherit;">++</span>) {</span>
 <span id="cb30-4">    <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">const</span> error <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> preds[i] <span class="op" style="color: #5E5E5E;
@@ -5346,6 +6645,7 @@ font-style: inherit;">;</span></span>
 <span id="cb30-6">  }</span>
 <span id="cb30-7">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">const</span> mse <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> squared_error<span class="op" style="color: #5E5E5E;
@@ -5356,6 +6656,7 @@ font-style: inherit;">reduce</span>((acc<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">,</span> curr) <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">=&gt;</span> acc<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">+</span>curr<span class="op" style="color: #5E5E5E;
@@ -5373,6 +6674,7 @@ background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb30-8">  <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> mse<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
@@ -5385,6 +6687,7 @@ font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">map</span>(element <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">=&gt;</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">f</span>(element<span class="op" style="color: #5E5E5E;
@@ -5490,6 +6793,7 @@ font-style: inherit;">0.1</span>})</span>
 <span id="cb30-14">{</span>
 <span id="cb30-15">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">const</span> loss <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
@@ -5499,6 +6803,7 @@ background-color: null;
 font-style: inherit;">,</span> y_data)</span>
 <span id="cb30-16">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">var</span> trace1 <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> { <span class="dt" style="color: #AD0000;
@@ -5532,6 +6837,7 @@ background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb30-17">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">var</span> trace2 <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> { <span class="dt" style="color: #AD0000;
@@ -5565,6 +6871,7 @@ background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb30-18">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">var</span> data <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> [trace1<span class="op" style="color: #5E5E5E;
@@ -5574,6 +6881,7 @@ background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb30-19">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">var</span> layout <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> { <span class="dt" style="color: #AD0000;
@@ -5614,6 +6922,7 @@ font-style: inherit;">zeroline</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">:</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">false</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">,</span> }<span class="op" style="color: #5E5E5E;
@@ -5653,6 +6962,7 @@ background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb30-20">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">const</span> div <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> DOM<span class="op" style="color: #5E5E5E;
@@ -5677,6 +6987,7 @@ background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb30-22">  <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> div<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
@@ -5738,6 +7049,7 @@ font-style: inherit;">;</span></span>
 <div id="cell-49" class="cell" data-execution_count="22">
 <div class="sourceCode cell-code" id="cb31" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> quad_mse(params):</span>
 <span id="cb31-2">    f <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -5746,6 +7058,7 @@ background-color: null;
 font-style: inherit;">*</span>params)</span>
 <span id="cb31-3">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> mse(f(x), y)</span></code></pre></div>
 </div>
 <p>This function takes the coefficients (a, b, c), creates a quadratic function, and then returns the MSE of the predicted values against the actual noisy data.</p>
@@ -5811,6 +7124,7 @@ font-style: inherit;">print</span>(abc.grad)</span></code></pre></div>
 <div id="cell-61" class="cell" data-execution_count="28">
 <div class="sourceCode cell-code" id="cb41" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">with</span> torch.no_grad():</span>
 <span id="cb41-2">    abc <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -5838,8 +7152,10 @@ font-style: inherit;">print</span>(loss)</span></code></pre></div>
 <div id="cell-63" class="cell" data-execution_count="29">
 <div class="sourceCode cell-code" id="cb43" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> i <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">range</span>(<span class="dv" style="color: #AD0000;
@@ -5851,6 +7167,7 @@ font-style: inherit;">=</span> quad_mse(abc)</span>
 <span id="cb43-3">    loss.backward()</span>
 <span id="cb43-4">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">with</span> torch.no_grad():</span>
 <span id="cb43-5">        abc <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -5906,6 +7223,7 @@ Step 4; loss: 4.10 </code></pre>
 <div id="cell-66" class="cell" data-execution_count="31">
 <div class="sourceCode cell-code" id="cb47" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> rectified_linear(m, b, x):</span>
 <span id="cb47-2">    y <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -5916,6 +7234,7 @@ background-color: null;
 font-style: inherit;">+</span> b</span>
 <span id="cb47-3">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> torch.clip(y, <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">min</span><span class="op" style="color: #5E5E5E;
@@ -5936,6 +7255,7 @@ font-style: inherit;">1</span>))</span></code></pre></div>
 <div class="cell">
 <div class="sourceCode cell-code hidden" id="cb49" data-startfrom="1" data-source-offset="-0" style="background: #f1f3f5;"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb49-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">function</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">rectified_linear</span>(m<span class="op" style="color: #5E5E5E;
@@ -5945,6 +7265,7 @@ background-color: null;
 font-style: inherit;">,</span> x) {</span>
 <span id="cb49-2">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">const</span> y <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> m<span class="op" style="color: #5E5E5E;
@@ -5956,6 +7277,7 @@ background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb49-3">  <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">Math</span><span class="op" style="color: #5E5E5E;
@@ -6035,6 +7357,7 @@ font-style: inherit;">0.1</span>})</span>
 <span id="cb49-7">{</span>
 <span id="cb49-8">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">const</span> _y <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> x<span class="op" style="color: #5E5E5E;
@@ -6043,6 +7366,7 @@ font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">map</span>(element <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">=&gt;</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">rectified_linear</span>(m<span class="op" style="color: #5E5E5E;
@@ -6054,6 +7378,7 @@ background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb49-9">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">var</span> trace1 <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> {</span>
@@ -6094,6 +7419,7 @@ background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb49-15">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">var</span> data <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> [trace1]<span class="op" style="color: #5E5E5E;
@@ -6101,6 +7427,7 @@ background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb49-16">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">var</span> layout <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> {</span>
@@ -6158,6 +7485,7 @@ background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb49-21">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">const</span> div <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> DOM<span class="op" style="color: #5E5E5E;
@@ -6182,6 +7510,7 @@ background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb49-23">  <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> div<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
@@ -6223,9 +7552,11 @@ font-style: inherit;">;</span></span>
 <div id="cell-71" class="cell" data-execution_count="32">
 <div class="sourceCode cell-code" id="cb50" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> double_relu(m1, b1, m2, b2, x):</span>
 <span id="cb50-2">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> rectified_linear(m1, b1, x) <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">+</span> rectified_linear(m2, b2, x)</span></code></pre></div>
@@ -6247,6 +7578,7 @@ font-style: inherit;">1</span>))</span></code></pre></div>
 <div class="cell">
 <div class="sourceCode cell-code hidden" id="cb52" data-startfrom="1" data-source-offset="-0" style="background: #f1f3f5;"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb52-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">function</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">double_relu</span>(m1<span class="op" style="color: #5E5E5E;
@@ -6260,6 +7592,7 @@ background-color: null;
 font-style: inherit;">,</span>x) {</span>
 <span id="cb52-2">  <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">rectified_linear</span>(m1<span class="op" style="color: #5E5E5E;
@@ -6403,6 +7736,7 @@ font-style: inherit;">0.1</span>})</span>
 <span id="cb52-8">{</span>
 <span id="cb52-9">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">const</span> _y <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> x<span class="op" style="color: #5E5E5E;
@@ -6411,6 +7745,7 @@ font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">map</span>(element <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">=&gt;</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">double_relu</span>(m1<span class="op" style="color: #5E5E5E;
@@ -6426,6 +7761,7 @@ background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb52-10">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">var</span> trace1 <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> {</span>
@@ -6466,6 +7802,7 @@ background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb52-16">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">var</span> data <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> [trace1]<span class="op" style="color: #5E5E5E;
@@ -6473,6 +7810,7 @@ background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb52-17">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">var</span> layout <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> {</span>
@@ -6530,6 +7868,7 @@ background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb52-22">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">const</span> div <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> DOM<span class="op" style="color: #5E5E5E;
@@ -6554,6 +7893,7 @@ background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb52-24">  <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> div<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
@@ -6709,14 +8049,18 @@ background-color: null;
 font-style: inherit;">'bear'</span>)</span>
 <span id="cb3-3"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">not</span> path.exists():</span>
 <span id="cb3-4">    path.mkdir()</span>
 <span id="cb3-5">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> o <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> bear_types:</span>
 <span id="cb3-6">        dest <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -7252,13 +8596,17 @@ background-color: null;
 font-style: inherit;">=</span> get_image_files(path)</span>
 <span id="cb16-2"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> idx <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> cleaner.delete(): cleaner.fns[idx].unlink()</span>
 <span id="cb16-3"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> idx, cat <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> cleaner.change(): shutil.move(<span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">str</span>(cleaner.fns[idx]), path<span class="op" style="color: #5E5E5E;
@@ -7449,6 +8797,7 @@ font-style: inherit;">=</span> learn.dls.vocab</span></code></pre></div>
 <div id="cell-51" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb27" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> classify_image(img):</span>
 <span id="cb27-2">    img <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -7458,6 +8807,7 @@ background-color: null;
 font-style: inherit;">=</span> learn.predict(img)</span>
 <span id="cb27-4">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">dict</span>(<span class="bu" style="color: null;
@@ -7740,6 +9090,7 @@ font-style: inherit;">=</span> DDGS()</span>
 <span id="cb2-5"></span>
 <span id="cb2-6"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> search_images(term, max_images<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
@@ -7758,6 +9109,7 @@ background-color: null;
 font-style: inherit;">'"</span>)</span>
 <span id="cb2-8">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> L(ddgs.images(keywords<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>term, max_results<span class="op" style="color: #5E5E5E;
@@ -7918,8 +9270,10 @@ font-style: inherit;">import</span> sleep</span>
 <span id="cb9-4"></span>
 <span id="cb9-5"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> o <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> searches:</span>
 <span id="cb9-6">    dest <span class="op" style="color: #5E5E5E;
 background-color: null;

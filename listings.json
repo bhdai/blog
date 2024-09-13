@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/nlp-beginner/index.html",
       "/posts/titanic_competition/index.html",
       "/posts/2024-07-28-from-neuron-to-gradient/index.html",
       "/posts/2024-07-07-from-notebook-to-web-app/index.html",
