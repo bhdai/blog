@@ -1,31 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://buidai123.github.io/blog/posts/nlp-beginner/index.html</loc>
-    <lastmod>2024-09-13T14:50:41.980Z</lastmod>
+    <loc>https://buidai123.github.io/blog/posts/2024-11-12-random-forest/index.html</loc>
+    <lastmod>2024-11-12T16:29:23.420Z</lastmod>
   </url>
   <url>
-    <loc>https://buidai123.github.io/blog/posts/2024-07-28-from-neuron-to-gradient/index.html</loc>
-    <lastmod>2024-09-13T03:07:54.574Z</lastmod>
-  </url>
-  <url>
-    <loc>https://buidai123.github.io/blog/posts/2024-06-30-your-deep-learning-journey/index.html</loc>
-    <lastmod>2024-09-13T03:07:54.324Z</lastmod>
-  </url>
-  <url>
-    <loc>https://buidai123.github.io/blog/about.html</loc>
-    <lastmod>2024-09-13T03:07:54.320Z</lastmod>
-  </url>
-  <url>
-    <loc>https://buidai123.github.io/blog/index.html</loc>
-    <lastmod>2024-09-13T03:07:54.320Z</lastmod>
+    <loc>https://buidai123.github.io/blog/posts/titanic_competition/index.html</loc>
+    <lastmod>2024-10-22T02:22:53.418Z</lastmod>
   </url>
   <url>
     <loc>https://buidai123.github.io/blog/posts/2024-07-07-from-notebook-to-web-app/index.html</loc>
     <lastmod>2024-09-13T03:07:54.340Z</lastmod>
   </url>
   <url>
-    <loc>https://buidai123.github.io/blog/posts/titanic_competition/index.html</loc>
+    <loc>https://buidai123.github.io/blog/index.html</loc>
+    <lastmod>2024-09-13T03:07:54.320Z</lastmod>
+  </url>
+  <url>
+    <loc>https://buidai123.github.io/blog/about.html</loc>
+    <lastmod>2024-09-13T03:07:54.320Z</lastmod>
+  </url>
+  <url>
+    <loc>https://buidai123.github.io/blog/posts/2024-06-30-your-deep-learning-journey/index.html</loc>
+    <lastmod>2024-09-13T03:07:54.324Z</lastmod>
+  </url>
+  <url>
+    <loc>https://buidai123.github.io/blog/posts/2024-07-28-from-neuron-to-gradient/index.html</loc>
     <lastmod>2024-09-13T03:07:54.574Z</lastmod>
+  </url>
+  <url>
+    <loc>https://buidai123.github.io/blog/posts/nlp-beginner/index.html</loc>
+    <lastmod>2024-09-22T01:52:07.499Z</lastmod>
   </url>
 </urlset>
