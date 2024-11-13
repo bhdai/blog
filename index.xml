@@ -264,7 +264,7 @@ font-style: inherit;">;</span></span></code></pre></div>
 </div>
 </div>
 </div>
-<p>we see a stark difference: about a 20% survival rate for males and 75% for females, there are roughly twice as many males as females. If you base a model solely on sex, predicting survival becomes surprisingly effective: men likely didn’t survive, while who man likely did this division by sex exemplifies a binary split - it simple divide the data into two distinct groups.</p>
+<p>we see a stark difference: about a 20% survival rate for males and 75% for females, there are roughly twice as many males as females. If you base a model solely on sex, predicting survival becomes surprisingly effective: men likely didn’t survive, while woman likely did this division by sex exemplifies a binary split - it simple divide the data into two distinct groups.</p>
 <p>To test the efficacy of this basic model, we first split our data into training and test dataset and encode our categorical variables.</p>
 <div id="cell-21" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><span class="im" style="color: #00769E;
