@@ -412,7 +412,7 @@ gtag('config', 'G-6JR4N915S6', { 'anonymize_ip': true});
 <h3 class="anchored" data-anchor-id="step-1-tokenization">Step 1: Tokenization</h3>
 <p>Tokenizations involves splitting the text into smaller units called tokens. Tokens can be words, subwords or even character depending on the tokenization technique. For simplicity let’s think tokens are words</p>
 <p>Once we split the text into tokens, we compile a list of all unique tokens, this list is known as the <code>vocabulary</code>. Every token in this vocabulary gets assigned a unique number. This mapping from tokens to numbers allows a neural network to process the text data.</p>
-<p>However, there’s a catch! The larger the vocabulary, the more memory and data you need for training. To keep thing manageable, modern tokenization techniques often break words into subwords. which help to minimize the vocabulary size. This process of breaking text into smaller units is called tokenization, and the smaller units are referred as tokens.</p>
+<p>However, there’s a catch! The larger the vocabulary, the more memory and data you need for training. To keep thing manageable, modern tokenization techniques often break words into subwords. Which help to minimize the vocabulary size. This process of breaking text into smaller units is called tokenization, and the smaller units are referred as tokens.</p>
 </section>
 <section id="step-2-numericalization" class="level3">
 <h3 class="anchored" data-anchor-id="step-2-numericalization">Step 2: Numericalization</h3>
@@ -484,7 +484,7 @@ gtag('config', 'G-6JR4N915S6', { 'anonymize_ip': true});
 </div>
 </div>
 <p>In this vocabulary, “platypus” gets its own token, but “ornithorhynchus” is split into smaller parts. Each of these tokens corresponds to an entry in a predefined vocabulary list created during the model’s pre-training. Somewhere in that list, we’ll find “A”, and it will have a specific number. This process of converting tokens to numbers is called numericalization. To accomplish this for our dataset, we create a function that tokenizes the “input” field:</p>
-<div id="cell-18" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:39.811661Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:39.811196Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:39.817274Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:39.816323Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:39.811600Z&quot;}" data-trusted="true" data-execution_count="9">
+<div id="cell-18" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:39.811661Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:39.811196Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:39.817274Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:39.816323Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:39.811600Z&quot;}" data-trusted="true">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> tok_func(x): <span class="cf">return</span> tokz(x[<span class="st">"input"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Since tokenization can be time-consuming, especially for large dataset. Leveraging parallel processing can save time. we’ll utilize batching to process multiple entries simultaneously</p>
@@ -649,7 +649,7 @@ gtag('config', 'G-6JR4N915S6', { 'anonymize_ip': true});
 </div>
 </div>
 </div>
-<p>To compute the Pearson correlation coefficient, Numpy provieds the <code>corrcoef()</code> function, which return a correlation matrix:</p>
+<p>To compute the Pearson correlation coefficient, Numpy provides the <code>corrcoef()</code> function, which return a correlation matrix:</p>
 <div id="cell-30" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:43.860736Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:43.860257Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:43.870686Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:43.869672Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:43.860695Z&quot;}" data-trusted="true" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>np.set_printoptions(precision<span class="op">=</span><span class="dv">2</span>, suppress<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>np.corrcoef(housing, rowvar<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -713,7 +713,7 @@ gtag('config', 'G-6JR4N915S6', { 'anonymize_ip': true});
 </div>
 </div>
 </div>
-<p>This plot reveals interesting insights and anomalies. Certain houses have many rooms but lower incomes, potentialy indicate shared accommodations. Pearson’s <code>r</code> can be sensitive to outliers, and removing them can significatly change the correlation.</p>
+<p>This plot reveals interesting insights and anomalies. Certain houses have many rooms but lower incomes, potentially indicate shared accommodations. Pearson’s <code>r</code> can be sensitive to outliers, and removing them can significantly change the correlation.</p>
 <div id="cell-42" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:44.547839Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:44.547515Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:44.855975Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:44.854993Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:44.547807Z&quot;}" data-trusted="true" data-execution_count="21">
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>subset <span class="op">=</span> housing[housing.AveRooms <span class="op">&lt;</span> <span class="dv">15</span>]</span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>show_corr(subset, <span class="st">'MedInc'</span>, <span class="st">'AveRooms'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -748,7 +748,7 @@ gtag('config', 'G-6JR4N915S6', { 'anonymize_ip': true});
 </div>
 </div>
 </div>
-<p>To keep track of our training progress, it’s importaint to report the Pearson correlation coefficient after each epoch. Hugging Face’s Trainer API expects a dictionary as output, with keys labeling each metrics. Here’s how you can define a function to calculate and return the Pearson correlation coefficient:</p>
+<p>To keep track of our training progress, it’s important to report the Pearson correlation coefficient after each epoch. Hugging Face’s Trainer API expects a dictionary as output, with keys labeling each metrics. Here’s how you can define a function to calculate and return the Pearson correlation coefficient:</p>
 <div id="cell-48" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:45.448445Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:45.448133Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:45.453322Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:45.452366Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:45.448403Z&quot;}" data-trusted="true" data-execution_count="24">
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> corr_d(eval_pred): <span class="cf">return</span> {<span class="st">'pearson'</span>: corr(<span class="op">*</span>eval_pred)}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>

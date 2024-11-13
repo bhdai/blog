@@ -566,7 +566,7 @@ dtype: int64</code></pre>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>modes <span class="op">=</span> trn_df.mode().iloc[<span class="dv">0</span>]</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>trn_df.fillna(modes, inplace<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Here, we’re fillng the missing <code>Cabin</code> and two missing <code>Embarded</code> value with the most frequently occurring value (mode). The <code>mode</code> method in Pandas finds the most common value(s) in DataFrame or Series. If multiple modes exist, it return all of them</p>
+<p>Here, we’re filling the missing <code>Cabin</code> and two missing <code>Embarded</code> value with the most frequently occurring value (mode). The <code>mode</code> method in Pandas finds the most common value(s) in DataFrame or Series. If multiple modes exist, it return all of them</p>
 </section>
 </section>
 <section id="outlier-detection-and-handling" class="level3">
@@ -689,7 +689,7 @@ dtype: int64</code></pre>
 </div>
 </div>
 </div>
-<p>To fix this, we can take the logarithm of the <code>Fare</code> values, which heps to compress the range and make the distribution more reasonable. Since the <code>Fare</code> column contains zeros and <code>log(0)</code> is undefined, we’ll add 1 to all values before applying the logarithm</p>
+<p>To fix this, we can take the logarithm of the <code>Fare</code> values, which helps to compress the range and make the distribution more reasonable. Since the <code>Fare</code> column contains zeros and <code>log(0)</code> is undefined, we’ll add 1 to all values before applying the logarithm</p>
 <div id="cell-18" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>trn_df[<span class="st">"LogFare"</span>] <span class="op">=</span> np.log1p(trn_df[<span class="st">'Fare'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -704,12 +704,12 @@ dtype: int64</code></pre>
 </div>
 </div>
 <p>Alright it’s look better now!</p>
-<p>And that’s it for data cleaning! We’ve handled missing values and outliers, setting the stage for effective model training, Next up, we’ll dive into feature engineering, whish is where the fun really begins!</p>
+<p>And that’s it for data cleaning! We’ve handled missing values and outliers, setting the stage for effective model training, Next up, we’ll dive into feature engineering, which is where the fun really begins!</p>
 </section>
 <section id="feature-engineering" class="level3">
 <h3 class="anchored" data-anchor-id="feature-engineering">Feature Engineering</h3>
 <p>Alright, buckle up ’cause we’re about to embark on a feature engineering adventure!</p>
-<p>First up, we’re gonna create a super coll <code>FamilySize</code> feature. Why? because family matter, especially when you’re trying to survive a shipwreck!</p>
+<p>First up, we’re gonna create a super coll <code>FamilySize</code> feature. Why? Because family matter, especially when you’re trying to survive a shipwreck!</p>
 <div id="cell-22" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>trn_df[<span class="st">"FamilySize"</span>] <span class="op">=</span> trn_df[<span class="st">"SibSp"</span>] <span class="op">+</span> trn_df[<span class="st">"Parch"</span>] <span class="op">+</span> <span class="dv">1</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>trn_df[<span class="st">"IsAlone"</span>] <span class="op">=</span> (trn_df[<span class="st">"FamilySize"</span>] <span class="op">==</span> <span class="dv">1</span>).astype(<span class="bu">int</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -759,7 +759,7 @@ dtype: int64</code></pre>
 </div>
 </div>
 </div>
-<p>Holy shipwreck, Batman! look at those survival rates! Poor Mr.1 is going down with the ship, while Mss 2 and Mrs.&nbsp;3 are living the best lifeboat life.</p>
+<p>Holy shipwreck, Batman! Look at those survival rates! Poor Mr.1 is going down with the ship, while Mss 2 and Mrs.&nbsp;3 are living the best lifeboat life.</p>
 <p>It captures important historical context about the Titanic disaster, particularly the “women and children first” policy during evacuation.</p>
 <p>When we use this feature in our model, it should be able to learn these different survival probabilities associated with each title, potentially improving its predictive accuracy.</p>
 <p>Next, we’re gonna group these passengers by age</p>
@@ -803,7 +803,7 @@ dtype: int64</code></pre>
 <span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>indep_cols <span class="op">=</span> [<span class="st">'Title'</span>, <span class="st">'Age'</span>, <span class="st">'SibSp'</span>, <span class="st">'Parch'</span>, <span class="st">'LogFare'</span>, <span class="st">'FamilySize'</span>, <span class="st">'IsAlone'</span>] <span class="op">+</span> added_cols</span>
 <span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>t_dep <span class="op">=</span> tensor(trn_df[<span class="st">"Survived"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>And there you have it, folks! We’ve engineeried these features faster than the Titanic sank(too soon?). Your models gonna love these new features more than Rose loved Jack. Now go forth and predict those survival rates!</p>
+<p>And there you have it, folks! We’ve engineered these features faster than the Titanic sank(too soon?). Your models gonna love these new features more than Rose loved Jack. Now go forth and predict those survival rates!</p>
 </section>
 </section>
 <section id="build-a-deep-learning-model-from-scratch-lets-get-our-hands-dirty" class="level2">
@@ -839,7 +839,7 @@ dtype: int64</code></pre>
 <p>Why StandardScaler, you ask? Well, it’s got some neat perks:</p>
 <ol type="1">
 <li>It handles outliers like a boss. Max scaling can sometimes squish all your other values when one outliers decides to go crazy.</li>
-<li>it’s a gradient descent’s best friend. when you’re dealing with neural networks, having features one a similar scale is like having a smooth road for your optimization on cruise on.</li>
+<li>It’s a gradient descent’s best friend. When you’re dealing with neural networks, having features one a similar scale is like having a smooth road for your optimization on cruise on.</li>
 </ol>
 <p>Let’s wave our magic wand and see what happens:</p>
 <div id="cell-41" class="cell" data-execution_count="19">
@@ -890,12 +890,12 @@ dtype: int64</code></pre>
 <span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>trn_indep, val_indep <span class="op">=</span> t_indep[trn_split], t_indep[val_split]</span>
 <span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>trn_dep, val_dep <span class="op">=</span> t_dep[trn_split], t_dep[val_split]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>And there you have it, folks! We’ve got everything we need to start our training montage. Get ready, because we’re about to embark on a wild ride through the world of deep learning. It’s gooing to be a fun one!</p>
+<p>And there you have it, folks! We’ve got everything we need to start our training montage. Get ready, because we’re about to embark on a wild ride through the world of deep learning. It’s going to be a fun one!</p>
 </section>
 </section>
 <section id="the-model-architecture-our-neural-blueprint" class="level2">
 <h2 class="anchored" data-anchor-id="the-model-architecture-our-neural-blueprint">The Model Architecture: Our Neural Blueprint</h2>
-<p>First things first, let’s create a a function to initialize our coefficients. Think of this as laying the foundation for our neural masterpiece</p>
+<p>First things first, let’s create a function to initialize our coefficients. Think of this as laying the foundation for our neural masterpiece</p>
 <div id="cell-46" class="cell" data-execution_count="21">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> init_coeffs(n_input, n_hidden<span class="op">=</span><span class="dv">10</span>):</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    torch.manual_seed(<span class="dv">442</span>)</span>
@@ -1001,10 +1001,10 @@ Validation Accuracy: 0.8315</code></pre>
 </div>
 </div>
 <p>And the results are in!</p>
-<p>Well, well, well! look at that! our little neural network is showing some serious potential. We’re seeing the losses decrease over time for both our training and validation sets, which is exactly what we want. It means our model is learning!</p>
+<p>Well, well, well! Look at that! Our little neural network is showing some serious potential. We’re seeing the losses decrease over time for both our training and validation sets, which is exactly what we want. It means our model is learning!</p>
 <p>And that validation accuracy? 83.15%! Not too shabby for a model we built from scratch, right? In the world of the Titanic competition, that’s a pretty solid score.(not count those who use extra data to train their model, we all know that).</p>
 <p>But the real test is yet to come. How will our model perform on the unseen test data? Let’s find out!</p>
-<p>After preprocessing our test data(just like we did with our trainding data), we make our predictions:</p>
+<p>After preprocessing our test data(just like we did with our training data), we make our predictions:</p>
 <div id="cell-61" class="cell" data-execution_count="28">
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Load and preprocess test data</span></span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>test_df <span class="op">=</span> pd.read_csv(path <span class="op">/</span> <span class="st">"test.csv"</span>)</span>
@@ -1059,12 +1059,12 @@ Name: count, dtype: int64</code></pre>
 <p>This little beauty is like our previous model’s cooler, more sophisticated cousin. It’s still simple, but it’s packing some extra punch:</p>
 <ul>
 <li>We’ve got two fully connected layers (<code>fc1</code> and <code>fc2</code>), just like before.</li>
-<li>But wait, what’s that <code>bn1</code>? That’s batch normalization layer! it’s like traffic cop for our data, making sure everything flows smoothly between layers.</li>
+<li>But wait, what’s that <code>bn1</code>? That’s batch normalization layer! It’s like traffic cop for our data, making sure everything flows smoothly between layers.</li>
 <li>We’re still using ReLU and sigmoid activations, because hey, if it ain’t broke, don’t fix it!</li>
 </ul>
 <section id="training-our-new-model-the-pytorch-way" class="level3">
 <h3 class="anchored" data-anchor-id="training-our-new-model-the-pytorch-way">Training Our New Model: The Pytorch Way</h3>
-<p>Now, let’s look at our sniny new training function:</p>
+<p>Now, let’s look at our new training function:</p>
 <div id="cell-69" class="cell" data-execution_count="32">
 <div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> train_model(model, X_train, y_train, X_val, y_val, epochs<span class="op">=</span><span class="dv">300</span>, lr<span class="op">=</span><span class="fl">0.01</span>, batch_size<span class="op">=</span><span class="dv">32</span>):</span>
 <span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>    optimizer <span class="op">=</span> torch.optim.Adam(model.parameters(), lr<span class="op">=</span>lr, weight_decay<span class="op">=</span><span class="fl">0.01</span>)  <span class="co"># L2 regularization</span></span>
@@ -1112,8 +1112,8 @@ Name: count, dtype: int64</code></pre>
 </div>
 <p>This function is like a personal trainer for our model. Here’s what’s new:</p>
 <ul>
-<li>We’re using Adam optimizer - it’s like giving our model a smart personal coach that adapts the trainign intensity for each parameter and ’cause this post is a bit too long so i think i will explain Adam optimizer in the different blog post.</li>
-<li>We’ve added a learning rate scheduler. It’s like adjusting the difficulty of our model’s workout every 50 epochs. Maybe i’ll explain this in another blog post too, it worth an blog post to talk about this.</li>
+<li>We’re using Adam optimizer - it’s like giving our model a smart personal coach that adapts the training intensity for each parameter and ’cause this post is a bit too long so i think i will explain Adam optimizer in the different blog post.</li>
+<li>We’ve added a learning rate scheduler. It’s like adjusting the difficulty of our model’s workout every 50 epochs. Maybe I’ll explain this in another blog post too, it worth an blog post to talk about this.</li>
 <li>We’re using binary cross-entropy loss now, which is perfect for our binary classification problem.</li>
 </ul>
 <p>Now, we have the forward pass:</p>
@@ -1174,7 +1174,7 @@ Early stopping at epoch 29
 Validation Accuracy: 0.8268</code></pre>
 </div>
 </div>
-<p>Our model decided to call it quits after just 29 epochs. Our validation accuracy is …82.68%? That’s actually a bit lower that our previous model. But don’t panic! Sometimes, a slightly lower validation accuracy can lead to better performance on unseen data. It’s like how sometimes taking it easyy in practice can lead to better performance in the big game.</p>
+<p>Our model decided to call it quits after just 29 epochs. Our validation accuracy is …82.68%? That’s actually a bit lower that our previous model. But don’t panic! Sometimes, a slightly lower validation accuracy can lead to better performance on unseen data. It’s like how sometimes taking it easy in practice can lead to better performance in the big game.</p>
 <p>alright let submit to kaggle to see how our model performs on test set, shall we!</p>
 <div id="cell-73" class="cell" data-execution_count="34">
 <div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Load and preprocess test data</span></span>
@@ -1212,7 +1212,7 @@ Survived
 Name: count, dtype: int64</code></pre>
 </div>
 </div>
-<p>alright everythig seems good till now, let’s make our submit shall we?</p>
+<p>Alright everything seems good till now, let’s make our submit shall we?</p>
 <div id="cell-79" class="cell" data-execution_count="37">
 <div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>sub_df.to_csv(<span class="st">"sub_ver3.csv"</span>, index<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>

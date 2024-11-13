@@ -285,7 +285,7 @@ gtag('config', 'G-6JR4N915S6', { 'anonymize_ip': true});
 
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
-<p>Hey there, fellow data adventurers! 👋 It’s been a couple of week since my last post - blame exams and and obsessive quest to tweak every configuration setting for my workflow (which is turned into a week-long habit hole - i regret nothing). But today, I’m excited to dive back into the world of AI and share my latest escapades from <a href="https://youtu.be/hBBOjCiFcuo?si=dfuUYTPelGOYCogb">Lesson 3</a> of the FastAI course taught by the indomitable Jeremy Horawd. Spoiler alert: it’s packed with enough neural wonders to make your brain do a happy dance.🕺</p>
+<p>Hey there, fellow data adventurers! 👋 It’s been a couple of week since my last post - blame exams and obsessive quest to tweak every configuration setting for my workflow (which is turned into a week-long habit hole - i regret nothing). But today, I’m excited to dive back into the world of AI and share my latest escapades from <a href="https://youtu.be/hBBOjCiFcuo?si=dfuUYTPelGOYCogb">Lesson 3</a> of the FastAI course taught by the indomitable Jeremy Horawd. Spoiler alert: it’s packed with enough neural wonders to make your brain do a happy dance.🕺</p>
 <p>In the coming post, I’ll guide you through:</p>
 <ul>
 <li>Picking of right AI model that’s just right for you</li>
@@ -469,7 +469,7 @@ gtag('config', 'G-6JR4N915S6', { 'anonymize_ip': true});
 </table>
 </div>
 </div>
-<p>Alright after about 2 minutes, we hit a 7% error rate. Not too shabby! But here’s the catch: ResNet34 is like the reliable old family car of neuron networks - good but not the fastest on the block. to spice thing up, we need to find a better, more turbo-changed model🏎️</p>
+<p>Alright after about 2 minutes, we hit a 7% error rate. Not too shabby! But here’s the catch: ResNet34 is like the reliable old family car of neuron networks - good but not the fastest on the block. To spice thing up, we need to find a better, more turbo-changed model🏎️</p>
 <section id="time-to-upgrade-diving-into-the-model-jungle" class="level3">
 <h3 class="anchored" data-anchor-id="time-to-upgrade-diving-into-the-model-jungle">Time to Upgrade: Diving into the Model Jungle</h3>
 <p>There are zillion architectures in the Pytorch image model library - ok, maybe not a zillion, but a lot! Most are mathematical functions like RELUs(Rectified Linear Units), which we’ll get into shortly. So, which model should we choose? It boil down to three things:</p>
@@ -482,7 +482,7 @@ gtag('config', 'G-6JR4N915S6', { 'anonymize_ip': true});
 <section id="the-which-image-model-is-best-notebook" class="level3">
 <h3 class="anchored" data-anchor-id="the-which-image-model-is-best-notebook">The “Which Image Model is Best?” Notebook</h3>
 <p>Check out this gem by Jeremy Howard: <a href="https://www.kaggle.com/code/jhoward/which-image-models-are-best/">Which image models are best</a>. It’s a treasure trove for finding the perfect architecture, and i highly recommend you go to his notebook read it and you should totally upvote it because Jeremy rocks.</p>
-<p>i just copy the plot into here for so you can look at that quickly (but remember to give him a upvote).</p>
+<p>I just copy the plot into here for so you can look at that quickly (but remember to give him a upvote).</p>
 <div class="cell">
 <div class="sourceCode cell-code hidden" id="cb6" data-startfrom="1" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>Plotly <span class="op">=</span> <span class="pp">require</span>(<span class="st">'https://cdn.plot.ly/plotly-latest.min.js'</span>)<span class="op">;</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>df_results <span class="op">=</span> <span class="fu">FileAttachment</span>(<span class="st">"results-imagenet.csv"</span>)<span class="op">.</span><span class="fu">csv</span>()</span>
@@ -1101,7 +1101,7 @@ gtag('config', 'G-6JR4N915S6', { 'anonymize_ip': true});
 <section id="whats-all-this-stuff" class="level3">
 <h3 class="anchored" data-anchor-id="whats-all-this-stuff">What’s All This Stuff?</h3>
 <p>Alright, there’s a lot to digest here. Basically, the model is structured in layers upon layers. Here’s the breakdown:</p>
-<p><strong>TimmBody</strong>: this contains most of the model architecture. Inside the TimmBody. you’ll find:</p>
+<p><strong>TimmBody</strong>: this contains most of the model architecture. Inside the TimmBody. You’ll find:</p>
 <ul>
 <li><strong>Model</strong>: The main model components.</li>
 <li><strong>Stem</strong>: The initial layers that process the raw input.</li>
@@ -1309,9 +1309,9 @@ tensor([-0.4049, -0.7419, -0.4234, -0.1651, -0.3027, -0.1899, -0.5534, -0.6270,
 </div>
 </div>
 </div>
-<p>What we want to do here is simple: imageine we don’t know the true mathematical function, and we’re trying to recreate it from some data. This is easier than trying to figure out if an image contains a basset hound or your grandma’s cat. Here’s the real function, and we’re going to try to mimic it using lot’s of different quadratic equations.</p>
+<p>What we want to do here is simple: imagine we don’t know the true mathematical function, and we’re trying to recreate it from some data. This is easier than trying to figure out if an image contains a basset hound or your grandma’s cat. Here’s the real function, and we’re going to try to mimic it using lot’s of different quadratic equations.</p>
 <p><strong>Creating Quadratics on Demand</strong></p>
-<p>In Python, this magical thing called <code>partial</code> allows us to fix some values of a function and crete variation of it. It’s like having a playlist of your favorite songs, but you can change he lyric any time!</p>
+<p>In Python, this magical thing called <code>partial</code> allows us to fix some values of a function and create variation of it. It’s like having a playlist of your favorite songs, but you can change he lyric any time!</p>
 <div id="cell-37" class="cell" data-execution_count="18">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> functools <span class="im">import</span> partial</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -1544,7 +1544,7 @@ tensor([-0.4049, -0.7419, -0.4234, -0.1651, -0.3027, -0.1899, -0.5534, -0.6270,
 <pre><code>tensor([-7.6934, -0.4701, -2.8031])</code></pre>
 </div>
 </div>
-<p>Voila! You’ve got the gradients or slopes. Theyy tell us how much the loss changes if you tweak each parameter-perfect for finding the optimal values.</p>
+<p>Voila! You’ve got the gradients or slopes. They tell us how much the loss changes if you tweak each parameter-perfect for finding the optimal values.</p>
 </section>
 <section id="updating-parameters-using-gradients" class="level3">
 <h3 class="anchored" data-anchor-id="updating-parameters-using-gradients">Updating Parameters Using Gradients</h3>
@@ -1563,7 +1563,7 @@ tensor([-0.4049, -0.7419, -0.4234, -0.1651, -0.3027, -0.1899, -0.5534, -0.6270,
 </section>
 <section id="automating-the-gradient-descent" class="level3">
 <h3 class="anchored" data-anchor-id="automating-the-gradient-descent">Automating the Gradient Descent</h3>
-<p>Why do it manually when you’er a Pytorch Jedi? Here’s a loop to handle multiple steps of gradient descent:</p>
+<p>Why do it manually when you’re a Pytorch Jedi? Here’s a loop to handle multiple steps of gradient descent:</p>
 <div id="cell-63" class="cell" data-execution_count="29">
 <div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>):</span>
 <span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>    loss <span class="op">=</span> quad_mse(abc)</span>

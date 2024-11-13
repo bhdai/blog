@@ -316,7 +316,7 @@ window.Quarto = {
 <pre><code></code></pre>
 </div>
 </div>
-<p>I’ve previously detailed the intricacies of processing the Titanic dataset in a separate blog post which you might find useful. Fow now, let’s breeze through some basic data processing steps without going into too much detail:</p>
+<p>I’ve previously detailed the intricacies of processing the Titanic dataset in a separate blog post which you might find useful. For now, let’s breeze through some basic data processing steps without going into too much detail:</p>
 <div id="cell-9" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> proc_data(df):</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'Fare'</span>] <span class="op">=</span> df.Fare.fillna(<span class="dv">0</span>)</span>
@@ -457,7 +457,7 @@ dtype: int8</code></pre>
 <pre><code>0.4718087395209973</code></pre>
 </div>
 </div>
-<p>Lower scores indicates better splits, with <code>Sex</code> outperforming <code>LogFare</code>. But how can we find a best split point i mean we have to try ourself right? In every values and see if the score improve or not right, well that was pretty inefficient. It would be nice if we could find some automatic wway to do al that. Well, of course we can. If we want to find the best split point for <code>Age</code>, and try each one in turn, and see what score we get, if we made a binary split on that level of <code>Age</code>. So here’s a list of all the possible binary split threshols of <code>Age</code></p>
+<p>Lower scores indicates better splits, with <code>Sex</code> outperforming <code>LogFare</code>. But how can we find a best split point i mean we have to try ourself right? In every values and see if the score improve or not right, well that was pretty inefficient. It would be nice if we could find some automatic wway to do al that. Well, of course we can. If we want to find the best split point for <code>Age</code>, and try each one in turn, and see what score we get, if we made a binary split on that level of <code>Age</code>. So here’s a list of all the possible binary split threshold of <code>Age</code></p>
 <div id="cell-37" class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>col <span class="op">=</span> trn_xs[<span class="st">"Age"</span>]</span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>unq <span class="op">=</span> col.unique()</span>
@@ -522,12 +522,12 @@ dtype: int8</code></pre>
  'Pclass': (2, 0.4604826188580666)}</code></pre>
 </div>
 </div>
-<p>And if we do that, we find that the lowest score is Sex. So that is how ew calculate the best binary split. Swe we now know that the model we created earlier with <code>Sex</code> is the best single binary split model we can find.</p>
-<p>And this simple thing we just did which is finding a single binary split, actually is a type of model, it has a name too, it’s called OneR. And OneR model it turned out in a review of machine learning methods in the 90s is one of the best, if not the best. It’s not a bad idea to always start creating a baseline of OneR, a dicision tree with a single binary split.</p>
+<p>And if we do that, we find that the lowest score is Sex. So that is how to calculate the best binary split. So we now know that the model we created earlier with <code>Sex</code> is the best single binary split model we can find.</p>
+<p>And this simple thing we just did which is finding a single binary split, actually is a type of model, it has a name too, it’s called OneR. And OneR model it turned out in a review of machine learning methods in the 90s is one of the best, if not the best. It’s not a bad idea to always start creating a baseline of OneR, a decision tree with a single binary split.</p>
 </section>
 <section id="creating-a-tree" class="level3">
 <h3 class="anchored" data-anchor-id="creating-a-tree">Creating a Tree</h3>
-<p>“OneR” is probablyy not going to cut it for a lot of things, though it’s surprisingly effective, but maybe we could go a step further. And the other step further we could go is by creating a maybe “TwoR”. What if we took each of those groups, males and females in the Titanic dataset, and split each of these into two other groups? So split the males into two groups and split the females into two groups. To do that, we can repeat the exact same piece of code we just did, but let’s remove sex from it:</p>
+<p>“OneR” is probably not going to cut it for a lot of things, though it’s surprisingly effective, but maybe we could go a step further. And the other step further we could go is by creating a maybe “TwoR”. What if we took each of those groups, males and females in the Titanic dataset, and split each of these into two other groups? So split the males into two groups and split the females into two groups. To do that, we can repeat the exact same piece of code we just did, but let’s remove sex from it:</p>
 <div id="cell-49" class="cell" data-execution_count="21">
 <div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>cols.remove(<span class="st">"Sex"</span>)</span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>ismale <span class="op">=</span> trn_df.Sex<span class="op">==</span><span class="dv">1</span></span>
@@ -560,7 +560,7 @@ dtype: int8</code></pre>
 </div>
 <p>The passenger class <code>Pclass</code>, or whether they were in first class or not, was the biggest predictor of survival.</p>
 <p>This process generates a decision tree - a serries of binary splits that gradually categorize our data so that in the leaf nodes, we derive strong predictions about survival</p>
-<p>We can continue these steps for each of the four groups manually with a couple of extra lines of code, or we can use a decision tree classifier. this class automates the process we just outlined:</p>
+<p>We can continue these steps for each of the four groups manually with a couple of extra lines of code, or we can use a decision tree classifier. This class automates the process we just outlined:</p>
 <div id="cell-55" class="cell" data-execution_count="24">
 <div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.tree <span class="im">import</span> DecisionTreeClassifier, export_graphviz</span>
 <span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -585,7 +585,7 @@ dtype: int8</code></pre>
 </div>
 </div>
 <p>And you can see here it’s going to first of all split on sex. Now, it looks a bit weird to say sex is less than or equal to 0.5, but remember our binary characteristics are coded as zero or one. This is just an easy way to denote males versus females.</p>
-<p>For females, the next split is based on their class. For males, age is the dedicating facter. This creates our four leaf nodes. For instance, of the females in the first class, 116 survived, and only 4 didn’t showing that being a wealthy woman on the Titanic was quite advantageous. On the other hand, among adult males, 68 survived while 350 perished, illustrating the peril they faced.</p>
+<p>For females, the next split is based on their class. For males, age is the dedicating factor. This creates our four leaf nodes. For instance, of the females in the first class, 116 survived, and only 4 didn’t showing that being a wealthy woman on the Titanic was quite advantageous. On the other hand, among adult males, 68 survived while 350 perished, illustrating the peril they faced.</p>
 <p>This quick summary showcases why decision trees are favoured in exploratory data analysis; they provide a clear picture of key variables driving the dataset and their predictive power</p>
 <p>One additional point is the <code>Gini</code> measure, a way of evaluating how good a split is, which i’ve illustrated in the code below:</p>
 <div id="cell-59" class="cell" data-execution_count="26">
@@ -593,7 +593,7 @@ dtype: int8</code></pre>
 <span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>    act <span class="op">=</span> df.loc[cond, dep]</span>
 <span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">1</span> <span class="op">-</span> act.mean()<span class="op">**</span><span class="dv">2</span> <span class="op">-</span> (<span class="dv">1</span><span class="op">-</span>act).mean()<span class="op">**</span><span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>To understand this mathematically: if <span class="math inline">\(p\)</span> is a probability of an instance being classified as a positive class, and <span class="math inline">\((1 - p)\)</span> for the negative class, <span class="math inline">\(p^2\)</span> denotes the chance of both randomly selected instances being possitive and <span class="math inline">\((1-p)^2\)</span> being negative. The term <span class="math inline">\((1-p^2 - (1-p)^2)\)</span> gives us the probability of misclassification, subtracting the chances of correctly classifying instances.</p>
+<p>To understand this mathematically: if <span class="math inline">\(p\)</span> is a probability of an instance being classified as a positive class, and <span class="math inline">\((1 - p)\)</span> for the negative class, <span class="math inline">\(p^2\)</span> denotes the chance of both randomly selected instances being positive and <span class="math inline">\((1-p)^2\)</span> being negative. The term <span class="math inline">\((1-p^2 - (1-p)^2)\)</span> gives us the probability of misclassification, subtracting the chances of correctly classifying instances.</p>
 <p>Here’s an example of <code>Gini</code> calculation for gender:</p>
 <div id="cell-61" class="cell" data-execution_count="27">
 <div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>gini(df.Sex<span class="op">==</span><span class="st">'female'</span>), gini(df.Sex<span class="op">==</span><span class="st">'male'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -634,18 +634,18 @@ dtype: int8</code></pre>
 <p>With an absolute error of 0.183, this approach shows a bit of improvement.</p>
 <p>An interesting aspect of decision trees is the minimal preprocessing required you may have noticed this advantage. There was no need for dummy variables for category features, and although you can create them, it isn’t necessary. Decision trees can manage without these adjustments. We only took the logarithm of the fare to enhance the visual appearance of our graph but the split would operate identically on the original scale, focusing only on data ordering</p>
 <p>Moreover, decision trees are indifferent to outliers, long-tailed distributions, and categorical variables: they handle all these situations effectively.</p>
-<p>The take away here is that for tabular data, starting with a decision tree-based approach is prudent. It helps create baselines because they are remarkably resilient and offer a robust performance without intricate tunning</p>
+<p>The take away here is that for tabular data, starting with a decision tree-based approach is prudent. It helps create baselines because they are remarkably resilient and offer a robust performance without intricate tuning</p>
 </section>
 </section>
 <section id="random-forest" class="level2">
 <h2 class="anchored" data-anchor-id="random-forest">Random Forest</h2>
-<p>Now, what if we wanted to make this more accurate? Could we grow the tree further? We could, but with only 50 samples in these leaves, further splitting would result in the leaf nodes having so little data that their predictions wouldn’t be very meaningful. Naturally, there are limitation to how accurate a decision tree can be. so, what we can do? Enter a fascinating statergy called <a href="https://www.stat.berkeley.edu/~breiman/bagging.pdf">bagging</a>.</p>
+<p>Now, what if we wanted to make this more accurate? Could we grow the tree further? We could, but with only 50 samples in these leaves, further splitting would result in the leaf nodes having so little data that their predictions wouldn’t be very meaningful. Naturally, there are limitation to how accurate a decision tree can be. so, what we can do? Enter a fascinating strategy called <a href="https://www.stat.berkeley.edu/~breiman/bagging.pdf">bagging</a>.</p>
 <p>Here’s the procedure of bagging:</p>
 <ol type="1">
 <li>Randomly choose a subset of data rows (a “bootstrap replicate” of the learning set).</li>
 <li>Train a model using this subset.</li>
 <li>Save that model, then go back to step 1 and repeat several times.</li>
-<li>This will give you multiple trained models. predict with all models, and then arverage their predictions to make the final prediction.</li>
+<li>This will give you multiple trained models. Predict with all models, and then average their predictions to make the final prediction.</li>
 </ol>
 <p>The core insight of bagging is that although models trained on data subsets will make more errors than a model trained on the full dataset, these errors aren’t correlated across models. Different models will make different errors, and when averaged, those errors offset each other. Thus, average the predictions of all the model sharpens the final prediction with more models providing finer estimations.</p>
 <p>In essence, a random forest averages the predictions of numerous decision trees, which are generated randomly varying parameters such as training dataset or tree parameters. Bagging is a particular approach to “ensembling” or combining results from multiple models.</p>
@@ -669,7 +669,7 @@ dtype: int8</code></pre>
 </div>
 </div>
 <p>By collecting predictions from these trees, stacking them, and averaging their predictions, we have our random forest.</p>
-<p>Random forests are remarkably simple yet powerful. A key feature is that they also randomly select subset of colums to build decision trees, changing the column subset with each node split. The idea is to maintain randomness, yet retain usefulness. For more efficient implementation, we use <code>RandomForestClassifier</code>:</p>
+<p>Random forests are remarkably simple yet powerful. A key feature is that they also randomly select subset of columns to build decision trees, changing the column subset with each node split. The idea is to maintain randomness, yet retain usefulness. For more efficient implementation, we use <code>RandomForestClassifier</code>:</p>
 <div id="cell-75" class="cell" data-execution_count="33">
 <div class="sourceCode cell-code" id="cb54"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestClassifier</span>
 <span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -780,8 +780,8 @@ dtype: int8</code></pre>
       dtype='object')</code></pre>
 </div>
 </div>
-<p>That’s many columns to scour! Start by exploring the dataset to familiarize yourself with the data content in each colum. Soon we’ll focus on the most compelling bits.</p>
-<p>With ordinal columns, it’s benefical to specify meaningful order. These columns contain strings with an inherent sequence. For example, check out the <code>ProducSize</code> levels:</p>
+<p>That’s many columns to scour! Start by exploring the dataset to familiarize yourself with the data content in each column. Soon we’ll focus on the most compelling bits.</p>
+<p>With ordinal columns, it’s beneficial to specify meaningful order. These columns contain strings with an inherent sequence. For example, check out the <code>ProducSize</code> levels:</p>
 <div id="cell-92" class="cell" data-execution_count="40">
 <div class="sourceCode cell-code" id="cb67"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'ProductSize'</span>].unique()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="40">
@@ -819,9 +819,9 @@ Categories (6, object): ['Large' &lt; 'Large / Medium' &lt; 'Medium' &lt; 'Small
 </section>
 <section id="data-preparation" class="level4">
 <h4 class="anchored" data-anchor-id="data-preparation">Data Preparation</h4>
-<p>The first piece of data preparation we need to to do is enrich our representation of dates. The fundamental basis of the decision tree that we just discussed is bisection (dividing a group into two). We look at the ordinal variables and divide the dataset based on whether the variables’s value is greater (ow lower) than a theshold, and we look at the categorical variables and divide the dataset based on whether the variable’s level is a particular level. This algorithm divides the dataset based on both original and categorical data</p>
-<p>But how does this apply to a common data type, the date? You might want to tree at date as an ordinal value because it is meaningful to say that one date is greate than other. However, dates are a bit different from most ordinal values in that some dates are qualitatively different from others, which is often relevant to the systems we are modeling.</p>
-<p>To help our algorithm handle dates intelligently, we’d like our model to know ore than whether a date is more recent or less recent than other. We might want our model to make decisions based on that date’s day of the week, on whether a day is holiday, on what month it is in, and so forth. To accomplish this, we replace every date column with a set of date metadata columns, sush as holiday, day of the week, and month. these columns provide categorical data that we suspect will be useful.</p>
+<p>The first piece of data preparation we need to to do is enrich our representation of dates. The fundamental basis of the decision tree that we just discussed is bisection (dividing a group into two). We look at the ordinal variables and divide the dataset based on whether the variable’s value is greater (ow lower) than a threshold, and we look at the categorical variables and divide the dataset based on whether the variable’s level is a particular level. This algorithm divides the dataset based on both original and categorical data</p>
+<p>But how does this apply to a common data type, the date? You might want to tree at date as an ordinal value because it is meaningful to say that one date is greater than other. However, dates are a bit different from most ordinal values in that some dates are qualitatively different from others, which is often relevant to the systems we are modeling.</p>
+<p>To help our algorithm handle dates intelligently, we’d like our model to know ore than whether a date is more recent or less recent than other. We might want our model to make decisions based on that date’s day of the week, on whether a day is holiday, on what month it is in, and so forth. To accomplish this, we replace every date column with a set of date metadata columns, such as holiday, day of the week, and month. These columns provide categorical data that we suspect will be useful.</p>
 <p>Fastai comes with a function to do this for us that mean we only need to pass in a column name that contains dates:</p>
 <div id="cell-100" class="cell" data-execution_count="43">
 <div class="sourceCode cell-code" id="cb72"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> add_datepart(df, <span class="st">'saledate'</span>)</span>
@@ -837,12 +837,12 @@ Categories (6, object): ['Large' &lt; 'Large / Medium' &lt; 'Medium' &lt; 'Small
 <pre><code>'saleYear saleMonth saleWeek saleDay saleDayofweek saleDayofyear saleIs_month_end saleIs_month_start saleIs_quarter_end saleIs_quarter_start saleIs_year_end saleIs_year_start saleElapsed'</code></pre>
 </div>
 </div>
-<p>This a solid first steop, but we need further data cleaning. For this, we will use fastai objects called <code>TabularPandas</code> and <code>TabularProc</code>.</p>
+<p>This a solid first step, but we need further data cleaning. For this, we will use fastai objects called <code>TabularPandas</code> and <code>TabularProc</code>.</p>
 <p>Another aspect of preparatory processing is ensuring we can handle strings and missing data. We will use fastai’s class <code>TabularPandas</code>, which wraps a Pandas <code>DataFrame</code> and offers some conveniences. when we say it “wraps” a <code>DataFrame</code>, it means taking a Pandas <code>DataFrame</code> as input and adding additional specifically useful for machine-learning tasks with tabular data. To populate a <code>TabularPandas</code>, we will utilize two <code>TabularProcs</code>: <code>Categorify</code> and <code>FillMissing</code>.</p>
-<p><code>TabularProcs</code> are unique data transformation process used in fastai designed to prepare you data to ML models. We introduce two speicfic <code>TabularProcs</code> here:</p>
+<p><code>TabularProcs</code> are unique data transformation process used in fastai designed to prepare you data to ML models. We introduce two specific <code>TabularProcs</code> here:</p>
 <ul>
 <li><code>Categorify</code>: convert categorical columns text or non numeric data into numeric categories. For instance, a column <code>Color</code> with values like “Red”, “Blue”, “Green” could be encoded as 1, 2, 3.</li>
-<li><code>FillMissing</code>: Manages missing data in your dataset. it replaces missing values with the column’s median value and creates a new boolean column to flag rows that orginally had missing values.</li>
+<li><code>FillMissing</code>: Manages missing data in your dataset. it replaces missing values with the column’s median value and creates a new boolean column to flag rows that originally had missing values.</li>
 </ul>
 <p>How <code>TabularProc</code> differs from regular transforms:</p>
 <ul>
@@ -875,19 +875,19 @@ Categories (6, object): ['Large' &lt; 'Large / Medium' &lt; 'Medium' &lt; 'Small
 <span id="cb76-4"><a href="#cb76-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb76-5"><a href="#cb76-5" aria-hidden="true" tabindex="-1"></a>splits <span class="op">=</span> (<span class="bu">list</span>(train_idx),<span class="bu">list</span>(valid_idx))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>TabularPandas requires knowledge of which columns are continuos and which are categorical. We can simplify this with the <code>cont_cat_split</code> helper function:</p>
+<p>TabularPandas requires knowledge of which columns are continuous and which are categorical. We can simplify this with the <code>cont_cat_split</code> helper function:</p>
 <div id="cell-110" class="cell" data-execution_count="47">
 <div class="sourceCode cell-code" id="cb77"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a>cont,cat <span class="op">=</span> cont_cat_split(df, <span class="dv">1</span>, dep_var<span class="op">=</span>dep_var)</span>
 <span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a>to <span class="op">=</span> TabularPandas(df, procs, cat, cont, y_names<span class="op">=</span>dep_var, splits<span class="op">=</span>splits)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>This setup turns <code>TabularPandas</code>into something akin to a fastai <code>Dataset</code> object, with accessible tain and valid attributes:</p>
+<p>This setup turns <code>TabularPandas</code>into something akin to a fastai <code>Dataset</code> object, with accessible train and valid attributes:</p>
 <div id="cell-112" class="cell" data-execution_count="48">
 <div class="sourceCode cell-code" id="cb78"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="bu">len</span>(to.train),<span class="bu">len</span>(to.valid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="48">
 <pre><code>(404710, 7988)</code></pre>
 </div>
 </div>
-<p>It’s possible to view the dataset’s categorical varibales still represented as strings:</p>
+<p>It’s possible to view the dataset’s categorical variables still represented as strings:</p>
 <div id="cell-114" class="cell">
 <div class="sourceCode cell-code" id="cb80"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a>to.show(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
@@ -1179,7 +1179,7 @@ Categories (6, object): ['Large' &lt; 'Large / Medium' &lt; 'Medium' &lt; 'Small
 </table>
 </div>
 </div>
-<p>However, all underlying data has been coverted to numeric form:</p>
+<p>However, all underlying data has been converted to numeric form:</p>
 <div id="cell-116" class="cell" data-execution_count="50">
 <div class="sourceCode cell-code" id="cb81"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a>to.items.head(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="50">
@@ -1252,7 +1252,7 @@ Categories (6, object): ['Large' &lt; 'Large / Medium' &lt; 'Medium' &lt; 'Small
 <pre><code>['#na#', 'Compact', 'Large', 'Large / Medium', 'Medium', 'Mini', 'Small']</code></pre>
 </div>
 </div>
-<p>A neat feature in fastai is the ability to save processed data, which can be time-consuming. Saving the data alows you to resume further work without repeating the preprocessing steps. Fastai utilizes Python’s pickle system for this purpose:</p>
+<p>A neat feature in fastai is the ability to save processed data, which can be time-consuming. Saving the data allows you to resume further work without repeating the preprocessing steps. Fastai utilizes Python’s pickle system for this purpose:</p>
 <div id="cell-120" class="cell" data-execution_count="52">
 <div class="sourceCode cell-code" id="cb84"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a>save_pickle(path<span class="op">/</span><span class="st">'to.pkl'</span>,to)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -1466,7 +1466,7 @@ Categories (6, object): ['Large' &lt; 'Large / Medium' &lt; 'Medium' &lt; 'Small
 <pre><code>(324338, 404710)</code></pre>
 </div>
 </div>
-<p>It turns out our model hsa nearly as many leaves as data point! This occurs because sklearn’s default setting allow continual splitting until there’s just one item per leaf node. We can address this by adjusting the stopping rule to require each leaf node to have at least 25 auction records:</p>
+<p>It turns out our model has nearly as many leaves as data point! This occurs because sklearn’s default setting allow continual splitting until there’s just one item per leaf node. We can address this by adjusting the stopping rule to require each leaf node to have at least 25 auction records:</p>
 <div id="cell-147" class="cell" data-execution_count="65">
 <div class="sourceCode cell-code" id="cb100"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> DecisionTreeRegressor(min_samples_leaf<span class="op">=</span><span class="dv">25</span>)</span>
 <span id="cb100-2"><a href="#cb100-2" aria-hidden="true" tabindex="-1"></a>m.fit(to.train.xs, to.train.y)</span>
@@ -1490,13 +1490,13 @@ Categories (6, object): ['Large' &lt; 'Large / Medium' &lt; 'Medium' &lt; 'Small
 <li>Group A: containing product X</li>
 <li>Group B: containing all other products</li>
 </ul>
-<p>This chose arises because “Product X” is notably pricier, leading Group A to have a higher average price than Group B. This split provides valuable insights for price prediction, prompting the algorithm to prefer it. The decision tree isolates “Product X” quickly, allowing pricise price predictions while evaluating other products’ prices.</p>
+<p>This chose arises because “Product X” is notably pricier, leading Group A to have a higher average price than Group B. This split provides valuable insights for price prediction, prompting the algorithm to prefer it. The decision tree isolates “Product X” quickly, allowing precise price predictions while evaluating other products’ prices.</p>
 <p>One-hot encoding is another option; it transforms a single categorical column into multiple binary columns, each representing a category level. Pandas offers the <code>get_dummies</code> method which does just that.</p>
 <p>However, there’s little evidence that one-hot encoding enhances results. Thus, we tend to avoid it when unnecessary, as it complicates data handling.</p>
 </section>
 <section id="creating-a-random-forest" class="level3">
 <h3 class="anchored" data-anchor-id="creating-a-random-forest">Creating a Random Forest</h3>
-<p>Creating a random forest involves a process similar to crafting a decision tree, but with added flexibility through paramaters that determine the number of trees, data point subset size(rows), and field subset size(columns):</p>
+<p>Creating a random forest involves a process similar to crafting a decision tree, but with added flexibility through parameters that determine the number of trees, data point subset size(rows), and field subset size(columns):</p>
 <div id="cell-153" class="cell" data-execution_count="67">
 <div class="sourceCode cell-code" id="cb104"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rf(xs, y, n_estimators<span class="op">=</span><span class="dv">40</span>, max_samples<span class="op">=</span><span class="dv">200_000</span>,</span>
 <span id="cb104-2"><a href="#cb104-2" aria-hidden="true" tabindex="-1"></a>       max_features<span class="op">=</span><span class="fl">0.5</span>, min_samples_leaf<span class="op">=</span><span class="dv">5</span>, <span class="op">**</span>kwargs):</span>
@@ -1571,7 +1571,7 @@ Note
 </section>
 <section id="out-of-bag-error" class="level3">
 <h3 class="anchored" data-anchor-id="out-of-bag-error">Out of Bag Error</h3>
-<p>In a random forest, each tree is trained on different subset of data. Consequently, there’s a unique opportunity: each tree has an implicit valication set composed of the data rows not selected for its training, know as out-of-bag (OOB) data.</p>
+<p>In a random forest, each tree is trained on different subset of data. Consequently, there’s a unique opportunity: each tree has an implicit validation set composed of the data rows not selected for its training, know as out-of-bag (OOB) data.</p>
 <p>OOB error is particularly useful when dealing with a limited dataset, as it offers a measure of model generalization without needing to withhold data for a separate validation set. These OOB predictions are stored in the <code>oob_prediction_</code> attribute. Remember, these are compared with training labels, as the OOB calculation involves the training set:</p>
 <div id="cell-166" class="cell" data-execution_count="73">
 <div class="sourceCode cell-code" id="cb112"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb112-1"><a href="#cb112-1" aria-hidden="true" tabindex="-1"></a>r_mse(m.oob_prediction_, y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1579,7 +1579,7 @@ Note
 <pre><code>0.211234</code></pre>
 </div>
 </div>
-<p>The OOB error frequently appears lower than the validation set error, hinting that other factors might contiribute to the validation error, hinting that other factors might contribute to the validation error outside mere generalization discrepancies. We’ll delve into these causes soon.</p>
+<p>The OOB error frequently appears lower than the validation set error, hinting that other factors might contribute to the validation error, hinting that other factors might contribute to the validation error outside mere generalization discrepancies. We’ll delve into these causes soon.</p>
 </section>
 <section id="model-interpretation" class="level3">
 <h3 class="anchored" data-anchor-id="model-interpretation">Model Interpretation</h3>
@@ -1592,7 +1592,7 @@ Note
 <li>How do predictions vary, as we vary these columns?</li>
 </ul>
 <p>Random forests are adept at addressing these questions. Let’s start with evaluating confidence in predictions!</p>
-<p>Model predctions are an average of individual tree predictions, providing an estimated value. But how can we gauge the confiidence of this estimate? One simplistic approach is using the standard deviations of tree predictions - higher deviations imply less confidence, suggseting that caution is needed, especially in scenarios where tree predictions are inconsistent.</p>
+<p>Model predictions are an average of individual tree predictions, providing an estimated value. But how can we gauge the confidence of this estimate? One simplistic approach is using the standard deviations of tree predictions - higher deviations imply less confidence, suggesting that caution is needed, especially in scenarios where tree predictions are inconsistent.</p>
 <p>In creating the random forest, predictions over the validations set were obtained using Python’s list comprehension:</p>
 <div id="cell-170" class="cell">
 <div class="sourceCode cell-code" id="cb114"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb114-1"><a href="#cb114-1" aria-hidden="true" tabindex="-1"></a>preds <span class="op">=</span> np.stack([t.predict(valid_xs) <span class="cf">for</span> t <span class="kw">in</span> m.estimators_])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1603,7 +1603,7 @@ Note
 <pre><code>(40, 7988)</code></pre>
 </div>
 </div>
-<p>This results in a prediction for each tree accross all validation set auctions (40 trees, 7,988 auctions). With this data, compute the standard deviation of predictions for each auction:</p>
+<p>This results in a prediction for each tree across all validation set auctions (40 trees, 7,988 auctions). With this data, compute the standard deviation of predictions for each auction:</p>
 <div id="cell-173" class="cell" data-execution_count="76">
 <div class="sourceCode cell-code" id="cb117"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb117-1"><a href="#cb117-1" aria-hidden="true" tabindex="-1"></a>preds_std <span class="op">=</span> preds.std(<span class="dv">0</span>)</span>
 <span id="cb117-2"><a href="#cb117-2" aria-hidden="true" tabindex="-1"></a>preds_std[:<span class="dv">5</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1746,7 +1746,7 @@ Note
 </div>
 </div>
 </div>
-<p>While interpreting, redundancy may arise as seen with <code>ProductGroup</code> and <code>ProductGroupDesc</code>. Attemping to remove such redundant features can further streamline interpretation.</p>
+<p>While interpreting, redundancy may arise as seen with <code>ProductGroup</code> and <code>ProductGroupDesc</code>. Attempting to remove such redundant features can further streamline interpretation.</p>
 </section>
 <section id="removing-redundant-variables" class="level4">
 <h4 class="anchored" data-anchor-id="removing-redundant-variables">Removing Redundant Variables</h4>
@@ -2108,7 +2108,7 @@ MachineID 0.231447</code></pre>
 <pre><code>0.228264</code></pre>
 </div>
 </div>
-<p>Removing these variables slightlyy improves the model’s accuracy and should make it more resilient over time, easier to maintain, and understand.</p>
+<p>Removing these variables slightly improves the model’s accuracy and should make it more resilient over time, easier to maintain, and understand.</p>
 <p>Sometimes, using only recent data can help. Let’s try using data from the most recent years:</p>
 <div id="cell-251" class="cell" data-execution_count="107">
 <div class="sourceCode cell-code" id="cb162"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb162-1"><a href="#cb162-1" aria-hidden="true" tabindex="-1"></a>xs[<span class="st">'saleYear'</span>].hist()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -2132,7 +2132,7 @@ MachineID 0.231447</code></pre>
 <pre><code>(0.176448, 0.228537)</code></pre>
 </div>
 </div>
-<p>This yields a slightly improvement, demonstraitng that using your entire dataset isn’t always the best approach; sometimes subset can perform better.</p>
+<p>This yields a slightly improvement, demonstrating that using your entire dataset isn’t always the best approach; sometimes subset can perform better.</p>
 <p>I recommend building a model with <code>is_valid</code> as the dependent variable for all datasets. This can uncover subtle domain shift issues that might otherwise go unnoticed.</p>
 <p>Next, we’ll explore whether using a neural network can further improve our results</p>
 </section>
@@ -2150,11 +2150,11 @@ MachineID 0.231447</code></pre>
 <div id="cell-258" class="cell" data-execution_count="110">
 <div class="sourceCode cell-code" id="cb166"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb166-1"><a href="#cb166-1" aria-hidden="true" tabindex="-1"></a>df_nn_final <span class="op">=</span> df_nn[<span class="bu">list</span>(xs_final_time.columns) <span class="op">+</span> [dep_var]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Neural networks handle categorical columns differently than decision trees. Embedding are an effective method for categorical varaibles in neural nets. Fastai determines which columns should be treated as categorical by comparing the number of distinct levels to the <code>max_card</code> parameter. We’ll use 9,000 as our <code>max_card</code> to avoid unnecessarily large embeddings:</p>
+<p>Neural networks handle categorical columns differently than decision trees. Embedding are an effective method for categorical variables in neural nets. Fastai determines which columns should be treated as categorical by comparing the number of distinct levels to the <code>max_card</code> parameter. We’ll use 9,000 as our <code>max_card</code> to avoid unnecessarily large embeddings:</p>
 <div id="cell-260" class="cell" data-execution_count="111">
 <div class="sourceCode cell-code" id="cb167"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb167-1"><a href="#cb167-1" aria-hidden="true" tabindex="-1"></a>cont_nn,cat_nn <span class="op">=</span> cont_cat_split(df_nn_final, max_card<span class="op">=</span><span class="dv">9000</span>, dep_var<span class="op">=</span>dep_var)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>It’s crucial to ensure that <code>saleElapsed</code> isn’t treated as a categorical variable as we need to predict auction sale prices in the feature. Let’s verify the continuos variable</p>
+<p>It’s crucial to ensure that <code>saleElapsed</code> isn’t treated as a categorical variable as we need to predict auction sale prices in the feature. Let’s verify the continuous variable</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -2175,7 +2175,7 @@ Note
 <pre><code>['saleElapsed']</code></pre>
 </div>
 </div>
-<p>Now, let’s examine the cardinality of our chhoosen categorical variables:</p>
+<p>Now, let’s examine the cardinality of our chosen categorical variables:</p>
 <div id="cell-264" class="cell" data-execution_count="113">
 <div class="sourceCode cell-code" id="cb170"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb170-1"><a href="#cb170-1" aria-hidden="true" tabindex="-1"></a>df_nn_final[cat_nn].nunique()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="113">
@@ -2197,7 +2197,7 @@ Track_Type               2
 dtype: int64</code></pre>
 </div>
 </div>
-<p>We notice two “model” variables with similar high cardicalities, suggesting potential redundancy. To reduce the embedding matrix size. Let’s assess the impact of removing one of these model columns on our random forest:</p>
+<p>We notice two “model” variables with similar high cardinalities, suggesting potential redundancy. To reduce the embedding matrix size. Let’s assess the impact of removing one of these model columns on our random forest:</p>
 <div id="cell-266" class="cell" data-execution_count="114">
 <div class="sourceCode cell-code" id="cb172"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb172-1"><a href="#cb172-1" aria-hidden="true" tabindex="-1"></a>xs_filt2 <span class="op">=</span> xs_filt.drop(<span class="st">'fiModelDescriptor'</span>, axis<span class="op">=</span><span class="dv">1</span>)</span>
 <span id="cb172-2"><a href="#cb172-2" aria-hidden="true" tabindex="-1"></a>valid_xs_time2 <span class="op">=</span> valid_xs_time.drop(<span class="st">'fiModelDescriptor'</span>, axis<span class="op">=</span><span class="dv">1</span>)</span>
@@ -2211,7 +2211,7 @@ dtype: int64</code></pre>
 <div id="cell-268" class="cell" data-execution_count="115">
 <div class="sourceCode cell-code" id="cb174"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb174-1"><a href="#cb174-1" aria-hidden="true" tabindex="-1"></a>cat_nn.remove(<span class="st">'fiModelDescriptor'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>When creating our <code>TabularPandas</code> object for the neuronn network, we need to add normalization, which is crucial for neural networks but unnecessary for random forests:</p>
+<p>When creating our <code>TabularPandas</code> object for the neural network, we need to add normalization, which is crucial for neural networks but unnecessary for random forests:</p>
 <div id="cell-270" class="cell" data-execution_count="116">
 <div class="sourceCode cell-code" id="cb175"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb175-1"><a href="#cb175-1" aria-hidden="true" tabindex="-1"></a>procs_nn <span class="op">=</span> [Categorify, FillMissing, Normalize]</span>
 <span id="cb175-2"><a href="#cb175-2" aria-hidden="true" tabindex="-1"></a>to_nn <span class="op">=</span> TabularPandas(df_nn_final, procs_nn, cat_nn, cont_nn,</span>
@@ -2221,7 +2221,7 @@ dtype: int64</code></pre>
 <div id="cell-272" class="cell" data-execution_count="117">
 <div class="sourceCode cell-code" id="cb176"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb176-1"><a href="#cb176-1" aria-hidden="true" tabindex="-1"></a>dls <span class="op">=</span> to_nn.dataloaders(<span class="dv">1024</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>For regression models, it’s advisable to set y_range. Let’s find the min and mux of our dependent variable:</p>
+<p>For regression models, it’s advisable to set y_range. Let’s find the min and max of our dependent variable:</p>
 <div id="cell-274" class="cell" data-execution_count="118">
 <div class="sourceCode cell-code" id="cb177"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb177-1"><a href="#cb177-1" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> to_nn.train.y</span>
 <span id="cb177-2"><a href="#cb177-2" aria-hidden="true" tabindex="-1"></a>y.<span class="bu">min</span>(),y.<span class="bu">max</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -2361,7 +2361,7 @@ dtype: int64</code></pre>
 <pre><code>0.228488</code></pre>
 </div>
 </div>
-<p>The neural network performs better than the random forest, although it take longer to train and requires more carful hyprerparameter tuning</p>
+<p>The neural network performs better than the random forest, although it take longer to train and requires more careful hyprerparameter tuning</p>
 <p>We’ll save our model for future use:</p>
 <div id="cell-282" class="cell" data-execution_count="122">
 <div class="sourceCode cell-code" id="cb184"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb184-1"><a href="#cb184-1" aria-hidden="true" tabindex="-1"></a>learn.save(<span class="st">'nn'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -2369,14 +2369,14 @@ dtype: int64</code></pre>
 <pre><code>Path('models/nn.pth')</code></pre>
 </div>
 </div>
-<p>To further improve generalization, we can use ensemble learning, which envolves averaging predictions from several models.</p>
+<p>To further improve generalization, we can use ensemble learning, which evolves averaging predictions from several models.</p>
 </section>
 </section>
 <section id="ensembling" class="level2">
 <h2 class="anchored" data-anchor-id="ensembling">Ensembling</h2>
-<p>The cuccess of random forests is rooted in the principle that while individual trees have errors, these erros are not correlated. With enough trees, the average of these errors should approach zero. We can apply similar reasoning to combine predictions from different algorithms.</p>
-<p>In our case, we have two distinct models: a random forest and a neural network. Their different approaches likly result in different types of errors. Therefore, averageing their predictions could potentially outperform either model individually.</p>
-<p>It’s worth nothing that a random forest is itselft an ensemble, By combining it with a neural network, we’re creating an ensemble of ensembles! While ensembling may not revolutionize your modeling process, it can provide a welcome boost to your exiting model.</p>
+<p>The success of random forests is rooted in the principle that while individual trees have errors, these errors are not correlated. With enough trees, the average of these errors should approach zero. We can apply similar reasoning to combine predictions from different algorithms.</p>
+<p>In our case, we have two distinct models: a random forest and a neural network. Their different approaches likely result in different types of errors. Therefore, averaging their predictions could potentially outperform either model individually.</p>
+<p>It’s worth nothing that a random forest is itself an ensemble, By combining it with a neural network, we’re creating an ensemble of ensembles! While ensembling may not revolutionize your modeling process, it can provide a welcome boost to your exiting model.</p>
 <p>One small challenge we face is the different output types from our Pytorch and sklearn models. Pytorch gives a rank-2 tensor (a column matrix), while sklearn produces a rank-1 array (a vector). We can address this using <code>squeeze</code> to remove unit axes and <code>to_np</code> to convert to Numpy array</p>
 <div id="cell-286" class="cell" data-execution_count="123">
 <div class="sourceCode cell-code" id="cb186"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb186-1"><a href="#cb186-1" aria-hidden="true" tabindex="-1"></a>rf_preds <span class="op">=</span> m.predict(valid_xs_time)</span>
@@ -2415,7 +2415,7 @@ dtype: int64</code></pre>
 </ul>
 <p>We suggest starting your analysis with a random forest. This will give you a strong baseline, and you can be confident that it’s a reasonable starting point. You can then use that model for feature selection and partial dependence analysis, to get a better understanding of your data.</p>
 <p>From that foundation, you can try neural nets and GBMs, and if they give you significantly better results on your validation set in a reasonable amount of time, you can use them. If decision tree ensembles are working well for you, try adding the embeddings for the categorical variables to the data, and see if that helps your decision trees learn better.</p>
-<p>Alright guys, it’s been a long post huh? thanks for reading all of those, catch you on the flip side, and I’ll see you… next time!</p>
+<p>Alright guys, it’s been a long post huh? Thanks for reading all of those, catch you on the flip side, and I’ll see you… next time!</p>
 
 
 </section>

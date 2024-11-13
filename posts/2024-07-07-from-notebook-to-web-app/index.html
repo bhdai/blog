@@ -305,7 +305,7 @@ gtag('config', 'G-6JR4N915S6', { 'anonymize_ip': true});
 <div id="cell-8" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>failed.<span class="bu">map</span>(Path.unlink)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>This step ensures that any currupt images are identified and removed.</p>
+<p>This step ensures that any corrupt images are identified and removed.</p>
 </section>
 <section id="structuring-data-with-datablock-api" class="level3">
 <h3 class="anchored" data-anchor-id="structuring-data-with-datablock-api">Structuring Data with DataBlock API</h3>
@@ -329,7 +329,7 @@ gtag('config', 'G-6JR4N915S6', { 'anonymize_ip': true});
 </div>
 </div>
 </div>
-<p>This show a batch of images using the default resizing method. Different resizing startegies can impact the dataset in various ways.</p>
+<p>This show a batch of images using the default resizing method. Different resizing strategies can impact the dataset in various ways.</p>
 </section>
 </section>
 <section id="exploring-resizing-methods" class="level2">
@@ -337,7 +337,7 @@ gtag('config', 'G-6JR4N915S6', { 'anonymize_ip': true});
 <p>Resizing plays a crucial role in preparing your images for model training. Let’s explore three different resizing methods:</p>
 <section id="standard-resize" class="level3">
 <h3 class="anchored" data-anchor-id="standard-resize">Standard Resize</h3>
-<p>The standard resize method adjust the image size for model while maintaining a specific aspect rato. Here, we pad the images with zeros(black) to ensure the entire image is included:</p>
+<p>The standard resize method adjust the image size for model while maintaining a specific aspect ratio. Here, we pad the images with zeros(black) to ensure the entire image is included:</p>
 <div id="cell-14" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>bears <span class="op">=</span> bears.new(item_tfms<span class="op">=</span>Resize(<span class="dv">128</span>, ResizeMethod.Pad, pad_mode<span class="op">=</span><span class="st">'zeros'</span>))</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>dls <span class="op">=</span> bears.dataloaders(path)</span>
@@ -350,7 +350,7 @@ gtag('config', 'G-6JR4N915S6', { 'anonymize_ip': true});
 </div>
 </div>
 </div>
-<p>This approach, padding with zeros maintains the aspect rato and ensures that the entire image fit within the frame.</p>
+<p>This approach, padding with zeros maintains the aspect ratio and ensures that the entire image fit within the frame.</p>
 </section>
 <section id="randomresizedcrop" class="level3">
 <h3 class="anchored" data-anchor-id="randomresizedcrop">RandomResizedCrop</h3>
@@ -819,7 +819,7 @@ gtag('config', 'G-6JR4N915S6', { 'anonymize_ip': true});
 <pre><code>Running on local URL:  http://127.0.0.1:7860
 To create a public link, set `share=True` in `launch()`.</code></pre>
 <p><img src="huggingfacespaces.png" class="img-fluid"></p>
-<p>This code creates a simple Gradio interface where user can upload images, and the model will predict whether it’s a grizzly, black or teddy bear. you can run the interface inline in you Jupyter Notebook for testing.</p>
+<p>This code creates a simple Gradio interface where user can upload images, and the model will predict whether it’s a grizzly, black or teddy bear. You can run the interface inline in you Jupyter Notebook for testing.</p>
 <p><strong>Step 5: Export the Notebook to a Python script</strong>:</p>
 <p>We will use nbdev to convert the Jupyter Notebook to a Python script.</p>
 <p><strong>1. Add Metadata and Export Tags</strong>:</p>

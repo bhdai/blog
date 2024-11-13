@@ -100,7 +100,7 @@ font-style: inherit;">0</span>]</span></code></pre></div>
 <pre><code></code></pre>
 </div>
 </div>
-<p>I’ve previously detailed the intricacies of processing the Titanic dataset in a separate blog post which you might find useful. Fow now, let’s breeze through some basic data processing steps without going into too much detail:</p>
+<p>I’ve previously detailed the intricacies of processing the Titanic dataset in a separate blog post which you might find useful. For now, let’s breeze through some basic data processing steps without going into too much detail:</p>
 <div id="cell-9" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><span class="kw" style="color: #003B4F;
 background-color: null;
@@ -505,7 +505,7 @@ font-style: inherit;">2.7</span>)</span></code></pre></div>
 <pre><code>0.4718087395209973</code></pre>
 </div>
 </div>
-<p>Lower scores indicates better splits, with <code>Sex</code> outperforming <code>LogFare</code>. But how can we find a best split point i mean we have to try ourself right? In every values and see if the score improve or not right, well that was pretty inefficient. It would be nice if we could find some automatic wway to do al that. Well, of course we can. If we want to find the best split point for <code>Age</code>, and try each one in turn, and see what score we get, if we made a binary split on that level of <code>Age</code>. So here’s a list of all the possible binary split threshols of <code>Age</code></p>
+<p>Lower scores indicates better splits, with <code>Sex</code> outperforming <code>LogFare</code>. But how can we find a best split point i mean we have to try ourself right? In every values and see if the score improve or not right, well that was pretty inefficient. It would be nice if we could find some automatic wway to do al that. Well, of course we can. If we want to find the best split point for <code>Age</code>, and try each one in turn, and see what score we get, if we made a binary split on that level of <code>Age</code>. So here’s a list of all the possible binary split threshold of <code>Age</code></p>
 <div id="cell-37" class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb26" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1">col <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -628,12 +628,12 @@ font-style: inherit;">in</span> cols}</span></code></pre></div>
  'Pclass': (2, 0.4604826188580666)}</code></pre>
 </div>
 </div>
-<p>And if we do that, we find that the lowest score is Sex. So that is how ew calculate the best binary split. Swe we now know that the model we created earlier with <code>Sex</code> is the best single binary split model we can find.</p>
-<p>And this simple thing we just did which is finding a single binary split, actually is a type of model, it has a name too, it’s called OneR. And OneR model it turned out in a review of machine learning methods in the 90s is one of the best, if not the best. It’s not a bad idea to always start creating a baseline of OneR, a dicision tree with a single binary split.</p>
+<p>And if we do that, we find that the lowest score is Sex. So that is how to calculate the best binary split. So we now know that the model we created earlier with <code>Sex</code> is the best single binary split model we can find.</p>
+<p>And this simple thing we just did which is finding a single binary split, actually is a type of model, it has a name too, it’s called OneR. And OneR model it turned out in a review of machine learning methods in the 90s is one of the best, if not the best. It’s not a bad idea to always start creating a baseline of OneR, a decision tree with a single binary split.</p>
 </section>
 <section id="creating-a-tree" class="level3">
 <h3 class="anchored" data-anchor-id="creating-a-tree">Creating a Tree</h3>
-<p>“OneR” is probablyy not going to cut it for a lot of things, though it’s surprisingly effective, but maybe we could go a step further. And the other step further we could go is by creating a maybe “TwoR”. What if we took each of those groups, males and females in the Titanic dataset, and split each of these into two other groups? So split the males into two groups and split the females into two groups. To do that, we can repeat the exact same piece of code we just did, but let’s remove sex from it:</p>
+<p>“OneR” is probably not going to cut it for a lot of things, though it’s surprisingly effective, but maybe we could go a step further. And the other step further we could go is by creating a maybe “TwoR”. What if we took each of those groups, males and females in the Titanic dataset, and split each of these into two other groups? So split the males into two groups and split the females into two groups. To do that, we can repeat the exact same piece of code we just did, but let’s remove sex from it:</p>
 <div id="cell-49" class="cell" data-execution_count="21">
 <div class="sourceCode cell-code" id="cb36" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1">cols.remove(<span class="st" style="color: #20794D;
 background-color: null;
@@ -690,7 +690,7 @@ font-style: inherit;">in</span> cols}</span></code></pre></div>
 </div>
 <p>The passenger class <code>Pclass</code>, or whether they were in first class or not, was the biggest predictor of survival.</p>
 <p>This process generates a decision tree - a serries of binary splits that gradually categorize our data so that in the leaf nodes, we derive strong predictions about survival</p>
-<p>We can continue these steps for each of the four groups manually with a couple of extra lines of code, or we can use a decision tree classifier. this class automates the process we just outlined:</p>
+<p>We can continue these steps for each of the four groups manually with a couple of extra lines of code, or we can use a decision tree classifier. This class automates the process we just outlined:</p>
 <div id="cell-55" class="cell" data-execution_count="24">
 <div class="sourceCode cell-code" id="cb41" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><span class="im" style="color: #00769E;
 background-color: null;
@@ -801,7 +801,7 @@ font-style: inherit;">10</span>)</span></code></pre></div>
 </div>
 </div>
 <p>And you can see here it’s going to first of all split on sex. Now, it looks a bit weird to say sex is less than or equal to 0.5, but remember our binary characteristics are coded as zero or one. This is just an easy way to denote males versus females.</p>
-<p>For females, the next split is based on their class. For males, age is the dedicating facter. This creates our four leaf nodes. For instance, of the females in the first class, 116 survived, and only 4 didn’t showing that being a wealthy woman on the Titanic was quite advantageous. On the other hand, among adult males, 68 survived while 350 perished, illustrating the peril they faced.</p>
+<p>For females, the next split is based on their class. For males, age is the dedicating factor. This creates our four leaf nodes. For instance, of the females in the first class, 116 survived, and only 4 didn’t showing that being a wealthy woman on the Titanic was quite advantageous. On the other hand, among adult males, 68 survived while 350 perished, illustrating the peril they faced.</p>
 <p>This quick summary showcases why decision trees are favoured in exploratory data analysis; they provide a clear picture of key variables driving the dataset and their predictive power</p>
 <p>One additional point is the <code>Gini</code> measure, a way of evaluating how good a split is, which i’ve illustrated in the code below:</p>
 <div id="cell-59" class="cell" data-execution_count="26">
@@ -835,7 +835,7 @@ font-style: inherit;">**</span><span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">2</span></span></code></pre></div>
 </div>
-<p>To understand this mathematically: if <img src="https://latex.codecogs.com/png.latex?p"> is a probability of an instance being classified as a positive class, and <img src="https://latex.codecogs.com/png.latex?(1%20-%20p)"> for the negative class, <img src="https://latex.codecogs.com/png.latex?p%5E2"> denotes the chance of both randomly selected instances being possitive and <img src="https://latex.codecogs.com/png.latex?(1-p)%5E2"> being negative. The term <img src="https://latex.codecogs.com/png.latex?(1-p%5E2%20-%20(1-p)%5E2)"> gives us the probability of misclassification, subtracting the chances of correctly classifying instances.</p>
+<p>To understand this mathematically: if <img src="https://latex.codecogs.com/png.latex?p"> is a probability of an instance being classified as a positive class, and <img src="https://latex.codecogs.com/png.latex?(1%20-%20p)"> for the negative class, <img src="https://latex.codecogs.com/png.latex?p%5E2"> denotes the chance of both randomly selected instances being positive and <img src="https://latex.codecogs.com/png.latex?(1-p)%5E2"> being negative. The term <img src="https://latex.codecogs.com/png.latex?(1-p%5E2%20-%20(1-p)%5E2)"> gives us the probability of misclassification, subtracting the chances of correctly classifying instances.</p>
 <p>Here’s an example of <code>Gini</code> calculation for gender:</p>
 <div id="cell-61" class="cell" data-execution_count="27">
 <div class="sourceCode cell-code" id="cb44" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1">gini(df.Sex<span class="op" style="color: #5E5E5E;
@@ -894,18 +894,18 @@ font-style: inherit;">12</span>)</span></code></pre></div>
 <p>With an absolute error of 0.183, this approach shows a bit of improvement.</p>
 <p>An interesting aspect of decision trees is the minimal preprocessing required you may have noticed this advantage. There was no need for dummy variables for category features, and although you can create them, it isn’t necessary. Decision trees can manage without these adjustments. We only took the logarithm of the fare to enhance the visual appearance of our graph but the split would operate identically on the original scale, focusing only on data ordering</p>
 <p>Moreover, decision trees are indifferent to outliers, long-tailed distributions, and categorical variables: they handle all these situations effectively.</p>
-<p>The take away here is that for tabular data, starting with a decision tree-based approach is prudent. It helps create baselines because they are remarkably resilient and offer a robust performance without intricate tunning</p>
+<p>The take away here is that for tabular data, starting with a decision tree-based approach is prudent. It helps create baselines because they are remarkably resilient and offer a robust performance without intricate tuning</p>
 </section>
 </section>
 <section id="random-forest" class="level2">
 <h2 class="anchored" data-anchor-id="random-forest">Random Forest</h2>
-<p>Now, what if we wanted to make this more accurate? Could we grow the tree further? We could, but with only 50 samples in these leaves, further splitting would result in the leaf nodes having so little data that their predictions wouldn’t be very meaningful. Naturally, there are limitation to how accurate a decision tree can be. so, what we can do? Enter a fascinating statergy called <a href="https://www.stat.berkeley.edu/~breiman/bagging.pdf">bagging</a>.</p>
+<p>Now, what if we wanted to make this more accurate? Could we grow the tree further? We could, but with only 50 samples in these leaves, further splitting would result in the leaf nodes having so little data that their predictions wouldn’t be very meaningful. Naturally, there are limitation to how accurate a decision tree can be. so, what we can do? Enter a fascinating strategy called <a href="https://www.stat.berkeley.edu/~breiman/bagging.pdf">bagging</a>.</p>
 <p>Here’s the procedure of bagging:</p>
 <ol type="1">
 <li>Randomly choose a subset of data rows (a “bootstrap replicate” of the learning set).</li>
 <li>Train a model using this subset.</li>
 <li>Save that model, then go back to step 1 and repeat several times.</li>
-<li>This will give you multiple trained models. predict with all models, and then arverage their predictions to make the final prediction.</li>
+<li>This will give you multiple trained models. Predict with all models, and then average their predictions to make the final prediction.</li>
 </ol>
 <p>The core insight of bagging is that although models trained on data subsets will make more errors than a model trained on the full dataset, these errors aren’t correlated across models. Different models will make different errors, and when averaged, those errors offset each other. Thus, average the predictions of all the model sharpens the final prediction with more models providing finer estimations.</p>
 <p>In essence, a random forest averages the predictions of numerous decision trees, which are generated randomly varying parameters such as training dataset or tree parameters. Bagging is a particular approach to “ensembling” or combining results from multiple models.</p>
@@ -977,7 +977,7 @@ font-style: inherit;">0</span>)</span>
 </div>
 </div>
 <p>By collecting predictions from these trees, stacking them, and averaging their predictions, we have our random forest.</p>
-<p>Random forests are remarkably simple yet powerful. A key feature is that they also randomly select subset of colums to build decision trees, changing the column subset with each node split. The idea is to maintain randomness, yet retain usefulness. For more efficient implementation, we use <code>RandomForestClassifier</code>:</p>
+<p>Random forests are remarkably simple yet powerful. A key feature is that they also randomly select subset of columns to build decision trees, changing the column subset with each node split. The idea is to maintain randomness, yet retain usefulness. For more efficient implementation, we use <code>RandomForestClassifier</code>:</p>
 <div id="cell-75" class="cell" data-execution_count="33">
 <div class="sourceCode cell-code" id="cb54" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><span class="im" style="color: #00769E;
 background-color: null;
@@ -1214,8 +1214,8 @@ font-style: inherit;">False</span>)</span>
       dtype='object')</code></pre>
 </div>
 </div>
-<p>That’s many columns to scour! Start by exploring the dataset to familiarize yourself with the data content in each colum. Soon we’ll focus on the most compelling bits.</p>
-<p>With ordinal columns, it’s benefical to specify meaningful order. These columns contain strings with an inherent sequence. For example, check out the <code>ProducSize</code> levels:</p>
+<p>That’s many columns to scour! Start by exploring the dataset to familiarize yourself with the data content in each column. Soon we’ll focus on the most compelling bits.</p>
+<p>With ordinal columns, it’s beneficial to specify meaningful order. These columns contain strings with an inherent sequence. For example, check out the <code>ProducSize</code> levels:</p>
 <div id="cell-92" class="cell" data-execution_count="40">
 <div class="sourceCode cell-code" id="cb67" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb67-1">df[<span class="st" style="color: #20794D;
 background-color: null;
@@ -1289,9 +1289,9 @@ font-style: inherit;">=</span> np.log(df[dep_var])</span></code></pre></div>
 </section>
 <section id="data-preparation" class="level4">
 <h4 class="anchored" data-anchor-id="data-preparation">Data Preparation</h4>
-<p>The first piece of data preparation we need to to do is enrich our representation of dates. The fundamental basis of the decision tree that we just discussed is bisection (dividing a group into two). We look at the ordinal variables and divide the dataset based on whether the variables’s value is greater (ow lower) than a theshold, and we look at the categorical variables and divide the dataset based on whether the variable’s level is a particular level. This algorithm divides the dataset based on both original and categorical data</p>
-<p>But how does this apply to a common data type, the date? You might want to tree at date as an ordinal value because it is meaningful to say that one date is greate than other. However, dates are a bit different from most ordinal values in that some dates are qualitatively different from others, which is often relevant to the systems we are modeling.</p>
-<p>To help our algorithm handle dates intelligently, we’d like our model to know ore than whether a date is more recent or less recent than other. We might want our model to make decisions based on that date’s day of the week, on whether a day is holiday, on what month it is in, and so forth. To accomplish this, we replace every date column with a set of date metadata columns, sush as holiday, day of the week, and month. these columns provide categorical data that we suspect will be useful.</p>
+<p>The first piece of data preparation we need to to do is enrich our representation of dates. The fundamental basis of the decision tree that we just discussed is bisection (dividing a group into two). We look at the ordinal variables and divide the dataset based on whether the variable’s value is greater (ow lower) than a threshold, and we look at the categorical variables and divide the dataset based on whether the variable’s level is a particular level. This algorithm divides the dataset based on both original and categorical data</p>
+<p>But how does this apply to a common data type, the date? You might want to tree at date as an ordinal value because it is meaningful to say that one date is greater than other. However, dates are a bit different from most ordinal values in that some dates are qualitatively different from others, which is often relevant to the systems we are modeling.</p>
+<p>To help our algorithm handle dates intelligently, we’d like our model to know ore than whether a date is more recent or less recent than other. We might want our model to make decisions based on that date’s day of the week, on whether a day is holiday, on what month it is in, and so forth. To accomplish this, we replace every date column with a set of date metadata columns, such as holiday, day of the week, and month. These columns provide categorical data that we suspect will be useful.</p>
 <p>Fastai comes with a function to do this for us that mean we only need to pass in a column name that contains dates:</p>
 <div id="cell-100" class="cell" data-execution_count="43">
 <div class="sourceCode cell-code" id="cb72" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb72-1">df <span class="op" style="color: #5E5E5E;
@@ -1340,12 +1340,12 @@ font-style: inherit;">'sale'</span>))</span></code></pre></div>
 <pre><code>'saleYear saleMonth saleWeek saleDay saleDayofweek saleDayofyear saleIs_month_end saleIs_month_start saleIs_quarter_end saleIs_quarter_start saleIs_year_end saleIs_year_start saleElapsed'</code></pre>
 </div>
 </div>
-<p>This a solid first steop, but we need further data cleaning. For this, we will use fastai objects called <code>TabularPandas</code> and <code>TabularProc</code>.</p>
+<p>This a solid first step, but we need further data cleaning. For this, we will use fastai objects called <code>TabularPandas</code> and <code>TabularProc</code>.</p>
 <p>Another aspect of preparatory processing is ensuring we can handle strings and missing data. We will use fastai’s class <code>TabularPandas</code>, which wraps a Pandas <code>DataFrame</code> and offers some conveniences. when we say it “wraps” a <code>DataFrame</code>, it means taking a Pandas <code>DataFrame</code> as input and adding additional specifically useful for machine-learning tasks with tabular data. To populate a <code>TabularPandas</code>, we will utilize two <code>TabularProcs</code>: <code>Categorify</code> and <code>FillMissing</code>.</p>
-<p><code>TabularProcs</code> are unique data transformation process used in fastai designed to prepare you data to ML models. We introduce two speicfic <code>TabularProcs</code> here:</p>
+<p><code>TabularProcs</code> are unique data transformation process used in fastai designed to prepare you data to ML models. We introduce two specific <code>TabularProcs</code> here:</p>
 <ul>
 <li><code>Categorify</code>: convert categorical columns text or non numeric data into numeric categories. For instance, a column <code>Color</code> with values like “Red”, “Blue”, “Green” could be encoded as 1, 2, 3.</li>
-<li><code>FillMissing</code>: Manages missing data in your dataset. it replaces missing values with the column’s median value and creates a new boolean column to flag rows that orginally had missing values.</li>
+<li><code>FillMissing</code>: Manages missing data in your dataset. it replaces missing values with the column’s median value and creates a new boolean column to flag rows that originally had missing values.</li>
 </ul>
 <p>How <code>TabularProc</code> differs from regular transforms:</p>
 <ul>
@@ -1408,7 +1408,7 @@ font-style: inherit;">list</span>(train_idx),<span class="bu" style="color: null
 background-color: null;
 font-style: inherit;">list</span>(valid_idx))</span></code></pre></div>
 </div>
-<p>TabularPandas requires knowledge of which columns are continuos and which are categorical. We can simplify this with the <code>cont_cat_split</code> helper function:</p>
+<p>TabularPandas requires knowledge of which columns are continuous and which are categorical. We can simplify this with the <code>cont_cat_split</code> helper function:</p>
 <div id="cell-110" class="cell" data-execution_count="47">
 <div class="sourceCode cell-code" id="cb77" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb77-1">cont,cat <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1425,7 +1425,7 @@ font-style: inherit;">=</span>dep_var, splits<span class="op" style="color: #5E5
 background-color: null;
 font-style: inherit;">=</span>splits)</span></code></pre></div>
 </div>
-<p>This setup turns <code>TabularPandas</code>into something akin to a fastai <code>Dataset</code> object, with accessible tain and valid attributes:</p>
+<p>This setup turns <code>TabularPandas</code>into something akin to a fastai <code>Dataset</code> object, with accessible train and valid attributes:</p>
 <div id="cell-112" class="cell" data-execution_count="48">
 <div class="sourceCode cell-code" id="cb78" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb78-1"><span class="bu" style="color: null;
 background-color: null;
@@ -1436,7 +1436,7 @@ font-style: inherit;">len</span>(to.valid)</span></code></pre></div>
 <pre><code>(404710, 7988)</code></pre>
 </div>
 </div>
-<p>It’s possible to view the dataset’s categorical varibales still represented as strings:</p>
+<p>It’s possible to view the dataset’s categorical variables still represented as strings:</p>
 <div id="cell-114" class="cell">
 <div class="sourceCode cell-code" id="cb80" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb80-1">to.show(<span class="dv" style="color: #AD0000;
 background-color: null;
@@ -1730,7 +1730,7 @@ font-style: inherit;">3</span>)</span></code></pre></div>
 </table>
 </div>
 </div>
-<p>However, all underlying data has been coverted to numeric form:</p>
+<p>However, all underlying data has been converted to numeric form:</p>
 <div id="cell-116" class="cell" data-execution_count="50">
 <div class="sourceCode cell-code" id="cb81" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb81-1">to.items.head(<span class="dv" style="color: #AD0000;
 background-color: null;
@@ -1807,7 +1807,7 @@ font-style: inherit;">'ProductSize'</span>]</span></code></pre></div>
 <pre><code>['#na#', 'Compact', 'Large', 'Large / Medium', 'Medium', 'Mini', 'Small']</code></pre>
 </div>
 </div>
-<p>A neat feature in fastai is the ability to save processed data, which can be time-consuming. Saving the data alows you to resume further work without repeating the preprocessing steps. Fastai utilizes Python’s pickle system for this purpose:</p>
+<p>A neat feature in fastai is the ability to save processed data, which can be time-consuming. Saving the data allows you to resume further work without repeating the preprocessing steps. Fastai utilizes Python’s pickle system for this purpose:</p>
 <div id="cell-120" class="cell" data-execution_count="52">
 <div class="sourceCode cell-code" id="cb84" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb84-1">save_pickle(path<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -2151,7 +2151,7 @@ font-style: inherit;">len</span>(xs)</span></code></pre></div>
 <pre><code>(324338, 404710)</code></pre>
 </div>
 </div>
-<p>It turns out our model hsa nearly as many leaves as data point! This occurs because sklearn’s default setting allow continual splitting until there’s just one item per leaf node. We can address this by adjusting the stopping rule to require each leaf node to have at least 25 auction records:</p>
+<p>It turns out our model has nearly as many leaves as data point! This occurs because sklearn’s default setting allow continual splitting until there’s just one item per leaf node. We can address this by adjusting the stopping rule to require each leaf node to have at least 25 auction records:</p>
 <div id="cell-147" class="cell" data-execution_count="65">
 <div class="sourceCode cell-code" id="cb100" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb100-1">m <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -2181,13 +2181,13 @@ font-style: inherit;">25</span>)</span>
 <li>Group A: containing product X</li>
 <li>Group B: containing all other products</li>
 </ul>
-<p>This chose arises because “Product X” is notably pricier, leading Group A to have a higher average price than Group B. This split provides valuable insights for price prediction, prompting the algorithm to prefer it. The decision tree isolates “Product X” quickly, allowing pricise price predictions while evaluating other products’ prices.</p>
+<p>This chose arises because “Product X” is notably pricier, leading Group A to have a higher average price than Group B. This split provides valuable insights for price prediction, prompting the algorithm to prefer it. The decision tree isolates “Product X” quickly, allowing precise price predictions while evaluating other products’ prices.</p>
 <p>One-hot encoding is another option; it transforms a single categorical column into multiple binary columns, each representing a category level. Pandas offers the <code>get_dummies</code> method which does just that.</p>
 <p>However, there’s little evidence that one-hot encoding enhances results. Thus, we tend to avoid it when unnecessary, as it complicates data handling.</p>
 </section>
 <section id="creating-a-random-forest" class="level3">
 <h3 class="anchored" data-anchor-id="creating-a-random-forest">Creating a Random Forest</h3>
-<p>Creating a random forest involves a process similar to crafting a decision tree, but with added flexibility through paramaters that determine the number of trees, data point subset size(rows), and field subset size(columns):</p>
+<p>Creating a random forest involves a process similar to crafting a decision tree, but with added flexibility through parameters that determine the number of trees, data point subset size(rows), and field subset size(columns):</p>
 <div id="cell-153" class="cell" data-execution_count="67">
 <div class="sourceCode cell-code" id="cb104" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb104-1"><span class="kw" style="color: #003B4F;
 background-color: null;
@@ -2334,7 +2334,7 @@ font-style: inherit;">;</span></span></code></pre></div>
 </section>
 <section id="out-of-bag-error" class="level3">
 <h3 class="anchored" data-anchor-id="out-of-bag-error">Out of Bag Error</h3>
-<p>In a random forest, each tree is trained on different subset of data. Consequently, there’s a unique opportunity: each tree has an implicit valication set composed of the data rows not selected for its training, know as out-of-bag (OOB) data.</p>
+<p>In a random forest, each tree is trained on different subset of data. Consequently, there’s a unique opportunity: each tree has an implicit validation set composed of the data rows not selected for its training, know as out-of-bag (OOB) data.</p>
 <p>OOB error is particularly useful when dealing with a limited dataset, as it offers a measure of model generalization without needing to withhold data for a separate validation set. These OOB predictions are stored in the <code>oob_prediction_</code> attribute. Remember, these are compared with training labels, as the OOB calculation involves the training set:</p>
 <div id="cell-166" class="cell" data-execution_count="73">
 <div class="sourceCode cell-code" id="cb112" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb112-1">r_mse(m.oob_prediction_, y)</span></code></pre></div>
@@ -2342,7 +2342,7 @@ font-style: inherit;">;</span></span></code></pre></div>
 <pre><code>0.211234</code></pre>
 </div>
 </div>
-<p>The OOB error frequently appears lower than the validation set error, hinting that other factors might contiribute to the validation error, hinting that other factors might contribute to the validation error outside mere generalization discrepancies. We’ll delve into these causes soon.</p>
+<p>The OOB error frequently appears lower than the validation set error, hinting that other factors might contribute to the validation error, hinting that other factors might contribute to the validation error outside mere generalization discrepancies. We’ll delve into these causes soon.</p>
 </section>
 <section id="model-interpretation" class="level3">
 <h3 class="anchored" data-anchor-id="model-interpretation">Model Interpretation</h3>
@@ -2355,7 +2355,7 @@ font-style: inherit;">;</span></span></code></pre></div>
 <li>How do predictions vary, as we vary these columns?</li>
 </ul>
 <p>Random forests are adept at addressing these questions. Let’s start with evaluating confidence in predictions!</p>
-<p>Model predctions are an average of individual tree predictions, providing an estimated value. But how can we gauge the confiidence of this estimate? One simplistic approach is using the standard deviations of tree predictions - higher deviations imply less confidence, suggseting that caution is needed, especially in scenarios where tree predictions are inconsistent.</p>
+<p>Model predictions are an average of individual tree predictions, providing an estimated value. But how can we gauge the confidence of this estimate? One simplistic approach is using the standard deviations of tree predictions - higher deviations imply less confidence, suggesting that caution is needed, especially in scenarios where tree predictions are inconsistent.</p>
 <p>In creating the random forest, predictions over the validations set were obtained using Python’s list comprehension:</p>
 <div id="cell-170" class="cell">
 <div class="sourceCode cell-code" id="cb114" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb114-1">preds <span class="op" style="color: #5E5E5E;
@@ -2374,7 +2374,7 @@ font-style: inherit;">in</span> m.estimators_])</span></code></pre></div>
 <pre><code>(40, 7988)</code></pre>
 </div>
 </div>
-<p>This results in a prediction for each tree accross all validation set auctions (40 trees, 7,988 auctions). With this data, compute the standard deviation of predictions for each auction:</p>
+<p>This results in a prediction for each tree across all validation set auctions (40 trees, 7,988 auctions). With this data, compute the standard deviation of predictions for each auction:</p>
 <div id="cell-173" class="cell" data-execution_count="76">
 <div class="sourceCode cell-code" id="cb117" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb117-1">preds_std <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -2589,7 +2589,7 @@ font-style: inherit;">;</span></span></code></pre></div>
 </div>
 </div>
 </div>
-<p>While interpreting, redundancy may arise as seen with <code>ProductGroup</code> and <code>ProductGroupDesc</code>. Attemping to remove such redundant features can further streamline interpretation.</p>
+<p>While interpreting, redundancy may arise as seen with <code>ProductGroup</code> and <code>ProductGroupDesc</code>. Attempting to remove such redundant features can further streamline interpretation.</p>
 </section>
 <section id="removing-redundant-variables" class="level4">
 <h4 class="anchored" data-anchor-id="removing-redundant-variables">Removing Redundant Variables</h4>
@@ -3265,7 +3265,7 @@ font-style: inherit;">=</span> rf(xs_final_time, y)</span>
 <pre><code>0.228264</code></pre>
 </div>
 </div>
-<p>Removing these variables slightlyy improves the model’s accuracy and should make it more resilient over time, easier to maintain, and understand.</p>
+<p>Removing these variables slightly improves the model’s accuracy and should make it more resilient over time, easier to maintain, and understand.</p>
 <p>Sometimes, using only recent data can help. Let’s try using data from the most recent years:</p>
 <div id="cell-251" class="cell" data-execution_count="107">
 <div class="sourceCode cell-code" id="cb162" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb162-1">xs[<span class="st" style="color: #20794D;
@@ -3307,7 +3307,7 @@ font-style: inherit;">=</span> rf(xs_filt, y_filt)</span>
 <pre><code>(0.176448, 0.228537)</code></pre>
 </div>
 </div>
-<p>This yields a slightly improvement, demonstraitng that using your entire dataset isn’t always the best approach; sometimes subset can perform better.</p>
+<p>This yields a slightly improvement, demonstrating that using your entire dataset isn’t always the best approach; sometimes subset can perform better.</p>
 <p>I recommend building a model with <code>is_valid</code> as the dependent variable for all datasets. This can uncover subtle domain shift issues that might otherwise go unnoticed.</p>
 <p>Next, we’ll explore whether using a neural network can further improve our results</p>
 </section>
@@ -3361,7 +3361,7 @@ font-style: inherit;">list</span>(xs_final_time.columns) <span class="op" style=
 background-color: null;
 font-style: inherit;">+</span> [dep_var]]</span></code></pre></div>
 </div>
-<p>Neural networks handle categorical columns differently than decision trees. Embedding are an effective method for categorical varaibles in neural nets. Fastai determines which columns should be treated as categorical by comparing the number of distinct levels to the <code>max_card</code> parameter. We’ll use 9,000 as our <code>max_card</code> to avoid unnecessarily large embeddings:</p>
+<p>Neural networks handle categorical columns differently than decision trees. Embedding are an effective method for categorical variables in neural nets. Fastai determines which columns should be treated as categorical by comparing the number of distinct levels to the <code>max_card</code> parameter. We’ll use 9,000 as our <code>max_card</code> to avoid unnecessarily large embeddings:</p>
 <div id="cell-260" class="cell" data-execution_count="111">
 <div class="sourceCode cell-code" id="cb167" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb167-1">cont_nn,cat_nn <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -3373,7 +3373,7 @@ font-style: inherit;">9000</span>, dep_var<span class="op" style="color: #5E5E5E
 background-color: null;
 font-style: inherit;">=</span>dep_var)</span></code></pre></div>
 </div>
-<p>It’s crucial to ensure that <code>saleElapsed</code> isn’t treated as a categorical variable as we need to predict auction sale prices in the feature. Let’s verify the continuos variable</p>
+<p>It’s crucial to ensure that <code>saleElapsed</code> isn’t treated as a categorical variable as we need to predict auction sale prices in the feature. Let’s verify the continuous variable</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -3394,7 +3394,7 @@ Note
 <pre><code>['saleElapsed']</code></pre>
 </div>
 </div>
-<p>Now, let’s examine the cardinality of our chhoosen categorical variables:</p>
+<p>Now, let’s examine the cardinality of our chosen categorical variables:</p>
 <div id="cell-264" class="cell" data-execution_count="113">
 <div class="sourceCode cell-code" id="cb170" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb170-1">df_nn_final[cat_nn].nunique()</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="113">
@@ -3416,7 +3416,7 @@ Track_Type               2
 dtype: int64</code></pre>
 </div>
 </div>
-<p>We notice two “model” variables with similar high cardicalities, suggesting potential redundancy. To reduce the embedding matrix size. Let’s assess the impact of removing one of these model columns on our random forest:</p>
+<p>We notice two “model” variables with similar high cardinalities, suggesting potential redundancy. To reduce the embedding matrix size. Let’s assess the impact of removing one of these model columns on our random forest:</p>
 <div id="cell-266" class="cell" data-execution_count="114">
 <div class="sourceCode cell-code" id="cb172" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb172-1">xs_filt2 <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -3450,7 +3450,7 @@ font-style: inherit;">=</span> rf(xs_filt2, y_filt)</span>
 background-color: null;
 font-style: inherit;">'fiModelDescriptor'</span>)</span></code></pre></div>
 </div>
-<p>When creating our <code>TabularPandas</code> object for the neuronn network, we need to add normalization, which is crucial for neural networks but unnecessary for random forests:</p>
+<p>When creating our <code>TabularPandas</code> object for the neural network, we need to add normalization, which is crucial for neural networks but unnecessary for random forests:</p>
 <div id="cell-270" class="cell" data-execution_count="116">
 <div class="sourceCode cell-code" id="cb175" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb175-1">procs_nn <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -3472,7 +3472,7 @@ font-style: inherit;">=</span> to_nn.dataloaders(<span class="dv" style="color: 
 background-color: null;
 font-style: inherit;">1024</span>)</span></code></pre></div>
 </div>
-<p>For regression models, it’s advisable to set y_range. Let’s find the min and mux of our dependent variable:</p>
+<p>For regression models, it’s advisable to set y_range. Let’s find the min and max of our dependent variable:</p>
 <div id="cell-274" class="cell" data-execution_count="118">
 <div class="sourceCode cell-code" id="cb177" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb177-1">y <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -3644,7 +3644,7 @@ font-style: inherit;">=</span> learn.get_preds()</span>
 <pre><code>0.228488</code></pre>
 </div>
 </div>
-<p>The neural network performs better than the random forest, although it take longer to train and requires more carful hyprerparameter tuning</p>
+<p>The neural network performs better than the random forest, although it take longer to train and requires more careful hyprerparameter tuning</p>
 <p>We’ll save our model for future use:</p>
 <div id="cell-282" class="cell" data-execution_count="122">
 <div class="sourceCode cell-code" id="cb184" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb184-1">learn.save(<span class="st" style="color: #20794D;
@@ -3654,14 +3654,14 @@ font-style: inherit;">'nn'</span>)</span></code></pre></div>
 <pre><code>Path('models/nn.pth')</code></pre>
 </div>
 </div>
-<p>To further improve generalization, we can use ensemble learning, which envolves averaging predictions from several models.</p>
+<p>To further improve generalization, we can use ensemble learning, which evolves averaging predictions from several models.</p>
 </section>
 </section>
 <section id="ensembling" class="level2">
 <h2 class="anchored" data-anchor-id="ensembling">Ensembling</h2>
-<p>The cuccess of random forests is rooted in the principle that while individual trees have errors, these erros are not correlated. With enough trees, the average of these errors should approach zero. We can apply similar reasoning to combine predictions from different algorithms.</p>
-<p>In our case, we have two distinct models: a random forest and a neural network. Their different approaches likly result in different types of errors. Therefore, averageing their predictions could potentially outperform either model individually.</p>
-<p>It’s worth nothing that a random forest is itselft an ensemble, By combining it with a neural network, we’re creating an ensemble of ensembles! While ensembling may not revolutionize your modeling process, it can provide a welcome boost to your exiting model.</p>
+<p>The success of random forests is rooted in the principle that while individual trees have errors, these errors are not correlated. With enough trees, the average of these errors should approach zero. We can apply similar reasoning to combine predictions from different algorithms.</p>
+<p>In our case, we have two distinct models: a random forest and a neural network. Their different approaches likely result in different types of errors. Therefore, averaging their predictions could potentially outperform either model individually.</p>
+<p>It’s worth nothing that a random forest is itself an ensemble, By combining it with a neural network, we’re creating an ensemble of ensembles! While ensembling may not revolutionize your modeling process, it can provide a welcome boost to your exiting model.</p>
 <p>One small challenge we face is the different output types from our Pytorch and sklearn models. Pytorch gives a rank-2 tensor (a column matrix), while sklearn produces a rank-1 array (a vector). We can address this using <code>squeeze</code> to remove unit axes and <code>to_np</code> to convert to Numpy array</p>
 <div id="cell-286" class="cell" data-execution_count="123">
 <div class="sourceCode cell-code" id="cb186" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb186-1">rf_preds <span class="op" style="color: #5E5E5E;
@@ -3710,7 +3710,7 @@ font-style: inherit;">2</span></span></code></pre></div>
 </ul>
 <p>We suggest starting your analysis with a random forest. This will give you a strong baseline, and you can be confident that it’s a reasonable starting point. You can then use that model for feature selection and partial dependence analysis, to get a better understanding of your data.</p>
 <p>From that foundation, you can try neural nets and GBMs, and if they give you significantly better results on your validation set in a reasonable amount of time, you can use them. If decision tree ensembles are working well for you, try adding the embeddings for the categorical variables to the data, and see if that helps your decision trees learn better.</p>
-<p>Alright guys, it’s been a long post huh? thanks for reading all of those, catch you on the flip side, and I’ll see you… next time!</p>
+<p>Alright guys, it’s been a long post huh? Thanks for reading all of those, catch you on the flip side, and I’ll see you… next time!</p>
 
 
 </section>
@@ -4002,7 +4002,7 @@ font-style: inherit;">5</span>])</span></code></pre></div>
 <h3 class="anchored" data-anchor-id="step-1-tokenization">Step 1: Tokenization</h3>
 <p>Tokenizations involves splitting the text into smaller units called tokens. Tokens can be words, subwords or even character depending on the tokenization technique. For simplicity let’s think tokens are words</p>
 <p>Once we split the text into tokens, we compile a list of all unique tokens, this list is known as the <code>vocabulary</code>. Every token in this vocabulary gets assigned a unique number. This mapping from tokens to numbers allows a neural network to process the text data.</p>
-<p>However, there’s a catch! The larger the vocabulary, the more memory and data you need for training. To keep thing manageable, modern tokenization techniques often break words into subwords. which help to minimize the vocabulary size. This process of breaking text into smaller units is called tokenization, and the smaller units are referred as tokens.</p>
+<p>However, there’s a catch! The larger the vocabulary, the more memory and data you need for training. To keep thing manageable, modern tokenization techniques often break words into subwords. Which help to minimize the vocabulary size. This process of breaking text into smaller units is called tokenization, and the smaller units are referred as tokens.</p>
 </section>
 <section id="step-2-numericalization" class="level3">
 <h3 class="anchored" data-anchor-id="step-2-numericalization">Step 2: Numericalization</h3>
@@ -4090,7 +4090,7 @@ font-style: inherit;">"A platypus is an ornithorhynchus anatinus."</span>)</span
 </div>
 </div>
 <p>In this vocabulary, “platypus” gets its own token, but “ornithorhynchus” is split into smaller parts. Each of these tokens corresponds to an entry in a predefined vocabulary list created during the model’s pre-training. Somewhere in that list, we’ll find “A”, and it will have a specific number. This process of converting tokens to numbers is called numericalization. To accomplish this for our dataset, we create a function that tokenizes the “input” field:</p>
-<div id="cell-18" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:39.811661Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:39.811196Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:39.817274Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:39.816323Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:39.811600Z&quot;}" data-trusted="true" data-execution_count="9">
+<div id="cell-18" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:39.811661Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:39.811196Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:39.817274Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:39.816323Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:39.811600Z&quot;}" data-trusted="true">
 <div class="sourceCode cell-code" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
@@ -4315,7 +4315,7 @@ font-style: inherit;">52</span>)</span>
 </div>
 </div>
 </div>
-<p>To compute the Pearson correlation coefficient, Numpy provieds the <code>corrcoef()</code> function, which return a correlation matrix:</p>
+<p>To compute the Pearson correlation coefficient, Numpy provides the <code>corrcoef()</code> function, which return a correlation matrix:</p>
 <div id="cell-30" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:43.860736Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:43.860257Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:43.870686Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:43.869672Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:43.860695Z&quot;}" data-trusted="true" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb22" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1">np.set_printoptions(precision<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -4446,7 +4446,7 @@ font-style: inherit;">'AveRooms'</span>)</span></code></pre></div>
 </div>
 </div>
 </div>
-<p>This plot reveals interesting insights and anomalies. Certain houses have many rooms but lower incomes, potentialy indicate shared accommodations. Pearson’s <code>r</code> can be sensitive to outliers, and removing them can significatly change the correlation.</p>
+<p>This plot reveals interesting insights and anomalies. Certain houses have many rooms but lower incomes, potentially indicate shared accommodations. Pearson’s <code>r</code> can be sensitive to outliers, and removing them can significantly change the correlation.</p>
 <div id="cell-42" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:44.547839Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:44.547515Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:44.855975Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:44.854993Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:44.547807Z&quot;}" data-trusted="true" data-execution_count="21">
 <div class="sourceCode cell-code" id="cb31" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1">subset <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -4499,7 +4499,7 @@ font-style: inherit;">'AveRooms'</span>)</span></code></pre></div>
 </div>
 </div>
 </div>
-<p>To keep track of our training progress, it’s importaint to report the Pearson correlation coefficient after each epoch. Hugging Face’s Trainer API expects a dictionary as output, with keys labeling each metrics. Here’s how you can define a function to calculate and return the Pearson correlation coefficient:</p>
+<p>To keep track of our training progress, it’s important to report the Pearson correlation coefficient after each epoch. Hugging Face’s Trainer API expects a dictionary as output, with keys labeling each metrics. Here’s how you can define a function to calculate and return the Pearson correlation coefficient:</p>
 <div id="cell-48" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:45.448445Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:45.448133Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:45.453322Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:45.452366Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:45.448403Z&quot;}" data-trusted="true" data-execution_count="24">
 <div class="sourceCode cell-code" id="cb34" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><span class="kw" style="color: #003B4F;
 background-color: null;
@@ -5301,7 +5301,7 @@ font-style: inherit;">=</span><span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">True</span>)</span></code></pre></div>
 </div>
-<p>Here, we’re fillng the missing <code>Cabin</code> and two missing <code>Embarded</code> value with the most frequently occurring value (mode). The <code>mode</code> method in Pandas finds the most common value(s) in DataFrame or Series. If multiple modes exist, it return all of them</p>
+<p>Here, we’re filling the missing <code>Cabin</code> and two missing <code>Embarded</code> value with the most frequently occurring value (mode). The <code>mode</code> method in Pandas finds the most common value(s) in DataFrame or Series. If multiple modes exist, it return all of them</p>
 </section>
 </section>
 <section id="outlier-detection-and-handling" class="level3">
@@ -5430,7 +5430,7 @@ font-style: inherit;">;</span></span></code></pre></div>
 </div>
 </div>
 </div>
-<p>To fix this, we can take the logarithm of the <code>Fare</code> values, which heps to compress the range and make the distribution more reasonable. Since the <code>Fare</code> column contains zeros and <code>log(0)</code> is undefined, we’ll add 1 to all values before applying the logarithm</p>
+<p>To fix this, we can take the logarithm of the <code>Fare</code> values, which helps to compress the range and make the distribution more reasonable. Since the <code>Fare</code> column contains zeros and <code>log(0)</code> is undefined, we’ll add 1 to all values before applying the logarithm</p>
 <div id="cell-18" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1">trn_df[<span class="st" style="color: #20794D;
 background-color: null;
@@ -5455,12 +5455,12 @@ font-style: inherit;">;</span></span></code></pre></div>
 </div>
 </div>
 <p>Alright it’s look better now!</p>
-<p>And that’s it for data cleaning! We’ve handled missing values and outliers, setting the stage for effective model training, Next up, we’ll dive into feature engineering, whish is where the fun really begins!</p>
+<p>And that’s it for data cleaning! We’ve handled missing values and outliers, setting the stage for effective model training, Next up, we’ll dive into feature engineering, which is where the fun really begins!</p>
 </section>
 <section id="feature-engineering" class="level3">
 <h3 class="anchored" data-anchor-id="feature-engineering">Feature Engineering</h3>
 <p>Alright, buckle up ’cause we’re about to embark on a feature engineering adventure!</p>
-<p>First up, we’re gonna create a super coll <code>FamilySize</code> feature. Why? because family matter, especially when you’re trying to survive a shipwreck!</p>
+<p>First up, we’re gonna create a super coll <code>FamilySize</code> feature. Why? Because family matter, especially when you’re trying to survive a shipwreck!</p>
 <div id="cell-22" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1">trn_df[<span class="st" style="color: #20794D;
 background-color: null;
@@ -5690,7 +5690,7 @@ font-style: inherit;">'Proportion'</span>)</span>
 </div>
 </div>
 </div>
-<p>Holy shipwreck, Batman! look at those survival rates! Poor Mr.1 is going down with the ship, while Mss 2 and Mrs.&nbsp;3 are living the best lifeboat life.</p>
+<p>Holy shipwreck, Batman! Look at those survival rates! Poor Mr.1 is going down with the ship, while Mss 2 and Mrs.&nbsp;3 are living the best lifeboat life.</p>
 <p>It captures important historical context about the Titanic disaster, particularly the “women and children first” policy during evacuation.</p>
 <p>When we use this feature in our model, it should be able to learn these different survival probabilities associated with each title, potentially improving its predictive accuracy.</p>
 <p>Next, we’re gonna group these passengers by age</p>
@@ -6049,7 +6049,7 @@ font-style: inherit;">=</span> tensor(trn_df[<span class="st" style="color: #207
 background-color: null;
 font-style: inherit;">"Survived"</span>])</span></code></pre></div>
 </div>
-<p>And there you have it, folks! We’ve engineeried these features faster than the Titanic sank(too soon?). Your models gonna love these new features more than Rose loved Jack. Now go forth and predict those survival rates!</p>
+<p>And there you have it, folks! We’ve engineered these features faster than the Titanic sank(too soon?). Your models gonna love these new features more than Rose loved Jack. Now go forth and predict those survival rates!</p>
 </section>
 </section>
 <section id="build-a-deep-learning-model-from-scratch-lets-get-our-hands-dirty" class="level2">
@@ -6087,7 +6087,7 @@ font-style: inherit;">=</span> trn_df[indep_cols].values</span>
 <p>Why StandardScaler, you ask? Well, it’s got some neat perks:</p>
 <ol type="1">
 <li>It handles outliers like a boss. Max scaling can sometimes squish all your other values when one outliers decides to go crazy.</li>
-<li>it’s a gradient descent’s best friend. when you’re dealing with neural networks, having features one a similar scale is like having a smooth road for your optimization on cruise on.</li>
+<li>It’s a gradient descent’s best friend. When you’re dealing with neural networks, having features one a similar scale is like having a smooth road for your optimization on cruise on.</li>
 </ol>
 <p>Let’s wave our magic wand and see what happens:</p>
 <div id="cell-41" class="cell" data-execution_count="19">
@@ -6168,12 +6168,12 @@ font-style: inherit;">=</span> t_indep[trn_split], t_indep[val_split]</span>
 background-color: null;
 font-style: inherit;">=</span> t_dep[trn_split], t_dep[val_split]</span></code></pre></div>
 </div>
-<p>And there you have it, folks! We’ve got everything we need to start our training montage. Get ready, because we’re about to embark on a wild ride through the world of deep learning. It’s gooing to be a fun one!</p>
+<p>And there you have it, folks! We’ve got everything we need to start our training montage. Get ready, because we’re about to embark on a wild ride through the world of deep learning. It’s going to be a fun one!</p>
 </section>
 </section>
 <section id="the-model-architecture-our-neural-blueprint" class="level2">
 <h2 class="anchored" data-anchor-id="the-model-architecture-our-neural-blueprint">The Model Architecture: Our Neural Blueprint</h2>
-<p>First things first, let’s create a a function to initialize our coefficients. Think of this as laying the foundation for our neural masterpiece</p>
+<p>First things first, let’s create a function to initialize our coefficients. Think of this as laying the foundation for our neural masterpiece</p>
 <div id="cell-46" class="cell" data-execution_count="21">
 <div class="sourceCode cell-code" id="cb25" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><span class="kw" style="color: #003B4F;
 background-color: null;
@@ -6551,10 +6551,10 @@ Validation Accuracy: 0.8315</code></pre>
 </div>
 </div>
 <p>And the results are in!</p>
-<p>Well, well, well! look at that! our little neural network is showing some serious potential. We’re seeing the losses decrease over time for both our training and validation sets, which is exactly what we want. It means our model is learning!</p>
+<p>Well, well, well! Look at that! Our little neural network is showing some serious potential. We’re seeing the losses decrease over time for both our training and validation sets, which is exactly what we want. It means our model is learning!</p>
 <p>And that validation accuracy? 83.15%! Not too shabby for a model we built from scratch, right? In the world of the Titanic competition, that’s a pretty solid score.(not count those who use extra data to train their model, we all know that).</p>
 <p>But the real test is yet to come. How will our model perform on the unseen test data? Let’s find out!</p>
-<p>After preprocessing our test data(just like we did with our trainding data), we make our predictions:</p>
+<p>After preprocessing our test data(just like we did with our training data), we make our predictions:</p>
 <div id="cell-61" class="cell" data-execution_count="28">
 <div class="sourceCode cell-code" id="cb33" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
@@ -6725,12 +6725,12 @@ font-style: inherit;">return</span> x</span></code></pre></div>
 <p>This little beauty is like our previous model’s cooler, more sophisticated cousin. It’s still simple, but it’s packing some extra punch:</p>
 <ul>
 <li>We’ve got two fully connected layers (<code>fc1</code> and <code>fc2</code>), just like before.</li>
-<li>But wait, what’s that <code>bn1</code>? That’s batch normalization layer! it’s like traffic cop for our data, making sure everything flows smoothly between layers.</li>
+<li>But wait, what’s that <code>bn1</code>? That’s batch normalization layer! It’s like traffic cop for our data, making sure everything flows smoothly between layers.</li>
 <li>We’re still using ReLU and sigmoid activations, because hey, if it ain’t broke, don’t fix it!</li>
 </ul>
 <section id="training-our-new-model-the-pytorch-way" class="level3">
 <h3 class="anchored" data-anchor-id="training-our-new-model-the-pytorch-way">Training Our New Model: The Pytorch Way</h3>
-<p>Now, let’s look at our sniny new training function:</p>
+<p>Now, let’s look at our new training function:</p>
 <div id="cell-69" class="cell" data-execution_count="32">
 <div class="sourceCode cell-code" id="cb38" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><span class="kw" style="color: #003B4F;
 background-color: null;
@@ -6952,8 +6952,8 @@ font-style: inherit;">return</span> model</span></code></pre></div>
 </div>
 <p>This function is like a personal trainer for our model. Here’s what’s new:</p>
 <ul>
-<li>We’re using Adam optimizer - it’s like giving our model a smart personal coach that adapts the trainign intensity for each parameter and ’cause this post is a bit too long so i think i will explain Adam optimizer in the different blog post.</li>
-<li>We’ve added a learning rate scheduler. It’s like adjusting the difficulty of our model’s workout every 50 epochs. Maybe i’ll explain this in another blog post too, it worth an blog post to talk about this.</li>
+<li>We’re using Adam optimizer - it’s like giving our model a smart personal coach that adapts the training intensity for each parameter and ’cause this post is a bit too long so i think i will explain Adam optimizer in the different blog post.</li>
+<li>We’ve added a learning rate scheduler. It’s like adjusting the difficulty of our model’s workout every 50 epochs. Maybe I’ll explain this in another blog post too, it worth an blog post to talk about this.</li>
 <li>We’re using binary cross-entropy loss now, which is perfect for our binary classification problem.</li>
 </ul>
 <p>Now, we have the forward pass:</p>
@@ -7116,7 +7116,7 @@ Early stopping at epoch 29
 Validation Accuracy: 0.8268</code></pre>
 </div>
 </div>
-<p>Our model decided to call it quits after just 29 epochs. Our validation accuracy is …82.68%? That’s actually a bit lower that our previous model. But don’t panic! Sometimes, a slightly lower validation accuracy can lead to better performance on unseen data. It’s like how sometimes taking it easyy in practice can lead to better performance in the big game.</p>
+<p>Our model decided to call it quits after just 29 epochs. Our validation accuracy is …82.68%? That’s actually a bit lower that our previous model. But don’t panic! Sometimes, a slightly lower validation accuracy can lead to better performance on unseen data. It’s like how sometimes taking it easy in practice can lead to better performance in the big game.</p>
 <p>alright let submit to kaggle to see how our model performs on test set, shall we!</p>
 <div id="cell-73" class="cell" data-execution_count="34">
 <div class="sourceCode cell-code" id="cb44" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><span class="co" style="color: #5E5E5E;
@@ -7230,7 +7230,7 @@ Survived
 Name: count, dtype: int64</code></pre>
 </div>
 </div>
-<p>alright everythig seems good till now, let’s make our submit shall we?</p>
+<p>Alright everything seems good till now, let’s make our submit shall we?</p>
 <div id="cell-79" class="cell" data-execution_count="37">
 <div class="sourceCode cell-code" id="cb48" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1">sub_df.to_csv(<span class="st" style="color: #20794D;
 background-color: null;
@@ -7294,7 +7294,7 @@ font-style: inherit;">!</span>head sub_ver3.csv</span></code></pre></div>
 
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
-<p>Hey there, fellow data adventurers! 👋 It’s been a couple of week since my last post - blame exams and and obsessive quest to tweak every configuration setting for my workflow (which is turned into a week-long habit hole - i regret nothing). But today, I’m excited to dive back into the world of AI and share my latest escapades from <a href="https://youtu.be/hBBOjCiFcuo?si=dfuUYTPelGOYCogb">Lesson 3</a> of the FastAI course taught by the indomitable Jeremy Horawd. Spoiler alert: it’s packed with enough neural wonders to make your brain do a happy dance.🕺</p>
+<p>Hey there, fellow data adventurers! 👋 It’s been a couple of week since my last post - blame exams and obsessive quest to tweak every configuration setting for my workflow (which is turned into a week-long habit hole - i regret nothing). But today, I’m excited to dive back into the world of AI and share my latest escapades from <a href="https://youtu.be/hBBOjCiFcuo?si=dfuUYTPelGOYCogb">Lesson 3</a> of the FastAI course taught by the indomitable Jeremy Horawd. Spoiler alert: it’s packed with enough neural wonders to make your brain do a happy dance.🕺</p>
 <p>In the coming post, I’ll guide you through:</p>
 <ul>
 <li>Picking of right AI model that’s just right for you</li>
@@ -7526,7 +7526,7 @@ font-style: inherit;">3</span>)</span></code></pre></div>
 </table>
 </div>
 </div>
-<p>Alright after about 2 minutes, we hit a 7% error rate. Not too shabby! But here’s the catch: ResNet34 is like the reliable old family car of neuron networks - good but not the fastest on the block. to spice thing up, we need to find a better, more turbo-changed model🏎️</p>
+<p>Alright after about 2 minutes, we hit a 7% error rate. Not too shabby! But here’s the catch: ResNet34 is like the reliable old family car of neuron networks - good but not the fastest on the block. To spice thing up, we need to find a better, more turbo-changed model🏎️</p>
 <section id="time-to-upgrade-diving-into-the-model-jungle" class="level3">
 <h3 class="anchored" data-anchor-id="time-to-upgrade-diving-into-the-model-jungle">Time to Upgrade: Diving into the Model Jungle</h3>
 <p>There are zillion architectures in the Pytorch image model library - ok, maybe not a zillion, but a lot! Most are mathematical functions like RELUs(Rectified Linear Units), which we’ll get into shortly. So, which model should we choose? It boil down to three things:</p>
@@ -7539,7 +7539,7 @@ font-style: inherit;">3</span>)</span></code></pre></div>
 <section id="the-which-image-model-is-best-notebook" class="level3">
 <h3 class="anchored" data-anchor-id="the-which-image-model-is-best-notebook">The “Which Image Model is Best?” Notebook</h3>
 <p>Check out this gem by Jeremy Howard: <a href="https://www.kaggle.com/code/jhoward/which-image-models-are-best/">Which image models are best</a>. It’s a treasure trove for finding the perfect architecture, and i highly recommend you go to his notebook read it and you should totally upvote it because Jeremy rocks.</p>
-<p>i just copy the plot into here for so you can look at that quickly (but remember to give him a upvote).</p>
+<p>I just copy the plot into here for so you can look at that quickly (but remember to give him a upvote).</p>
 <div class="cell">
 <div class="sourceCode cell-code hidden" id="cb6" data-startfrom="1" data-source-offset="-0" style="background: #f1f3f5;"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb6-1">Plotly <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -9155,7 +9155,7 @@ font-style: inherit;">=</span> learn.model</span>
 <section id="whats-all-this-stuff" class="level3">
 <h3 class="anchored" data-anchor-id="whats-all-this-stuff">What’s All This Stuff?</h3>
 <p>Alright, there’s a lot to digest here. Basically, the model is structured in layers upon layers. Here’s the breakdown:</p>
-<p><strong>TimmBody</strong>: this contains most of the model architecture. Inside the TimmBody. you’ll find:</p>
+<p><strong>TimmBody</strong>: this contains most of the model architecture. Inside the TimmBody. You’ll find:</p>
 <ul>
 <li><strong>Model</strong>: The main model components.</li>
 <li><strong>Stem</strong>: The initial layers that process the raw input.</li>
@@ -9680,9 +9680,9 @@ font-style: inherit;">;</span></span>
 </div>
 </div>
 </div>
-<p>What we want to do here is simple: imageine we don’t know the true mathematical function, and we’re trying to recreate it from some data. This is easier than trying to figure out if an image contains a basset hound or your grandma’s cat. Here’s the real function, and we’re going to try to mimic it using lot’s of different quadratic equations.</p>
+<p>What we want to do here is simple: imagine we don’t know the true mathematical function, and we’re trying to recreate it from some data. This is easier than trying to figure out if an image contains a basset hound or your grandma’s cat. Here’s the real function, and we’re going to try to mimic it using lot’s of different quadratic equations.</p>
 <p><strong>Creating Quadratics on Demand</strong></p>
-<p>In Python, this magical thing called <code>partial</code> allows us to fix some values of a function and crete variation of it. It’s like having a playlist of your favorite songs, but you can change he lyric any time!</p>
+<p>In Python, this magical thing called <code>partial</code> allows us to fix some values of a function and create variation of it. It’s like having a playlist of your favorite songs, but you can change he lyric any time!</p>
 <div id="cell-37" class="cell" data-execution_count="18">
 <div class="sourceCode cell-code" id="cb24" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><span class="im" style="color: #00769E;
 background-color: null;
@@ -10830,7 +10830,7 @@ font-style: inherit;">print</span>(abc.grad)</span></code></pre></div>
 <pre><code>tensor([-7.6934, -0.4701, -2.8031])</code></pre>
 </div>
 </div>
-<p>Voila! You’ve got the gradients or slopes. Theyy tell us how much the loss changes if you tweak each parameter-perfect for finding the optimal values.</p>
+<p>Voila! You’ve got the gradients or slopes. They tell us how much the loss changes if you tweak each parameter-perfect for finding the optimal values.</p>
 </section>
 <section id="updating-parameters-using-gradients" class="level3">
 <h3 class="anchored" data-anchor-id="updating-parameters-using-gradients">Updating Parameters Using Gradients</h3>
@@ -10862,7 +10862,7 @@ font-style: inherit;">print</span>(loss)</span></code></pre></div>
 </section>
 <section id="automating-the-gradient-descent" class="level3">
 <h3 class="anchored" data-anchor-id="automating-the-gradient-descent">Automating the Gradient Descent</h3>
-<p>Why do it manually when you’er a Pytorch Jedi? Here’s a loop to handle multiple steps of gradient descent:</p>
+<p>Why do it manually when you’re a Pytorch Jedi? Here’s a loop to handle multiple steps of gradient descent:</p>
 <div id="cell-63" class="cell" data-execution_count="29">
 <div class="sourceCode cell-code" id="cb43" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><span class="cf" style="color: #003B4F;
 background-color: null;
@@ -11819,7 +11819,7 @@ font-style: inherit;">map</span>(Path.unlink)<span class="op" style="color: #5E5
 background-color: null;
 font-style: inherit;">;</span></span></code></pre></div>
 </div>
-<p>This step ensures that any currupt images are identified and removed.</p>
+<p>This step ensures that any corrupt images are identified and removed.</p>
 </section>
 <section id="structuring-data-with-datablock-api" class="level3">
 <h3 class="anchored" data-anchor-id="structuring-data-with-datablock-api">Structuring Data with DataBlock API</h3>
@@ -11875,7 +11875,7 @@ font-style: inherit;">1</span>)</span></code></pre></div>
 </div>
 </div>
 </div>
-<p>This show a batch of images using the default resizing method. Different resizing startegies can impact the dataset in various ways.</p>
+<p>This show a batch of images using the default resizing method. Different resizing strategies can impact the dataset in various ways.</p>
 </section>
 </section>
 <section id="exploring-resizing-methods" class="level2">
@@ -11883,7 +11883,7 @@ font-style: inherit;">1</span>)</span></code></pre></div>
 <p>Resizing plays a crucial role in preparing your images for model training. Let’s explore three different resizing methods:</p>
 <section id="standard-resize" class="level3">
 <h3 class="anchored" data-anchor-id="standard-resize">Standard Resize</h3>
-<p>The standard resize method adjust the image size for model while maintaining a specific aspect rato. Here, we pad the images with zeros(black) to ensure the entire image is included:</p>
+<p>The standard resize method adjust the image size for model while maintaining a specific aspect ratio. Here, we pad the images with zeros(black) to ensure the entire image is included:</p>
 <div id="cell-14" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1">bears <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -11916,7 +11916,7 @@ font-style: inherit;">1</span>)</span></code></pre></div>
 </div>
 </div>
 </div>
-<p>This approach, padding with zeros maintains the aspect rato and ensures that the entire image fit within the frame.</p>
+<p>This approach, padding with zeros maintains the aspect ratio and ensures that the entire image fit within the frame.</p>
 </section>
 <section id="randomresizedcrop" class="level3">
 <h3 class="anchored" data-anchor-id="randomresizedcrop">RandomResizedCrop</h3>
@@ -12579,7 +12579,7 @@ font-style: inherit;">True</span>)</span></code></pre></div>
 <pre><code>Running on local URL:  http://127.0.0.1:7860
 To create a public link, set `share=True` in `launch()`.</code></pre>
 <p><img src="https://buidai123.github.io/blog/posts/2024-07-07-from-notebook-to-web-app/huggingfacespaces.png" class="img-fluid"></p>
-<p>This code creates a simple Gradio interface where user can upload images, and the model will predict whether it’s a grizzly, black or teddy bear. you can run the interface inline in you Jupyter Notebook for testing.</p>
+<p>This code creates a simple Gradio interface where user can upload images, and the model will predict whether it’s a grizzly, black or teddy bear. You can run the interface inline in you Jupyter Notebook for testing.</p>
 <p><strong>Step 5: Export the Notebook to a Python script</strong>:</p>
 <p>We will use nbdev to convert the Jupyter Notebook to a Python script.</p>
 <p><strong>1. Add Metadata and Export Tags</strong>:</p>
@@ -12664,7 +12664,7 @@ font-style: inherit;">"Deploy bear classifier with Gradio interface🐻🎉"</sp
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
 <p>Welcome to my deep dive in to the world of deep learning! In this blog post, I’ll be sharing my journey through <a href="https://course.fast.ai/Lessons/lesson1.html">the first lesson</a> of fast.ai course an acclaimed program that makes learning AI accessible and enjoyable.</p>
-<p>Fast.ai was created with the goal of making deep learning understandable for everyone, no matter their background, and Lesson 1 accomplishes that by having us build a simple yet fascinating model: a bird classifier. this exciting task not just introduces me to the basics of deep learning but also alow me to experience firsthand the power and simplicity of modern AI tools.</p>
+<p>Fast.ai was created with the goal of making deep learning understandable for everyone, no matter their background, and Lesson 1 accomplishes that by having us build a simple yet fascinating model: a bird classifier. This exciting task not just introduces me to the basics of deep learning but also allow me to experience firsthand the power and simplicity of modern AI tools.</p>
 <p>Join me as I walk you though key concept covered in the Lesson 1, from understanding how images are processed by computers to training and validating our model. I will also share some personal insights and reflections on the learning process, aiming to make this technical journey both informative and relatable.</p>
 <p>Whether you are a beginner in AI or someone looking for refresh your knowledge, I hope this post inspires and guides you in your own deep learning</p>
 </section>
@@ -12765,7 +12765,7 @@ Biological Neurons vs.&nbsp;Artificial Neural Network
 </section>
 <section id="exploring-the-is-it-a-bird-classifier" class="level2">
 <h2 class="anchored" data-anchor-id="exploring-the-is-it-a-bird-classifier">Exploring the “Is it a Bird?” Classifier</h2>
-<p>One of the most exciting part of Lesson 1 was building our own image classifier to determine whether the a given image contains a bird. For this project, we used the fastai library along with pre-trained model to quickly and efficiently create our classifier. Let’s dive into the code walkthrough.</p>
+<p>One of the most exciting part of Lesson 1 was building our own image classifier to determine whether the given image contains a bird. For this project, we used the fastai library along with pre-trained model to quickly and efficiently create our classifier. Let’s dive into the code walkthrough.</p>
 <p>The basic steps we’ll need to do:</p>
 <ol type="1">
 <li>Use DuckDuckGo for search images of “bird photos”</li>
@@ -12955,9 +12955,9 @@ font-style: inherit;">256</span>)</span></code></pre></div>
 </ul>
 <p><code>fastai.vision.all</code>:</p>
 <ul>
-<li>TThis module from the fastai library is like a Swiss Army knife for vision tasks, providing all the tools you need, from data loaders to model training utilities.</li>
+<li>This module from the fastai library is like a Swiss Army knife for vision tasks, providing all the tools you need, from data loaders to model training utilities.</li>
 </ul>
-<p><code>to_thumb</code>: - A method from the <code>PIL.Image</code> class, which is quite handy it resizes an image to a thumbnail while maintaining the aspect rato. Kind of like shrinking your favorite sweater but in a good way</p>
+<p><code>to_thumb</code>: - A method from the <code>PIL.Image</code> class, which is quite handy it resizes an image to a thumbnail while maintaining the aspect ratio. Kind of like shrinking your favorite sweater but in a good way</p>
 <p>These libraries and function streamline the process of getting and preparing the images for our model. For more detailed documentation, you can refer to the <a href="https://fastdownload.fast.ai/">fastdownload</a>, <a href="https://docs.fast.ai/tutorial.vision.html">fastai vision</a>, and <a href="https://pillow.readthedocs.io/en/stable/">Pillow</a> documentation.</p>
 </section>
 <section id="downloading-and-preparing-images" class="level3">
@@ -13407,7 +13407,7 @@ Probability it's a bird: 0.9988</code></pre>
 </section>
 <section id="what-is-machine-learning" class="level2">
 <h2 class="anchored" data-anchor-id="what-is-machine-learning">What Is Machine Learning</h2>
-<p>Ah, the age-old question: What is the machine learning? Well, imagine if your computer was a child, and you were its teacher. Instead of giving it a a strict set of rules to follow(which, let’s be honest, kids hate), you give it examples from which it can learn. In essence, machine learning is about enabling computer to learn from data rather than being explicitly programmed. It’s like teaching your computer how to ride a bike by letting it practice, fall and get up again, rather than reading it a manual</p>
+<p>Ah, the age-old question: What is the machine learning? Well, imagine if your computer was a child, and you were its teacher. Instead of giving it a strict set of rules to follow(which, let’s be honest, kids hate), you give it examples from which it can learn. In essence, machine learning is about enabling computer to learn from data rather than being explicitly programmed. It’s like teaching your computer how to ride a bike by letting it practice, fall and get up again, rather than reading it a manual</p>
 <p>Let’s take a closer look at this with a series of visualizations:</p>
 <section id="traditional-programming" class="level3">
 <h3 class="anchored" data-anchor-id="traditional-programming">Traditional Programming</h3>
@@ -13764,7 +13764,7 @@ Example of overfitting
 </section>
 <section id="final-thoughts" class="level2">
 <h2 class="anchored" data-anchor-id="final-thoughts">Final Thoughts</h2>
-<p>Thank you for joining me on this deep learning adventure! if you find this blog helpful or inspiring, please share it with others who might also be interested. Deep learning is a continuously evolving field with endless possibilities. Stay curious, keep learning, and don’t hesitate to dive deeper into the world of AI.</p>
+<p>Thank you for joining me on this deep learning adventure! If you find this blog helpful or inspiring, please share it with others who might also be interested. Deep learning is a continuously evolving field with endless possibilities. Stay curious, keep learning, and don’t hesitate to dive deeper into the world of AI.</p>
 <p>Feel free to leave your comments, questions, or insights below. I’d love to hear your experiences, projects, and what you’re learning. Together, we can continue to explore and push the boundaries of what’s possible with deep learning.</p>
 <p>Happy coding, and may your models always be accurate!</p>
 
