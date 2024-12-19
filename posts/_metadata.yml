@@ -3,10 +3,15 @@
 # freeze computational output
 # (see https://quarto.org/docs/projects/code-execution.html#freeze)
 freeze: true
+toc: true
 
 # Enable banner style title blocks
 title-block-banner: true
 
-comments: 
-  utterances: 
-    repo:  buidai123/buidai123.github.io.comments
+format:
+  html:
+    code-tools: true
+
+comments:
+  utterances:
+    repo: buidai123/buidai123.github.io.comments

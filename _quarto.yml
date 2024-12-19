@@ -3,9 +3,13 @@ project:
 
 website:
   title: "Bui Huu Dai"
+  favicon: Github_bird.png
   twitter-card: true
+  cookie-consent: true
   open-graph: true
-  google-analytics: G-6JR4N915S6
+  google-analytics:
+    tracking-id: G-6JR4N915S6
+    anonymize-ip: true
   site-url: https://buidai123.github.io/blog/
   description: "Dai's blog."
   navbar:
@@ -17,23 +21,24 @@ website:
         href: https://x.com/daibui1234
       - icon: rss
         href: index.xml
+  search:
+    location: navbar
+    type: textbox
 
   page-footer:
     left:
       - text: "Copyright 2024, Bui Huu Dai"
-
+  back-to-top-navigation: true
+  repo-url: https://github.com/buidai123/blog
+  repo-actions: [edit, source, issue]
 
 format:
   html:
     theme:
-      light: [cosmo, styles.scss]
+      light: cosmo
       dark: [darkly, styles-dark.scss]
-    highlight-style: a11y-dark
     mainfont: "Atkinson Hyperlegible"
-    code-copy: true
-    code-overflow: wrap
+    code-copy: hover
+    code-overflow: scroll
 
 editor: visual
-
-
-
