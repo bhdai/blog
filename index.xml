@@ -8389,7 +8389,7 @@ font-style: inherit;">width</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">1000</span><span class="op" style="color: #5E5E5E;
+font-style: inherit;">795</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">,</span></span>
 <span id="cb6-57">    <span class="dt" style="color: #AD0000;
@@ -8398,10 +8398,20 @@ font-style: inherit;">height</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">800</span><span class="op" style="color: #5E5E5E;
+font-style: inherit;">750</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">,</span></span>
 <span id="cb6-58">    <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">autosize</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">true</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb6-59">    <span class="dt" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">xaxis</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -8441,7 +8451,7 @@ background-color: null;
 font-style: inherit;">,</span> }<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">,</span></span>
-<span id="cb6-59">    <span class="dt" style="color: #AD0000;
+<span id="cb6-60">    <span class="dt" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">yaxis</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -8476,7 +8486,7 @@ background-color: null;
 font-style: inherit;">,</span> }<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">,</span></span>
-<span id="cb6-60">    <span class="dt" style="color: #AD0000;
+<span id="cb6-61">    <span class="dt" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">plot_bgcolor</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -8485,7 +8495,7 @@ background-color: null;
 font-style: inherit;">'rgb(240,240,255)'</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">,</span></span>
-<span id="cb6-61">    <span class="dt" style="color: #AD0000;
+<span id="cb6-62">    <span class="dt" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">showlegend</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -8495,7 +8505,7 @@ font-weight: bold;
 font-style: inherit;">true</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">,</span></span>
-<span id="cb6-62">    <span class="dt" style="color: #AD0000;
+<span id="cb6-63">    <span class="dt" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">legend</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -8528,17 +8538,17 @@ background-color: null;
 font-style: inherit;">'toggleothers'</span> }<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">,</span></span>
-<span id="cb6-63">    <span class="dt" style="color: #AD0000;
+<span id="cb6-64">    <span class="dt" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">hovermode</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">:</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'closest'</span></span>
-<span id="cb6-64">  }<span class="op" style="color: #5E5E5E;
+<span id="cb6-65">  }<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
-<span id="cb6-65">  <span class="kw" style="color: #003B4F;
+<span id="cb6-66">  <span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
 font-style: inherit;">const</span> config <span class="op" style="color: #5E5E5E;
@@ -8553,7 +8563,7 @@ font-weight: bold;
 font-style: inherit;">true</span>}<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
-<span id="cb6-66">  <span class="kw" style="color: #003B4F;
+<span id="cb6-67">  <span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
 font-style: inherit;">const</span> plot <span class="op" style="color: #5E5E5E;
@@ -8567,7 +8577,7 @@ background-color: null;
 font-style: inherit;">'div'</span>)<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
-<span id="cb6-67">  Plotly<span class="op" style="color: #5E5E5E;
+<span id="cb6-68">  Plotly<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
 background-color: null;
@@ -8580,13 +8590,13 @@ background-color: null;
 font-style: inherit;">,</span> config)<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
-<span id="cb6-68">  <span class="cf" style="color: #003B4F;
+<span id="cb6-69">  <span class="cf" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
 font-style: inherit;">return</span> plot<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
-<span id="cb6-69">}</span></code></pre></div>
+<span id="cb6-70">}</span></code></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-1-1" data-nodetype="declaration">
