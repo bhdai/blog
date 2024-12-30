@@ -1,32 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://buidai123.github.io/blog/posts/2024-11-12-random-forest/index.html</loc>
-    <lastmod>2024-11-13T08:25:47.637Z</lastmod>
+    <loc>https://buidai123.github.io/blog/posts/2024-12-30-deep-learning-concepts/index.html</loc>
+    <lastmod>2024-12-30T15:29:27.486Z</lastmod>
   </url>
   <url>
-    <loc>https://buidai123.github.io/blog/posts/titanic_competition/index.html</loc>
-    <lastmod>2024-11-13T03:32:18.016Z</lastmod>
-  </url>
-  <url>
-    <loc>https://buidai123.github.io/blog/posts/2024-07-07-from-notebook-to-web-app/index.html</loc>
-    <lastmod>2024-11-13T02:34:38.438Z</lastmod>
-  </url>
-  <url>
-    <loc>https://buidai123.github.io/blog/about.html</loc>
-    <lastmod>2024-09-13T03:07:54.320Z</lastmod>
-  </url>
-  <url>
-    <loc>https://buidai123.github.io/blog/posts/2024-06-30-your-deep-learning-journey/index.html</loc>
-    <lastmod>2024-12-22T13:53:35.957Z</lastmod>
+    <loc>https://buidai123.github.io/blog/posts/nlp-beginner/index.html</loc>
+    <lastmod>2024-11-13T03:18:25.740Z</lastmod>
   </url>
   <url>
     <loc>https://buidai123.github.io/blog/posts/2024-07-28-from-neuron-to-gradient/index.html</loc>
     <lastmod>2024-12-22T14:28:12.981Z</lastmod>
   </url>
   <url>
-    <loc>https://buidai123.github.io/blog/posts/nlp-beginner/index.html</loc>
-    <lastmod>2024-11-13T03:18:25.740Z</lastmod>
+    <loc>https://buidai123.github.io/blog/posts/2024-06-30-your-deep-learning-journey/index.html</loc>
+    <lastmod>2024-12-22T13:53:35.957Z</lastmod>
+  </url>
+  <url>
+    <loc>https://buidai123.github.io/blog/about.html</loc>
+    <lastmod>2024-09-13T03:07:54.320Z</lastmod>
+  </url>
+  <url>
+    <loc>https://buidai123.github.io/blog/posts/2024-07-07-from-notebook-to-web-app/index.html</loc>
+    <lastmod>2024-11-13T02:34:38.438Z</lastmod>
+  </url>
+  <url>
+    <loc>https://buidai123.github.io/blog/posts/titanic_competition/index.html</loc>
+    <lastmod>2024-11-13T03:32:18.016Z</lastmod>
+  </url>
+  <url>
+    <loc>https://buidai123.github.io/blog/posts/2024-11-12-random-forest/index.html</loc>
+    <lastmod>2024-12-23T01:40:08.446Z</lastmod>
   </url>
   <url>
     <loc>https://buidai123.github.io/blog/index.html</loc>
