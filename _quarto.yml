@@ -37,7 +37,6 @@ format:
     theme:
       light: cosmo
       dark: [darkly, styles-dark.scss]
-    mainfont: "Atkinson Hyperlegible"
     code-copy: hover
     code-overflow: scroll
 
