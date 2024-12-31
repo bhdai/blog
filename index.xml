@@ -21,7 +21,7 @@
 
 
 
-<p>Alright, we’ve been diving deep into tabular data lately, haven’t we? We played with it, had some fun, and now i think it’s time to go deeper to image classification problem. Yeah, we’ve touched on this before with the word simplest model <a href="https://buidai123.github.io/blog/posts/2024-06-30-your-deep-learning-journey/#exploring-the-is-it-a-bird-classifier">“Is it a Bird?”</a>, or better our simple model for <a href="https://buidai123.github.io/blog/posts/2024-07-07-from-notebook-to-web-app/">recognizing three types of bears</a> but that was mostly about deployment. This time we’re going all in.</p>
+<p>Alright, we’ve been diving deep into tabular data lately, haven’t we? We played with it, had some fun, and now i think it’s time to go deeper to image classification problem. Yeah, we’ve touched on this before with the world simplest model <a href="https://buidai123.github.io/blog/posts/2024-06-30-your-deep-learning-journey/#exploring-the-is-it-a-bird-classifier">“Is it a Bird?”</a>, or better our simple model for <a href="https://buidai123.github.io/blog/posts/2024-07-07-from-notebook-to-web-app/">recognizing three types of bears</a> but that was mostly about deployment. This time we’re going all in.</p>
 <blockquote class="blockquote">
 <p>In an ideal world deep learning practitioners wouldn’t have to know every detail of how things work under the hood… But as yet, we don’t live in an ideal world. The truth is, to make your model really work, and work reliably, there are a lot of details you have to get right, and a lot of details that you have to check. This process requires being able to look inside your neural network as it trains, and as it makes predictions, find possible problems, and know how to fix them.</p>
 </blockquote>
@@ -231,9 +231,7 @@ font-style: inherit;">0.75</span>)).dataloaders(train_path)</span></code></pre><
 </ol>
 <section id="resize" class="level3">
 <h3 class="anchored" data-anchor-id="resize">Resize</h3>
-<p>Use <code>Resize</code> as an item transform with a large size you can use <code>pad</code><sup>3</sup> or <code>squish</code><sup>4</sup> instead of <code>crop</code><sup>5</sup>(the default) for the initial <code>Resize</code> but what the diff between them?</p>
-<p>In fact let’s see the different in action shall we?</p>
-<p>Here’s the original image:</p>
+<p>Use <code>Resize</code> as an item transform with a large size you can use <code>pad</code><sup>3</sup> or <code>squish</code><sup>4</sup> instead of <code>crop</code><sup>5</sup>(the default) for the initial <code>Resize</code> but what the diff between them? In fact let’s see the different in action shall we? Here’s the original image:</p>
 <div id="cell-20" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1">tst_img <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -369,8 +367,7 @@ font-style: inherit;">=</span>method)</span></code></pre></div>
 <li>Use squish only if you’re sure it won’t distort important features.</li>
 <li>Always validate your choice by inspecting resized image and checking model performance</li>
 </ol>
-<p>The best method can vary depending on the dataset the original aspect ratio.</p>
-<p>Now let’s see what the <code>aug_transforms</code> does under the hood</p>
+<p>The best method can vary depending on the dataset the original aspect ratio. Now let’s see what the <code>aug_transforms</code> does under the hood</p>
 </section>
 <section id="augmentation" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="augmentation">Augmentation</h3>
@@ -524,8 +521,7 @@ font-style: inherit;">6</span>)</span></code></pre></div>
 </div>
 </div>
 </div>
-<p>Take a look at the images and and check that each one seems to have correct label or not. In fact, we often have to deal with data with which is not as familiar as domain experts may be. Indeed, if you’re not a paddy doctor it will be hard to look at a random image and speak out the disease right? Since I’m not an expert on paddy diseases, I would use google to search to make sure the images look similar to what i see in the output.</p>
-<p>Also you can debug the DataBlock by using <code>DataBlock.summary</code><sup>6</sup></p>
+<p>Take a look at the images and and check that each one seems to have correct label or not. In fact, we often have to deal with data with which is not as familiar as domain experts may be. Indeed, if you’re not a paddy doctor it will be hard to look at a random image and speak out the disease right? Since I’m not an expert on paddy diseases, I would use google to search to make sure the images look similar to what i see in the output. Also you can debug the DataBlock by using <code>DataBlock.summary</code><sup>6</sup></p>
 <p>Once you think your data looks right, it’s a good practice to train a simple model, think about it, when you start trying to improve your model, how can you rate it? Compare it to the previous try you say, I mean what if it’s already worse, so that why we need to know what our baseline result looks like. Maybe you don’t need anything fancy - a basic model might do the job just fine. Or perhaps the data doesn’t seems to train the model at all. These are things that you want to know as soon as possible</p>
 <div id="cell-32" class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb21" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1">learn <span class="op" style="color: #5E5E5E;
@@ -871,7 +867,19 @@ font-style: inherit;">'paddy-disease-classification'</span>)</span></code></pre>
 </div>
 </div>
 <p>Alright i got 0.8917 score on the competitions, it’s not that good but it let’s us know what the base line is, then we can improve it later on.</p>
-<p>Remember that loss is whatever function we’re decided to use to optimize the parameters of our models, here we’re actually not specific what loss to use, fastai will try to find the best loss to use here for us. In this case we’re using cross-entropy loss</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Remember that loss is whatever function we’re decided to use to optimize the parameters of our models, here we’re actually not specific what loss to use, fastai will try to find the best loss to use here for us. In this case we’re using cross-entropy loss.</p>
+</div>
+</div>
 </section>
 </section>
 <section id="cross-entropy" class="level2 page-columns page-full">
@@ -1765,24 +1773,24 @@ font-style: inherit;">1e-4</span>)</span></code></pre></div>
 <section id="how-long-to-train" class="level2">
 <h2 class="anchored" data-anchor-id="how-long-to-train">How Long to Train?</h2>
 <p>Well the first approach to train should be simply pick a number of epochs that will train in the amount of time that you’re happy to wait for, maybe take a cup of water, scrolling reddit, reading stuff,… then look at the training and validation loss plot like above and if you see it getting better when it comes to your final epochs, then you know that you should train it longer. In other hand you may see that the metrics you chosen really getting worse at the end of the training(remember that it’s not just that we’re looking for the validation loss to get worse, but the actual metrics). While the loss function is essential for optimization, what truly matters are your chosen practical metrics, don’t be overly concerned with validation loss inconstancy if your metric are still improving.</p>
-<p>If you find you’ve trained for too long (your metrics getting worse, loss getting worse), what you should do is retrain your model from scratch, really, and this time choose the number of epochs based on where your previous best result was found. One more thing if you have extra time available instead of just simply increasing epochs consider using that time to train more parameters or use deeper architecture, this can potentially yield better results than extended training of a simpler model</p>
+<p>If you find you’ve trained for too long (your metrics getting worse, loss getting worse), what you should do is retrain your model from scratch, really, and this time choose the number of epochs based on where your previous best result was found. One more thing if you have extra time available instead of just simply increasing epochs consider using that time to train more parameters or use deeper architecture, this can potentially yield better results than extended training of a simpler model.</p>
 </section>
 <section id="mixed-precision-training" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="mixed-precision-training">Mixed Precision Training</h2>
-<p>Alright let’s train it for one more time. This time notice i use <code>to_fp16</code> here, it called <em>mixed-precision training</em> it used for speeding time up especially when we using a big architecture. I highly recommend you to read <a href="https://docs.nvidia.com/deeplearning/performance/mixed-precision-training/index.html">this post from NVIDIA</a></p>
-<p>But basically you first need to understand what is half-precision? Well it’s a floating-point number format uses 16 bits to represent numbers it called half-precision as the more common are 32 bits (single precision) and 64 bits (double precision)</p>
+<p>Alright let’s train it for one more time. This time notice i use <code>to_fp16</code> here, it called <em>mixed-precision training</em> it used for speeding time up especially when we using a big architecture. I highly recommend you to read <a href="https://docs.nvidia.com/deeplearning/performance/mixed-precision-training/index.html">this post from NVIDIA</a>.</p>
+<p>But basically you first need to understand what is half-precision? Well it’s a floating-point number format uses 16 bits to represent numbers it called half-precision as the more common are 32 bits (single precision) and 64 bits (double precision).</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://buidai123.github.io/blog/posts/2024-12-30-deep-learning-concepts/fp16.png" class="img-fluid figure-img"></p>
 <figcaption>half float</figcaption>
 </figure>
 </div>
-<p>As you can see we have one bit to represent sign 5 for exponent bits while 10 for fraction bits. For instance, between 1 and 2, it can only represents the number 1, 1+2e-10, 1+2*2e-10,… which mean if we plus 1 with a number smaller than 2e-10(approximately 0.0009765625) we will get 1 instead of a number slightly greater than 1. let’s say 1 + 0.0001 = 1 in half precision, that means it less precise than single or double precision, with only about 3 decimal digits of precision. So it helps reduce the memory usage by half compare to single precision, or we can double our batch, model size. Another very nice feature is that NVIDIA developed its latest GPUs (the Volta generation) to take fully advantage of half-precision tensors.</p>
+<p>As you can see we have one bit to represent sign 5 for exponent bits while 10 for fraction bits. For instance, between 1 and 2, it can only represents the number <img src="https://latex.codecogs.com/png.latex?1,%201+2%5E%7B-10%7D,%201+2%5Cast2%5E%7B-10%7D">,… which mean if we plus 1 with a number smaller than <img src="https://latex.codecogs.com/png.latex?2%5E%7B-10%7D">(approximately 0.0009765625) we will get 1 instead of a number slightly greater than 1. let’s say 1 + 0.0001 = 1 in half precision, that means it less precise than single or double precision, with only about 3 decimal digits of precision. So it helps reduce the memory usage by half compare to single precision, or we can double our batch, model size. Another very nice feature is that NVIDIA developed its latest GPUs (the Volta generation) to take fully advantage of half-precision tensors.</p>
 <p>But there’re several problem with half precision when using it:</p>
 <ol type="1">
-<li>The weight update is imprecise: What your optimizer does under the hood is basically this equation w = w - lr * w.grad for each weights of your network. So the problem is the w.grad is several order of magnitude below w especially as the network starts to converge, these gradient often become very small as the network is making tiny and tiny adjustment, even smaller than 2e-10 is very common, so when using half precision, obviously the update doesn’t do anything here as FP16 can’t represent the tiny difference between w and (w - lr * w.grad).</li>
-<li>During the backpropagation of gradients, the gradients themselves become so small that they are rounded down to 0 in FP16</li>
-<li>Your activation or loss can be overflow, the opposite problem from the gradients as during forward propagation, activation function like RElU or exponential function like softmax can produce a large values therefore it also make loss result in large numbers (especially in early training), it’s more easier to hit nan(of infinity) in FP16 precision and your training my more likely diverge</li>
+<li>The weight update is imprecise: What your optimizer does under the hood is basically this equation w = w - lr * w.grad for each weights of your network. So the problem is the w.grad is several order of magnitude below w especially as the network starts to converge, these gradient often become very small as the network is making tiny and tiny adjustment, even smaller than <img src="https://latex.codecogs.com/png.latex?2%5E%7B-10%7D"> is very common, so when using half precision, obviously the update doesn’t do anything here as FP16 can’t represent the tiny difference between w and (w - lr * w.grad).</li>
+<li>During the backpropagation of gradients, the gradients themselves become so small that they are rounded down to 0 in FP16.</li>
+<li>Your activation or loss can be overflow, the opposite problem from the gradients as during forward propagation, activation function like RElU or exponential function like softmax can produce a large values therefore it also make loss result in large numbers (especially in early training), it’s more easier to hit nan(of infinity) in FP16 precision and your training my more likely diverge.</li>
 </ol>
 <p>So the solution for this is mixed precision training, instead of fully train in FP16 precision some of the operations will be done in FP16, others in FP32. The main idea is that we will do the forward pass and the gradient computation in half precision to go fast, but the update in single precision. So our training loop will look like this:</p>
 <ol type="1">
@@ -1802,13 +1810,13 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Note that we will lose precision during step 5, and that the 1.0001 in one of the weights will go back to 1. But if the next update corresponds to add 0.0001 again, since the optimizer step is done on the master model, the 1.0001 will become 1.0002 and if we eventually go like this up to 1.0005, the FP16 model will be able to tell the difference</p>
+<p>Note that we will lose precision during step 5, and that the 1.0001 in one of the weights will go back to 1. But if the next update corresponds to add 0.0001 again, since the optimizer step is done on the master model, the 1.0001 will become 1.0002 and if we eventually go like this up to 1.0005, the FP16 model will be able to tell the difference.</p>
 </div>
 </div>
 <p>Alright that’s solve the first problem. For the second problem we use something call the gradient scaling. To avoid the gradient getting zeroed by FP16 precision we multiple the loss by the scale factor(often scale=512), by multiplying the loss with a large numbers all the gradients are effectively made larger. Of course we don’t want those 512-scaled gradients to be in the weight updates so that after converting them into FP32 we can divide them by this scale. So it change the loop to:</p>
 
 <div class="no-row-height column-margin column-container"><div class="">
-<p>In fact the scaling factor that we multiply it with the loss can leads our gradients or our loss to be overflow. So there a way around this, which is just simple as this, first we will try with a very high scale factor and see if it cause overflow to our loss or gradients, if it does, we will try with the half of that big value and again until we get the largest loss scale possible that doesn’t make our gradient overflow</p>
+<p>In fact the scaling factor that we multiply it with the loss can leads our gradients or our loss to be overflow. So there a way around this, which is just simple as this, first we will try with a very high scale factor and see if it cause overflow to our loss or gradients, if it does, we will try with the half of that big value and again until we get the largest loss scale possible that doesn’t make our gradient overflow.</p>
 </div></div><ol type="1">
 <li>compute the output with the FP16 model, then the loss</li>
 <li>multiply the loss by scale and then back-propagate the gradients in half precision</li>
@@ -1817,7 +1825,7 @@ Note
 <li>copy the master model in FP16 model</li>
 </ol>
 <p>For the last problem, the tricks offered by NVIDIA are to leave the batchnorm layers in single precision (they don’t have many weights so it’s not a big memory challenge) and compute the loss in single precision (which means converting the last output of the model in single precision before passing it to the loss).</p>
-<p>Alright let’s apply our mixed precision strategy to our model, when we create a learner we call <code>to_fp16()</code></p>
+<p>Alright let’s apply our mixed precision strategy to our model, when we create a learner we call <code>to_fp16()</code>.</p>
 <div id="cell-104" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb81" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb81-1">learn <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -2065,7 +2073,7 @@ font-style: inherit;">3</span>)</span></code></pre></div>
 </table>
 </div>
 </div>
-<p>Alright let’s see if it’s better, the best way to check is to submit it to kaggle we just do the same thing as above, just copy and past it here</p>
+<p>Alright let’s see if it’s better, the best way to check is to submit it to kaggle we just do the same thing as above, just copy and past it here.</p>
 <div id="cell-107" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb85" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb85-1">ss <span class="op" style="color: #5E5E5E;
 background-color: null;
