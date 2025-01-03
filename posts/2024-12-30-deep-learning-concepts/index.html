@@ -136,6 +136,7 @@ cookieconsent.run({
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
 
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+<script src="https://unpkg.com/@jupyter-widgets/html-manager@*/dist/embed-amd.js" crossorigin="anonymous"></script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -281,6 +282,10 @@ window.Quarto = {
   <li><a href="#transfer-learning" id="toc-transfer-learning" class="nav-link" data-scroll-target="#transfer-learning">Transfer Learning</a></li>
   <li><a href="#how-long-to-train" id="toc-how-long-to-train" class="nav-link" data-scroll-target="#how-long-to-train">How Long to Train?</a></li>
   <li><a href="#mixed-precision-training" id="toc-mixed-precision-training" class="nav-link" data-scroll-target="#mixed-precision-training">Mixed Precision Training</a></li>
+  <li><a href="#scaling-up" id="toc-scaling-up" class="nav-link" data-scroll-target="#scaling-up">Scaling up</a>
+  <ul class="collapse">
+  <li><a href="#test-time-augmentation" id="toc-test-time-augmentation" class="nav-link" data-scroll-target="#test-time-augmentation">Test Time Augmentation</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.dev/buidai123/blog/blob/main/posts/2024-12-30-deep-learning-concepts/index.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/buidai123/blog/blob/main/posts/2024-12-30-deep-learning-concepts/index.ipynb" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/buidai123/blog/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -329,7 +334,7 @@ window.Quarto = {
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>files <span class="op">=</span> get_image_files(train_path)</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>files</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="4">
-<pre><code>(#10407) [Path('data/train_images/bacterial_leaf_blight/100023.jpg'),Path('data/train_images/bacterial_leaf_blight/100049.jpg'),Path('data/train_images/bacterial_leaf_blight/100126.jpg'),Path('data/train_images/bacterial_leaf_blight/100133.jpg'),Path('data/train_images/bacterial_leaf_blight/100148.jpg'),Path('data/train_images/bacterial_leaf_blight/100162.jpg'),Path('data/train_images/bacterial_leaf_blight/100169.jpg'),Path('data/train_images/bacterial_leaf_blight/100234.jpg'),Path('data/train_images/bacterial_leaf_blight/100248.jpg'),Path('data/train_images/bacterial_leaf_blight/100268.jpg')...]</code></pre>
+<pre><code>(#10407) [Path('data/train_images/bacterial_leaf_blight/100023.jpg'),Path('data/train_images/bacterial_leaf_blight/100049.jpg'),Path('data/train_images/bacterial_leaf_blight/100126.jpg'),Path('data/train_images/bacterial_leaf_blight/100133.jpg'),Path('data/train_images/bacterial_leaf_blight/100148.jpg'),Path('data/train_images/bacterial_leaf_blight/100162.jpg'),Path('data/train_images/bacterial_leaf_blight/100169.jpg'),Path('data/train_images/bacterial_leaf_blight/100234.jpg'),Path('data/train_images/bacterial_leaf_blight/100248.jpg'),Path('data/train_images/bacterial_leaf_blight/100268.jpg'),Path('data/train_images/bacterial_leaf_blight/100289.jpg'),Path('data/train_images/bacterial_leaf_blight/100330.jpg'),Path('data/train_images/bacterial_leaf_blight/100365.jpg'),Path('data/train_images/bacterial_leaf_blight/100382.jpg'),Path('data/train_images/bacterial_leaf_blight/100445.jpg'),Path('data/train_images/bacterial_leaf_blight/100447.jpg'),Path('data/train_images/bacterial_leaf_blight/100513.jpg'),Path('data/train_images/bacterial_leaf_blight/100516.jpg'),Path('data/train_images/bacterial_leaf_blight/100523.jpg'),Path('data/train_images/bacterial_leaf_blight/100541.jpg')...]</code></pre>
 </div>
 </div>
 <p>Let’s take a look a one</p>
@@ -360,7 +365,7 @@ Name: count, dtype: int64</code></pre>
 </div>
 </div>
 <p>Well, there’s almost have the same size except 4 of them with 640x480, we’ll need to resize all of them to the same size, we will talk about it later, but now let’s create a dataloader</p>
-<div id="cell-16" class="cell" data-execution_count="5">
+<div id="cell-16" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2025-01-02T10:39:16.888162Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-02T10:39:16.887867Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-02T10:39:20.073235Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-02T10:39:20.072378Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2025-01-02T10:39:16.888138Z&quot;}" data-trusted="true" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>dls <span class="op">=</span> DataBlock(blocks<span class="op">=</span>(ImageBlock, CategoryBlock),</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>                get_items<span class="op">=</span>get_image_files,</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>                splitter<span class="op">=</span>RandomSplitter(valid_pct<span class="op">=</span><span class="fl">0.2</span>, seed<span class="op">=</span><span class="dv">42</span>),</span>
@@ -1792,9 +1797,723 @@ Note
 </div>
 </div>
 <p>This time i got a little higher result, i got 0.95967 as score which is pretty understandable as we trained it with 14 epochs, but yeah that was pretty cool.</p>
-<p>It’s the end of 2024 already, so happy new year!</p>
+</section>
+<section id="scaling-up" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="scaling-up">Scaling up</h2>
+<p>Alright, can we do better, let’s see how far we can go, let’s do some experimenting, we will use different architectures and image processing approaches, for the sake of convenient let’s put our steps together into a little function.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Note that we can use <code>ImageDataLoader.from_folder</code> for our dataloader for make it shorter, but in general it the same as DataBlock</p>
+</div>
+</div>
+<div id="cell-111" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2025-01-02T10:58:38.001235Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-02T10:58:38.000944Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-02T10:58:38.006134Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-02T10:58:38.005191Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2025-01-02T10:58:38.001214Z&quot;}" data-trusted="true" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> train(arch, item, batch, epochs<span class="op">=</span><span class="dv">5</span>):</span>
+<span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a>  dls <span class="op">=</span> ImageDataLoaders.from_folder(train_path, seed<span class="op">=</span><span class="dv">42</span>, valid_pct<span class="op">=</span><span class="fl">0.2</span>, item_tfms<span class="op">=</span>item, batch_tfms<span class="op">=</span>batch)</span>
+<span id="cb88-3"><a href="#cb88-3" aria-hidden="true" tabindex="-1"></a>  learn <span class="op">=</span> vision_learner(dls, arch, metrics<span class="op">=</span>error_rate).to_fp16()</span>
+<span id="cb88-4"><a href="#cb88-4" aria-hidden="true" tabindex="-1"></a>  learn.fine_tune(epochs, <span class="fl">1e-2</span>)</span>
+<span id="cb88-5"><a href="#cb88-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> learn</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>To have a better result, one way to archive this is to use a better model right, but what to choose, well Jeremy Howard has a really good <a href="https://www.kaggle.com/code/jhoward/the-best-vision-models-for-fine-tuning">notebook</a> that helps us choosing a appropriate architecture for our model based on what kind of problem you’re dealing, the GPU memory, error rate, time,… But basically there are two key to choose the right one:</p>
+<ol type="1">
+<li>How similar between our dataset and the pretrained model’s dataset.</li>
+<li>How large they are.</li>
+</ol>
+<p>Then it turned out that when it comes to computer vision model <code>convnext</code> model is one of the best, if not the best till now so let’s give it a try shall we?</p>
+<div id="cell-113" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2025-01-02T10:58:39.060620Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-02T10:58:39.060322Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-02T10:58:39.064862Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-02T10:58:39.063867Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2025-01-02T10:58:39.060596Z&quot;}" data-trusted="true" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a>arch <span class="op">=</span> <span class="st">"convnext_small_in22k"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>From now on, if you not sure what architecture to use, just use this, right. And of course we have different version of <code>convnext</code> we have tinny, small, large… it will take more time to train but of course lower error rate. alright let’s see how it will go</p>
+<div id="cell-115" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb90"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a>learn <span class="op">=</span> train(arch, item<span class="op">=</span>Resize(<span class="dv">192</span>,method<span class="op">=</span><span class="st">"squish"</span>), batch<span class="op">=</span>aug_transforms(size<span class="op">=</span><span class="dv">128</span>, min_scale<span class="op">=</span><span class="fl">0.75</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/usr/local/lib/python3.10/dist-packages/timm/models/_factory.py:117: UserWarning: Mapping deprecated model name convnext_small_in22k to current convnext_small.fb_in22k.
+  model = create_fn(</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"0edc311bb36441c09986cd539a71048e","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/usr/local/lib/python3.10/dist-packages/fastai/callback/fp16.py:47: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  self.autocast,self.learn.scaler,self.scales = autocast(dtype=dtype),GradScaler(**self.kwargs),L()
+/usr/local/lib/python3.10/dist-packages/fastai/callback/fp16.py:47: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  self.autocast,self.learn.scaler,self.scales = autocast(dtype=dtype),GradScaler(**self.kwargs),L()</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div>
+<div class="cell-output cell-output-display">
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">epoch</th>
+<th data-quarto-table-cell-role="th">train_loss</th>
+<th data-quarto-table-cell-role="th">valid_loss</th>
+<th data-quarto-table-cell-role="th">error_rate</th>
+<th data-quarto-table-cell-role="th">time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>1.257208</td>
+<td>0.790532</td>
+<td>0.246997</td>
+<td>00:46</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="cell-output cell-output-display">
+
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div>
+<div class="cell-output cell-output-display">
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">epoch</th>
+<th data-quarto-table-cell-role="th">train_loss</th>
+<th data-quarto-table-cell-role="th">valid_loss</th>
+<th data-quarto-table-cell-role="th">error_rate</th>
+<th data-quarto-table-cell-role="th">time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>0.610890</td>
+<td>0.450510</td>
+<td>0.146564</td>
+<td>00:44</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>0.504428</td>
+<td>0.302570</td>
+<td>0.097069</td>
+<td>00:44</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>0.299630</td>
+<td>0.194396</td>
+<td>0.061989</td>
+<td>00:44</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>0.186308</td>
+<td>0.130406</td>
+<td>0.036521</td>
+<td>00:44</td>
+</tr>
+<tr class="odd">
+<td>4</td>
+<td>0.134839</td>
+<td>0.115092</td>
+<td>0.035079</td>
+<td>00:43</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Well it did a pretty good job isn’t it? we just do 5 epochs and we archive almost the same as the one we trained with 12 epochs, even our time to go through each epoch is the same(that’s because i reduce the presize to 192X192 for it to run faster but it still produce the same performance as the previous one but with fewer epochs).</p>
+<p>So one thing we could try is instead of using squish as our pre-processing let’s try using padding, now we will use bigger presize so that when we use padding here we will get entire image but the downside is we also get few extra zero pixels which literally pointless, but whatever let’s see if it work better</p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<p>padding is interesting because it’s the only way of pre-processing images which doesn’t distort them and doesn’t loose anything, if you crop you lose things, if you squish you distort things</p>
+</div></div><div id="cell-118" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a>dls <span class="op">=</span> ImageDataLoaders.from_folder(train_path, valid_pct<span class="op">=</span><span class="fl">0.2</span>, seed<span class="op">=</span><span class="dv">42</span>,</span>
+<span id="cb93-2"><a href="#cb93-2" aria-hidden="true" tabindex="-1"></a>    item_tfms<span class="op">=</span>Resize(<span class="dv">480</span>, method<span class="op">=</span>ResizeMethod.Pad, pad_mode<span class="op">=</span>PadMode.Zeros))</span>
+<span id="cb93-3"><a href="#cb93-3" aria-hidden="true" tabindex="-1"></a>dls.show_batch(max_n<span class="op">=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/cell-59-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="cell-119" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2025-01-02T09:53:36.244933Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-02T09:53:36.244542Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-02T10:03:20.563150Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-02T10:03:20.562113Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2025-01-02T09:53:36.244902Z&quot;}" data-trusted="true" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb94"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a>learn <span class="op">=</span> train(arch, item<span class="op">=</span>Resize((<span class="dv">480</span>, <span class="dv">360</span>), method<span class="op">=</span>ResizeMethod.Pad, pad_mode<span class="op">=</span>PadMode.Zeros), batch<span class="op">=</span>aug_transforms(size<span class="op">=</span>(<span class="dv">256</span>,<span class="dv">192</span>), min_scale<span class="op">=</span><span class="fl">0.75</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/usr/local/lib/python3.10/dist-packages/timm/models/_factory.py:117: UserWarning: Mapping deprecated model name convnext_small_in22k to current convnext_small.fb_in22k.
+  model = create_fn(</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"4ca9382aab4d4b6ebfa4e3d3a37e7e18","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/usr/local/lib/python3.10/dist-packages/fastai/callback/fp16.py:47: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  self.autocast,self.learn.scaler,self.scales = autocast(dtype=dtype),GradScaler(**self.kwargs),L()
+/usr/local/lib/python3.10/dist-packages/fastai/callback/fp16.py:47: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  self.autocast,self.learn.scaler,self.scales = autocast(dtype=dtype),GradScaler(**self.kwargs),L()</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div>
+<div class="cell-output cell-output-display">
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">epoch</th>
+<th data-quarto-table-cell-role="th">train_loss</th>
+<th data-quarto-table-cell-role="th">valid_loss</th>
+<th data-quarto-table-cell-role="th">error_rate</th>
+<th data-quarto-table-cell-role="th">time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>1.091136</td>
+<td>0.672584</td>
+<td>0.214320</td>
+<td>01:12</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="cell-output cell-output-display">
+
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div>
+<div class="cell-output cell-output-display">
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">epoch</th>
+<th data-quarto-table-cell-role="th">train_loss</th>
+<th data-quarto-table-cell-role="th">valid_loss</th>
+<th data-quarto-table-cell-role="th">error_rate</th>
+<th data-quarto-table-cell-role="th">time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>0.579350</td>
+<td>0.418952</td>
+<td>0.131187</td>
+<td>01:36</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>0.430034</td>
+<td>0.259760</td>
+<td>0.086497</td>
+<td>01:37</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>0.275291</td>
+<td>0.176225</td>
+<td>0.046612</td>
+<td>01:38</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>0.147642</td>
+<td>0.123821</td>
+<td>0.037963</td>
+<td>01:38</td>
+</tr>
+<tr class="odd">
+<td>4</td>
+<td>0.109251</td>
+<td>0.107270</td>
+<td>0.030274</td>
+<td>01:38</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>As you can see it indeed did better, and its error_rate is the best we can get so far but not huge different yet!</p>
+<section id="test-time-augmentation" class="level3">
+<h3 class="anchored" data-anchor-id="test-time-augmentation">Test Time Augmentation</h3>
+<p>Well first let’s look how can we calculate the error rate manually with our normal prediction</p>
+<div id="cell-121" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2025-01-02T10:03:54.927689Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-02T10:03:54.927216Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-02T10:04:07.727666Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-02T10:04:07.726181Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2025-01-02T10:03:54.927654Z&quot;}" data-trusted="true" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb97"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a>valid <span class="op">=</span> learn.dls.valid</span>
+<span id="cb97-2"><a href="#cb97-2" aria-hidden="true" tabindex="-1"></a>preds,targs <span class="op">=</span> learn.get_preds(dl<span class="op">=</span>valid)</span>
+<span id="cb97-3"><a href="#cb97-3" aria-hidden="true" tabindex="-1"></a>error_rate(preds, targs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div>
+<div class="cell-output cell-output-display">
+
+</div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<pre><code>TensorBase(0.0303)</code></pre>
+</div>
+</div>
+<p>Well that actually the previous error-rate we got above, so what i’m doing here? well let’s take a look at the images blow</p>
+<div id="cell-123" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2025-01-02T10:04:10.629694Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-02T10:04:10.629391Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-02T10:04:11.977555Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-02T10:04:11.976421Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2025-01-02T10:04:10.629672Z&quot;}" data-trusted="true" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb99"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a>learn.dls.train.show_batch(max_n<span class="op">=</span><span class="dv">6</span>, unique<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/cell-62-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Notice that, those are indeed the same picture but it gone through the data augmentation so sometimes it a bit darker, a bit lighter, sometimes it flipped horizontally, some times int zoom into a slightly different section, sometimes it rotate a little bit but those are all the same picture. So the idea of TTA(Test Time Augmentation) is maybe our model would like some of these version better than the others even the original image, so what we can do is we can pass all of these to our model get the prediction of all of them and take the average right, so if you read my previous blog, it’s indeed the mini version of bagging approach. In fastai you can archive this by using the <code>tta</code> in our <code>learn</code> object</p>
+<div id="cell-125" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2025-01-02T10:04:12.249981Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-02T10:04:12.249642Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-02T10:05:16.237725Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-02T10:05:16.236670Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2025-01-02T10:04:12.249954Z&quot;}" data-trusted="true" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb100"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a>tta_preds,_ <span class="op">=</span> learn.tta(dl<span class="op">=</span>valid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div>
+<div class="cell-output cell-output-display">
+
+    <div>
+      <progress value="0" class="" max="5" style="width:300px; height:20px; vertical-align: middle;"></progress>
+      
+    </div>
+    
+</div>
+<div class="cell-output cell-output-display">
+
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div>
+<div class="cell-output cell-output-display">
+
+</div>
+</div>
+<div id="cell-126" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2025-01-02T10:05:22.943221Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-02T10:05:22.942752Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-02T10:05:22.951969Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-02T10:05:22.951021Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2025-01-02T10:05:22.943184Z&quot;}" data-trusted="true" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb101"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a>error_rate(tta_preds, targs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="11">
+<pre><code>TensorBase(0.0259)</code></pre>
+</div>
+</div>
+<p>See, we got better result like 10% better our previous. Alright let’s train it with more epochs but this time let’s just make a bigger image and something really interesting is that our images don’t have to be square they just need to be in the same size right, it can be rectangular, having said that all of our original images are nearly 640x480, so we just need to pick one has the same aspect ratio for example 256x192 is good</p>
+<div id="cell-128" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2025-01-02T10:58:44.236186Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-02T10:58:44.235876Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-02T11:17:32.223793Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-02T11:17:32.222832Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2025-01-02T10:58:44.236162Z&quot;}" data-trusted="true" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb103"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a>learn <span class="op">=</span> train(arch, epochs<span class="op">=</span><span class="dv">12</span>, item<span class="op">=</span>Resize((<span class="dv">480</span>, <span class="dv">360</span>), method<span class="op">=</span>ResizeMethod.Pad, pad_mode<span class="op">=</span>PadMode.Zeros), batch<span class="op">=</span>aug_transforms(size<span class="op">=</span>(<span class="dv">256</span>,<span class="dv">192</span>), min_scale<span class="op">=</span><span class="fl">0.75</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/usr/local/lib/python3.10/dist-packages/timm/models/_factory.py:117: UserWarning: Mapping deprecated model name convnext_small_in22k to current convnext_small.fb_in22k.
+  model = create_fn(</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"c6339ec349dc43059e0d43dba1b0454e","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/usr/local/lib/python3.10/dist-packages/fastai/callback/fp16.py:47: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  self.autocast,self.learn.scaler,self.scales = autocast(dtype=dtype),GradScaler(**self.kwargs),L()
+/usr/local/lib/python3.10/dist-packages/fastai/callback/fp16.py:47: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  self.autocast,self.learn.scaler,self.scales = autocast(dtype=dtype),GradScaler(**self.kwargs),L()</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div>
+<div class="cell-output cell-output-display">
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">epoch</th>
+<th data-quarto-table-cell-role="th">train_loss</th>
+<th data-quarto-table-cell-role="th">valid_loss</th>
+<th data-quarto-table-cell-role="th">error_rate</th>
+<th data-quarto-table-cell-role="th">time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>1.091136</td>
+<td>0.672584</td>
+<td>0.214320</td>
+<td>01:09</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="cell-output cell-output-display">
+
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div>
+<div class="cell-output cell-output-display">
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">epoch</th>
+<th data-quarto-table-cell-role="th">train_loss</th>
+<th data-quarto-table-cell-role="th">valid_loss</th>
+<th data-quarto-table-cell-role="th">error_rate</th>
+<th data-quarto-table-cell-role="th">time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>0.534227</td>
+<td>0.295779</td>
+<td>0.100432</td>
+<td>01:25</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>0.406855</td>
+<td>0.259834</td>
+<td>0.077847</td>
+<td>01:26</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>0.345489</td>
+<td>0.217263</td>
+<td>0.065353</td>
+<td>01:26</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>0.272754</td>
+<td>0.186886</td>
+<td>0.056704</td>
+<td>01:26</td>
+</tr>
+<tr class="odd">
+<td>4</td>
+<td>0.220682</td>
+<td>0.205609</td>
+<td>0.054781</td>
+<td>01:27</td>
+</tr>
+<tr class="even">
+<td>5</td>
+<td>0.182489</td>
+<td>0.122831</td>
+<td>0.037001</td>
+<td>01:27</td>
+</tr>
+<tr class="odd">
+<td>6</td>
+<td>0.118704</td>
+<td>0.119720</td>
+<td>0.035560</td>
+<td>01:26</td>
+</tr>
+<tr class="even">
+<td>7</td>
+<td>0.099475</td>
+<td>0.117059</td>
+<td>0.034118</td>
+<td>01:26</td>
+</tr>
+<tr class="odd">
+<td>8</td>
+<td>0.071605</td>
+<td>0.094223</td>
+<td>0.025949</td>
+<td>01:26</td>
+</tr>
+<tr class="even">
+<td>9</td>
+<td>0.055326</td>
+<td>0.096391</td>
+<td>0.025949</td>
+<td>01:26</td>
+</tr>
+<tr class="odd">
+<td>10</td>
+<td>0.037327</td>
+<td>0.096320</td>
+<td>0.024507</td>
+<td>01:26</td>
+</tr>
+<tr class="even">
+<td>11</td>
+<td>0.035568</td>
+<td>0.094268</td>
+<td>0.023066</td>
+<td>01:27</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Alright our error_rate down to 2.3% which is pretty good, now, let’s what our error_rate when using tta</p>
+<div id="cell-130" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2025-01-02T11:18:00.693869Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-02T11:18:00.693464Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-02T11:19:00.635588Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-02T11:19:00.634596Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2025-01-02T11:18:00.693833Z&quot;}" data-trusted="true" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb106"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a>tta_preds,targs <span class="op">=</span> learn.tta(dl<span class="op">=</span>learn.dls.valid)</span>
+<span id="cb106-2"><a href="#cb106-2" aria-hidden="true" tabindex="-1"></a>error_rate(tta_preds, targs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div>
+<div class="cell-output cell-output-display">
+
+    <div>
+      <progress value="0" class="" max="12" style="width:300px; height:20px; vertical-align: middle;"></progress>
+      
+    </div>
+    
+</div>
+<div class="cell-output cell-output-display">
+
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div>
+<div class="cell-output cell-output-display">
+
+</div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<pre><code>TensorBase(0.0235)</code></pre>
+</div>
+</div>
+<p>Oops! it’s worse this time, that’s strange, i think it won’t always produce a better error_rate, but maybe it will work well in practice i guess, alright forget about it, let’s submit it</p>
+<div id="cell-132" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2025-01-02T11:19:00.637385Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-02T11:19:00.637036Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-02T11:20:43.617429Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-02T11:20:43.616028Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2025-01-02T11:19:00.637353Z&quot;}" data-trusted="true" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb108"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb108-1"><a href="#cb108-1" aria-hidden="true" tabindex="-1"></a>ss <span class="op">=</span> pd.read_csv(path<span class="op">/</span><span class="st">'sample_submission.csv'</span>)</span>
+<span id="cb108-2"><a href="#cb108-2" aria-hidden="true" tabindex="-1"></a>tst_files <span class="op">=</span> get_image_files(path<span class="op">/</span><span class="st">'test_images'</span>).<span class="bu">sorted</span>()</span>
+<span id="cb108-3"><a href="#cb108-3" aria-hidden="true" tabindex="-1"></a>tst_dl <span class="op">=</span> learn.dls.test_dl(tst_files)</span>
+<span id="cb108-4"><a href="#cb108-4" aria-hidden="true" tabindex="-1"></a>preds,_ <span class="op">=</span> learn.tta(dl<span class="op">=</span>tst_dl)</span>
+<span id="cb108-5"><a href="#cb108-5" aria-hidden="true" tabindex="-1"></a>idxs <span class="op">=</span> preds.argmax(dim<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb108-6"><a href="#cb108-6" aria-hidden="true" tabindex="-1"></a>vocab <span class="op">=</span> np.array(learn.dls.vocab)</span>
+<span id="cb108-7"><a href="#cb108-7" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> pd.Series(vocab[idxs], name<span class="op">=</span><span class="st">"idxs"</span>)</span>
+<span id="cb108-8"><a href="#cb108-8" aria-hidden="true" tabindex="-1"></a>ss[<span class="st">'label'</span>] <span class="op">=</span> results</span>
+<span id="cb108-9"><a href="#cb108-9" aria-hidden="true" tabindex="-1"></a>ss.to_csv(<span class="st">'subm.csv'</span>, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb108-10"><a href="#cb108-10" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>head subm.csv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/usr/local/lib/python3.10/dist-packages/fastai/callback/fp16.py:47: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  self.autocast,self.learn.scaler,self.scales = autocast(dtype=dtype),GradScaler(**self.kwargs),L()
+/usr/local/lib/python3.10/dist-packages/fastai/callback/fp16.py:47: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  self.autocast,self.learn.scaler,self.scales = autocast(dtype=dtype),GradScaler(**self.kwargs),L()</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div>
+<div class="cell-output cell-output-display">
+
+    <div>
+      <progress value="0" class="" max="12" style="width:300px; height:20px; vertical-align: middle;"></progress>
+      
+    </div>
+    
+</div>
+<div class="cell-output cell-output-display">
+
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div>
+<div class="cell-output cell-output-display">
+
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>image_id,label
+200001.jpg,hispa
+200002.jpg,normal
+200003.jpg,blast
+200004.jpg,blast
+200005.jpg,blast
+200006.jpg,brown_spot
+200007.jpg,dead_heart
+200008.jpg,brown_spot
+200009.jpg,hispa</code></pre>
+</div>
+</div>
+<p>This time i got a little bit higher result, around 0.98 which is quite impressive. So we’ve gone through all of the essential concepts that we need to get familiar with as later we will delve deeper and deeper into more amazing thing later on, understand these concepts is like a solid groundwork for us to exploring even more fascinating topics in the future.</p>
 
 
+</section>
 </section>
 
 
