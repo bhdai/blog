@@ -28,7 +28,6 @@ website:
   page-footer:
     left:
       - text: "Copyright 2024, Bui Huu Dai"
-  back-to-top-navigation: true
   repo-url: https://github.com/buidai123/blog
   repo-actions: [edit, source, issue]
 
