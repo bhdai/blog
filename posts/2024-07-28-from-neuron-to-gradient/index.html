@@ -9,7 +9,7 @@
 <meta name="author" content="Bui Huu Dai">
 <meta name="dcterms.date" content="2024-07-28">
 
-<title>From Neurons to Gradients: Unpacking FastAI Lesson 3 – Bui Huu Dai</title>
+<title>Looking Inside Neural Networks, How It Really Work? – Bui Huu Dai</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -163,13 +163,13 @@ cookieconsent.run({
 
 
 <link rel="stylesheet" href="styles.css">
-<meta property="og:title" content="From Neurons to Gradients: Unpacking FastAI Lesson 3 – Bui Huu Dai">
+<meta property="og:title" content="Looking Inside Neural Networks, How It Really Work? – Bui Huu Dai">
 <meta property="og:description" content="Dai’s blog.">
 <meta property="og:image" content="https://buidai123.github.io/blog/posts/2024-07-28-from-neuron-to-gradient/xkcd_trained_a_neural_net.png">
 <meta property="og:site_name" content="Bui Huu Dai">
 <meta property="og:image:height" content="405">
 <meta property="og:image:width" content="275">
-<meta name="twitter:title" content="From Neurons to Gradients: Unpacking FastAI Lesson 3 – Bui Huu Dai">
+<meta name="twitter:title" content="Looking Inside Neural Networks, How It Really Work? – Bui Huu Dai">
 <meta name="twitter:description" content="Dai’s blog.">
 <meta name="twitter:image" content="https://buidai123.github.io/blog/posts/2024-07-28-from-neuron-to-gradient/xkcd_trained_a_neural_net.png">
 <meta name="twitter:image-height" content="405">
@@ -225,7 +225,7 @@ cookieconsent.run({
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <div class="quarto-title-block"><div><h1 class="title">From Neurons to Gradients: Unpacking FastAI Lesson 3</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li></ul></div></div>
+      <div class="quarto-title-block"><div><h1 class="title">Looking Inside Neural Networks, How It Really Work?</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li></ul></div></div>
                                 <div class="quarto-categories">
                 <div class="quarto-category">blogging</div>
                 <div class="quarto-category">fastai</div>
@@ -265,9 +265,9 @@ cookieconsent.run({
   <ul>
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
   <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"></a></li>
-  <li><a href="#choosing-the-right-model-a-guide-to-navigating-the-neural-jungle" id="toc-choosing-the-right-model-a-guide-to-navigating-the-neural-jungle" class="nav-link" data-scroll-target="#choosing-the-right-model-a-guide-to-navigating-the-neural-jungle">Choosing the Right Model: A Guide to Navigating the Neural Jungle</a>
+  <li><a href="#choosing-the-right-model" id="toc-choosing-the-right-model" class="nav-link" data-scroll-target="#choosing-the-right-model">Choosing the Right Model</a>
   <ul class="collapse">
-  <li><a href="#time-to-upgrade-diving-into-the-model-jungle" id="toc-time-to-upgrade-diving-into-the-model-jungle" class="nav-link" data-scroll-target="#time-to-upgrade-diving-into-the-model-jungle">Time to Upgrade: Diving into the Model Jungle</a></li>
+  <li><a href="#exploring-the-model-landscape" id="toc-exploring-the-model-landscape" class="nav-link" data-scroll-target="#exploring-the-model-landscape">Exploring the Model Landscape</a></li>
   <li><a href="#the-which-image-model-is-best-notebook" id="toc-the-which-image-model-is-best-notebook" class="nav-link" data-scroll-target="#the-which-image-model-is-best-notebook">The “Which Image Model is Best?” Notebook</a></li>
   <li><a href="#results-are-in" id="toc-results-are-in" class="nav-link" data-scroll-target="#results-are-in">Results Are In!</a></li>
   </ul></li>
@@ -277,22 +277,21 @@ cookieconsent.run({
   <li><a href="#whats-all-this-stuff" id="toc-whats-all-this-stuff" class="nav-link" data-scroll-target="#whats-all-this-stuff">What’s All This Stuff?</a></li>
   <li><a href="#lets-peek-inside-a-layer" id="toc-lets-peek-inside-a-layer" class="nav-link" data-scroll-target="#lets-peek-inside-a-layer">Let’s Peek Inside a Layer</a></li>
   </ul></li>
-  <li><a href="#how-neural-networks-really-work---the-magic-unveiled" id="toc-how-neural-networks-really-work---the-magic-unveiled" class="nav-link" data-scroll-target="#how-neural-networks-really-work---the-magic-unveiled">How Neural Networks Really Work - The Magic Unveiled!🧙‍♂️</a>
+  <li><a href="#how-neural-networks-really-work" id="toc-how-neural-networks-really-work" class="nav-link" data-scroll-target="#how-neural-networks-really-work">How Neural Networks Really Work</a>
   <ul class="collapse">
   <li><a href="#introducing-noise" id="toc-introducing-noise" class="nav-link" data-scroll-target="#introducing-noise">Introducing Noise</a></li>
   <li><a href="#meet-the-mean-squared-error-mse" id="toc-meet-the-mean-squared-error-mse" class="nav-link" data-scroll-target="#meet-the-mean-squared-error-mse">Meet the Mean Squared Error (MSE)</a></li>
   <li><a href="#the-power-of-derivatives" id="toc-the-power-of-derivatives" class="nav-link" data-scroll-target="#the-power-of-derivatives">The Power of Derivatives</a></li>
-  <li><a href="#pytorch-to-the-rescue" id="toc-pytorch-to-the-rescue" class="nav-link" data-scroll-target="#pytorch-to-the-rescue">Pytorch to the Rescue</a></li>
+  <li><a href="#leveraging-pytorch" id="toc-leveraging-pytorch" class="nav-link" data-scroll-target="#leveraging-pytorch">Leveraging PyTorch</a></li>
   <li><a href="#updating-parameters-using-gradients" id="toc-updating-parameters-using-gradients" class="nav-link" data-scroll-target="#updating-parameters-using-gradients">Updating Parameters Using Gradients</a></li>
-  <li><a href="#automating-the-gradient-descent" id="toc-automating-the-gradient-descent" class="nav-link" data-scroll-target="#automating-the-gradient-descent">Automating the Gradient Descent</a></li>
-  <li><a href="#welcome-to-optimization-meet-gradient-descent" id="toc-welcome-to-optimization-meet-gradient-descent" class="nav-link" data-scroll-target="#welcome-to-optimization-meet-gradient-descent">Welcome to Optimization: Meet Gradient Descent</a></li>
-  <li><a href="#the-magic-of-relus" id="toc-the-magic-of-relus" class="nav-link" data-scroll-target="#the-magic-of-relus">The Magic of ReLUs</a></li>
+  <li><a href="#automating-gradient-descent" id="toc-automating-gradient-descent" class="nav-link" data-scroll-target="#automating-gradient-descent">Automating Gradient Descent</a></li>
+  <li><a href="#welcome-to-optimization-the-role-of-gradient-descent" id="toc-welcome-to-optimization-the-role-of-gradient-descent" class="nav-link" data-scroll-target="#welcome-to-optimization-the-role-of-gradient-descent">Welcome to Optimization: The Role of Gradient Descent</a></li>
+  <li><a href="#the-importance-of-relus" id="toc-the-importance-of-relus" class="nav-link" data-scroll-target="#the-importance-of-relus">The Importance of ReLUs</a></li>
   <li><a href="#the-power-of-double-relu-fun-with-functions" id="toc-the-power-of-double-relu-fun-with-functions" class="nav-link" data-scroll-target="#the-power-of-double-relu-fun-with-functions">The Power of Double ReLU: Fun With Functions</a></li>
   <li><a href="#infinity-flexible-relus" id="toc-infinity-flexible-relus" class="nav-link" data-scroll-target="#infinity-flexible-relus">Infinity Flexible ReLUs</a></li>
   <li><a href="#need-parameters-weve-got-gradient-descent" id="toc-need-parameters-weve-got-gradient-descent" class="nav-link" data-scroll-target="#need-parameters-weve-got-gradient-descent">Need Parameters? We’ve got Gradient Descent</a></li>
   <li><a href="#the-big-picture-adding-relus-and-gradient-descent-deep-learning" id="toc-the-big-picture-adding-relus-and-gradient-descent-deep-learning" class="nav-link" data-scroll-target="#the-big-picture-adding-relus-and-gradient-descent-deep-learning">The Big Picture: Adding ReLus and Gradient Descent === Deep Learning</a></li>
   </ul></li>
-  <li><a href="#the-titanic-competition" id="toc-the-titanic-competition" class="nav-link" data-scroll-target="#the-titanic-competition">The Titanic Competition</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.dev/buidai123/blog/blob/main/posts/2024-07-28-from-neuron-to-gradient/index.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/buidai123/blog/blob/main/posts/2024-07-28-from-neuron-to-gradient/index.ipynb" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/buidai123/blog/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -305,12 +304,12 @@ cookieconsent.run({
 
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
-<p>Hey there, fellow data adventurers! 👋 It’s been a couple of week since my last post - blame exams and obsessive quest to tweak every configuration setting for my workflow (which is turned into a week-long habit hole - i regret nothing). But today, I’m excited to dive back into the world of AI and share my latest escapades from <a href="https://youtu.be/hBBOjCiFcuo?si=dfuUYTPelGOYCogb">Lesson 3</a> of the FastAI course taught by the indomitable Jeremy Horawd. Spoiler alert: it’s packed with enough neural wonders to make your brain do a happy dance.🕺</p>
+<p>Hey there. It’s been a couple of week since my last post - blame exams and obsessive quest to tweak every configuration setting for my workflow (which is turned into a week-long habit hole - i regret nothing). But today, I’m excited to dive back into the world of AI and share my latest escapades from <a href="https://youtu.be/hBBOjCiFcuo?si=dfuUYTPelGOYCogb">Lesson 3</a> of the FastAI course taught by the indomitable Jeremy Horawd. Spoiler alert: it’s packed with enough neural wonders to make your brain do a happy dance.</p>
 <p>In the coming post, I’ll guide you through:</p>
 <ul>
 <li>Picking of right AI model that’s just right for you</li>
-<li>Dissecting the anatomy of these models (paramedics not required)🧬</li>
-<li>The inner workings of neuron networks 🧠</li>
+<li>Dissecting the anatomy of these models (paramedics not required)</li>
+<li>The inner workings of neuron networks</li>
 <li>The <a href="https://www.kaggle.com/competitions/titanic">Titanic competition</a></li>
 </ul>
 <p>So, hold onto your neural nets and let’s jump right into it, shall we?</p>
@@ -318,11 +317,10 @@ cookieconsent.run({
 <section id="section" class="level2">
 <h2 class="anchored" data-anchor-id="section"></h2>
 </section>
-<section id="choosing-the-right-model-a-guide-to-navigating-the-neural-jungle" class="level2">
-<h2 class="anchored" data-anchor-id="choosing-the-right-model-a-guide-to-navigating-the-neural-jungle">Choosing the Right Model: A Guide to Navigating the Neural Jungle</h2>
-<p>Alright folks, buckle up! We’re diving into the exhilarating world of choosing the perfect image model. It’s like shopping for a new gadget: you want something sleek, efficient, and most importantly - something that get the job done without draining your power (or breaking the bank),</p>
-<p>I’m going to guide you through the hands-on example to illustrate the difference between two popular image models. So, let’s play around with training a pet detector model, shall we?</p>
-<p>First things first, let’s get our setup ready:</p>
+<section id="choosing-the-right-model" class="level2">
+<h2 class="anchored" data-anchor-id="choosing-the-right-model">Choosing the Right Model</h2>
+<p>We’ll explore how to choose an image model that’s efficient, reliable, and cost-effective—much like selecting the perfect gadget. I’ll walk you through a practical example comparing two popular image models by training a pet detector model.</p>
+<p>Let’s start by setting up our environment.</p>
 <div id="cell-4" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-07-27T12:50:55.115169Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-07-27T12:50:55.114829Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-07-27T12:51:04.408985Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-07-27T12:51:04.408185Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-07-27T12:50:55.115141Z&quot;}" data-trusted="true" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fastai.vision.<span class="bu">all</span> <span class="im">import</span> <span class="op">*</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> timm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -366,7 +364,7 @@ cookieconsent.run({
     
 </div>
 </div>
-<p>Lemme break down what’s happening here. We’re using <a href="https://academictorrents.com/details/b18bbd9ba03d50b0f7f479acc9f4228a408cecc1">The Oxford-IIIT Pet dataset</a>, fetched with a nifty little URL constant provide by FastAI. If you’re staring at the pattern <code>pat=r'^([^/]+)\_\d+'</code> like it’s some alien script, fear not! It’s just a regular expression used to extract label from filenames using fastai <code>RegexLabeller</code></p>
+<p>Let’s break down what’s happening here. We’re using <a href="https://academictorrents.com/details/b18bbd9ba03d50b0f7f479acc9f4228a408cecc1">The Oxford-IIIT Pet dataset</a>, fetched with a nifty little URL constant provide by FastAI. If you’re staring at the pattern <code>pat=r'^([^/]+)\_\d+'</code> like it’s some alien script, fear not! It’s just a regular expression used to extract label from filenames using fastai <code>RegexLabeller</code></p>
 <p>Here’s the cheat sheet for the pattern:</p>
 <ul>
 <li><code>^</code> asserts the start of a string.</li>
@@ -489,20 +487,22 @@ cookieconsent.run({
 </table>
 </div>
 </div>
-<p>Alright after about 2 minutes, we hit a 7% error rate. Not too shabby! But here’s the catch: ResNet34 is like the reliable old family car of neuron networks - good but not the fastest on the block. To spice thing up, we need to find a better, more turbo-changed model🏎️</p>
-<section id="time-to-upgrade-diving-into-the-model-jungle" class="level3">
-<h3 class="anchored" data-anchor-id="time-to-upgrade-diving-into-the-model-jungle">Time to Upgrade: Diving into the Model Jungle</h3>
-<p>There are zillion architectures in the Pytorch image model library - ok, maybe not a zillion, but a lot! Most are mathematical functions like RELUs(Rectified Linear Units), which we’ll get into shortly. So, which model should we choose? It boil down to three things:</p>
+<p>After about two minutes, we reached a 7% error rate—not too shabby! However, there’s one catch: while ResNet34 is dependable like a classic family car, it isn’t the fastest option out there. To really amp things up, we need to find a more advanced, high-performance model.</p>
+<section id="exploring-the-model-landscape" class="level3">
+<h3 class="anchored" data-anchor-id="exploring-the-model-landscape">Exploring the Model Landscape</h3>
+<p>The PyTorch image model library offers a wide range of architectures—not quite a zillion, but enough to give you plenty of options. Many of these models are built on mathematical functions like ReLUs (Rectified Linear Units), which we’ll discuss in more detail later. Ultimately, choosing the right model comes down to three key factors:</p>
 <ol type="1">
-<li><code>Speed</code></li>
-<li><code>Memory Usage</code></li>
-<li><code>Accuracy</code></li>
+<li>Speed<br>
+</li>
+<li>Memory Usage<br>
+</li>
+<li>Accuracy</li>
 </ol>
 </section>
 <section id="the-which-image-model-is-best-notebook" class="level3">
 <h3 class="anchored" data-anchor-id="the-which-image-model-is-best-notebook">The “Which Image Model is Best?” Notebook</h3>
-<p>Check out this gem by Jeremy Howard: <a href="https://www.kaggle.com/code/jhoward/which-image-models-are-best/">Which image models are best</a>. It’s a treasure trove for finding the perfect architecture, and i highly recommend you go to his notebook read it and you should totally upvote it because Jeremy rocks.</p>
-<p>I just copy the plot into here for so you can look at that quickly (but remember to give him a upvote).</p>
+<p>I highly recommend taking a look at Jeremy Howard’s excellent notebook, <a href="https://www.kaggle.com/code/jhoward/which-image-models-are-best/">“Which image models are best?”</a>. It’s a valuable resource for finding the best architecture for your needs. If you find it helpful, do check it out and consider giving it an upvote—Jeremy’s insights are solid.</p>
+<p>I’ve also included a copy of the plot below for quick reference. Enjoy exploring the model landscape!</p>
 <div class="cell">
 <div class="sourceCode cell-code hidden" id="cb6" data-startfrom="1" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>Plotly <span class="op">=</span> <span class="pp">require</span>(<span class="st">'https://cdn.plot.ly/plotly-latest.min.js'</span>)<span class="op">;</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>df_results <span class="op">=</span> <span class="fu">FileAttachment</span>(<span class="st">"results-imagenet.csv"</span>)<span class="op">.</span><span class="fu">csv</span>()</span>
@@ -617,17 +617,17 @@ cookieconsent.run({
 </div>
 </div>
 </div>
-<p>Here’s the plot breakdown from the notebook:</p>
+<p>Here’s a breakdown of the plot from the notebook:</p>
 <ul>
-<li>The X-axis shows seconds per sample(how fast it is) - to the left is better.</li>
-<li>The Y-axis shows accuracy - higher is better.</li>
+<li>The X-axis represents seconds per sample (the lower, the better performance).</li>
+<li>The Y-axis reflects the accuracy (higher is preferable).</li>
 </ul>
-<p>Ideally, you want models that hover around the top left corner. We often use ResNet34 because it’s like the comfortable pair of jeans everyone swears by. But it’s not the cutting-edge model anymore. Let’s explore something better: ConvNeXT models! 🎉</p>
-<p>First, make sure you install the <code>timm</code> via pip or conda:</p>
+<p>In an ideal scenario, you would choose models that are located in the upper left corner of the plot. Although ResNet34 is a reliable choice—like a pair of trusty jeans—it’s no longer considered state-of-the-art. It’s time to explore the ConvNeXT models!</p>
+<p>Before you get started, ensure that you have the timm package installed. You can install it using pip or conda:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install timm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>or</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> install timm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Then, let’s search for all the ConvNext models:</p>
+<p>After that, let’s search for all available ConvNeXT models.</p>
 <div id="cell-13" class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>timm.list_models(<span class="st">"convnext*"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -768,13 +768,13 @@ cookieconsent.run({
 </section>
 <section id="results-are-in" class="level3">
 <h3 class="anchored" data-anchor-id="results-are-in">Results Are In!</h3>
-<p>Training time goes up a little bit like 3, 4 seconds. But, and here’s the kicker - the accuracy jumps from 7.3% error down to 5.6%!🚀</p>
-<p>The model names might looks cryptic. Here’s the decoder ring:</p>
+<p>The training time increased slightly—by about 3 to 4 seconds—but here’s the exciting part: the error rate dropped from 7.3% to 5.6%!</p>
+<p>Now, those model names might seem a bit cryptic at first glance. Here’s a quick guide to help you decode them:</p>
 <ul>
-<li>Tiny, small, large. etc.: Size and resource demands.</li>
-<li>fb_in22k: Trained on ImageNet dataset with 22,000 image categories by <a href="https://ai.meta.com/research/">Facebook AI Research(FAIR)</a></li>
+<li>Names like Tiny, Small, Large, etc.: These indicate the model’s size and resource requirements.</li>
+<li>fb_in22k: This means the model was trained on the ImageNet dataset with 22,000 image categories by <a href="https://ai.meta.com/research/">Facebook AI Research (FAIR)</a>.</li>
 </ul>
-<p>These ConvNeXT models generally outperform others in terms of accuracy on standard photos of natural objects. So, there you have it! We’ve seen how to choose and implement a better architecture for your image models. Remember, it’s all about finding the right balance between speed, memory, and accuracy. Stay tuned, as we’ll tackle deeper intricacies of neural networks next 🎢</p>
+<p>In general, ConvNeXT models tend to outperform others in accuracy for standard photographs of natural objects. In summary, we’ve seen how choosing the right architecture can make a significant difference by balancing speed, memory usage, and accuracy. Stay tuned as we dive even deeper into the intricacies of neural networks next!</p>
 </section>
 </section>
 <section id="whats-in-the-model" class="level2">
@@ -784,16 +784,16 @@ cookieconsent.run({
 <div id="cell-19" class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>learn.export(<span class="st">'model.pkl'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>For those of you who’ve stuck around through my previous blog posts, you’ll remember that when i deploy an application on HuggingFace Spaces, I simply load this <code>model.pkl</code> file. This way, the learner operates almost exactly like the trained <code>learn</code> object, but it’s really instantly means no more waiting for eons!</p>
-<p>Now, you might be scratching your head, wondering. “what did we just do exactly? What inside this <code>model.pkl</code> file?”</p>
+<p>For those of you who’ve followed my previous blog posts, you’ll recall that when I deploy an application on HuggingFace Spaces, I simply load the <code>model.pkl</code> file. This way, the learner functions almost identically to the trained <code>learn</code> object—and the best part is, you no longer have to wait forever!</p>
+<p>Now, you might be wondering, “What exactly did we do here? What’s inside this <code>model.pkl</code> file?”</p>
 <section id="dissecting-the-model.pkl-file" class="level3">
 <h3 class="anchored" data-anchor-id="dissecting-the-model.pkl-file">Dissecting the <code>model.pkl</code> File</h3>
-<p>Alright, grab your virtual scalpel, because we’re doing some model surgery! The <code>model.pkl</code> file is essentially a saved learner, and it houses two main things:</p>
+<p>Let’s take a closer look. The <code>model.pkl</code> file is essentially a saved learner, and it contains two main components:</p>
 <ol type="1">
-<li><strong>Pre-processing Steps</strong>: This includes all the steps needed to turn your raw images into something model can understand. Essentially, this is the information your <code>DataLoaders</code>(<code>dls</code>), DataBlock, or any other pre-processing pipeline you’ve set up.</li>
-<li><strong>The Trained Model</strong>: This is the most crucial part - a model that has been trained and is ready to make predictions.</li>
+<li><strong>Pre-processing Steps</strong>: These include all the procedures needed to transform your raw images into a format that the model can understand. In other words, it stores the information from your <code>DataLoaders</code> (<code>dls</code>), DataBlock, or any other pre-processing pipeline you’ve set up.</li>
+<li><strong>The Trained Model</strong>: This is the core component—a trained model that’s ready to make predictions.</li>
 </ol>
-<p>To peek inside, we can load the model back up and check it out:</p>
+<p>To inspect its contents, we can load the model back up and examine it.</p>
 <div id="cell-21" class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> learn.model</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>m</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1257,12 +1257,12 @@ tensor([-0.4049, -0.7419, -0.4234, -0.1651, -0.3027, -0.1899, -0.5534, -0.6270,
        device='cuda:0', requires_grad=True)]</code></pre>
 </div>
 </div>
-<p>What do these numbers mean? you say! These are the learned parameters of the model essentially, the weights that have been optimized during training. They’re the secret sauce that allows the model to identify whether an image is a basset hound, a tabby cat, or anything else.</p>
-<p>Next up, we will explore how neural networks really work under the hood. We’ll unravel the mysterious that turn these parameters into powerful predictions.</p>
+<p>What do these numbers mean, you ask? Essentially, they represent the learned parameters of the model— the weights that have been fine-tuned during training. These weights form the “secret sauce” that enables the model to distinguish between, say, a basset hound and a tabby cat.</p>
+<p>Next, we’ll dive into how neural networks function behind the scenes, exploring the mechanisms that transform these parameters into powerful predictions.</p>
 </section>
 </section>
-<section id="how-neural-networks-really-work---the-magic-unveiled" class="level2">
-<h2 class="anchored" data-anchor-id="how-neural-networks-really-work---the-magic-unveiled">How Neural Networks Really Work - The Magic Unveiled!🧙‍♂️</h2>
+<section id="how-neural-networks-really-work" class="level2">
+<h2 class="anchored" data-anchor-id="how-neural-networks-really-work">How Neural Networks Really Work</h2>
 <p>To answer the burning question from before, let’s dive into the marvels of neural networks. Yes, Jeremy Howard has an amazing notebook called <a href="https://www.kaggle.com/code/jhoward/how-does-a-neural-net-really-work">“How does a neural net really work?”</a> that’s perfect for beginners. But, I’m here to give you a walkthrough with a dash of humor!</p>
 <p>Machine learning models are like very smart shape-fitting artists. They find pattern in data and learn to recognize them. We’ll start simple - with a quadratic function. Let’s see how it all works:</p>
 <div id="cell-33" class="cell" data-execution_count="16">
@@ -1330,9 +1330,9 @@ tensor([-0.4049, -0.7419, -0.4234, -0.1651, -0.3027, -0.1899, -0.5534, -0.6270,
 </div>
 </div>
 </div>
-<p>What we want to do here is simple: imagine we don’t know the true mathematical function, and we’re trying to recreate it from some data. This is easier than trying to figure out if an image contains a basset hound or your grandma’s cat. Here’s the real function, and we’re going to try to mimic it using lot’s of different quadratic equations.</p>
+<p>What we want to do here is straightforward: suppose we don’t know the exact mathematical function, and we’re trying to reconstruct it from some data. Here’s the actual function, and our goal is to approximate it using a variety of quadratic equations.</p>
 <p><strong>Creating Quadratics on Demand</strong></p>
-<p>In Python, this magical thing called <code>partial</code> allows us to fix some values of a function and create variation of it. It’s like having a playlist of your favorite songs, but you can change he lyric any time!</p>
+<p>In Python, the <code>partial</code> function lets us fix certain parameters of a function to generate different variations. It’s like having a playlist of your favorite songs with the flexibility to change the lyrics whenever you want!</p>
 <div id="cell-37" class="cell" data-execution_count="18">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> functools <span class="im">import</span> partial</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -1514,31 +1514,28 @@ tensor([-0.4049, -0.7419, -0.4234, -0.1651, -0.3027, -0.1899, -0.5534, -0.6270,
 </div>
 </div>
 </div>
-<p>With MSE, you don’t need to rely on your eyes to see if the fit is better. Numbers will tell you if you’re on the right track. But adjusting sliders manually is so last decade. We need a faster way…</p>
+<p>With Mean Squared Error (MSE), you can objectively assess whether a model’s fit is improving without relying solely on visual inspection. Instead of manually adjusting parameters—which can be tedious and inefficient—we can automate the process using calculus.</p>
 </section>
 <section id="the-power-of-derivatives" class="level3">
 <h3 class="anchored" data-anchor-id="the-power-of-derivatives">The Power of Derivatives</h3>
-<p>One approach would be to try fitting different parameters manually, right? We could increase each parameter a bit and see if the loss (our way of measuring how bad the model’s predictions are) improves, and vice versa. But there’s a much faster way, and this magic trick is called the <strong>derivative</strong></p>
-<p>The derivative tells you, “Hey, if you tweak this parameter, the output will change this much.” Essentially, it’s like having a super-smart assistant that knows whether to turn the dial up or down to make the song sound better. This is also known as the <strong>slop</strong> or <strong>gradient</strong>.</p>
+<p>One straightforward approach might be to manually tweak each parameter and observe how the loss, which quantifies the model’s prediction error, changes. However, there’s a far more efficient method: by computing the derivative of the loss function with respect to the parameters. These derivatives, also known as gradients, indicate the direction and rate at which the loss changes. This information is crucial for guiding the optimization process.</p>
 </section>
-<section id="pytorch-to-the-rescue" class="level3">
-<h3 class="anchored" data-anchor-id="pytorch-to-the-rescue">Pytorch to the Rescue</h3>
-<p>Good news: Pytorch can automatically calculate derivative for you. Here’s how:</p>
-<p>We’ll define a function <code>quad_mse</code>, which computes the Mean Squared Error (MSE) between our noisy data and a quadratic function defined by a set of parameters ([a, b, c]):</p>
+<section id="leveraging-pytorch" class="level3">
+<h3 class="anchored" data-anchor-id="leveraging-pytorch">Leveraging PyTorch</h3>
+<p>Fortunately, PyTorch automates the calculation of these derivatives, greatly simplifying the optimization process. For example, consider a function called <code>quad_mse</code>, which computes the Mean Squared Error between our observed noisy data and a quadratic model defined by parameters [a, b, c]. This function serves as a foundation for adjusting the model parameters in an informed and efficient way.</p>
 <div id="cell-49" class="cell" data-execution_count="22">
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> quad_mse(params):</span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>    f <span class="op">=</span> mkquad(<span class="op">*</span>params)</span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> mse(f(x), y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This function takes the coefficients (a, b, c), creates a quadratic function, and then returns the MSE of the predicted values against the actual noisy data.</p>
-<p>Time to give it a whirl:</p>
 <div id="cell-51" class="cell" data-execution_count="23">
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>quad_mse([<span class="fl">1.5</span>, <span class="fl">1.5</span>, <span class="fl">1.5</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="23">
 <pre><code>tensor(6.7798, dtype=torch.float64)</code></pre>
 </div>
 </div>
-<p>Spoiler alert: We get a MSE of 6.78, and yes, it’s a tenser (just a fancy array with some extra Pytorch powers). Let’s make it easier to hand:</p>
+<p>We get a MSE of 6.78, and yes, it’s a tenser (just a fancy array with some extra Pytorch powers). Let’s make it easier to hand:</p>
 <div id="cell-53" class="cell" data-execution_count="24">
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>abc <span class="op">=</span> torch.tensor([<span class="fl">1.5</span>, <span class="fl">1.5</span>, <span class="fl">1.5</span>])</span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>abc.requires_grad_()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1579,12 +1576,12 @@ tensor([-0.4049, -0.7419, -0.4234, -0.1651, -0.3027, -0.1899, -0.5534, -0.6270,
 <pre><code>tensor(6.1349, dtype=torch.float64)</code></pre>
 </div>
 </div>
-<p>This subtracts a small portion of the gradient from each parameter to create a new set of parameters. And our loss improves from 6.78 to 6.13.</p>
-<p>Remember, <code>with_torch.no_grad()</code> ensures Pytorch doesn’t calculate the gradient for this piece (because it’s just us updating weights and biases, not a loss calculation)</p>
+<p>This operation subtracts a small proportion of the gradient from each parameter, resulting in an updated set of parameters and a reduction of the loss from 6.78 to 6.13.</p>
+<p>Note that using the context manager <code>with torch.no_grad()</code> disables gradient computation for the weight and bias update step, as this update does not require gradient tracking.</p>
 </section>
-<section id="automating-the-gradient-descent" class="level3">
-<h3 class="anchored" data-anchor-id="automating-the-gradient-descent">Automating the Gradient Descent</h3>
-<p>Why do it manually when you’re a Pytorch Jedi? Here’s a loop to handle multiple steps of gradient descent:</p>
+<section id="automating-gradient-descent" class="level3">
+<h3 class="anchored" data-anchor-id="automating-gradient-descent">Automating Gradient Descent</h3>
+<p>Instead of performing updates manually, you can automate the process using a loop to handle multiple iterations of gradient descent.</p>
 <div id="cell-63" class="cell" data-execution_count="29">
 <div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>):</span>
 <span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>    loss <span class="op">=</span> quad_mse(abc)</span>
@@ -1607,16 +1604,16 @@ Step 4; loss: 4.10 </code></pre>
 <pre><code>tensor([1.9329, 1.5305, 1.6502], requires_grad=True)</code></pre>
 </div>
 </div>
-<p>After 5 steps of gradient descent, you’ll have a set or parameters edging closer to the optimal values. These number continually adjust to minimize the loss, effectively “learning”, the pattern in your data.</p>
+<p>After about five gradient descent iterations, the parameters have adjusted incrementally toward their optimal values. These parameters continuously update to minimize the loss and capture the underlying patterns in your data.</p>
 </section>
-<section id="welcome-to-optimization-meet-gradient-descent" class="level3">
-<h3 class="anchored" data-anchor-id="welcome-to-optimization-meet-gradient-descent">Welcome to Optimization: Meet Gradient Descent</h3>
-<p>This whole process of tweaking parameters to minimize loss is called <strong>optimization</strong>, specifically <strong>gradient descent</strong>. Pretty much all machine learning models, including the fancy neural networks, use variations of this technique.</p>
+<section id="welcome-to-optimization-the-role-of-gradient-descent" class="level3">
+<h3 class="anchored" data-anchor-id="welcome-to-optimization-the-role-of-gradient-descent">Welcome to Optimization: The Role of Gradient Descent</h3>
+<p>The process of fine-tuning parameters to reduce prediction error is known as optimization, with gradient descent being one of the most widely used methods. Nearly all machine learning models—including complex neural networks—rely on some variant of this technique.</p>
 </section>
-<section id="the-magic-of-relus" class="level3">
-<h3 class="anchored" data-anchor-id="the-magic-of-relus">The Magic of ReLUs</h3>
-<p>We can’t just fit our model with simple quadratics, can we? The real world is way more complex-especially when it comes to discerning the subtle nuances of whether a pixel forms part of a basset hound or not. So, let’s up the complexity game, shall we?</p>
-<p>Enter the superhero of activation function: the <strong>Rectified Linear Unit(ReLUs)</strong>. This tiny thing is like the ultimate building block for creating infinity flexible functions:</p>
+<section id="the-importance-of-relus" class="level3">
+<h3 class="anchored" data-anchor-id="the-importance-of-relus">The Importance of ReLUs</h3>
+<p>Simple quadratic functions are often insufficient for modeling real-world data, which tends to exhibit far greater complexity. When distinguishing subtle visual features in images, for example, a more sophisticated approach is required.</p>
+<p>This is where the Rectified Linear Unit (ReLU) comes in. As an activation function, ReLU serves as a fundamental building block for constructing highly flexible models capable of capturing intricate patterns.</p>
 <div id="cell-66" class="cell" data-execution_count="31">
 <div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rectified_linear(m, b, x):</span>
 <span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> m <span class="op">*</span> x <span class="op">+</span> b</span>
@@ -1768,7 +1765,7 @@ Step 4; loss: 4.10 </code></pre>
 <section id="infinity-flexible-relus" class="level3">
 <h3 class="anchored" data-anchor-id="infinity-flexible-relus">Infinity Flexible ReLUs</h3>
 <p>Think this is fun? Imagine adding a million <strong>ReLUs</strong> together. In face, you can add as many as you want to create function as wiggly and complex as you desire.</p>
-<p>Behold the power of ReLUs! 👀✨ With enough ReLUs, you can match any data pattern with incredible precision. you want a function that isn’t just 2D but spreads across multiply dimensions? You got it! ReLUs can do 3D, 4D, 5D…, nD.</p>
+<p>Behold the power of ReLUs! With enough ReLUs, you can match any data pattern with incredible precision. you want a function that isn’t just 2D but spreads across multiply dimensions? You got it! ReLUs can do 3D, 4D, 5D…, nD.</p>
 </section>
 <section id="need-parameters-weve-got-gradient-descent" class="level3">
 <h3 class="anchored" data-anchor-id="need-parameters-weve-got-gradient-descent">Need Parameters? We’ve got Gradient Descent</h3>
@@ -1780,20 +1777,14 @@ Step 4; loss: 4.10 </code></pre>
 <p>Quoting Jeremy Howard:</p>
 <p><img src="./how_to_draw_an_owl.jpg" style="width:40%;"></p>
 <blockquote class="blockquote">
-<p>“Now I remember a few years ago when I said something like this in a class, somebody on the forum was like, this reminds me of that thing about how to draw an owl. Jeremy’s basically saying, okay, step one: draw two circles; step two: daw the rest of the owl”</p>
+<p>“Now I remember a few years ago when I said something like this in a class, somebody on the forum was like, this reminds me of that thing about how to draw an owl. Okay, step one: draw two circles; step two: daw the rest of the owl”</p>
 </blockquote>
-<p>This bit is pure gold because it distills deep learning down to its core components. When you have ReLUs being added together, gradient descent optimizing you parameters, and sample of inputs and outputs-voilà! The computer draws the owl.</p>
-<p>Remember when things get dense: keep coming back to what’s really happening. Deep learning, at it’s heart, is using gradient descent to tweak parameters, adding lots of ReLUs (or something similar) to match your data.</p>
-<p>And that’s it! You’ve just peeked under the hood of deep learning. Stay curious, keep playing with those ReLUs, and watch the neural magic unfold. 🚀</p>
-</section>
-</section>
-<section id="the-titanic-competition" class="level2">
-<h2 class="anchored" data-anchor-id="the-titanic-competition">The Titanic Competition</h2>
-<p>Alright because this post is a bit too long, we can tell!, and i also want to write detail blog post about my experience about this competition so i decide to make another blog post about this and here it is</p>
-<p><a href="https://buidai123.github.io/blog/posts/titanic_competition/">Sink or Swim: Navigating Deep Learning with the Titanic Competition</a></p>
-<p>Oh, almost forgot. Happy codding, btw!</p>
+<p>This explanation highlights the fundamental components of deep learning. At its core, deep learning involves leveraging activation functions like ReLUs, optimizing parameters through gradient descent, and processing data samples to generate predictions. Essentially, when you stack layers of ReLUs and systematically adjust parameters using gradient descent, the network learns to map inputs to outputs—much like an image of an owl being recognized by the computer.</p>
+<p>Whenever the concepts feel overwhelming, remember that the process boils down to these basics: using gradient descent to fine-tune parameters and combining numerous activation functions to capture complex patterns in your data.</p>
+<p>And that’s the essence of deep learning—simple building blocks working together to create sophisticated models. Stay curious and explore how each component contributes to the overall process.</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
