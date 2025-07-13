@@ -69,6 +69,12 @@ kbd,
   color: #495057;
 }
 
+// Code block rounded corners for light theme
+div.sourceCode,
+pre.sourceCode {
+  border-radius: 0.5rem !important;
+}
+
 // Improved table styling
 .table {
   border-collapse: collapse;

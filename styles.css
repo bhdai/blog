@@ -80,12 +80,19 @@ body {
 /* Code block improvements - work with Quarto's native styling */
 div.sourceCode {
   font-size: 0.875em;
+  border-radius: 0.5rem !important; /* Add rounded corners */
   /* Let Quarto handle all the styling - no borders or backgrounds */
 }
 
 pre.sourceCode {
   /* Ensure no conflicting styles on pre elements */
   margin-bottom: 1rem;
+  border-radius: 0.5rem !important; /* Add rounded corners to pre elements */
+}
+
+/* Code blocks with highlighting */
+.sourceCode pre {
+  border-radius: 0.5rem !important;
 }
 
 /* Inline code styling */

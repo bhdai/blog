@@ -126,6 +126,12 @@ kbd,
   color: #f8f9fa;
 }
 
+// Code block rounded corners for dark theme
+div.sourceCode,
+pre.sourceCode {
+  border-radius: 0.5rem !important;
+}
+
 .code-with-filename .code-with-filename-file pre {
   color: #ddd;
 }
