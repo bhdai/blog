@@ -6,16 +6,17 @@
       version="2.0">
 <channel>
 <title>Bui Huu Dai</title>
-<link>https://buidai123.github.io/blog/</link>
-<atom:link href="https://buidai123.github.io/blog/index.xml" rel="self" type="application/rss+xml"/>
+<link>https://bhdai.github.io/blog/</link>
+<atom:link href="https://bhdai.github.io/blog/index.xml" rel="self" type="application/rss+xml"/>
 <description>Dai&#39;s blog.</description>
-<generator>quarto-1.7.6</generator>
+<generator>quarto-1.7.32</generator>
 <lastBuildDate>Sun, 29 Dec 2024 17:00:00 GMT</lastBuildDate>
 <item>
   <title>Some Deep Learning Concepts You Need To Understand</title>
   <dc:creator>Bui Huu Dai</dc:creator>
-  <link>https://buidai123.github.io/blog/posts/2024-12-30-deep-learning-concepts/</link>
+  <link>https://bhdai.github.io/blog/posts/2024-12-30-deep-learning-concepts/</link>
   <description><![CDATA[ 
+
 
 
 
@@ -111,7 +112,7 @@ font-style: inherit;">128</span>)</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="6">
 <div>
 <figure class="figure">
-<p><img src="https://buidai123.github.io/blog/posts/2024-12-30-deep-learning-concepts/index_files/figure-html/cell-7-output-2.png" class="img-fluid figure-img"></p>
+<p><img src="https://bhdai.github.io/blog/posts/2024-12-30-deep-learning-concepts/index_files/figure-html/cell-7-output-2.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -140,7 +141,7 @@ Name: count, dtype: int64</code></pre>
 </div>
 </div>
 <p>Well, there’s almost have the same size except 4 of them with 640x480, we’ll need to resize all of them to the same size, we will talk about it later, but now let’s create a dataloader</p>
-<div id="cell-16" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2025-01-02T10:39:16.888162Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-02T10:39:16.887867Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-02T10:39:20.073235Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-02T10:39:20.072378Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2025-01-02T10:39:16.888138Z&quot;}" data-trusted="true" data-execution_count="15">
+<div id="cell-16" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2025-01-02T10:39:16.888162Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-02T10:39:16.887867Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-02T10:39:20.073235Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-02T10:39:20.072378Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2025-01-02T10:39:16.888138Z&quot;}}" data-trusted="true" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1">dls <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> DataBlock(blocks<span class="op" style="color: #5E5E5E;
@@ -218,7 +219,7 @@ font-style: inherit;">0.75</span>)).dataloaders(train_path)</span></code></pre><
 </ol>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://buidai123.github.io/blog/posts/2024-12-30-deep-learning-concepts/presizing.png" class="img-fluid figure-img" style="width:80.0%"></p>
+<p><img src="https://bhdai.github.io/blog/posts/2024-12-30-deep-learning-concepts/presizing.png" class="img-fluid figure-img" style="width:80.0%"></p>
 <figcaption>Presizing explained: Showing the two step resize to a large size then apply random crop and augment at the same time</figcaption>
 </figure>
 </div>
@@ -248,7 +249,7 @@ font-style: inherit;">224</span>)</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="8">
 <div>
 <figure class="figure">
-<p><img src="https://buidai123.github.io/blog/posts/2024-12-30-deep-learning-concepts/index_files/figure-html/cell-11-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="https://bhdai.github.io/blog/posts/2024-12-30-deep-learning-concepts/index_files/figure-html/cell-11-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -301,7 +302,7 @@ font-style: inherit;">=</span>method)</span></code></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://buidai123.github.io/blog/posts/2024-12-30-deep-learning-concepts/index_files/figure-html/cell-12-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="https://bhdai.github.io/blog/posts/2024-12-30-deep-learning-concepts/index_files/figure-html/cell-12-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -355,7 +356,7 @@ font-style: inherit;">=</span>method)</span></code></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://buidai123.github.io/blog/posts/2024-12-30-deep-learning-concepts/index_files/figure-html/cell-13-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="https://bhdai.github.io/blog/posts/2024-12-30-deep-learning-concepts/index_files/figure-html/cell-13-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -375,29 +376,46 @@ font-style: inherit;">=</span>method)</span></code></pre></div>
 <div class="no-row-height column-margin column-container"><div id="cell-25" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb17" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1">torch.permute??</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Docstring:
+<div class="ansi-escaped-output">
+<pre><span class="ansi-red-fg">Docstring:</span>
+
 permute(input, dims) -&gt; Tensor
+
+
 
 Returns a view of the original tensor :attr:`input` with its dimensions permuted.
 
+
+
 Args:
+
     input (Tensor): the input tensor.
+
     dims (tuple of int): The desired ordering of dimensions
 
+
+
 Example:
+
     &gt;&gt;&gt; x = torch.randn(2, 3, 5)
+
     &gt;&gt;&gt; x.size()
+
     torch.Size([2, 3, 5])
+
     &gt;&gt;&gt; torch.permute(x, (2, 0, 1)).size()
+
     torch.Size([5, 2, 3])
-Type:      builtin_function_or_method</code></pre>
+
+<span class="ansi-red-fg">Type:</span>      builtin_function_or_method</pre>
+</div>
 </div>
 </div><div class="">
 <p>Most image processing libraries and formats (like PIL, OpenCV, matplotlib) use the format (Height, Width, Channels) or (H, W, C).</p>
 <p>However, PyTorch expects images in the format (Channels, Height, Width) or (C, H, W).</p>
 </div></div>
 <div id="cell-27" class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb19" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1">timg <span class="op" style="color: #5E5E5E;
+<div class="sourceCode cell-code" id="cb18" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1">timg <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> TensorImage(array(tst_img)).permute(<span class="dv" style="color: #AD0000;
 background-color: null;
@@ -412,7 +430,7 @@ background-color: null;
 font-style: inherit;">/</span><span class="fl" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">255.</span></span>
-<span id="cb19-2"><span class="kw" style="color: #003B4F;
+<span id="cb18-2"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
 font-style: inherit;">def</span> _batch_ex(bs): <span class="cf" style="color: #003B4F;
@@ -423,7 +441,7 @@ background-color: null;
 font-style: inherit;">None</span>].expand(bs, <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">*</span>timg.shape).clone())</span>
-<span id="cb19-3">tfms <span class="op" style="color: #5E5E5E;
+<span id="cb18-3">tfms <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> aug_transforms(size<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -434,12 +452,12 @@ background-color: null;
 font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">0.75</span>)</span>
-<span id="cb19-4">y <span class="op" style="color: #5E5E5E;
+<span id="cb18-4">y <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> _batch_ex(<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">9</span>)</span>
-<span id="cb19-5"><span class="cf" style="color: #003B4F;
+<span id="cb18-5"><span class="cf" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
 font-style: inherit;">for</span> t <span class="kw" style="color: #003B4F;
@@ -452,7 +470,7 @@ background-color: null;
 font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">0</span>)</span>
-<span id="cb19-6">_, axs <span class="op" style="color: #5E5E5E;
+<span id="cb18-6">_, axs <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> plt.subplots(<span class="dv" style="color: #AD0000;
 background-color: null;
@@ -465,7 +483,7 @@ background-color: null;
 font-style: inherit;">12</span>, <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">3</span>))</span>
-<span id="cb19-7"><span class="cf" style="color: #003B4F;
+<span id="cb18-7"><span class="cf" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
 font-style: inherit;">for</span> i,ax <span class="kw" style="color: #003B4F;
@@ -479,7 +497,7 @@ font-style: inherit;">=</span>ax)</span></code></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://buidai123.github.io/blog/posts/2024-12-30-deep-learning-concepts/index_files/figure-html/cell-15-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="https://bhdai.github.io/blog/posts/2024-12-30-deep-learning-concepts/index_files/figure-html/cell-15-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -508,7 +526,7 @@ Note
 <h3 class="anchored" data-anchor-id="checking-datablock">Checking DataBlock</h3>
 <p>Writing <code>DataBlock</code> is just like writing a blueprint, we will get an error if we have a syntax error some where in the code. So it’s a good practice to always check your data before doing anything further</p>
 <div id="cell-30" class="cell" data-execution_count="12">
-<div class="sourceCode cell-code" id="cb20" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1">dls.show_batch(max_n<span class="op" style="color: #5E5E5E;
+<div class="sourceCode cell-code" id="cb19" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1">dls.show_batch(max_n<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
 background-color: null;
@@ -516,7 +534,7 @@ font-style: inherit;">6</span>)</span></code></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://buidai123.github.io/blog/posts/2024-12-30-deep-learning-concepts/index_files/figure-html/cell-16-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="https://bhdai.github.io/blog/posts/2024-12-30-deep-learning-concepts/index_files/figure-html/cell-16-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -524,7 +542,7 @@ font-style: inherit;">6</span>)</span></code></pre></div>
 <p>Take a look at the images and and check that each one seems to have correct label or not. In fact, we often have to deal with data with which is not as familiar as domain experts may be. Indeed, if you’re not a paddy doctor it will be hard to look at a random image and speak out the disease right? Since I’m not an expert on paddy diseases, I would use google to search to make sure the images look similar to what i see in the output. Also you can debug the DataBlock by using <code>DataBlock.summary</code><sup>6</sup></p>
 <p>Once you think your data looks right, it’s a good practice to train a simple model, think about it, when you start trying to improve your model, how can you rate it? Compare it to the previous try you say, I mean what if it’s already worse, so that why we need to know what our baseline result looks like. Maybe you don’t need anything fancy - a basic model might do the job just fine. Or perhaps the data doesn’t seems to train the model at all. These are things that you want to know as soon as possible</p>
 <div id="cell-32" class="cell" data-execution_count="16">
-<div class="sourceCode cell-code" id="cb21" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1">learn <span class="op" style="color: #5E5E5E;
+<div class="sourceCode cell-code" id="cb20" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1">learn <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> vision_learner(dls, <span class="st" style="color: #20794D;
 background-color: null;
@@ -537,7 +555,7 @@ background-color: null;
 font-style: inherit;">'.'</span>)</span></code></pre></div>
 </div>
 <div id="cell-33" class="cell" data-execution_count="17">
-<div class="sourceCode cell-code" id="cb22" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1">learn.fine_tune(<span class="dv" style="color: #AD0000;
+<div class="sourceCode cell-code" id="cb21" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1">learn.fine_tune(<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">3</span>)</span></code></pre></div>
 <div class="cell-output cell-output-display">
@@ -637,14 +655,14 @@ font-style: inherit;">3</span>)</span></code></pre></div>
 </div>
 <p>Remember that we’re in a competition right, so it’s nothing better than submit it and see how it will go and again this time we will use an pretty cool tool call fastkaggle in fact we used it earlier. Alright let’s see the submission layout</p>
 <div id="cell-35" class="cell" data-execution_count="17">
-<div class="sourceCode cell-code" id="cb23" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1">ss <span class="op" style="color: #5E5E5E;
+<div class="sourceCode cell-code" id="cb22" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1">ss <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> pd.read_csv(path<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">/</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'sample_submission.csv'</span>)</span>
-<span id="cb23-2">ss</span></code></pre></div>
+<span id="cb22-2">ss</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="17">
 <div>
 
@@ -722,7 +740,7 @@ font-style: inherit;">'sample_submission.csv'</span>)</span>
 </div>
 <p>alright seems like we need to sort the images in order before submitting it</p>
 <div id="cell-37" class="cell" data-execution_count="18">
-<div class="sourceCode cell-code" id="cb24" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1">tst_files <span class="op" style="color: #5E5E5E;
+<div class="sourceCode cell-code" id="cb23" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1">tst_files <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> get_image_files(path<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -731,13 +749,13 @@ background-color: null;
 font-style: inherit;">'test_images'</span>).<span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">sorted</span>()</span>
-<span id="cb24-2">tst_dl <span class="op" style="color: #5E5E5E;
+<span id="cb23-2">tst_dl <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> dls.test_dl(tst_files)</span></code></pre></div>
 </div>
 <p>Let’s make the prediction on the test set</p>
 <div id="cell-39" class="cell" data-execution_count="19">
-<div class="sourceCode cell-code" id="cb25" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1">probs,_,idxs <span class="op" style="color: #5E5E5E;
+<div class="sourceCode cell-code" id="cb24" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1">probs,_,idxs <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> learn.get_preds(dl<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -746,7 +764,7 @@ background-color: null;
 font-style: inherit;">=</span><span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">True</span>)</span>
-<span id="cb25-2">idxs</span></code></pre></div>
+<span id="cb24-2">idxs</span></code></pre></div>
 <div class="cell-output cell-output-display">
 
 <style>
@@ -774,20 +792,20 @@ font-style: inherit;">True</span>)</span>
 </div>
 <p>Alright we got the indices of the diseases, we need to map the name to each diseases we can get the label by checking the <code>vocab</code></p>
 <div id="cell-41" class="cell" data-execution_count="20">
-<div class="sourceCode cell-code" id="cb27" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1">dls.vocab</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb26" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1">dls.vocab</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="20">
 <pre><code>['bacterial_leaf_blight', 'bacterial_leaf_streak', 'bacterial_panicle_blight', 'blast', 'brown_spot', 'dead_heart', 'downy_mildew', 'hispa', 'normal', 'tungro']</code></pre>
 </div>
 </div>
 <div id="cell-42" class="cell" data-execution_count="21">
-<div class="sourceCode cell-code" id="cb29" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1">mapping <span class="op" style="color: #5E5E5E;
+<div class="sourceCode cell-code" id="cb28" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1">mapping <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">dict</span>(<span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">enumerate</span>(dls.vocab))</span>
-<span id="cb29-2">results <span class="op" style="color: #5E5E5E;
+<span id="cb28-2">results <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> pd.Series(idxs.numpy(), name<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -796,7 +814,7 @@ background-color: null;
 font-style: inherit;">"idxs"</span>).<span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">map</span>(mapping)</span>
-<span id="cb29-3">results</span></code></pre></div>
+<span id="cb28-3">results</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="21">
 <pre><code>0                       hispa
 1                      normal
@@ -814,19 +832,19 @@ Name: idxs, Length: 3469, dtype: object</code></pre>
 </div>
 <p>Before submit let’s see if our file looks right</p>
 <div id="cell-44" class="cell" data-execution_count="25">
-<div class="sourceCode cell-code" id="cb31" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1">ss[<span class="st" style="color: #20794D;
+<div class="sourceCode cell-code" id="cb30" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1">ss[<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'label'</span>] <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> results</span>
-<span id="cb31-2">ss.to_csv(<span class="st" style="color: #20794D;
+<span id="cb30-2">ss.to_csv(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'subm.csv'</span>, index<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">False</span>)</span>
-<span id="cb31-3"><span class="op" style="color: #5E5E5E;
+<span id="cb30-3"><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">!</span>head subm.csv</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -843,19 +861,19 @@ font-style: inherit;">!</span>head subm.csv</span></code></pre></div>
 </div>
 </div>
 <div id="cell-45" class="cell" data-execution_count="26">
-<div class="sourceCode cell-code" id="cb33" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><span class="cf" style="color: #003B4F;
+<div class="sourceCode cell-code" id="cb32" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><span class="cf" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
 font-style: inherit;">if</span> <span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
 font-style: inherit;">not</span> iskaggle:</span>
-<span id="cb33-2">  <span class="im" style="color: #00769E;
+<span id="cb32-2">  <span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> kaggle <span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> api</span>
-<span id="cb33-3">  api.competition_submit_cli(<span class="st" style="color: #20794D;
+<span id="cb32-3">  api.competition_submit_cli(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'subm.csv'</span>, <span class="st" style="color: #20794D;
 background-color: null;
@@ -887,13 +905,13 @@ Note
 <p><em>Cross-Entropy loss</em> is of course a loss function - a function that used to optimized the parameter of our model. It work even if our dependent variable has more than two categories, and results in faster and reliable training.</p>
 <p>Let’s look at the activation of our model, in fact let’s just look at one batch of our data</p>
 <div id="cell-49" class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb35" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1">x, y <span class="op" style="color: #5E5E5E;
+<div class="sourceCode cell-code" id="cb34" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1">x, y <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> dls.one_batch()</span></code></pre></div>
 </div>
 <p>It returns the dependent and independent variables as mini-batch</p>
 <div id="cell-51" class="cell" data-execution_count="19">
-<div class="sourceCode cell-code" id="cb36" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1">y</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb35" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1">y</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="19">
 <pre><code>TensorCategory([8, 9, 5, 8, 2, 1, 8, 7, 5, 8, 3, 6, 8, 3, 7, 4, 8, 3, 8, 6, 5,
                 6, 0, 5, 8, 8, 7, 5, 8, 9, 8, 8, 7, 7, 9, 4, 7, 3, 9, 7, 7, 5,
@@ -903,12 +921,12 @@ font-style: inherit;">=</span> dls.one_batch()</span></code></pre></div>
 </div>
 <p>We got 64 rows as our batch size is 64, and we get the values ranging from 0 to 9, representing our 10 possible diseases, alright we can even view the predictions in fact it is the activations of the final layer of our neural network by using <code>Learner.get_preds</code></p>
 <div id="cell-53" class="cell" data-execution_count="20">
-<div class="sourceCode cell-code" id="cb38" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1">preds,_ <span class="op" style="color: #5E5E5E;
+<div class="sourceCode cell-code" id="cb37" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1">preds,_ <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> learn.get_preds(dl<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>[(x,y)])</span>
-<span id="cb38-2">preds[<span class="dv" style="color: #AD0000;
+<span id="cb37-2">preds[<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">0</span>]</span></code></pre></div>
 <div class="cell-output cell-output-display">
@@ -939,7 +957,7 @@ font-style: inherit;">0</span>]</span></code></pre></div>
 </div>
 <p>The actual prediction are 10 probabilities between 0 and 1, which add up to 1.</p>
 <div id="cell-55" class="cell" data-execution_count="21">
-<div class="sourceCode cell-code" id="cb40" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><span class="bu" style="color: null;
+<div class="sourceCode cell-code" id="cb39" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">len</span>(preds[<span class="dv" style="color: #AD0000;
 background-color: null;
@@ -956,7 +974,7 @@ font-style: inherit;">sum</span>()</span></code></pre></div>
 <h3 class="anchored" data-anchor-id="softmax">Softmax</h3>
 <p>When a model runs, it’s last layer produces raw numbers, We call these <code>activations</code>, they are not probabilities yet, we need to change these raw number into probabilities, we want each number show how likely the model thinks each options is. So we use softmax activation in the final layer to ensure that the activations are all between 0 and 1. Softmax is similar to sigmoid function, below is what the sigmoid function look like in case you forget it</p>
 <div id="cell-59" class="cell" data-execution_count="34">
-<div class="sourceCode cell-code" id="cb42" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1">plot_function(torch.sigmoid, <span class="bu" style="color: null;
+<div class="sourceCode cell-code" id="cb41" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1">plot_function(torch.sigmoid, <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">min</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -972,19 +990,19 @@ font-style: inherit;">4</span>)</span></code></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://buidai123.github.io/blog/posts/2024-12-30-deep-learning-concepts/index_files/figure-html/cell-31-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="https://bhdai.github.io/blog/posts/2024-12-30-deep-learning-concepts/index_files/figure-html/cell-31-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>When you apply a sigmoid function to a single column of activation it turns those numbers to be between 0 and 1, it’s pretty useful activations for our final layer. But hold on and think about it, what if we have more activations than just a single column, let’s say we need to create a neural network that predict wether that image is a image of 3 or 7 that returns 2 activations (one for each number). Alright let’s create 6 images and 2 categories(the first columns is 3, and other is 7)</p>
 <div id="cell-61" class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb43" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1">torch.random.manual_seed(<span class="dv" style="color: #AD0000;
+<div class="sourceCode cell-code" id="cb42" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1">torch.random.manual_seed(<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">42</span>)<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
-<span id="cb43-2">acts <span class="op" style="color: #5E5E5E;
+<span id="cb42-2">acts <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> torch.randn((<span class="dv" style="color: #AD0000;
 background-color: null;
@@ -995,7 +1013,7 @@ background-color: null;
 font-style: inherit;">*</span><span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">2</span></span>
-<span id="cb43-3">acts</span></code></pre></div>
+<span id="cb42-3">acts</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="6">
 <pre><code>tensor([[ 0.6734,  0.2576],
         [ 0.4689,  0.4607],
@@ -1007,7 +1025,7 @@ font-style: inherit;">2</span></span>
 </div>
 <p>We can’t pass this to a sigmoid function directly cuz we can not get rows that add up to 1</p>
 <div id="cell-63" class="cell" data-execution_count="36">
-<div class="sourceCode cell-code" id="cb45" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1">acts.sigmoid()</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb44" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1">acts.sigmoid()</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="36">
 <pre><code>tensor([[0.6623, 0.5641],
         [0.6151, 0.6132],
@@ -1018,7 +1036,7 @@ font-style: inherit;">2</span></span>
 </div>
 </div>
 <p>We need to use softmax. Here how we can represent the softmax function</p>
-<div class="sourceCode" id="cb47" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><span class="kw" style="color: #003B4F;
+<div class="sourceCode" id="cb46" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
 font-style: inherit;">def</span> softmax(x): <span class="cf" style="color: #003B4F;
@@ -1042,14 +1060,14 @@ font-style: inherit;">True</span>)</span></code></pre></div>
 <p>Mathematically, here the softmax formula</p>
 <p><img src="https://latex.codecogs.com/png.latex?%0As(x_%7Bi%7D)%20=%20%5Cfrac%20%7Be%5E%7Bx_i%7D%7D%20%7B%5Csum%20_%7Bj=1%7D%5EN%20e%5E%7Bx_j%7D%7D%0A"></p>
 </div></div><div id="cell-66" class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb48" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1">sm_acts <span class="op" style="color: #5E5E5E;
+<div class="sourceCode cell-code" id="cb47" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1">sm_acts <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> torch.softmax(acts, dim<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">1</span>)</span>
-<span id="cb48-2">sm_acts</span></code></pre></div>
+<span id="cb47-2">sm_acts</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="7">
 <pre><code>tensor([[0.6025, 0.3975],
         [0.5021, 0.4979],
@@ -1066,14 +1084,14 @@ font-style: inherit;">1</span>)</span>
 <section id="log-likelihood" class="level3">
 <h3 class="anchored" data-anchor-id="log-likelihood">Log likelihood</h3>
 <p>In binary case we use <code>torch.where</code> to select between <code>inputs</code> and <code>1-inputs</code></p>
-<div class="sourceCode" id="cb50" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><span class="kw" style="color: #003B4F;
+<div class="sourceCode" id="cb49" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
 font-style: inherit;">def</span> mnis_loss(inputs, targets):</span>
-<span id="cb50-2">  inputs <span class="op" style="color: #5E5E5E;
+<span id="cb49-2">  inputs <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> inputs.sigmoid()</span>
-<span id="cb50-3">  <span class="cf" style="color: #003B4F;
+<span id="cb49-3">  <span class="cf" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
 font-style: inherit;">return</span> torch.where(targets<span class="op" style="color: #5E5E5E;
@@ -1087,7 +1105,7 @@ background-color: null;
 font-style: inherit;">-</span>inputs, inputs)</span></code></pre></div>
 <p>Let’s try to do this using pytorch, first we need to generate our label for 3s and 7s</p>
 <div id="cell-69" class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb51" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1">targ <span class="op" style="color: #5E5E5E;
+<div class="sourceCode cell-code" id="cb50" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1">targ <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> tensor([<span class="dv" style="color: #AD0000;
 background-color: null;
@@ -1105,21 +1123,21 @@ font-style: inherit;">0</span>])</span></code></pre></div>
 </div>
 <p>Then each item of <code>targ</code> we can use that to select the appropriate column of <code>sm_acts</code> using tensor indexing, like this:</p>
 <div id="cell-71" class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb52" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1">idx <span class="op" style="color: #5E5E5E;
+<div class="sourceCode cell-code" id="cb51" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1">idx <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">range</span>(<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">6</span>)</span>
-<span id="cb52-2">sm_acts[idx, targ]</span></code></pre></div>
+<span id="cb51-2">sm_acts[idx, targ]</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="8">
 <pre><code>tensor([0.6025, 0.4979, 0.1332, 0.0034, 0.4041, 0.3661])</code></pre>
 </div>
 </div>
 <p>Pytorch provide a function which does just that (<code>sm_acts[range(6), targ]</code>) called <code>nll_loss</code> (NLL stands for negative log likelihood)</p>
 <div id="cell-73" class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb54" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><span class="op" style="color: #5E5E5E;
+<div class="sourceCode cell-code" id="cb53" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">-</span>sm_acts[idx, targ]</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="9">
@@ -1127,7 +1145,7 @@ font-style: inherit;">-</span>sm_acts[idx, targ]</span></code></pre></div>
 </div>
 </div>
 <div id="cell-74" class="cell" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb56" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb56-1">F.nll_loss(sm_acts, targ, reduction<span class="op" style="color: #5E5E5E;
+<div class="sourceCode cell-code" id="cb55" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1">F.nll_loss(sm_acts, targ, reduction<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
@@ -1139,7 +1157,7 @@ font-style: inherit;">"none"</span>)</span></code></pre></div>
 <p>You might wondering why we need the negative anyway? Well because we want to minimize the loss, the log likelihood of correct label should be maximized(closer to 0 is better, as <img src="https://latex.codecogs.com/png.latex?%5Clog(1)=0">). However optimization algorithms designed to minimize, not to maximize, by adding a negative sign we convert the maximization problem to minimization problem</p>
 <p>The math behind it here is that let’s say if <em>p</em> is the probability of the correct class then the negative log likelihood is <img src="https://latex.codecogs.com/png.latex?-%5Clog(p)"> as <em>p</em> approaches 1(perfect prediction), the <img src="https://latex.codecogs.com/png.latex?-%5Clog(p)"> approaches 0(minimum loss), as <em>p</em> approaches 0(bad predictions) <img src="https://latex.codecogs.com/png.latex?-%5Clog(p)"> approaches infinity (maximum loss). Blow are plots demonstrate why we need a negative sign here</p>
 <div id="cell-76" class="cell" data-execution_count="14">
-<div class="sourceCode cell-code" id="cb58" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb58-1">fig, (ax1,ax2) <span class="op" style="color: #5E5E5E;
+<div class="sourceCode cell-code" id="cb57" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb57-1">fig, (ax1,ax2) <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> plt.subplots(<span class="dv" style="color: #AD0000;
 background-color: null;
@@ -1152,8 +1170,8 @@ background-color: null;
 font-style: inherit;">12</span>,<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">5</span>))</span>
-<span id="cb58-2">plt.sca(ax1)</span>
-<span id="cb58-3">plot_function(torch.log, <span class="bu" style="color: null;
+<span id="cb57-2">plt.sca(ax1)</span>
+<span id="cb57-3">plot_function(torch.log, <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">min</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1174,11 +1192,11 @@ background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'x'</span>)</span>
-<span id="cb58-4">ax1.set_title(<span class="st" style="color: #20794D;
+<span id="cb57-4">ax1.set_title(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'log(x)'</span>)</span>
-<span id="cb58-5">plt.sca(ax2)</span>
-<span id="cb58-6">plot_function(<span class="kw" style="color: #003B4F;
+<span id="cb57-5">plt.sca(ax2)</span>
+<span id="cb57-6">plot_function(<span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
 font-style: inherit;">lambda</span> x: <span class="op" style="color: #5E5E5E;
@@ -1208,7 +1226,7 @@ background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'x'</span>)</span>
-<span id="cb58-7">ax2.set_title(<span class="st" style="color: #20794D;
+<span id="cb57-7">ax2.set_title(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'Negative Log Function'</span>)</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="14">
@@ -1217,7 +1235,7 @@ font-style: inherit;">'Negative Log Function'</span>)</span></code></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://buidai123.github.io/blog/posts/2024-12-30-deep-learning-concepts/index_files/figure-html/cell-39-output-2.png" class="img-fluid figure-img"></p>
+<p><img src="https://bhdai.github.io/blog/posts/2024-12-30-deep-learning-concepts/index_files/figure-html/cell-39-output-2.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -1237,25 +1255,25 @@ font-style: inherit;">'Negative Log Function'</span>)</span></code></pre></div>
 <p>Then what we do next? We will take the mean of negative log of our probabilities in other the word for each sample(image) we take the negative log of the predicted probability for the correct class as above this give us the loss for each individual sample we then calculate the mean of these individual losses across all samples, that give us the negative log likelihood or cross-entropy loss. One thing to note here that the Pytorch <code>nll_loss</code> assume that you already take the log of the softmax, even on it name have the word log but it dose not do it for you unfortunately</p>
 <p>So that is cross-entropy loss in Pytorch, this is available as <code>F.cross_entropy</code> ofr <code>nn.CrossEntropyLoss</code> the <code>F</code> namespace version seems to be used more often by people</p>
 <div id="cell-78" class="cell" data-execution_count="44">
-<div class="sourceCode cell-code" id="cb60" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb60-1">loss_func <span class="op" style="color: #5E5E5E;
+<div class="sourceCode cell-code" id="cb59" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb59-1">loss_func <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> nn.CrossEntropyLoss()</span></code></pre></div>
 </div>
 <div id="cell-79" class="cell" data-execution_count="45">
-<div class="sourceCode cell-code" id="cb61" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb61-1">loss_func(acts, targ)</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb60" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb60-1">loss_func(acts, targ)</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="45">
 <pre><code>tensor(1.8045)</code></pre>
 </div>
 </div>
 <div id="cell-80" class="cell" data-execution_count="46">
-<div class="sourceCode cell-code" id="cb63" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb63-1">F.cross_entropy(acts, targ)</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb62" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb62-1">F.cross_entropy(acts, targ)</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="46">
 <pre><code>tensor(1.8045)</code></pre>
 </div>
 </div>
 <p>By default PyTorch loss functions take the mean of the loss of all items. You can use reduction=‘none’ to disable that:</p>
 <div id="cell-82" class="cell" data-execution_count="47">
-<div class="sourceCode cell-code" id="cb65" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb65-1">nn.CrossEntropyLoss(reduction<span class="op" style="color: #5E5E5E;
+<div class="sourceCode cell-code" id="cb64" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb64-1">nn.CrossEntropyLoss(reduction<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
@@ -1266,10 +1284,10 @@ font-style: inherit;">'none'</span>)(acts, targ)</span></code></pre></div>
 </div>
 <p>Let’s look at the loss above those are numbers that the computer can learn from, but with us human, it is hard to look at those number and and tell how good our model is, so that why we need metrics, Those number are not used in the optimization process but just to help us poor human understand what’s going on. We can also use the confusion matrix to see where our model perform good and not</p>
 <div id="cell-84" class="cell" data-execution_count="48">
-<div class="sourceCode cell-code" id="cb67" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb67-1">interp <span class="op" style="color: #5E5E5E;
+<div class="sourceCode cell-code" id="cb66" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb66-1">interp <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> ClassificationInterpretation.from_learner(learn)</span>
-<span id="cb67-2">interp.plot_confusion_matrix(figsize<span class="op" style="color: #5E5E5E;
+<span id="cb66-2">interp.plot_confusion_matrix(figsize<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>(<span class="dv" style="color: #AD0000;
 background-color: null;
@@ -1325,7 +1343,7 @@ font-style: inherit;">60</span>)</span></code></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://buidai123.github.io/blog/posts/2024-12-30-deep-learning-concepts/index_files/figure-html/cell-44-output-5.png" class="img-fluid figure-img"></p>
+<p><img src="https://bhdai.github.io/blog/posts/2024-12-30-deep-learning-concepts/index_files/figure-html/cell-44-output-5.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -1342,7 +1360,7 @@ font-style: inherit;">60</span>)</span></code></pre></div>
 <li>The last point where the loss was clearly decreasing</li>
 </ul>
 <div id="cell-86" class="cell" data-execution_count="51">
-<div class="sourceCode cell-code" id="cb68" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb68-1">learn <span class="op" style="color: #5E5E5E;
+<div class="sourceCode cell-code" id="cb67" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb67-1">learn <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> vision_learner(dls, <span class="st" style="color: #20794D;
 background-color: null;
@@ -1353,7 +1371,7 @@ background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'.'</span>)</span>
-<span id="cb68-2">learn.lr_find(suggest_funcs<span class="op" style="color: #5E5E5E;
+<span id="cb67-2">learn.lr_find(suggest_funcs<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>(minimum, steep))</span></code></pre></div>
 <div class="cell-output cell-output-display">
@@ -1389,14 +1407,14 @@ You are using `torch.load` with `weights_only=False` (the current default value)
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://buidai123.github.io/blog/posts/2024-12-30-deep-learning-concepts/index_files/figure-html/cell-45-output-5.png" class="img-fluid figure-img"></p>
+<p><img src="https://bhdai.github.io/blog/posts/2024-12-30-deep-learning-concepts/index_files/figure-html/cell-45-output-5.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>We can see in this plot that the range from 1e-6 to 1e-4 the model doesn’t seem to train at all, from 1e-3 the loss start to decrease until it reaches the minimum at 1e-1 then increasing rapidly, obviously we don’t want the learning rate after 1e-1 as i explained above. So choose 1e-1 then? While the loss minimum around the learning rate of 1e-1 it might give a good results, it’s right at the edge of stable as after this point there’s a sharp increase in the loos, in practice it often safer to choose a learning rate slightly lower than this threshold to ensure stability across different runs or datasets. Alright let’s choose 3e-3 to see</p>
 <div id="cell-88" class="cell" data-execution_count="53">
-<div class="sourceCode cell-code" id="cb71" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb71-1">learn <span class="op" style="color: #5E5E5E;
+<div class="sourceCode cell-code" id="cb70" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb70-1">learn <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> vision_learner(dls, <span class="st" style="color: #20794D;
 background-color: null;
@@ -1407,7 +1425,7 @@ background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'.'</span>)</span>
-<span id="cb71-2">learn.fine_tune(<span class="dv" style="color: #AD0000;
+<span id="cb70-2">learn.fine_tune(<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">3</span>, base_lr<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1525,41 +1543,72 @@ font-style: inherit;">3e-3</span>)</span></code></pre></div>
 <p>In fact <code>fine_tune</code> first does <code>fit_one_cycle</code> then unfreeze and does <code>fit_one_cycle</code> again. Alright let’s do it manually this time</p>
 
 <div class="no-row-height column-margin column-container"><div id="cell-90" class="cell" data-execution_count="54">
-<div class="sourceCode cell-code" id="cb72" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb72-1">learn.fine_tune??</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb71" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb71-1">learn.fine_tune??</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Signature:
-learn.fine_tune(
-    epochs,
-    base_lr=0.002,
-    freeze_epochs=1,
-    lr_mult=100,
-    pct_start=0.3,
-    div=5.0,
-    *,
-    lr_max=None,
-    div_final=100000.0,
-    wd=None,
-    moms=None,
-    cbs=None,
-    reset_opt=False,
-    start_epoch=0,
-)
-Source:   
-@patch
-@delegates(Learner.fit_one_cycle)
-def fine_tune(self:Learner, epochs, base_lr=2e-3, freeze_epochs=1, lr_mult=100,
-              pct_start=0.3, div=5.0, **kwargs):
-    "Fine tune with `Learner.freeze` for `freeze_epochs`, then with `Learner.unfreeze` for `epochs`, using discriminative LR."
-    self.freeze()
-    self.fit_one_cycle(freeze_epochs, slice(base_lr), pct_start=0.99, **kwargs)
-    base_lr /= 2
-    self.unfreeze()
-    self.fit_one_cycle(epochs, slice(base_lr/lr_mult, base_lr), pct_start=pct_start, div=div, **kwargs)
-File:      ~/miniconda3/lib/python3.12/site-packages/fastai/callback/schedule.py
-Type:      method</code></pre>
+<div class="ansi-escaped-output">
+<pre><span class="ansi-red-fg">Signature:</span>
+
+learn<span class="ansi-blue-fg">.</span>fine_tune<span class="ansi-blue-fg">(</span>
+
+    epochs<span class="ansi-blue-fg">,</span>
+
+    base_lr<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">0.002</span><span class="ansi-blue-fg">,</span>
+
+    freeze_epochs<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">,</span>
+
+    lr_mult<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">100</span><span class="ansi-blue-fg">,</span>
+
+    pct_start<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">0.3</span><span class="ansi-blue-fg">,</span>
+
+    div<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">5.0</span><span class="ansi-blue-fg">,</span>
+
+    <span class="ansi-blue-fg">*</span><span class="ansi-blue-fg">,</span>
+
+    lr_max<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+
+    div_final<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">100000.0</span><span class="ansi-blue-fg">,</span>
+
+    wd<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+
+    moms<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+
+    cbs<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+
+    reset_opt<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">False</span><span class="ansi-blue-fg">,</span>
+
+    start_epoch<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">,</span>
+
+<span class="ansi-blue-fg">)</span>
+
+<span class="ansi-red-fg">Source:</span>   
+
+<span class="ansi-blue-fg">@</span>patch
+
+<span class="ansi-blue-fg">@</span>delegates<span class="ansi-blue-fg">(</span>Learner<span class="ansi-blue-fg">.</span>fit_one_cycle<span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">def</span> fine_tune<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">:</span>Learner<span class="ansi-blue-fg">,</span> epochs<span class="ansi-blue-fg">,</span> base_lr<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">2e-3</span><span class="ansi-blue-fg">,</span> freeze_epochs<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">,</span> lr_mult<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">100</span><span class="ansi-blue-fg">,</span>
+
+              pct_start<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">0.3</span><span class="ansi-blue-fg">,</span> div<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">5.0</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+
+    <span class="ansi-blue-fg">"Fine tune with `Learner.freeze` for `freeze_epochs`, then with `Learner.unfreeze` for `epochs`, using discriminative LR."</span>
+
+    self<span class="ansi-blue-fg">.</span>freeze<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+
+    self<span class="ansi-blue-fg">.</span>fit_one_cycle<span class="ansi-blue-fg">(</span>freeze_epochs<span class="ansi-blue-fg">,</span> slice<span class="ansi-blue-fg">(</span>base_lr<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span> pct_start<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">0.99</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span>
+
+    base_lr <span class="ansi-blue-fg">/=</span> <span class="ansi-cyan-fg">2</span>
+
+    self<span class="ansi-blue-fg">.</span>unfreeze<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+
+    self<span class="ansi-blue-fg">.</span>fit_one_cycle<span class="ansi-blue-fg">(</span>epochs<span class="ansi-blue-fg">,</span> slice<span class="ansi-blue-fg">(</span>base_lr<span class="ansi-blue-fg">/</span>lr_mult<span class="ansi-blue-fg">,</span> base_lr<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span> pct_start<span class="ansi-blue-fg">=</span>pct_start<span class="ansi-blue-fg">,</span> div<span class="ansi-blue-fg">=</span>div<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span>
+
+<span class="ansi-red-fg">File:</span>      ~/miniconda3/lib/python3.12/site-packages/fastai/callback/schedule.py
+
+<span class="ansi-red-fg">Type:</span>      method</pre>
+</div>
 </div>
 </div></div><div id="cell-91" class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb74" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb74-1">learn <span class="op" style="color: #5E5E5E;
+<div class="sourceCode cell-code" id="cb72" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb72-1">learn <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> vision_learner(dls, <span class="st" style="color: #20794D;
 background-color: null;
@@ -1570,7 +1619,7 @@ background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'.'</span>)</span>
-<span id="cb74-2">learn.fit_one_cycle(<span class="dv" style="color: #AD0000;
+<span id="cb72-2">learn.fit_one_cycle(<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">3</span>, <span class="fl" style="color: #AD0000;
 background-color: null;
@@ -1632,11 +1681,11 @@ font-style: inherit;">3e-3</span>)</span></code></pre></div>
 </div>
 <p>We unfreeze the model</p>
 <div id="cell-93" class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb75" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb75-1">learn.unfreeze()</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb73" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb73-1">learn.unfreeze()</span></code></pre></div>
 </div>
 <p>We also need to fine a new learning rate because we trained it with more layers, and weights that already train for 3 epochs means our previous founded learning rate isn’t appropriate anymore</p>
 <div id="cell-95" class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb76" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb76-1">learn.lr_find()</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb74" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb74-1">learn.lr_find()</span></code></pre></div>
 <div class="cell-output cell-output-display">
 
 <style>
@@ -1668,14 +1717,14 @@ font-style: inherit;">3e-3</span>)</span></code></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://buidai123.github.io/blog/posts/2024-12-30-deep-learning-concepts/index_files/figure-html/cell-50-output-5.png" class="img-fluid figure-img"></p>
+<p><img src="https://bhdai.github.io/blog/posts/2024-12-30-deep-learning-concepts/index_files/figure-html/cell-50-output-5.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>alright let’s pick 1e-4 this time</p>
 <div id="cell-97" class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb79" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb79-1">learn.fit_one_cycle(<span class="dv" style="color: #AD0000;
+<div class="sourceCode cell-code" id="cb77" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb77-1">learn.fit_one_cycle(<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">6</span>, lr_max<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1760,11 +1809,11 @@ font-style: inherit;">1e-4</span>)</span></code></pre></div>
 </div>
 <p>Well it improve our model a lot from 0.18 to 0.06, in fact when i submit the predictions from the model we’ve built i got a pretty good result, it’s 0.93778, which improves a lot. Alright let’s see how our model train</p>
 <div id="cell-99" class="cell" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb80" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb80-1">learn.recorder.plot_loss()</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb78" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb78-1">learn.recorder.plot_loss()</span></code></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://buidai123.github.io/blog/posts/2024-12-30-deep-learning-concepts/index_files/figure-html/cell-52-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="https://bhdai.github.io/blog/posts/2024-12-30-deep-learning-concepts/index_files/figure-html/cell-52-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -1781,7 +1830,7 @@ font-style: inherit;">1e-4</span>)</span></code></pre></div>
 <p>But basically you first need to understand what is half-precision? Well it’s a floating-point number format uses 16 bits to represent numbers it called half-precision as the more common are 32 bits (single precision) and 64 bits (double precision).</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://buidai123.github.io/blog/posts/2024-12-30-deep-learning-concepts/fp16.png" class="img-fluid figure-img"></p>
+<p><img src="https://bhdai.github.io/blog/posts/2024-12-30-deep-learning-concepts/fp16.png" class="img-fluid figure-img"></p>
 <figcaption>half float</figcaption>
 </figure>
 </div>
@@ -1831,7 +1880,7 @@ Note
 <p>For the last problem, the tricks offered by NVIDIA are to leave the batchnorm layers in single precision (they don’t have many weights so it’s not a big memory challenge) and compute the loss in single precision (which means converting the last output of the model in single precision before passing it to the loss).</p>
 <p>Alright let’s apply our mixed precision strategy to our model, when we create a learner we call <code>to_fp16()</code>.</p>
 <div id="cell-106" class="cell" data-execution_count="12">
-<div class="sourceCode cell-code" id="cb81" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb81-1">learn <span class="op" style="color: #5E5E5E;
+<div class="sourceCode cell-code" id="cb79" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb79-1">learn <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> vision_learner(dls, <span class="st" style="color: #20794D;
 background-color: null;
@@ -1842,7 +1891,7 @@ background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'.'</span>).to_fp16()</span>
-<span id="cb81-2">learn.lr_find(suggest_funcs<span class="op" style="color: #5E5E5E;
+<span id="cb79-2">learn.lr_find(suggest_funcs<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>[valley, slide])</span></code></pre></div>
 <div class="cell-output cell-output-display">
@@ -1876,13 +1925,13 @@ font-style: inherit;">=</span>[valley, slide])</span></code></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://buidai123.github.io/blog/posts/2024-12-30-deep-learning-concepts/index_files/figure-html/cell-53-output-5.png" class="img-fluid figure-img"></p>
+<p><img src="https://bhdai.github.io/blog/posts/2024-12-30-deep-learning-concepts/index_files/figure-html/cell-53-output-5.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
 <div id="cell-107" class="cell" data-execution_count="13">
-<div class="sourceCode cell-code" id="cb84" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb84-1">learn.fine_tune(<span class="dv" style="color: #AD0000;
+<div class="sourceCode cell-code" id="cb82" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb82-1">learn.fine_tune(<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">14</span>, <span class="fl" style="color: #AD0000;
 background-color: null;
@@ -2079,14 +2128,14 @@ font-style: inherit;">3</span>)</span></code></pre></div>
 </div>
 <p>Alright let’s see if it’s better, the best way to check is to submit it to kaggle we just do the same thing as above, just copy and past it here.</p>
 <div id="cell-109" class="cell" data-execution_count="14">
-<div class="sourceCode cell-code" id="cb85" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb85-1">ss <span class="op" style="color: #5E5E5E;
+<div class="sourceCode cell-code" id="cb83" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb83-1">ss <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> pd.read_csv(path<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">/</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'sample_submission.csv'</span>)</span>
-<span id="cb85-2">tst_files <span class="op" style="color: #5E5E5E;
+<span id="cb83-2">tst_files <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> get_image_files(path<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -2095,10 +2144,10 @@ background-color: null;
 font-style: inherit;">'test_images'</span>).<span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">sorted</span>()</span>
-<span id="cb85-3">tst_dl <span class="op" style="color: #5E5E5E;
+<span id="cb83-3">tst_dl <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> dls.test_dl(tst_files)</span>
-<span id="cb85-4">probs,_,idxs <span class="op" style="color: #5E5E5E;
+<span id="cb83-4">probs,_,idxs <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> learn.get_preds(dl<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -2107,14 +2156,14 @@ background-color: null;
 font-style: inherit;">=</span><span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">True</span>)</span>
-<span id="cb85-5">mapping <span class="op" style="color: #5E5E5E;
+<span id="cb83-5">mapping <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">dict</span>(<span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">enumerate</span>(dls.vocab))</span>
-<span id="cb85-6">results <span class="op" style="color: #5E5E5E;
+<span id="cb83-6">results <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> pd.Series(idxs.numpy(), name<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -2123,19 +2172,19 @@ background-color: null;
 font-style: inherit;">"idxs"</span>).<span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">map</span>(mapping)</span>
-<span id="cb85-7">ss[<span class="st" style="color: #20794D;
+<span id="cb83-7">ss[<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'label'</span>] <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> results</span>
-<span id="cb85-8">ss.to_csv(<span class="st" style="color: #20794D;
+<span id="cb83-8">ss.to_csv(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'subm.csv'</span>, index<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">False</span>)</span>
-<span id="cb85-9"><span class="op" style="color: #5E5E5E;
+<span id="cb83-9"><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">!</span>head subm.csv</span></code></pre></div>
 <div class="cell-output cell-output-stderr">
@@ -2196,8 +2245,8 @@ Note
 <p>Note that we can use <code>ImageDataLoader.from_folder</code> for our dataloader for make it shorter, but in general it the same as DataBlock</p>
 </div>
 </div>
-<div id="cell-113" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2025-01-02T10:58:38.001235Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-02T10:58:38.000944Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-02T10:58:38.006134Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-02T10:58:38.005191Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2025-01-02T10:58:38.001214Z&quot;}" data-trusted="true" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb88" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb88-1"><span class="kw" style="color: #003B4F;
+<div id="cell-113" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2025-01-02T10:58:38.001235Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-02T10:58:38.000944Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-02T10:58:38.006134Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-02T10:58:38.005191Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2025-01-02T10:58:38.001214Z&quot;}}" data-trusted="true" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb86" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb86-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
 font-style: inherit;">def</span> train(arch, item, batch, epochs<span class="op" style="color: #5E5E5E;
@@ -2205,7 +2254,7 @@ background-color: null;
 font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">5</span>):</span>
-<span id="cb88-2">  dls <span class="op" style="color: #5E5E5E;
+<span id="cb86-2">  dls <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> ImageDataLoaders.from_folder(train_path, seed<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -2220,15 +2269,15 @@ background-color: null;
 font-style: inherit;">=</span>item, batch_tfms<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>batch)</span>
-<span id="cb88-3">  learn <span class="op" style="color: #5E5E5E;
+<span id="cb86-3">  learn <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> vision_learner(dls, arch, metrics<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>error_rate).to_fp16()</span>
-<span id="cb88-4">  learn.fine_tune(epochs, <span class="fl" style="color: #AD0000;
+<span id="cb86-4">  learn.fine_tune(epochs, <span class="fl" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">1e-2</span>)</span>
-<span id="cb88-5">  <span class="cf" style="color: #003B4F;
+<span id="cb86-5">  <span class="cf" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
 font-style: inherit;">return</span> learn</span></code></pre></div>
@@ -2239,8 +2288,8 @@ font-style: inherit;">return</span> learn</span></code></pre></div>
 <li>How large they are.</li>
 </ol>
 <p>Then it turned out that when it comes to computer vision model <code>convnext</code> model is one of the best, if not the best till now so let’s give it a try shall we?</p>
-<div id="cell-115" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2025-01-02T10:58:39.060620Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-02T10:58:39.060322Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-02T10:58:39.064862Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-02T10:58:39.063867Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2025-01-02T10:58:39.060596Z&quot;}" data-trusted="true" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb89" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb89-1">arch <span class="op" style="color: #5E5E5E;
+<div id="cell-115" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2025-01-02T10:58:39.060620Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-02T10:58:39.060322Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-02T10:58:39.064862Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-02T10:58:39.063867Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2025-01-02T10:58:39.060596Z&quot;}}" data-trusted="true" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb87" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb87-1">arch <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="st" style="color: #20794D;
 background-color: null;
@@ -2248,7 +2297,7 @@ font-style: inherit;">"convnext_small_in22k"</span></span></code></pre></div>
 </div>
 <p>From now on, if you not sure what architecture to use, just use this, right. And of course we have different version of <code>convnext</code> we have tinny, small, large… it will take more time to train but of course lower error rate. alright let’s see how it will go</p>
 <div id="cell-117" class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb90" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb90-1">learn <span class="op" style="color: #5E5E5E;
+<div class="sourceCode cell-code" id="cb88" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb88-1">learn <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> train(arch, item<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -2399,7 +2448,7 @@ font-style: inherit;">0.75</span>))</span></code></pre></div>
 <div class="no-row-height column-margin column-container"><div class="">
 <p>padding is interesting because it’s the only way of pre-processing images which doesn’t distort them and doesn’t loose anything, if you crop you lose things, if you squish you distort things</p>
 </div></div><div id="cell-120" class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb93" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb93-1">dls <span class="op" style="color: #5E5E5E;
+<div class="sourceCode cell-code" id="cb91" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb91-1">dls <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> ImageDataLoaders.from_folder(train_path, valid_pct<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -2410,7 +2459,7 @@ background-color: null;
 font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">42</span>,</span>
-<span id="cb93-2">    item_tfms<span class="op" style="color: #5E5E5E;
+<span id="cb91-2">    item_tfms<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>Resize(<span class="dv" style="color: #AD0000;
 background-color: null;
@@ -2419,7 +2468,7 @@ background-color: null;
 font-style: inherit;">=</span>ResizeMethod.Pad, pad_mode<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>PadMode.Zeros))</span>
-<span id="cb93-3">dls.show_batch(max_n<span class="op" style="color: #5E5E5E;
+<span id="cb91-3">dls.show_batch(max_n<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
 background-color: null;
@@ -2427,13 +2476,13 @@ font-style: inherit;">3</span>)</span></code></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://buidai123.github.io/blog/posts/2024-12-30-deep-learning-concepts/index_files/figure-html/cell-59-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="https://bhdai.github.io/blog/posts/2024-12-30-deep-learning-concepts/index_files/figure-html/cell-59-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
-<div id="cell-121" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2025-01-02T09:53:36.244933Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-02T09:53:36.244542Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-02T10:03:20.563150Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-02T10:03:20.562113Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2025-01-02T09:53:36.244902Z&quot;}" data-trusted="true" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb94" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb94-1">learn <span class="op" style="color: #5E5E5E;
+<div id="cell-121" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2025-01-02T09:53:36.244933Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-02T09:53:36.244542Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-02T10:03:20.563150Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-02T10:03:20.562113Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2025-01-02T09:53:36.244902Z&quot;}}" data-trusted="true" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb92" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb92-1">learn <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> train(arch, item<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -2586,16 +2635,16 @@ font-style: inherit;">0.75</span>))</span></code></pre></div>
 <section id="test-time-augmentation" class="level3">
 <h3 class="anchored" data-anchor-id="test-time-augmentation">Test Time Augmentation</h3>
 <p>Well first let’s look how can we calculate the error rate manually with our normal prediction</p>
-<div id="cell-123" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2025-01-02T10:03:54.927689Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-02T10:03:54.927216Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-02T10:04:07.727666Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-02T10:04:07.726181Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2025-01-02T10:03:54.927654Z&quot;}" data-trusted="true" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb97" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb97-1">valid <span class="op" style="color: #5E5E5E;
+<div id="cell-123" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2025-01-02T10:03:54.927689Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-02T10:03:54.927216Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-02T10:04:07.727666Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-02T10:04:07.726181Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2025-01-02T10:03:54.927654Z&quot;}}" data-trusted="true" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb95" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb95-1">valid <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> learn.dls.valid</span>
-<span id="cb97-2">preds,targs <span class="op" style="color: #5E5E5E;
+<span id="cb95-2">preds,targs <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> learn.get_preds(dl<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>valid)</span>
-<span id="cb97-3">error_rate(preds, targs)</span></code></pre></div>
+<span id="cb95-3">error_rate(preds, targs)</span></code></pre></div>
 <div class="cell-output cell-output-display">
 
 <style>
@@ -2622,8 +2671,8 @@ font-style: inherit;">=</span>valid)</span>
 </div>
 </div>
 <p>Well that actually the previous error-rate we got above, so what i’m doing here? well let’s take a look at the images blow</p>
-<div id="cell-125" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2025-01-02T10:04:10.629694Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-02T10:04:10.629391Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-02T10:04:11.977555Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-02T10:04:11.976421Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2025-01-02T10:04:10.629672Z&quot;}" data-trusted="true" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb99" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb99-1">learn.dls.train.show_batch(max_n<span class="op" style="color: #5E5E5E;
+<div id="cell-125" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2025-01-02T10:04:10.629694Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-02T10:04:10.629391Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-02T10:04:11.977555Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-02T10:04:11.976421Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2025-01-02T10:04:10.629672Z&quot;}}" data-trusted="true" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb97" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb97-1">learn.dls.train.show_batch(max_n<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
 background-color: null;
@@ -2635,14 +2684,14 @@ font-style: inherit;">True</span>)</span></code></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://buidai123.github.io/blog/posts/2024-12-30-deep-learning-concepts/index_files/figure-html/cell-62-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="https://bhdai.github.io/blog/posts/2024-12-30-deep-learning-concepts/index_files/figure-html/cell-62-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>Notice that, those are indeed the same picture but it gone through the data augmentation so sometimes it a bit darker, a bit lighter, sometimes it flipped horizontally, some times int zoom into a slightly different section, sometimes it rotate a little bit but those are all the same picture. So the idea of TTA(Test Time Augmentation) is maybe our model would like some of these version better than the others even the original image, so what we can do is we can pass all of these to our model get the prediction of all of them and take the average right, so if you read my previous blog, it’s indeed the mini version of bagging approach. In fastai you can archive this by using the <code>tta</code> in our <code>learn</code> object</p>
-<div id="cell-127" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2025-01-02T10:04:12.249981Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-02T10:04:12.249642Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-02T10:05:16.237725Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-02T10:05:16.236670Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2025-01-02T10:04:12.249954Z&quot;}" data-trusted="true" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb100" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb100-1">tta_preds,_ <span class="op" style="color: #5E5E5E;
+<div id="cell-127" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2025-01-02T10:04:12.249981Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-02T10:04:12.249642Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-02T10:05:16.237725Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-02T10:05:16.236670Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2025-01-02T10:04:12.249954Z&quot;}}" data-trusted="true" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb98" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb98-1">tta_preds,_ <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> learn.tta(dl<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -2695,15 +2744,15 @@ font-style: inherit;">=</span>valid)</span></code></pre></div>
 
 </div>
 </div>
-<div id="cell-128" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2025-01-02T10:05:22.943221Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-02T10:05:22.942752Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-02T10:05:22.951969Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-02T10:05:22.951021Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2025-01-02T10:05:22.943184Z&quot;}" data-trusted="true" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb101" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb101-1">error_rate(tta_preds, targs)</span></code></pre></div>
+<div id="cell-128" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2025-01-02T10:05:22.943221Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-02T10:05:22.942752Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-02T10:05:22.951969Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-02T10:05:22.951021Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2025-01-02T10:05:22.943184Z&quot;}}" data-trusted="true" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb99" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb99-1">error_rate(tta_preds, targs)</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="11">
 <pre><code>TensorBase(0.0259)</code></pre>
 </div>
 </div>
 <p>See, we got better result like 10% better our previous. Alright let’s train it with more epochs but this time let’s just make a bigger image and something really interesting is that our images don’t have to be square they just need to be in the same size right, it can be rectangular, having said that all of our original images are nearly 640x480, so we just need to pick one has the same aspect ratio for example 256x192 is good</p>
-<div id="cell-130" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2025-01-02T10:58:44.236186Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-02T10:58:44.235876Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-02T11:17:32.223793Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-02T11:17:32.222832Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2025-01-02T10:58:44.236162Z&quot;}" data-trusted="true" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb103" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb103-1">learn <span class="op" style="color: #5E5E5E;
+<div id="cell-130" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2025-01-02T10:58:44.236186Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-02T10:58:44.235876Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-02T11:17:32.223793Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-02T11:17:32.222832Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2025-01-02T10:58:44.236162Z&quot;}}" data-trusted="true" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb101" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb101-1">learn <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> train(arch, epochs<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -2906,13 +2955,13 @@ font-style: inherit;">0.75</span>))</span></code></pre></div>
 </div>
 </div>
 <p>Alright our error_rate down to 2.3% which is pretty good, now, let’s what our error_rate when using tta</p>
-<div id="cell-132" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2025-01-02T11:18:00.693869Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-02T11:18:00.693464Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-02T11:19:00.635588Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-02T11:19:00.634596Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2025-01-02T11:18:00.693833Z&quot;}" data-trusted="true" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb106" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb106-1">tta_preds,targs <span class="op" style="color: #5E5E5E;
+<div id="cell-132" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2025-01-02T11:18:00.693869Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-02T11:18:00.693464Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-02T11:19:00.635588Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-02T11:19:00.634596Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2025-01-02T11:18:00.693833Z&quot;}}" data-trusted="true" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb104" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb104-1">tta_preds,targs <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> learn.tta(dl<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>learn.dls.valid)</span>
-<span id="cb106-2">error_rate(tta_preds, targs)</span></code></pre></div>
+<span id="cb104-2">error_rate(tta_preds, targs)</span></code></pre></div>
 <div class="cell-output cell-output-display">
 
 <style>
@@ -2965,15 +3014,15 @@ font-style: inherit;">=</span>learn.dls.valid)</span>
 </div>
 </div>
 <p>Oops! it’s worse this time, that’s strange, i think it won’t always produce a better error_rate, but maybe it will work well in practice i guess, alright forget about it, let’s submit it</p>
-<div id="cell-134" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2025-01-02T11:19:00.637385Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-02T11:19:00.637036Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-02T11:20:43.617429Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-02T11:20:43.616028Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2025-01-02T11:19:00.637353Z&quot;}" data-trusted="true" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb108" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb108-1">ss <span class="op" style="color: #5E5E5E;
+<div id="cell-134" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2025-01-02T11:19:00.637385Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-02T11:19:00.637036Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-02T11:20:43.617429Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-02T11:20:43.616028Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2025-01-02T11:19:00.637353Z&quot;}}" data-trusted="true" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb106" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb106-1">ss <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> pd.read_csv(path<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">/</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'sample_submission.csv'</span>)</span>
-<span id="cb108-2">tst_files <span class="op" style="color: #5E5E5E;
+<span id="cb106-2">tst_files <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> get_image_files(path<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -2982,44 +3031,44 @@ background-color: null;
 font-style: inherit;">'test_images'</span>).<span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">sorted</span>()</span>
-<span id="cb108-3">tst_dl <span class="op" style="color: #5E5E5E;
+<span id="cb106-3">tst_dl <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> learn.dls.test_dl(tst_files)</span>
-<span id="cb108-4">preds,_ <span class="op" style="color: #5E5E5E;
+<span id="cb106-4">preds,_ <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> learn.tta(dl<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>tst_dl)</span>
-<span id="cb108-5">idxs <span class="op" style="color: #5E5E5E;
+<span id="cb106-5">idxs <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> preds.argmax(dim<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">1</span>)</span>
-<span id="cb108-6">vocab <span class="op" style="color: #5E5E5E;
+<span id="cb106-6">vocab <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> np.array(learn.dls.vocab)</span>
-<span id="cb108-7">results <span class="op" style="color: #5E5E5E;
+<span id="cb106-7">results <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> pd.Series(vocab[idxs], name<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"idxs"</span>)</span>
-<span id="cb108-8">ss[<span class="st" style="color: #20794D;
+<span id="cb106-8">ss[<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'label'</span>] <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> results</span>
-<span id="cb108-9">ss.to_csv(<span class="st" style="color: #20794D;
+<span id="cb106-9">ss.to_csv(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'subm.csv'</span>, index<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">False</span>)</span>
-<span id="cb108-10"><span class="op" style="color: #5E5E5E;
+<span id="cb106-10"><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">!</span>head subm.csv</span></code></pre></div>
 <div class="cell-output cell-output-stderr">
@@ -3111,15 +3160,16 @@ font-style: inherit;">!</span>head subm.csv</span></code></pre></div>
   <category>kaggle</category>
   <category>competition</category>
   <category>deep learning</category>
-  <guid>https://buidai123.github.io/blog/posts/2024-12-30-deep-learning-concepts/</guid>
+  <guid>https://bhdai.github.io/blog/posts/2024-12-30-deep-learning-concepts/</guid>
   <pubDate>Sun, 29 Dec 2024 17:00:00 GMT</pubDate>
-  <media:content url="https://buidai123.github.io/blog/posts/2024-12-30-deep-learning-concepts/paddy-disease-farmer.jpg" medium="image" type="image/jpeg"/>
+  <media:content url="https://bhdai.github.io/blog/posts/2024-12-30-deep-learning-concepts/paddy-disease-farmer.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>Exploring Random Forest, Bagging, Boosting?</title>
   <dc:creator>Bui Huu Dai</dc:creator>
-  <link>https://buidai123.github.io/blog/posts/2024-11-12-random-forest/</link>
+  <link>https://bhdai.github.io/blog/posts/2024-11-12-random-forest/</link>
   <description><![CDATA[ 
+
 
 
 
@@ -3363,7 +3413,7 @@ font-style: inherit;">;</span></span></code></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://buidai123.github.io/blog/posts/2024-11-12-random-forest/index_files/figure-html/cell-8-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="https://bhdai.github.io/blog/posts/2024-11-12-random-forest/index_files/figure-html/cell-8-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -3513,7 +3563,7 @@ font-style: inherit;">;</span></span></code></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://buidai123.github.io/blog/posts/2024-11-12-random-forest/index_files/figure-html/cell-12-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="https://bhdai.github.io/blog/posts/2024-11-12-random-forest/index_files/figure-html/cell-12-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -3899,7 +3949,7 @@ font-style: inherit;">10</span>)</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="25">
 <div>
 <figure class="figure">
-<p><img src="https://buidai123.github.io/blog/posts/2024-11-12-random-forest/index_files/figure-html/cell-26-output-1.svg" class="img-fluid figure-img"></p>
+<p><img src="https://bhdai.github.io/blog/posts/2024-11-12-random-forest/index_files/figure-html/cell-26-output-1.svg" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -3982,7 +4032,7 @@ font-style: inherit;">12</span>)</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="29">
 <div>
 <figure class="figure">
-<p><img src="https://buidai123.github.io/blog/posts/2024-11-12-random-forest/index_files/figure-html/cell-30-output-1.svg" class="img-fluid figure-img"></p>
+<p><img src="https://bhdai.github.io/blog/posts/2024-11-12-random-forest/index_files/figure-html/cell-30-output-1.svg" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -4127,7 +4177,7 @@ font-style: inherit;">;</span></span></code></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://buidai123.github.io/blog/posts/2024-11-12-random-forest/index_files/figure-html/cell-35-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="https://bhdai.github.io/blog/posts/2024-11-12-random-forest/index_files/figure-html/cell-35-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -5073,7 +5123,7 @@ font-style: inherit;">2</span>)</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="57">
 <div>
 <figure class="figure">
-<p><img src="https://buidai123.github.io/blog/posts/2024-11-12-random-forest/index_files/figure-html/cell-58-output-1.svg" class="img-fluid figure-img"></p>
+<p><img src="https://bhdai.github.io/blog/posts/2024-11-12-random-forest/index_files/figure-html/cell-58-output-1.svg" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -5128,7 +5178,7 @@ font-style: inherit;">'LR'</span>)</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="58">
 <div>
 <figure class="figure">
-<p><img src="https://buidai123.github.io/blog/posts/2024-11-12-random-forest/index_files/figure-html/cell-59-output-1.svg" class="img-fluid figure-img"></p>
+<p><img src="https://bhdai.github.io/blog/posts/2024-11-12-random-forest/index_files/figure-html/cell-59-output-1.svg" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -5194,7 +5244,7 @@ font-style: inherit;">'LR'</span>)</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="60">
 <div>
 <figure class="figure">
-<p><img src="https://buidai123.github.io/blog/posts/2024-11-12-random-forest/index_files/figure-html/cell-61-output-1.svg" class="img-fluid figure-img"></p>
+<p><img src="https://bhdai.github.io/blog/posts/2024-11-12-random-forest/index_files/figure-html/cell-61-output-1.svg" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -5428,7 +5478,7 @@ font-style: inherit;">;</span></span></code></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://buidai123.github.io/blog/posts/2024-11-12-random-forest/index_files/figure-html/cell-73-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="https://bhdai.github.io/blog/posts/2024-11-12-random-forest/index_files/figure-html/cell-73-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -5627,7 +5677,7 @@ font-style: inherit;">;</span></span></code></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://buidai123.github.io/blog/posts/2024-11-12-random-forest/index_files/figure-html/cell-79-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="https://bhdai.github.io/blog/posts/2024-11-12-random-forest/index_files/figure-html/cell-79-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -5688,7 +5738,7 @@ font-style: inherit;">;</span></span></code></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://buidai123.github.io/blog/posts/2024-11-12-random-forest/index_files/figure-html/cell-83-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="https://bhdai.github.io/blog/posts/2024-11-12-random-forest/index_files/figure-html/cell-83-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -5703,7 +5753,7 @@ font-style: inherit;">;</span></span></code></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://buidai123.github.io/blog/posts/2024-11-12-random-forest/index_files/figure-html/cell-84-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="https://bhdai.github.io/blog/posts/2024-11-12-random-forest/index_files/figure-html/cell-84-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -5909,7 +5959,7 @@ font-style: inherit;">;</span></span></code></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://buidai123.github.io/blog/posts/2024-11-12-random-forest/index_files/figure-html/cell-92-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="https://bhdai.github.io/blog/posts/2024-11-12-random-forest/index_files/figure-html/cell-92-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -5925,7 +5975,7 @@ font-style: inherit;">'YearMade'</span>].hist()</span></code></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://buidai123.github.io/blog/posts/2024-11-12-random-forest/index_files/figure-html/cell-93-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="https://bhdai.github.io/blog/posts/2024-11-12-random-forest/index_files/figure-html/cell-93-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -5964,7 +6014,7 @@ font-style: inherit;">=</span>ax)</span></code></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://buidai123.github.io/blog/posts/2024-11-12-random-forest/index_files/figure-html/cell-94-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="https://bhdai.github.io/blog/posts/2024-11-12-random-forest/index_files/figure-html/cell-94-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -6104,7 +6154,7 @@ font-style: inherit;">;</span></span></code></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://buidai123.github.io/blog/posts/2024-11-12-random-forest/index_files/figure-html/cell-99-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="https://bhdai.github.io/blog/posts/2024-11-12-random-forest/index_files/figure-html/cell-99-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -6147,7 +6197,7 @@ font-style: inherit;">;</span></span></code></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://buidai123.github.io/blog/posts/2024-11-12-random-forest/index_files/figure-html/cell-100-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="https://bhdai.github.io/blog/posts/2024-11-12-random-forest/index_files/figure-html/cell-100-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -6201,7 +6251,7 @@ font-style: inherit;">;</span></span></code></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://buidai123.github.io/blog/posts/2024-11-12-random-forest/index_files/figure-html/cell-104-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="https://bhdai.github.io/blog/posts/2024-11-12-random-forest/index_files/figure-html/cell-104-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -6380,7 +6430,7 @@ font-style: inherit;">;</span></span></code></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://buidai123.github.io/blog/posts/2024-11-12-random-forest/index_files/figure-html/cell-108-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="https://bhdai.github.io/blog/posts/2024-11-12-random-forest/index_files/figure-html/cell-108-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -6642,7 +6692,7 @@ font-style: inherit;">=</span>F.mse_loss)</span>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://buidai123.github.io/blog/posts/2024-11-12-random-forest/index_files/figure-html/cell-120-output-4.png" class="img-fluid figure-img"></p>
+<p><img src="https://bhdai.github.io/blog/posts/2024-11-12-random-forest/index_files/figure-html/cell-120-output-4.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -6825,15 +6875,16 @@ font-style: inherit;">2</span></span></code></pre></div>
   <category>random forest</category>
   <category>bagging</category>
   <category>boosting</category>
-  <guid>https://buidai123.github.io/blog/posts/2024-11-12-random-forest/</guid>
+  <guid>https://bhdai.github.io/blog/posts/2024-11-12-random-forest/</guid>
   <pubDate>Sat, 09 Nov 2024 17:00:00 GMT</pubDate>
-  <media:content url="https://buidai123.github.io/blog/posts/2024-11-12-random-forest/random_forest.jpg" medium="image" type="image/jpeg"/>
+  <media:content url="https://bhdai.github.io/blog/posts/2024-11-12-random-forest/random_forest.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>Fundamentals of Text Classification and Correlation in Natural Language Processing</title>
   <dc:creator>Bui Huu Dai</dc:creator>
-  <link>https://buidai123.github.io/blog/posts/nlp-beginner/</link>
+  <link>https://bhdai.github.io/blog/posts/nlp-beginner/</link>
   <description><![CDATA[ 
+
 
 
 
@@ -6853,7 +6904,7 @@ font-style: inherit;">kaggle</span> competitions download <span class="at" style
 background-color: null;
 font-style: inherit;">-c</span> us-patent-phrase-to-phrase-matching</span></code></pre></div>
 <p>With the data in hand, let’s firer up python environment and take a closer look:</p>
-<div id="cell-2" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:27.553966Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:27.553574Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:28.047935Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:28.046907Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:27.553920Z&quot;}" data-trusted="true" data-execution_count="1">
+<div id="cell-2" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:27.553966Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:27.553574Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:28.047935Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:28.046907Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:27.553920Z&quot;}}" data-trusted="true" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> pathlib <span class="im" style="color: #00769E;
@@ -6958,7 +7009,7 @@ font-style: inherit;"># Display the dataframe</span></span>
 </div>
 </div>
 <p>Examining the data is always the first step. Let’s peek at some summery statics to get an initial sense of what we’re working with:</p>
-<div id="cell-4" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:28.050828Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:28.049953Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:28.138670Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:28.137731Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:28.050773Z&quot;}" data-trusted="true" data-execution_count="2">
+<div id="cell-4" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:28.050828Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:28.049953Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:28.138670Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:28.137731Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:28.050773Z&quot;}}" data-trusted="true" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1">df.describe(include<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
@@ -7015,7 +7066,7 @@ font-style: inherit;">"object"</span>)</span></code></pre></div>
 </div>
 <p>Notice something interesting? The <code>anchor</code> field has only 733 unique values in a dataset of 36,000 entries. That’s a clear sign of repetition, suggesting some phrases appear frequently.</p>
 <p>Now, onto preparing data for our model. In this task, our goal is to determine if two phrases have similar meanings. To give our model more context. Let’s add structure labels like “TEXT1:” and “TEXt2:”. This helps in making data more informative, alright because we have to do the same thing to our test set so i will write a function for this:</p>
-<div id="cell-6" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:28.140148Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:28.139835Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:28.145008Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:28.143927Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:28.140115Z&quot;}" data-trusted="true" data-execution_count="3">
+<div id="cell-6" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:28.140148Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:28.139835Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:28.145008Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:28.143927Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:28.140115Z&quot;}}" data-trusted="true" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
@@ -7054,7 +7105,7 @@ font-style: inherit;">return</span> examples</span></code></pre></div>
 </div>
 <p>Adding context can be incredibly valuable providing the model with the background it need to understand nuanced of differences or similarities, especially in specialized field like patents.</p>
 <p>Next we convert our Pandas DataFrame into a Dataset Object and apply the process function:</p>
-<div id="cell-8" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:28.147941Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:28.147576Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:33.692824Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:33.691599Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:28.147905Z&quot;}" data-trusted="true" data-execution_count="4">
+<div id="cell-8" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:28.147941Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:28.147576Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:33.692824Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:33.691599Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:28.147905Z&quot;}}" data-trusted="true" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> datasets <span class="im" style="color: #00769E;
@@ -7117,7 +7168,7 @@ font-style: inherit;">5</span>])</span></code></pre></div>
 <p>Choosing a tokenizer involves several little decisions. The good news? you don’t have to these decisions yourself. Pre-trained models come with their own tokenization methods, and to use these model effectively, you need to use same tokenization approach they were trained with.</p>
 <p>Enter HuggingFace’s <code>transformers</code> library. It provides a convenient way to load pre-trained models and their corresponding tokenizers. One highly versatile model is <code>deberta-v3</code></p>
 <p>Here’s how you can set it up:</p>
-<div id="cell-10" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:33.694602Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:33.694192Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:33.701758Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:33.700663Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:33.694553Z&quot;}" data-trusted="true" data-execution_count="5">
+<div id="cell-10" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:33.694602Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:33.694192Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:33.701758Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:33.700663Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:33.694553Z&quot;}}" data-trusted="true" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1">model_nm <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="st" style="color: #20794D;
@@ -7126,7 +7177,7 @@ font-style: inherit;">"microsoft/deberta-v3-base"</span></span></code></pre></di
 </div>
 <p>We choose this model to ensure our tokenization matches the pre-trained model’s tokenization process. This consistency is crucial.</p>
 <p>To load the tokenizer that correspond to our chosen model, we you <code>AutoTokenizer</code> from Hugging Face’s <em>transformer</em> library. This utility automatically fetches the correct tokenizer for our model:</p>
-<div id="cell-12" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:33.703615Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:33.703190Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:39.793473Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:39.792624Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:33.703539Z&quot;}" data-trusted="true" data-execution_count="6">
+<div id="cell-12" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:33.703615Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:33.703190Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:39.793473Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:39.792624Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:33.703539Z&quot;}}" data-trusted="true" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> transformers <span class="im" style="color: #00769E;
@@ -7163,7 +7214,7 @@ font-style: inherit;">=</span> AutoTokenizer.from_pretrained(model_nm)</span></c
 </div>
 <p>With the tokenizer loaded, you can now tokenize your text data in the same way the model was trained to do.</p>
 <p>Alright, at this point we can use our tokenization to process strings. Let’s start with a simple example. If we pass this string “Hi folks, I’m Dai from my mother!” to the tokenizer, we can see how it breaks the text in to tokens</p>
-<div id="cell-14" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:39.795000Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:39.794529Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:39.801779Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:39.800703Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:39.794968Z&quot;}" data-trusted="true" data-execution_count="7">
+<div id="cell-14" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:39.795000Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:39.794529Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:39.801779Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:39.800703Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:39.794968Z&quot;}}" data-trusted="true" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1">tokz.tokenize(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"Hi folks, I'm Dai from my mother!"</span>)</span></code></pre></div>
@@ -7173,7 +7224,7 @@ font-style: inherit;">"Hi folks, I'm Dai from my mother!"</span>)</span></code><
 </div>
 <p>You’ll notice doesn’t just split the text into words. If you’ve wondered “I’m” is one word or two, you’ll find that it’s actually three tokens according to this tokenizer. These tokens include partial words and punctuations. The character looks like underscore here signify the start of the word</p>
 <p>Here’s a less common sentence: “A platypus is an ornithorhynchus anatinus”.</p>
-<div id="cell-16" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:39.803758Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:39.803341Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:39.810185Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:39.809254Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:39.803712Z&quot;}" data-trusted="true" data-execution_count="8">
+<div id="cell-16" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:39.803758Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:39.803341Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:39.810185Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:39.809254Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:39.803712Z&quot;}}" data-trusted="true" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1">tokz.tokenize(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"A platypus is an ornithorhynchus anatinus."</span>)</span></code></pre></div>
@@ -7194,7 +7245,7 @@ font-style: inherit;">"A platypus is an ornithorhynchus anatinus."</span>)</span
 </div>
 </div>
 <p>In this vocabulary, “platypus” gets its own token, but “ornithorhynchus” is split into smaller parts. Each of these tokens corresponds to an entry in a predefined vocabulary list created during the model’s pre-training. Somewhere in that list, we’ll find “A”, and it will have a specific number. This process of converting tokens to numbers is called numericalization. To accomplish this for our dataset, we create a function that tokenizes the “input” field:</p>
-<div id="cell-18" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:39.811661Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:39.811196Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:39.817274Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:39.816323Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:39.811600Z&quot;}" data-trusted="true">
+<div id="cell-18" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:39.811661Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:39.811196Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:39.817274Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:39.816323Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:39.811600Z&quot;}}" data-trusted="true">
 <div class="sourceCode cell-code" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
@@ -7206,7 +7257,7 @@ background-color: null;
 font-style: inherit;">"input"</span>])</span></code></pre></div>
 </div>
 <p>Since tokenization can be time-consuming, especially for large dataset. Leveraging parallel processing can save time. we’ll utilize batching to process multiple entries simultaneously</p>
-<div id="cell-20" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:39.821290Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:39.820998Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:41.693450Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:41.692501Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:39.821258Z&quot;}" data-trusted="true" data-execution_count="10">
+<div id="cell-20" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:39.821290Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:39.820998Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:41.693450Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:41.692501Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:39.821258Z&quot;}}" data-trusted="true" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1">tok_ds <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> ds.<span class="bu" style="color: null;
@@ -7224,7 +7275,7 @@ font-style: inherit;">True</span>)</span></code></pre></div>
 </div>
 <p>Ensure that <code>batched=True</code> is passed to enable batch processing. This approach uses the <code>tokenizer</code> library optimized for performance wit Rust. Batch processing can significantly speed up the tokenization process</p>
 <p>Now let’s examine a row from our tokenized dataset:</p>
-<div id="cell-22" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:41.700204Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:41.699928Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:41.709420Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:41.708449Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:41.700172Z&quot;}" data-trusted="true" data-execution_count="11">
+<div id="cell-22" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:41.700204Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:41.699928Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:41.709420Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:41.708449Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:41.700172Z&quot;}}" data-trusted="true" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1">tok_ds[<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">0</span>][<span class="st" style="color: #20794D;
@@ -7259,7 +7310,7 @@ font-style: inherit;">"input_ids"</span>]</span></code></pre></div>
 </div>
 <p>The output show that the dataset retains the original string in the “input” field and includes a new “input_ids” field with the numerical representation of each token. The numbers here are the numerical positions of tokens in the vocabulary. This step efficiently convert our text into number, readying it for model input.</p>
 <p>Alright, we now need to prepare our labels. <code>Transformer</code> always assumes that your labels has column name <code>labels</code>, but it our data set there’s no <code>labels</code> but <code>score</code>, we need to rename it.</p>
-<div id="cell-24" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:41.710835Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:41.710479Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:41.719753Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:41.718805Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:41.710784Z&quot;}" data-trusted="true" data-execution_count="12">
+<div id="cell-24" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:41.710835Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:41.710479Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:41.719753Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:41.718805Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:41.710784Z&quot;}}" data-trusted="true" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb18" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1">tok_ds <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> tok_ds.rename_column(<span class="st" style="color: #20794D;
@@ -7269,7 +7320,7 @@ background-color: null;
 font-style: inherit;">"labels"</span>)</span></code></pre></div>
 </div>
 <p>Now let’s split our dataset into train and validation set</p>
-<div id="cell-26" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:41.721333Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:41.721012Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:41.750278Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:41.749410Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:41.721296Z&quot;}" data-trusted="true" data-execution_count="13">
+<div id="cell-26" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:41.721333Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:41.721012Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:41.750278Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:41.749410Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:41.721296Z&quot;}}" data-trusted="true" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb19" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1">dds <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> tok_ds.train_test_split(<span class="fl" style="color: #AD0000;
@@ -7306,7 +7357,7 @@ font-style: inherit;">42</span>)</span>
 <h2 class="anchored" data-anchor-id="pearson-correlation-coefficient">Pearson Correlation Coefficient</h2>
 <p>Let’s focus on our metric of interest today, the <strong>Pearson Correlation Coefficient</strong> often abbreviated as <code>r</code>. This coefficient is a widely used measure that evaluates the similarity between two variable, if our predictions closely match the actual values, <code>r</code> will be high, ranging between -1 and 1. An <code>r</code> of -1 means predictions are exactly the wrong answers (which could still be useful, as reversing the answer would yield perfect results), while <code>r</code> of 1 signifies perfect predictions.</p>
 <p>You can read <a href="https://en.wikipedia.org/wiki/Pearson_correlation_coefficient">this</a> for more info about the formula and example but i think the best way to understand how data behaves is to look at real-life data. Scikit-learn offers numerous datasets, one of which is the “California housing” dataset. Here’s how you can explore this dataset:</p>
-<div id="cell-28" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:41.751720Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:41.751335Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:43.858980Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:43.857993Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:41.751667Z&quot;}" data-trusted="true" data-execution_count="14">
+<div id="cell-28" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:41.751720Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:41.751335Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:43.858980Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:43.857993Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:41.751667Z&quot;}}" data-trusted="true" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb21" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> sklearn.datasets <span class="im" style="color: #00769E;
@@ -7420,7 +7471,7 @@ font-style: inherit;">52</span>)</span>
 </div>
 </div>
 <p>To compute the Pearson correlation coefficient, Numpy provides the <code>corrcoef()</code> function, which return a correlation matrix:</p>
-<div id="cell-30" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:43.860736Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:43.860257Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:43.870686Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:43.869672Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:43.860695Z&quot;}" data-trusted="true" data-execution_count="15">
+<div id="cell-30" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:43.860736Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:43.860257Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:43.870686Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:43.869672Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:43.860695Z&quot;}}" data-trusted="true" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb22" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1">np.set_printoptions(precision<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
@@ -7448,7 +7499,7 @@ font-style: inherit;">False</span>)</span></code></pre></div>
 </div>
 </div>
 <p>However, we need a single correlation number rather than a matrix. Fortunately, if we pass in a pair of variable, we could still get a matrix, from which we can extract the desired coefficient.</p>
-<div id="cell-32" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:43.872481Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:43.872056Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:43.880205Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:43.879019Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:43.872427Z&quot;}" data-trusted="true" data-execution_count="16">
+<div id="cell-32" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:43.872481Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:43.872056Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:43.880205Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:43.879019Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:43.872427Z&quot;}}" data-trusted="true" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb24" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1">np.corrcoef(housing.MedInc, housing.MedHouseVal)</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="16">
 <pre><code>array([[1.  , 0.68],
@@ -7456,7 +7507,7 @@ font-style: inherit;">False</span>)</span></code></pre></div>
 </div>
 </div>
 <p>To get a specific correlation coefficient, simply select the zeroth row and the first column:</p>
-<div id="cell-34" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:43.882512Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:43.881745Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:43.890041Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:43.888916Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:43.882472Z&quot;}" data-trusted="true" data-execution_count="17">
+<div id="cell-34" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:43.882512Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:43.881745Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:43.890041Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:43.888916Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:43.882472Z&quot;}}" data-trusted="true" data-execution_count="17">
 <div class="sourceCode cell-code" id="cb26" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
@@ -7475,7 +7526,7 @@ font-style: inherit;">1</span>]</span>
 </div>
 </div>
 <p>To visualize the correlation, we can plot the data and display the correlation coefficient <code>r</code>:</p>
-<div id="cell-36" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:43.891498Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:43.891191Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:43.897796Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:43.896695Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:43.891458Z&quot;}" data-trusted="true" data-execution_count="18">
+<div id="cell-36" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:43.891498Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:43.891191Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:43.897796Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:43.896695Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:43.891458Z&quot;}}" data-trusted="true" data-execution_count="18">
 <div class="sourceCode cell-code" id="cb28" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> matplotlib.pyplot <span class="im" style="color: #00769E;
@@ -7521,7 +7572,7 @@ background-color: null;
 font-style: inherit;">'</span>)</span></code></pre></div>
 </div>
 <p>For instance, the plot of “median income” vs.&nbsp;“median house value” shows an r of 0.68.</p>
-<div id="cell-38" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:43.899464Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:43.899133Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:44.220457Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:44.219533Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:43.899422Z&quot;}" data-trusted="true" data-execution_count="19">
+<div id="cell-38" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:43.899464Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:43.899133Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:44.220457Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:44.219533Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:43.899422Z&quot;}}" data-trusted="true" data-execution_count="19">
 <div class="sourceCode cell-code" id="cb29" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1">show_corr(housing, <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'MedInc'</span>, <span class="st" style="color: #20794D;
@@ -7530,13 +7581,13 @@ font-style: inherit;">'MedHouseVal'</span>)</span></code></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://buidai123.github.io/blog/posts/nlp-beginner/index_files/figure-html/cell-20-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="https://bhdai.github.io/blog/posts/nlp-beginner/index_files/figure-html/cell-20-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>Exploring other pairs, like “median income” vs.&nbsp;“number of rooms per house,” gives an r of 0.43.</p>
-<div id="cell-40" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:44.222199Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:44.221811Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:44.546412Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:44.545562Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:44.222156Z&quot;}" data-trusted="true" data-execution_count="20">
+<div id="cell-40" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:44.222199Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:44.221811Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:44.546412Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:44.545562Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:44.222156Z&quot;}}" data-trusted="true" data-execution_count="20">
 <div class="sourceCode cell-code" id="cb30" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1">show_corr(housing, <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'MedInc'</span>, <span class="st" style="color: #20794D;
@@ -7545,13 +7596,13 @@ font-style: inherit;">'AveRooms'</span>)</span></code></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://buidai123.github.io/blog/posts/nlp-beginner/index_files/figure-html/cell-21-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="https://bhdai.github.io/blog/posts/nlp-beginner/index_files/figure-html/cell-21-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>This plot reveals interesting insights and anomalies. Certain houses have many rooms but lower incomes, potentially indicate shared accommodations. Pearson’s <code>r</code> can be sensitive to outliers, and removing them can significantly change the correlation.</p>
-<div id="cell-42" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:44.547839Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:44.547515Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:44.855975Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:44.854993Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:44.547807Z&quot;}" data-trusted="true" data-execution_count="21">
+<div id="cell-42" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:44.547839Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:44.547515Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:44.855975Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:44.854993Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:44.547807Z&quot;}}" data-trusted="true" data-execution_count="21">
 <div class="sourceCode cell-code" id="cb31" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1">subset <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> housing[housing.AveRooms <span class="op" style="color: #5E5E5E;
@@ -7567,14 +7618,14 @@ font-style: inherit;">'AveRooms'</span>)</span></code></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://buidai123.github.io/blog/posts/nlp-beginner/index_files/figure-html/cell-22-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="https://bhdai.github.io/blog/posts/nlp-beginner/index_files/figure-html/cell-22-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>By removing outliers, the correlation increase fromm 0.43 to 0.68, emphasizing the importance of carefully considering outliers</p>
 <p>Here’s another example correlating “median hours value” with “average number of room”:</p>
-<div id="cell-44" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:44.857479Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:44.857171Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:45.148894Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:45.147911Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:44.857440Z&quot;}" data-trusted="true" data-execution_count="22">
+<div id="cell-44" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:44.857479Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:44.857171Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:45.148894Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:45.147911Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:44.857440Z&quot;}}" data-trusted="true" data-execution_count="22">
 <div class="sourceCode cell-code" id="cb32" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1">show_corr(subset, <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'MedHouseVal'</span>, <span class="st" style="color: #20794D;
@@ -7583,13 +7634,13 @@ font-style: inherit;">'AveRooms'</span>)</span></code></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://buidai123.github.io/blog/posts/nlp-beginner/index_files/figure-html/cell-23-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="https://bhdai.github.io/blog/posts/nlp-beginner/index_files/figure-html/cell-23-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>And another one correlating “house age” with “average number of rooms”:</p>
-<div id="cell-46" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:45.151139Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:45.150354Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:45.446860Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:45.446019Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:45.151088Z&quot;}" data-trusted="true" data-execution_count="23">
+<div id="cell-46" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:45.151139Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:45.150354Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:45.446860Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:45.446019Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:45.151088Z&quot;}}" data-trusted="true" data-execution_count="23">
 <div class="sourceCode cell-code" id="cb33" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1">show_corr(subset, <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'MedHouseVal'</span>, <span class="st" style="color: #20794D;
@@ -7598,13 +7649,13 @@ font-style: inherit;">'AveRooms'</span>)</span></code></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://buidai123.github.io/blog/posts/nlp-beginner/index_files/figure-html/cell-24-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="https://bhdai.github.io/blog/posts/nlp-beginner/index_files/figure-html/cell-24-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>To keep track of our training progress, it’s important to report the Pearson correlation coefficient after each epoch. Hugging Face’s Trainer API expects a dictionary as output, with keys labeling each metrics. Here’s how you can define a function to calculate and return the Pearson correlation coefficient:</p>
-<div id="cell-48" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:45.448445Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:45.448133Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:45.453322Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:45.452366Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:45.448403Z&quot;}" data-trusted="true" data-execution_count="24">
+<div id="cell-48" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:45.448445Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:45.448133Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:45.453322Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:45.452366Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:45.448403Z&quot;}}" data-trusted="true" data-execution_count="24">
 <div class="sourceCode cell-code" id="cb34" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
@@ -7621,7 +7672,7 @@ font-style: inherit;">*</span>eval_pred)}</span></code></pre></div>
 <section id="training-with-hugging-face-transformers" class="level2">
 <h2 class="anchored" data-anchor-id="training-with-hugging-face-transformers">Training with Hugging Face Transformers</h2>
 <p>In the world of Hugging Face, the concept of a “learner” in fast.ai is paralleled by the <code>trainer</code>. Let’s start by importing necessary components:</p>
-<div id="cell-50" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:45.454909Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:45.454503Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:58.129589Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:58.128824Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:45.454863Z&quot;}" data-trusted="true" data-execution_count="25">
+<div id="cell-50" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:45.454909Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:45.454503Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:58.129589Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:58.128824Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:45.454863Z&quot;}}" data-trusted="true" data-execution_count="25">
 <div class="sourceCode cell-code" id="cb35" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> transformers <span class="im" style="color: #00769E;
@@ -7631,7 +7682,7 @@ font-style: inherit;">import</span> TrainingArguments, Trainer</span></code></pr
 <p>When training a model, we don’t process the entire dataset at once; instead we use a “batch” or “mini-batch” of data for each training step. This approach leverages the parallel processing capabilities of GPUs.</p>
 <p>In our case, let’s set the batch size to 128. Large batch size speed up training by maximizing GPU utilization but beware of potential “out of memory” errors if set too high.</p>
 <p>Next, configure the training arguments:</p>
-<div id="cell-52" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:58.134662Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:58.134064Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:58.245326Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:58.244507Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:58.134614Z&quot;}" data-trusted="true" data-execution_count="26">
+<div id="cell-52" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:58.134662Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:58.134064Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:58.245326Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:58.244507Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:58.134614Z&quot;}}" data-trusted="true" data-execution_count="26">
 <div class="sourceCode cell-code" id="cb36" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1">bs <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
@@ -7706,7 +7757,7 @@ font-style: inherit;">'none'</span>,</span>
 </div>
 <p>Most of these arguments can be left as defaults, but the key ones to focus on are the batch size (<code>bs</code>), number of epoches (<code>epoches</code>), and learning rate (<code>lr</code>).</p>
 <p>To begin model training for sequence classification, we use <code>AutoModelForSequenceClassification</code>:</p>
-<div id="cell-54" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:58.246751Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:58.246384Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:25:01.429509Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:25:01.428680Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:58.246700Z&quot;}" data-trusted="true" data-execution_count="27">
+<div id="cell-54" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:58.246751Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:58.246384Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:25:01.429509Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:25:01.428680Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:58.246700Z&quot;}}" data-trusted="true" data-execution_count="27">
 <div class="sourceCode cell-code" id="cb37" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1">model <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> AutoModelForSequenceClassification.from_pretrained(model_nm, num_labels<span class="op" style="color: #5E5E5E;
@@ -7747,7 +7798,7 @@ You should probably TRAIN this model on a down-stream task to be able to use it 
 </div>
 <p>This function sets up our model, instantiates the trainer with the relevant datasets and tokenizer, and specifies the metric function.</p>
 <p>Finally, we sart the trainign process:</p>
-<div id="cell-56" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:25:01.431521Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:25:01.430842Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:34:32.580031Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:34:32.579155Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:25:01.431474Z&quot;}" data-trusted="true" data-execution_count="28">
+<div id="cell-56" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:25:01.431521Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:25:01.430842Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:34:32.580031Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:34:32.579155Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:25:01.431474Z&quot;}}" data-trusted="true" data-execution_count="28">
 <div class="sourceCode cell-code" id="cb39" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1">trainer.train()<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span></code></pre></div>
@@ -7758,8 +7809,7 @@ font-style: inherit;">;</span></span></code></pre></div>
   warnings.warn('Was asked to gather along dimension 0, but all '</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-
-    <div>
+<div>
       
       <progress value="732" max="732" style="width:300px; height:20px; vertical-align: middle;"></progress>
       [732/732 09:27, Epoch 4/4]
@@ -7822,7 +7872,7 @@ font-style: inherit;">;</span></span></code></pre></div>
 <h2 class="anchored" data-anchor-id="evaluating-model-predictions">Evaluating Model Predictions</h2>
 <p>With our model trained and achieving a promising Pearson correlation coefficient, it’s time to evaluate its performance on the test set.</p>
 <p>Just as we did with the training data we need to load and preprocess our test dataset.</p>
-<div id="cell-58" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:34:32.581831Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:34:32.581404Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:34:32.673541Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:34:32.672609Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:34:32.581784Z&quot;}" data-trusted="true" data-execution_count="29">
+<div id="cell-58" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:34:32.581831Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:34:32.581404Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:34:32.673541Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:34:32.672609Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:34:32.581784Z&quot;}}" data-trusted="true" data-execution_count="29">
 <div class="sourceCode cell-code" id="cb42" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1">eval_df <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> pd.read_csv(path<span class="op" style="color: #5E5E5E;
@@ -7864,7 +7914,7 @@ background-color: null;
 font-style: inherit;">float</span>)</span>
 <span id="cb43-2">preds</span></code></pre></div>
 </div>
-<div id="cell-61" class="cell output" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:34:32.674982Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:34:32.674713Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:34:32.816702Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:34:32.815744Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:34:32.674952Z&quot;}" data-trusted="true" data-execution_count="30">
+<div id="cell-61" class="cell output" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:34:32.674982Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:34:32.674713Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:34:32.816702Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:34:32.815744Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:34:32.674952Z&quot;}}" data-trusted="true" data-execution_count="30">
 <div class="cell-output cell-output-stderr">
 <pre><code>/opt/conda/lib/python3.10/site-packages/torch/nn/parallel/parallel_apply.py:79: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
   with torch.cuda.device(device), torch.cuda.stream(stream), autocast(enabled=autocast_enabled):</code></pre>
@@ -7922,7 +7972,7 @@ background-color: null;
 font-style: inherit;">1</span>)</span>
 <span id="cb46-2">preds</span></code></pre></div>
 </div>
-<div id="cell-64" class="cell output" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:34:32.818248Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:34:32.817917Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:34:32.824993Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:34:32.824100Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:34:32.818216Z&quot;}" data-trusted="true" data-execution_count="31">
+<div id="cell-64" class="cell output" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:34:32.818248Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:34:32.817917Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:34:32.824993Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:34:32.824100Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:34:32.818216Z&quot;}}" data-trusted="true" data-execution_count="31">
 <div class="cell-output cell-output-display" data-execution_count="31">
 <pre><code>array([[0.7 ],
        [0.73],
@@ -7974,15 +8024,16 @@ font-style: inherit;">1</span>)</span>
   <category>kaggle</category>
   <category>huggingface spaces</category>
   <category>nlp</category>
-  <guid>https://buidai123.github.io/blog/posts/nlp-beginner/</guid>
+  <guid>https://bhdai.github.io/blog/posts/nlp-beginner/</guid>
   <pubDate>Thu, 12 Sep 2024 17:00:00 GMT</pubDate>
-  <media:content url="https://buidai123.github.io/blog/posts/nlp-beginner/nlp.jpg" medium="image" type="image/jpeg"/>
+  <media:content url="https://bhdai.github.io/blog/posts/nlp-beginner/nlp.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>Looking Inside Neural Networks, How It Really Work?</title>
   <dc:creator>Bui Huu Dai</dc:creator>
-  <link>https://buidai123.github.io/blog/posts/2024-07-28-from-neuron-to-gradient/</link>
+  <link>https://bhdai.github.io/blog/posts/2024-07-28-from-neuron-to-gradient/</link>
   <description><![CDATA[ 
+
 
 
 
@@ -8007,7 +8058,7 @@ font-style: inherit;">1</span>)</span>
 <h2 class="anchored" data-anchor-id="choosing-the-right-model">Choosing the Right Model</h2>
 <p>We’ll explore how to choose an image model that’s efficient, reliable, and cost-effective—much like selecting the perfect gadget. I’ll walk you through a practical example comparing two popular image models by training a pet detector model.</p>
 <p>Let’s start by setting up our environment.</p>
-<div id="cell-4" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-07-27T12:50:55.115169Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-07-27T12:50:55.114829Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-07-27T12:51:04.408985Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-07-27T12:51:04.408185Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-07-27T12:50:55.115141Z&quot;}" data-trusted="true" data-execution_count="1">
+<div id="cell-4" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-07-27T12:50:55.115169Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-07-27T12:50:55.114829Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-07-27T12:51:04.408985Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-07-27T12:51:04.408185Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-07-27T12:50:55.115141Z&quot;}}" data-trusted="true" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> fastai.vision.<span class="bu" style="color: null;
@@ -8021,7 +8072,7 @@ font-style: inherit;">*</span></span>
 background-color: null;
 font-style: inherit;">import</span> timm</span></code></pre></div>
 </div>
-<div id="cell-5" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-07-27T12:51:04.410784Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-07-27T12:51:04.410469Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-07-27T12:52:28.319857Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-07-27T12:52:28.318947Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-07-27T12:51:04.410759Z&quot;}" data-trusted="true" data-execution_count="2">
+<div id="cell-5" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-07-27T12:51:04.410784Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-07-27T12:51:04.410469Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-07-27T12:52:28.319857Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-07-27T12:52:28.318947Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-07-27T12:51:04.410759Z&quot;}}" data-trusted="true" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1">path <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> untar_data(URLs.PETS)<span class="op" style="color: #5E5E5E;
@@ -8054,7 +8105,27 @@ font-style: inherit;">=</span>RegexLabeller(pat<span class="op" style="color: #5
 background-color: null;
 font-style: inherit;">=</span><span class="vs" style="color: #20794D;
 background-color: null;
-font-style: inherit;">r'^([^/]+)_\d+'</span>),</span>
+font-style: inherit;">r'</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">^</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">(</span><span class="pp" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">[^/]</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">)</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">_</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">\d</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span>),</span>
 <span id="cb2-10">    item_tfms<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>Resize(<span class="dv" style="color: #AD0000;
@@ -8106,7 +8177,7 @@ font-style: inherit;">4</span>)</span></code></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://buidai123.github.io/blog/posts/2024-07-28-from-neuron-to-gradient/index_files/figure-html/cell-4-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="https://bhdai.github.io/blog/posts/2024-07-28-from-neuron-to-gradient/index_files/figure-html/cell-4-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -9538,7 +9609,7 @@ background-color: null;
 font-style: inherit;">=</span> learn.model</span>
 <span id="cb13-2">m</span></code></pre></div>
 </div>
-<div id="cell-22" class="cell output" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-07-27T13:00:24.084613Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-07-27T13:00:24.084212Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-07-27T13:00:24.096155Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-07-27T13:00:24.095135Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-07-27T13:00:24.084580Z&quot;}" data-trusted="true" data-execution_count="4">
+<div id="cell-22" class="cell output" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-07-27T13:00:24.084613Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-07-27T13:00:24.084212Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-07-27T13:00:24.096155Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-07-27T13:00:24.095135Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-07-27T13:00:24.084580Z&quot;}}" data-trusted="true" data-execution_count="4">
 <div class="cell-output cell-output-display" data-execution_count="4">
 <pre><code>Sequential(
   (0): TimmBody(
@@ -9872,7 +9943,7 @@ font-style: inherit;">=</span> learn.model</span>
 <section id="lets-peek-inside-a-layer" class="level3">
 <h3 class="anchored" data-anchor-id="lets-peek-inside-a-layer">Let’s Peek Inside a Layer</h3>
 <p>To dig deeper into what these layers contain, you can use a really convenient Pytorch method called <code>get_submodule</code>:</p>
-<div id="cell-24" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-07-27T13:00:32.501020Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-07-27T13:00:32.500642Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-07-27T13:00:32.507609Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-07-27T13:00:32.506670Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-07-27T13:00:32.500991Z&quot;}" data-trusted="true" data-execution_count="5">
+<div id="cell-24" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-07-27T13:00:32.501020Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-07-27T13:00:32.500642Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-07-27T13:00:32.507609Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-07-27T13:00:32.506670Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-07-27T13:00:32.500991Z&quot;}}" data-trusted="true" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1">l <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> m.get_submodule(<span class="st" style="color: #20794D;
@@ -9891,7 +9962,7 @@ font-style: inherit;">print</span>(<span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">list</span>(l.parameters()))</span></code></pre></div>
 </div>
-<div id="cell-27" class="cell output" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-07-27T13:00:37.022159Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-07-27T13:00:37.021690Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-07-27T13:00:37.161180Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-07-27T13:00:37.160223Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-07-27T13:00:37.022106Z&quot;}" data-trusted="true" data-execution_count="6">
+<div id="cell-27" class="cell output" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-07-27T13:00:37.022159Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-07-27T13:00:37.021690Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-07-27T13:00:37.161180Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-07-27T13:00:37.160223Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-07-27T13:00:37.022106Z&quot;}}" data-trusted="true" data-execution_count="6">
 <div class="cell-output cell-output-stdout">
 <pre><code>[Parameter containing:
 tensor([ 1.2546e+00,  1.9191e+00,  1.2191e+00,  1.0385e+00, -3.7148e-04,
@@ -9952,7 +10023,7 @@ font-style: inherit;">print</span>(<span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">list</span>(l.parameters()))</span></code></pre></div>
 </div>
-<div id="cell-30" class="cell output" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-07-27T13:00:40.913666Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-07-27T13:00:40.912949Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-07-27T13:00:40.929991Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-07-27T13:00:40.929119Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-07-27T13:00:40.913632Z&quot;}" data-trusted="true" data-execution_count="7">
+<div id="cell-30" class="cell output" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-07-27T13:00:40.913666Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-07-27T13:00:40.912949Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-07-27T13:00:40.929991Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-07-27T13:00:40.929119Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-07-27T13:00:40.913632Z&quot;}}" data-trusted="true" data-execution_count="7">
 <div class="cell-output cell-output-stdout">
 <pre><code>Linear(in_features=96, out_features=384, bias=True)
 [Parameter containing:
@@ -10133,7 +10204,27 @@ font-style: inherit;">1</span></span>
 background-color: null;
 font-style: inherit;">=</span><span class="vs" style="color: #20794D;
 background-color: null;
-font-style: inherit;">r"$3x^2 + 2x + 1$"</span>)</span></code></pre></div>
+font-style: inherit;">r"</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">$</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">3x</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">^</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">2 </span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;"> 2x </span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;"> 1</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">$</span><span class="vs" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span></code></pre></div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code hidden" id="cb23" data-startfrom="1" data-source-offset="-0" style="background: #f1f3f5;"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb23-1"><span class="kw" style="color: #003B4F;
@@ -12374,7 +12465,7 @@ font-style: inherit;">;</span></span>
 <h3 class="anchored" data-anchor-id="the-big-picture-adding-relus-and-gradient-descent-deep-learning">The Big Picture: Adding ReLus and Gradient Descent === Deep Learning</h3>
 <p>Believe it or not, this is the essence of <strong>deep learning</strong>. Everything else-every other tweak is just about making this process faster and more efficient, sparking those “a-ha!” moments.</p>
 <p>Quoting Jeremy Howard:</p>
-<p><img src="https://buidai123.github.io/blog/posts/2024-07-28-from-neuron-to-gradient/how_to_draw_an_owl.jpg" style="width:40%;"></p>
+<p><img src="https://bhdai.github.io/blog/posts/2024-07-28-from-neuron-to-gradient/how_to_draw_an_owl.jpg" style="width:40%;"></p>
 <blockquote class="blockquote">
 <p>“Now I remember a few years ago when I said something like this in a class, somebody on the forum was like, this reminds me of that thing about how to draw an owl. Okay, step one: draw two circles; step two: daw the rest of the owl”</p>
 </blockquote>
@@ -12390,15 +12481,16 @@ font-style: inherit;">;</span></span>
   <category>blogging</category>
   <category>fastai</category>
   <category>torch</category>
-  <guid>https://buidai123.github.io/blog/posts/2024-07-28-from-neuron-to-gradient/</guid>
+  <guid>https://bhdai.github.io/blog/posts/2024-07-28-from-neuron-to-gradient/</guid>
   <pubDate>Sat, 27 Jul 2024 17:00:00 GMT</pubDate>
-  <media:content url="https://buidai123.github.io/blog/posts/2024-07-28-from-neuron-to-gradient/xkcd_trained_a_neural_net.png" medium="image" type="image/png" height="212" width="144"/>
+  <media:content url="https://bhdai.github.io/blog/posts/2024-07-28-from-neuron-to-gradient/xkcd_trained_a_neural_net.png" medium="image" type="image/png" height="212" width="144"/>
 </item>
 <item>
   <title>First Step in AI</title>
   <dc:creator>Bui Huu Dai</dc:creator>
-  <link>https://buidai123.github.io/blog/posts/2024-06-30-your-deep-learning-journey/</link>
+  <link>https://bhdai.github.io/blog/posts/2024-06-30-your-deep-learning-journey/</link>
   <description><![CDATA[ 
+
 
 
 
@@ -12422,7 +12514,7 @@ font-style: inherit;">;</span></span>
     }
 </style>
 <figure class="figure">
-<img src="https://buidai123.github.io/blog/posts/2024-06-30-your-deep-learning-journey/xkcd.png" alt="XKCD joke" style="width:50%;" class="figure-img">
+<img src="https://bhdai.github.io/blog/posts/2024-06-30-your-deep-learning-journey/xkcd.png" alt="XKCD joke" style="width:50%;" class="figure-img">
 <figcaption>
 XKCD Joke
 </figcaption>
@@ -12491,7 +12583,7 @@ XKCD Joke
     }
 </style>
 <figure class="figure">
-<img src="https://buidai123.github.io/blog/posts/2024-06-30-your-deep-learning-journey/neurral_net.png" alt="Biological Neurons vs. Artificial Neural Network" style="width:50%;" class="figure-img">
+<img src="https://bhdai.github.io/blog/posts/2024-06-30-your-deep-learning-journey/neurral_net.png" alt="Biological Neurons vs. Artificial Neural Network" style="width:50%;" class="figure-img">
 <figcaption>
 Biological Neurons vs.&nbsp;Artificial Neural Network
 </figcaption>
@@ -12650,7 +12742,7 @@ font-style: inherit;">256</span>)</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="5">
 <div>
 <figure class="figure">
-<p><img src="https://buidai123.github.io/blog/posts/2024-06-30-your-deep-learning-journey/index_files/figure-html/cell-4-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="https://bhdai.github.io/blog/posts/2024-06-30-your-deep-learning-journey/index_files/figure-html/cell-4-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -12686,7 +12778,7 @@ font-style: inherit;">256</span>)</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="6">
 <div>
 <figure class="figure">
-<p><img src="https://buidai123.github.io/blog/posts/2024-06-30-your-deep-learning-journey/index_files/figure-html/cell-5-output-2.png" class="img-fluid figure-img"></p>
+<p><img src="https://bhdai.github.io/blog/posts/2024-06-30-your-deep-learning-journey/index_files/figure-html/cell-5-output-2.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -12909,7 +13001,7 @@ font-style: inherit;">6</span>)</span></code></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://buidai123.github.io/blog/posts/2024-06-30-your-deep-learning-journey/index_files/figure-html/cell-8-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="https://bhdai.github.io/blog/posts/2024-06-30-your-deep-learning-journey/index_files/figure-html/cell-8-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -13692,7 +13784,7 @@ font-style: inherit;">"I really liked that movie!"</span>)</span></code></pre></
     }
 </style>
 <figure class="figure">
-<img src="https://buidai123.github.io/blog/posts/2024-06-30-your-deep-learning-journey/att_00000.png" alt="Example of overfitting" style="width:90%;" class="figure-img">
+<img src="https://bhdai.github.io/blog/posts/2024-06-30-your-deep-learning-journey/att_00000.png" alt="Example of overfitting" style="width:90%;" class="figure-img">
 <figcaption>
 Example of overfitting
 </figcaption>
@@ -13721,9 +13813,9 @@ Example of overfitting
  ]]></description>
   <category>blogging</category>
   <category>fastai</category>
-  <guid>https://buidai123.github.io/blog/posts/2024-06-30-your-deep-learning-journey/</guid>
+  <guid>https://bhdai.github.io/blog/posts/2024-06-30-your-deep-learning-journey/</guid>
   <pubDate>Wed, 03 Jul 2024 17:00:00 GMT</pubDate>
-  <media:content url="https://buidai123.github.io/blog/posts/2024-06-30-your-deep-learning-journey/xkcd.png" medium="image" type="image/png" height="127" width="144"/>
+  <media:content url="https://bhdai.github.io/blog/posts/2024-06-30-your-deep-learning-journey/xkcd.png" medium="image" type="image/png" height="127" width="144"/>
 </item>
 </channel>
 </rss>

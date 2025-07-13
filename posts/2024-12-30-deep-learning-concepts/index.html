@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.6">
+<meta name="generator" content="quarto-1.7.32">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -23,8 +23,9 @@ ul.task-list li input[type="checkbox"] {
   vertical-align: middle;
 }
 /* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -35,7 +36,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -69,17 +70,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../Github_bird.png" rel="icon" type="image/png">
 <script src="../../site_libs/cookie-consent/cookie-consent.js"></script>
 <link href="../../site_libs/cookie-consent/cookie-consent.css" rel="stylesheet">
-<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-6c21014d9765ba549c6ebad95917e4d7.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-d0a9048d95e02c7ff9c82715fd5ddea4.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-2fef5ea3f8957b3e4ecc936fc74692ca.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-ddd961a2510921635943dfbbd19534c4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-ac7d032430511f044bc08d60cdc66499.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-8e47eaf163dee9e5ea02780d02199294.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-bca7bfc09c99158c9822bef989cf6fc8.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-8e47eaf163dee9e5ea02780d02199294.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -168,17 +172,189 @@ window.Quarto = {
 };
 </script>
 
+<link rel="stylesheet" href="../../styles.css">
 <meta property="og:title" content="Some Deep Learning Concepts You Need To Understand – Bui Huu Dai">
 <meta property="og:description" content="Dai’s blog.">
-<meta property="og:image" content="https://buidai123.github.io/blog/posts/2024-12-30-deep-learning-concepts/paddy-disease-farmer.jpg">
+<meta property="og:image" content="https://bhdai.github.io/blog/posts/2024-12-30-deep-learning-concepts/paddy-disease-farmer.jpg">
 <meta property="og:site_name" content="Bui Huu Dai">
 <meta name="twitter:title" content="Some Deep Learning Concepts You Need To Understand – Bui Huu Dai">
 <meta name="twitter:description" content="Dai’s blog.">
-<meta name="twitter:image" content="https://buidai123.github.io/blog/posts/2024-12-30-deep-learning-concepts/paddy-disease-farmer.jpg">
+<meta name="twitter:image" content="https://bhdai.github.io/blog/posts/2024-12-30-deep-learning-concepts/paddy-disease-farmer.jpg">
 <meta name="twitter:card" content="summary_large_image">
 </head>
 
-<body class="nav-fixed">
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const queryPrefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    const darkModeDefault = queryPrefersDark.matches;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    queryPrefersDark.addEventListener("change", e => {
+      if(window.localStorage.getItem("quarto-color-scheme") !== null)
+        return;
+      const alternate = e.matches
+      toggleColorMode(alternate);
+      localAlternateSentinel = e.matches ? 'alternate' : 'default'; // this is used alongside local storage!
+      toggleGiscusIfUsed(alternate, darkModeDefault);
+    });
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top quarto-banner">
@@ -287,10 +463,11 @@ window.Quarto = {
   <li><a href="#test-time-augmentation" id="toc-test-time-augmentation" class="nav-link" data-scroll-target="#test-time-augmentation">Test Time Augmentation</a></li>
   </ul></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.dev/buidai123/blog/blob/main/posts/2024-12-30-deep-learning-concepts/index.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/buidai123/blog/blob/main/posts/2024-12-30-deep-learning-concepts/index.ipynb" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/buidai123/blog/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.dev/bhdai/blog/blob/main/posts/2024-12-30-deep-learning-concepts/index.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bhdai/blog/blob/main/posts/2024-12-30-deep-learning-concepts/index.ipynb" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/bhdai/blog/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content quarto-banner-title-block page-columns page-full" id="quarto-document-content">
+
 
 
 
@@ -365,7 +542,7 @@ Name: count, dtype: int64</code></pre>
 </div>
 </div>
 <p>Well, there’s almost have the same size except 4 of them with 640x480, we’ll need to resize all of them to the same size, we will talk about it later, but now let’s create a dataloader</p>
-<div id="cell-16" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2025-01-02T10:39:16.888162Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-02T10:39:16.887867Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-02T10:39:20.073235Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-02T10:39:20.072378Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2025-01-02T10:39:16.888138Z&quot;}" data-trusted="true" data-execution_count="15">
+<div id="cell-16" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2025-01-02T10:39:16.888162Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-02T10:39:16.887867Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-02T10:39:20.073235Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-02T10:39:20.072378Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2025-01-02T10:39:16.888138Z&quot;}}" data-trusted="true" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>dls <span class="op">=</span> DataBlock(blocks<span class="op">=</span>(ImageBlock, CategoryBlock),</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>                get_items<span class="op">=</span>get_image_files,</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>                splitter<span class="op">=</span>RandomSplitter(valid_pct<span class="op">=</span><span class="fl">0.2</span>, seed<span class="op">=</span><span class="dv">42</span>),</span>
@@ -456,35 +633,52 @@ Name: count, dtype: int64</code></pre>
 <div class="no-row-height column-margin column-container"><div id="cell-25" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>torch.permute??</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Docstring:
+<div class="ansi-escaped-output">
+<pre><span class="ansi-red-fg">Docstring:</span>
+
 permute(input, dims) -&gt; Tensor
+
+
 
 Returns a view of the original tensor :attr:`input` with its dimensions permuted.
 
+
+
 Args:
+
     input (Tensor): the input tensor.
+
     dims (tuple of int): The desired ordering of dimensions
 
+
+
 Example:
+
     &gt;&gt;&gt; x = torch.randn(2, 3, 5)
+
     &gt;&gt;&gt; x.size()
+
     torch.Size([2, 3, 5])
+
     &gt;&gt;&gt; torch.permute(x, (2, 0, 1)).size()
+
     torch.Size([5, 2, 3])
-Type:      builtin_function_or_method</code></pre>
+
+<span class="ansi-red-fg">Type:</span>      builtin_function_or_method</pre>
+</div>
 </div>
 </div><div class="">
 <p>Most image processing libraries and formats (like PIL, OpenCV, matplotlib) use the format (Height, Width, Channels) or (H, W, C).</p>
 <p>However, PyTorch expects images in the format (Channels, Height, Width) or (C, H, W).</p>
 </div></div>
 <div id="cell-27" class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>timg <span class="op">=</span> TensorImage(array(tst_img)).permute(<span class="dv">2</span>,<span class="dv">0</span>,<span class="dv">1</span>).<span class="bu">float</span>()<span class="op">/</span><span class="fl">255.</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _batch_ex(bs): <span class="cf">return</span> TensorImage(timg[<span class="va">None</span>].expand(bs, <span class="op">*</span>timg.shape).clone())</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>tfms <span class="op">=</span> aug_transforms(size<span class="op">=</span><span class="dv">128</span>, min_scale<span class="op">=</span><span class="fl">0.75</span>)</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> _batch_ex(<span class="dv">9</span>)</span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t <span class="kw">in</span> tfms: y <span class="op">=</span> t(y, split_idx<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>_, axs <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">3</span>))</span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i,ax <span class="kw">in</span> <span class="bu">enumerate</span>(axs.flatten()): show_image(y[i], ctx<span class="op">=</span>ax)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>timg <span class="op">=</span> TensorImage(array(tst_img)).permute(<span class="dv">2</span>,<span class="dv">0</span>,<span class="dv">1</span>).<span class="bu">float</span>()<span class="op">/</span><span class="fl">255.</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _batch_ex(bs): <span class="cf">return</span> TensorImage(timg[<span class="va">None</span>].expand(bs, <span class="op">*</span>timg.shape).clone())</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>tfms <span class="op">=</span> aug_transforms(size<span class="op">=</span><span class="dv">128</span>, min_scale<span class="op">=</span><span class="fl">0.75</span>)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> _batch_ex(<span class="dv">9</span>)</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t <span class="kw">in</span> tfms: y <span class="op">=</span> t(y, split_idx<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>_, axs <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">3</span>))</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i,ax <span class="kw">in</span> <span class="bu">enumerate</span>(axs.flatten()): show_image(y[i], ctx<span class="op">=</span>ax)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -517,7 +711,7 @@ Note
 <h3 class="anchored" data-anchor-id="checking-datablock">Checking DataBlock</h3>
 <p>Writing <code>DataBlock</code> is just like writing a blueprint, we will get an error if we have a syntax error some where in the code. So it’s a good practice to always check your data before doing anything further</p>
 <div id="cell-30" class="cell" data-execution_count="12">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>dls.show_batch(max_n<span class="op">=</span><span class="dv">6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>dls.show_batch(max_n<span class="op">=</span><span class="dv">6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -529,10 +723,10 @@ Note
 <p>Take a look at the images and and check that each one seems to have correct label or not. In fact, we often have to deal with data with which is not as familiar as domain experts may be. Indeed, if you’re not a paddy doctor it will be hard to look at a random image and speak out the disease right? Since I’m not an expert on paddy diseases, I would use google to search to make sure the images look similar to what i see in the output. Also you can debug the DataBlock by using <code>DataBlock.summary</code><a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></p>
 <p>Once you think your data looks right, it’s a good practice to train a simple model, think about it, when you start trying to improve your model, how can you rate it? Compare it to the previous try you say, I mean what if it’s already worse, so that why we need to know what our baseline result looks like. Maybe you don’t need anything fancy - a basic model might do the job just fine. Or perhaps the data doesn’t seems to train the model at all. These are things that you want to know as soon as possible</p>
 <div id="cell-32" class="cell" data-execution_count="16">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>learn <span class="op">=</span> vision_learner(dls, <span class="st">'resnet26d'</span>, metrics<span class="op">=</span>error_rate, path<span class="op">=</span><span class="st">'.'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>learn <span class="op">=</span> vision_learner(dls, <span class="st">'resnet26d'</span>, metrics<span class="op">=</span>error_rate, path<span class="op">=</span><span class="st">'.'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="cell-33" class="cell" data-execution_count="17">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>learn.fine_tune(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>learn.fine_tune(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 
 <style>
@@ -630,8 +824,8 @@ Note
 </div>
 <p>Remember that we’re in a competition right, so it’s nothing better than submit it and see how it will go and again this time we will use an pretty cool tool call fastkaggle in fact we used it earlier. Alright let’s see the submission layout</p>
 <div id="cell-35" class="cell" data-execution_count="17">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>ss <span class="op">=</span> pd.read_csv(path<span class="op">/</span><span class="st">'sample_submission.csv'</span>)</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>ss</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>ss <span class="op">=</span> pd.read_csv(path<span class="op">/</span><span class="st">'sample_submission.csv'</span>)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>ss</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="17">
 <div>
 
@@ -709,13 +903,13 @@ Note
 </div>
 <p>alright seems like we need to sort the images in order before submitting it</p>
 <div id="cell-37" class="cell" data-execution_count="18">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>tst_files <span class="op">=</span> get_image_files(path<span class="op">/</span><span class="st">'test_images'</span>).<span class="bu">sorted</span>()</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>tst_dl <span class="op">=</span> dls.test_dl(tst_files)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>tst_files <span class="op">=</span> get_image_files(path<span class="op">/</span><span class="st">'test_images'</span>).<span class="bu">sorted</span>()</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>tst_dl <span class="op">=</span> dls.test_dl(tst_files)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Let’s make the prediction on the test set</p>
 <div id="cell-39" class="cell" data-execution_count="19">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>probs,_,idxs <span class="op">=</span> learn.get_preds(dl<span class="op">=</span>tst_dl, with_decoded<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>idxs</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>probs,_,idxs <span class="op">=</span> learn.get_preds(dl<span class="op">=</span>tst_dl, with_decoded<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>idxs</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 
 <style>
@@ -743,15 +937,15 @@ Note
 </div>
 <p>Alright we got the indices of the diseases, we need to map the name to each diseases we can get the label by checking the <code>vocab</code></p>
 <div id="cell-41" class="cell" data-execution_count="20">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>dls.vocab</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>dls.vocab</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="20">
 <pre><code>['bacterial_leaf_blight', 'bacterial_leaf_streak', 'bacterial_panicle_blight', 'blast', 'brown_spot', 'dead_heart', 'downy_mildew', 'hispa', 'normal', 'tungro']</code></pre>
 </div>
 </div>
 <div id="cell-42" class="cell" data-execution_count="21">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>mapping <span class="op">=</span> <span class="bu">dict</span>(<span class="bu">enumerate</span>(dls.vocab))</span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> pd.Series(idxs.numpy(), name<span class="op">=</span><span class="st">"idxs"</span>).<span class="bu">map</span>(mapping)</span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>results</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>mapping <span class="op">=</span> <span class="bu">dict</span>(<span class="bu">enumerate</span>(dls.vocab))</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> pd.Series(idxs.numpy(), name<span class="op">=</span><span class="st">"idxs"</span>).<span class="bu">map</span>(mapping)</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>results</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="21">
 <pre><code>0                       hispa
 1                      normal
@@ -769,9 +963,9 @@ Name: idxs, Length: 3469, dtype: object</code></pre>
 </div>
 <p>Before submit let’s see if our file looks right</p>
 <div id="cell-44" class="cell" data-execution_count="25">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>ss[<span class="st">'label'</span>] <span class="op">=</span> results</span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>ss.to_csv(<span class="st">'subm.csv'</span>, index<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>head subm.csv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>ss[<span class="st">'label'</span>] <span class="op">=</span> results</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>ss.to_csv(<span class="st">'subm.csv'</span>, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>head subm.csv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>image_id,label
 200001.jpg,hispa
@@ -786,9 +980,9 @@ Name: idxs, Length: 3469, dtype: object</code></pre>
 </div>
 </div>
 <div id="cell-45" class="cell" data-execution_count="26">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">not</span> iskaggle:</span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="im">from</span> kaggle <span class="im">import</span> api</span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  api.competition_submit_cli(<span class="st">'subm.csv'</span>, <span class="st">'initial rn26d 128px'</span>, <span class="st">'paddy-disease-classification'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">not</span> iskaggle:</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="im">from</span> kaggle <span class="im">import</span> api</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  api.competition_submit_cli(<span class="st">'subm.csv'</span>, <span class="st">'initial rn26d 128px'</span>, <span class="st">'paddy-disease-classification'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>100%|██████████| 70.1k/70.1k [00:01&lt;00:00, 48.7kB/s]</code></pre>
 </div>
@@ -814,11 +1008,11 @@ Note
 <p><em>Cross-Entropy loss</em> is of course a loss function - a function that used to optimized the parameter of our model. It work even if our dependent variable has more than two categories, and results in faster and reliable training.</p>
 <p>Let’s look at the activation of our model, in fact let’s just look at one batch of our data</p>
 <div id="cell-49" class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>x, y <span class="op">=</span> dls.one_batch()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>x, y <span class="op">=</span> dls.one_batch()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>It returns the dependent and independent variables as mini-batch</p>
 <div id="cell-51" class="cell" data-execution_count="19">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="19">
 <pre><code>TensorCategory([8, 9, 5, 8, 2, 1, 8, 7, 5, 8, 3, 6, 8, 3, 7, 4, 8, 3, 8, 6, 5,
                 6, 0, 5, 8, 8, 7, 5, 8, 9, 8, 8, 7, 7, 9, 4, 7, 3, 9, 7, 7, 5,
@@ -828,8 +1022,8 @@ Note
 </div>
 <p>We got 64 rows as our batch size is 64, and we get the values ranging from 0 to 9, representing our 10 possible diseases, alright we can even view the predictions in fact it is the activations of the final layer of our neural network by using <code>Learner.get_preds</code></p>
 <div id="cell-53" class="cell" data-execution_count="20">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>preds,_ <span class="op">=</span> learn.get_preds(dl<span class="op">=</span>[(x,y)])</span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>preds[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>preds,_ <span class="op">=</span> learn.get_preds(dl<span class="op">=</span>[(x,y)])</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>preds[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 
 <style>
@@ -858,7 +1052,7 @@ Note
 </div>
 <p>The actual prediction are 10 probabilities between 0 and 1, which add up to 1.</p>
 <div id="cell-55" class="cell" data-execution_count="21">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="bu">len</span>(preds[<span class="dv">0</span>]), preds[<span class="dv">0</span>].<span class="bu">sum</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="bu">len</span>(preds[<span class="dv">0</span>]), preds[<span class="dv">0</span>].<span class="bu">sum</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="21">
 <pre><code>(10, tensor(1.))</code></pre>
 </div>
@@ -867,7 +1061,7 @@ Note
 <h3 class="anchored" data-anchor-id="softmax">Softmax</h3>
 <p>When a model runs, it’s last layer produces raw numbers, We call these <code>activations</code>, they are not probabilities yet, we need to change these raw number into probabilities, we want each number show how likely the model thinks each options is. So we use softmax activation in the final layer to ensure that the activations are all between 0 and 1. Softmax is similar to sigmoid function, below is what the sigmoid function look like in case you forget it</p>
 <div id="cell-59" class="cell" data-execution_count="34">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>plot_function(torch.sigmoid, <span class="bu">min</span><span class="op">=-</span><span class="dv">4</span>,<span class="bu">max</span><span class="op">=</span><span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>plot_function(torch.sigmoid, <span class="bu">min</span><span class="op">=-</span><span class="dv">4</span>,<span class="bu">max</span><span class="op">=</span><span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -878,9 +1072,9 @@ Note
 </div>
 <p>When you apply a sigmoid function to a single column of activation it turns those numbers to be between 0 and 1, it’s pretty useful activations for our final layer. But hold on and think about it, what if we have more activations than just a single column, let’s say we need to create a neural network that predict wether that image is a image of 3 or 7 that returns 2 activations (one for each number). Alright let’s create 6 images and 2 categories(the first columns is 3, and other is 7)</p>
 <div id="cell-61" class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>torch.random.manual_seed(<span class="dv">42</span>)<span class="op">;</span></span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>acts <span class="op">=</span> torch.randn((<span class="dv">6</span>,<span class="dv">2</span>))<span class="op">*</span><span class="dv">2</span></span>
-<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>acts</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>torch.random.manual_seed(<span class="dv">42</span>)<span class="op">;</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>acts <span class="op">=</span> torch.randn((<span class="dv">6</span>,<span class="dv">2</span>))<span class="op">*</span><span class="dv">2</span></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>acts</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="6">
 <pre><code>tensor([[ 0.6734,  0.2576],
         [ 0.4689,  0.4607],
@@ -892,7 +1086,7 @@ Note
 </div>
 <p>We can’t pass this to a sigmoid function directly cuz we can not get rows that add up to 1</p>
 <div id="cell-63" class="cell" data-execution_count="36">
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>acts.sigmoid()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>acts.sigmoid()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="36">
 <pre><code>tensor([[0.6623, 0.5641],
         [0.6151, 0.6132],
@@ -903,7 +1097,7 @@ Note
 </div>
 </div>
 <p>We need to use softmax. Here how we can represent the softmax function</p>
-<div class="sourceCode" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> softmax(x): <span class="cf">return</span> exp(x) <span class="op">/</span> exp(x).<span class="bu">sum</span>(dim<span class="op">=</span><span class="dv">1</span>, keepdim<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> softmax(x): <span class="cf">return</span> exp(x) <span class="op">/</span> exp(x).<span class="bu">sum</span>(dim<span class="op">=</span><span class="dv">1</span>, keepdim<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 <div class="no-row-height column-margin column-container"><div class="">
 <p>Mathematically, here the softmax formula</p>
@@ -911,8 +1105,8 @@ Note
 s(x_{i}) = \frac {e^{x_i}} {\sum _{j=1}^N e^{x_j}}
 \]</span></p>
 </div></div><div id="cell-66" class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>sm_acts <span class="op">=</span> torch.softmax(acts, dim<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>sm_acts</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>sm_acts <span class="op">=</span> torch.softmax(acts, dim<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>sm_acts</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="7">
 <pre><code>tensor([[0.6025, 0.3975],
         [0.5021, 0.4979],
@@ -929,30 +1123,30 @@ s(x_{i}) = \frac {e^{x_i}} {\sum _{j=1}^N e^{x_j}}
 <section id="log-likelihood" class="level3">
 <h3 class="anchored" data-anchor-id="log-likelihood">Log likelihood</h3>
 <p>In binary case we use <code>torch.where</code> to select between <code>inputs</code> and <code>1-inputs</code></p>
-<div class="sourceCode" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> mnis_loss(inputs, targets):</span>
-<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>  inputs <span class="op">=</span> inputs.sigmoid()</span>
-<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> torch.where(targets<span class="op">==</span><span class="dv">1</span>, <span class="dv">1</span><span class="op">-</span>inputs, inputs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> mnis_loss(inputs, targets):</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>  inputs <span class="op">=</span> inputs.sigmoid()</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> torch.where(targets<span class="op">==</span><span class="dv">1</span>, <span class="dv">1</span><span class="op">-</span>inputs, inputs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Let’s try to do this using pytorch, first we need to generate our label for 3s and 7s</p>
 <div id="cell-69" class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>targ <span class="op">=</span> tensor([<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>targ <span class="op">=</span> tensor([<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Then each item of <code>targ</code> we can use that to select the appropriate column of <code>sm_acts</code> using tensor indexing, like this:</p>
 <div id="cell-71" class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>idx <span class="op">=</span> <span class="bu">range</span>(<span class="dv">6</span>)</span>
-<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>sm_acts[idx, targ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>idx <span class="op">=</span> <span class="bu">range</span>(<span class="dv">6</span>)</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>sm_acts[idx, targ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="8">
 <pre><code>tensor([0.6025, 0.4979, 0.1332, 0.0034, 0.4041, 0.3661])</code></pre>
 </div>
 </div>
 <p>Pytorch provide a function which does just that (<code>sm_acts[range(6), targ]</code>) called <code>nll_loss</code> (NLL stands for negative log likelihood)</p>
 <div id="cell-73" class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="op">-</span>sm_acts[idx, targ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="op">-</span>sm_acts[idx, targ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="9">
 <pre><code>tensor([-0.6025, -0.4979, -0.1332, -0.0034, -0.4041, -0.3661])</code></pre>
 </div>
 </div>
 <div id="cell-74" class="cell" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>F.nll_loss(sm_acts, targ, reduction<span class="op">=</span><span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>F.nll_loss(sm_acts, targ, reduction<span class="op">=</span><span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="10">
 <pre><code>tensor([-0.6025, -0.4979, -0.1332, -0.0034, -0.4041, -0.3661])</code></pre>
 </div>
@@ -960,13 +1154,13 @@ s(x_{i}) = \frac {e^{x_i}} {\sum _{j=1}^N e^{x_j}}
 <p>You might wondering why we need the negative anyway? Well because we want to minimize the loss, the log likelihood of correct label should be maximized(closer to 0 is better, as <span class="math inline">\(\log(1)=0\)</span>). However optimization algorithms designed to minimize, not to maximize, by adding a negative sign we convert the maximization problem to minimization problem</p>
 <p>The math behind it here is that let’s say if <em>p</em> is the probability of the correct class then the negative log likelihood is <span class="math inline">\(-\log(p)\)</span> as <em>p</em> approaches 1(perfect prediction), the <span class="math inline">\(-\log(p)\)</span> approaches 0(minimum loss), as <em>p</em> approaches 0(bad predictions) <span class="math inline">\(-\log(p)\)</span> approaches infinity (maximum loss). Blow are plots demonstrate why we need a negative sign here</p>
 <div id="cell-76" class="cell" data-execution_count="14">
-<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>fig, (ax1,ax2) <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>,<span class="dv">5</span>))</span>
-<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>plt.sca(ax1)</span>
-<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>plot_function(torch.log, <span class="bu">min</span><span class="op">=</span><span class="dv">0</span>, <span class="bu">max</span><span class="op">=</span><span class="dv">1</span>, ty<span class="op">=</span><span class="st">"log(x)"</span>, tx<span class="op">=</span><span class="st">'x'</span>)</span>
-<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>ax1.set_title(<span class="st">'log(x)'</span>)</span>
-<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a>plt.sca(ax2)</span>
-<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a>plot_function(<span class="kw">lambda</span> x: <span class="op">-</span><span class="dv">1</span><span class="op">*</span>torch.log(x), <span class="bu">min</span><span class="op">=</span><span class="dv">0</span>, <span class="bu">max</span><span class="op">=</span><span class="dv">1</span>, ty<span class="op">=</span><span class="st">"- log(x)"</span>, tx<span class="op">=</span><span class="st">'x'</span>)</span>
-<span id="cb58-7"><a href="#cb58-7" aria-hidden="true" tabindex="-1"></a>ax2.set_title(<span class="st">'Negative Log Function'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>fig, (ax1,ax2) <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>,<span class="dv">5</span>))</span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>plt.sca(ax1)</span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>plot_function(torch.log, <span class="bu">min</span><span class="op">=</span><span class="dv">0</span>, <span class="bu">max</span><span class="op">=</span><span class="dv">1</span>, ty<span class="op">=</span><span class="st">"log(x)"</span>, tx<span class="op">=</span><span class="st">'x'</span>)</span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>ax1.set_title(<span class="st">'log(x)'</span>)</span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>plt.sca(ax2)</span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a>plot_function(<span class="kw">lambda</span> x: <span class="op">-</span><span class="dv">1</span><span class="op">*</span>torch.log(x), <span class="bu">min</span><span class="op">=</span><span class="dv">0</span>, <span class="bu">max</span><span class="op">=</span><span class="dv">1</span>, ty<span class="op">=</span><span class="st">"- log(x)"</span>, tx<span class="op">=</span><span class="st">'x'</span>)</span>
+<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a>ax2.set_title(<span class="st">'Negative Log Function'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="14">
 <pre><code>Text(0.5, 1.0, 'Negative Log Function')</code></pre>
 </div>
@@ -995,31 +1189,31 @@ s(x_{i}) = \frac {e^{x_i}} {\sum _{j=1}^N e^{x_j}}
 <p>Then what we do next? We will take the mean of negative log of our probabilities in other the word for each sample(image) we take the negative log of the predicted probability for the correct class as above this give us the loss for each individual sample we then calculate the mean of these individual losses across all samples, that give us the negative log likelihood or cross-entropy loss. One thing to note here that the Pytorch <code>nll_loss</code> assume that you already take the log of the softmax, even on it name have the word log but it dose not do it for you unfortunately</p>
 <p>So that is cross-entropy loss in Pytorch, this is available as <code>F.cross_entropy</code> ofr <code>nn.CrossEntropyLoss</code> the <code>F</code> namespace version seems to be used more often by people</p>
 <div id="cell-78" class="cell" data-execution_count="44">
-<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>loss_func <span class="op">=</span> nn.CrossEntropyLoss()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>loss_func <span class="op">=</span> nn.CrossEntropyLoss()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="cell-79" class="cell" data-execution_count="45">
-<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>loss_func(acts, targ)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>loss_func(acts, targ)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="45">
 <pre><code>tensor(1.8045)</code></pre>
 </div>
 </div>
 <div id="cell-80" class="cell" data-execution_count="46">
-<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>F.cross_entropy(acts, targ)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>F.cross_entropy(acts, targ)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="46">
 <pre><code>tensor(1.8045)</code></pre>
 </div>
 </div>
 <p>By default PyTorch loss functions take the mean of the loss of all items. You can use reduction=‘none’ to disable that:</p>
 <div id="cell-82" class="cell" data-execution_count="47">
-<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>nn.CrossEntropyLoss(reduction<span class="op">=</span><span class="st">'none'</span>)(acts, targ)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>nn.CrossEntropyLoss(reduction<span class="op">=</span><span class="st">'none'</span>)(acts, targ)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="47">
 <pre><code>tensor([0.5067, 0.6973, 2.0160, 5.6958, 0.9062, 1.0048])</code></pre>
 </div>
 </div>
 <p>Let’s look at the loss above those are numbers that the computer can learn from, but with us human, it is hard to look at those number and and tell how good our model is, so that why we need metrics, Those number are not used in the optimization process but just to help us poor human understand what’s going on. We can also use the confusion matrix to see where our model perform good and not</p>
 <div id="cell-84" class="cell" data-execution_count="48">
-<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>interp <span class="op">=</span> ClassificationInterpretation.from_learner(learn)</span>
-<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>interp.plot_confusion_matrix(figsize<span class="op">=</span>(<span class="dv">12</span>,<span class="dv">12</span>), dpi<span class="op">=</span><span class="dv">60</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>interp <span class="op">=</span> ClassificationInterpretation.from_learner(learn)</span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>interp.plot_confusion_matrix(figsize<span class="op">=</span>(<span class="dv">12</span>,<span class="dv">12</span>), dpi<span class="op">=</span><span class="dv">60</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 
 <style>
@@ -1082,8 +1276,8 @@ s(x_{i}) = \frac {e^{x_i}} {\sum _{j=1}^N e^{x_j}}
 <li>The last point where the loss was clearly decreasing</li>
 </ul>
 <div id="cell-86" class="cell" data-execution_count="51">
-<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>learn <span class="op">=</span> vision_learner(dls, <span class="st">'resnet26d'</span>, metrics<span class="op">=</span>error_rate, path<span class="op">=</span><span class="st">'.'</span>)</span>
-<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a>learn.lr_find(suggest_funcs<span class="op">=</span>(minimum, steep))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>learn <span class="op">=</span> vision_learner(dls, <span class="st">'resnet26d'</span>, metrics<span class="op">=</span>error_rate, path<span class="op">=</span><span class="st">'.'</span>)</span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>learn.lr_find(suggest_funcs<span class="op">=</span>(minimum, steep))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 
 <style>
@@ -1124,8 +1318,8 @@ You are using `torch.load` with `weights_only=False` (the current default value)
 </div>
 <p>We can see in this plot that the range from 1e-6 to 1e-4 the model doesn’t seem to train at all, from 1e-3 the loss start to decrease until it reaches the minimum at 1e-1 then increasing rapidly, obviously we don’t want the learning rate after 1e-1 as i explained above. So choose 1e-1 then? While the loss minimum around the learning rate of 1e-1 it might give a good results, it’s right at the edge of stable as after this point there’s a sharp increase in the loos, in practice it often safer to choose a learning rate slightly lower than this threshold to ensure stability across different runs or datasets. Alright let’s choose 3e-3 to see</p>
 <div id="cell-88" class="cell" data-execution_count="53">
-<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>learn <span class="op">=</span> vision_learner(dls, <span class="st">'resnet26d'</span>, metrics<span class="op">=</span>error_rate, path<span class="op">=</span><span class="st">'.'</span>)</span>
-<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>learn.fine_tune(<span class="dv">3</span>, base_lr<span class="op">=</span><span class="fl">3e-3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>learn <span class="op">=</span> vision_learner(dls, <span class="st">'resnet26d'</span>, metrics<span class="op">=</span>error_rate, path<span class="op">=</span><span class="st">'.'</span>)</span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>learn.fine_tune(<span class="dv">3</span>, base_lr<span class="op">=</span><span class="fl">3e-3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 
 <style>
@@ -1237,42 +1431,73 @@ You are using `torch.load` with `weights_only=False` (the current default value)
 <p>In fact <code>fine_tune</code> first does <code>fit_one_cycle</code> then unfreeze and does <code>fit_one_cycle</code> again. Alright let’s do it manually this time</p>
 
 <div class="no-row-height column-margin column-container"><div id="cell-90" class="cell" data-execution_count="54">
-<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>learn.fine_tune??</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>learn.fine_tune??</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Signature:
-learn.fine_tune(
-    epochs,
-    base_lr=0.002,
-    freeze_epochs=1,
-    lr_mult=100,
-    pct_start=0.3,
-    div=5.0,
-    *,
-    lr_max=None,
-    div_final=100000.0,
-    wd=None,
-    moms=None,
-    cbs=None,
-    reset_opt=False,
-    start_epoch=0,
-)
-Source:   
-@patch
-@delegates(Learner.fit_one_cycle)
-def fine_tune(self:Learner, epochs, base_lr=2e-3, freeze_epochs=1, lr_mult=100,
-              pct_start=0.3, div=5.0, **kwargs):
-    "Fine tune with `Learner.freeze` for `freeze_epochs`, then with `Learner.unfreeze` for `epochs`, using discriminative LR."
-    self.freeze()
-    self.fit_one_cycle(freeze_epochs, slice(base_lr), pct_start=0.99, **kwargs)
-    base_lr /= 2
-    self.unfreeze()
-    self.fit_one_cycle(epochs, slice(base_lr/lr_mult, base_lr), pct_start=pct_start, div=div, **kwargs)
-File:      ~/miniconda3/lib/python3.12/site-packages/fastai/callback/schedule.py
-Type:      method</code></pre>
+<div class="ansi-escaped-output">
+<pre><span class="ansi-red-fg">Signature:</span>
+
+learn<span class="ansi-blue-fg">.</span>fine_tune<span class="ansi-blue-fg">(</span>
+
+    epochs<span class="ansi-blue-fg">,</span>
+
+    base_lr<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">0.002</span><span class="ansi-blue-fg">,</span>
+
+    freeze_epochs<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">,</span>
+
+    lr_mult<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">100</span><span class="ansi-blue-fg">,</span>
+
+    pct_start<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">0.3</span><span class="ansi-blue-fg">,</span>
+
+    div<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">5.0</span><span class="ansi-blue-fg">,</span>
+
+    <span class="ansi-blue-fg">*</span><span class="ansi-blue-fg">,</span>
+
+    lr_max<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+
+    div_final<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">100000.0</span><span class="ansi-blue-fg">,</span>
+
+    wd<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+
+    moms<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+
+    cbs<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+
+    reset_opt<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">False</span><span class="ansi-blue-fg">,</span>
+
+    start_epoch<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">,</span>
+
+<span class="ansi-blue-fg">)</span>
+
+<span class="ansi-red-fg">Source:</span>   
+
+<span class="ansi-blue-fg">@</span>patch
+
+<span class="ansi-blue-fg">@</span>delegates<span class="ansi-blue-fg">(</span>Learner<span class="ansi-blue-fg">.</span>fit_one_cycle<span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">def</span> fine_tune<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">:</span>Learner<span class="ansi-blue-fg">,</span> epochs<span class="ansi-blue-fg">,</span> base_lr<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">2e-3</span><span class="ansi-blue-fg">,</span> freeze_epochs<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">,</span> lr_mult<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">100</span><span class="ansi-blue-fg">,</span>
+
+              pct_start<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">0.3</span><span class="ansi-blue-fg">,</span> div<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">5.0</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+
+    <span class="ansi-blue-fg">"Fine tune with `Learner.freeze` for `freeze_epochs`, then with `Learner.unfreeze` for `epochs`, using discriminative LR."</span>
+
+    self<span class="ansi-blue-fg">.</span>freeze<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+
+    self<span class="ansi-blue-fg">.</span>fit_one_cycle<span class="ansi-blue-fg">(</span>freeze_epochs<span class="ansi-blue-fg">,</span> slice<span class="ansi-blue-fg">(</span>base_lr<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span> pct_start<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">0.99</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span>
+
+    base_lr <span class="ansi-blue-fg">/=</span> <span class="ansi-cyan-fg">2</span>
+
+    self<span class="ansi-blue-fg">.</span>unfreeze<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+
+    self<span class="ansi-blue-fg">.</span>fit_one_cycle<span class="ansi-blue-fg">(</span>epochs<span class="ansi-blue-fg">,</span> slice<span class="ansi-blue-fg">(</span>base_lr<span class="ansi-blue-fg">/</span>lr_mult<span class="ansi-blue-fg">,</span> base_lr<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span> pct_start<span class="ansi-blue-fg">=</span>pct_start<span class="ansi-blue-fg">,</span> div<span class="ansi-blue-fg">=</span>div<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span>
+
+<span class="ansi-red-fg">File:</span>      ~/miniconda3/lib/python3.12/site-packages/fastai/callback/schedule.py
+
+<span class="ansi-red-fg">Type:</span>      method</pre>
+</div>
 </div>
 </div></div><div id="cell-91" class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>learn <span class="op">=</span> vision_learner(dls, <span class="st">'resnet26d'</span>, metrics<span class="op">=</span>error_rate, path<span class="op">=</span><span class="st">'.'</span>)</span>
-<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a>learn.fit_one_cycle(<span class="dv">3</span>, <span class="fl">3e-3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>learn <span class="op">=</span> vision_learner(dls, <span class="st">'resnet26d'</span>, metrics<span class="op">=</span>error_rate, path<span class="op">=</span><span class="st">'.'</span>)</span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>learn.fit_one_cycle(<span class="dv">3</span>, <span class="fl">3e-3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 
 <style>
@@ -1330,11 +1555,11 @@ Type:      method</code></pre>
 </div>
 <p>We unfreeze the model</p>
 <div id="cell-93" class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>learn.unfreeze()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>learn.unfreeze()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We also need to fine a new learning rate because we trained it with more layers, and weights that already train for 3 epochs means our previous founded learning rate isn’t appropriate anymore</p>
 <div id="cell-95" class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>learn.lr_find()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>learn.lr_find()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 
 <style>
@@ -1373,7 +1598,7 @@ Type:      method</code></pre>
 </div>
 <p>alright let’s pick 1e-4 this time</p>
 <div id="cell-97" class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a>learn.fit_one_cycle(<span class="dv">6</span>, lr_max<span class="op">=</span><span class="fl">1e-4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a>learn.fit_one_cycle(<span class="dv">6</span>, lr_max<span class="op">=</span><span class="fl">1e-4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 
 <style>
@@ -1452,7 +1677,7 @@ Type:      method</code></pre>
 </div>
 <p>Well it improve our model a lot from 0.18 to 0.06, in fact when i submit the predictions from the model we’ve built i got a pretty good result, it’s 0.93778, which improves a lot. Alright let’s see how our model train</p>
 <div id="cell-99" class="cell" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a>learn.recorder.plot_loss()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a>learn.recorder.plot_loss()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -1525,8 +1750,8 @@ Note
 <p>For the last problem, the tricks offered by NVIDIA are to leave the batchnorm layers in single precision (they don’t have many weights so it’s not a big memory challenge) and compute the loss in single precision (which means converting the last output of the model in single precision before passing it to the loss).</p>
 <p>Alright let’s apply our mixed precision strategy to our model, when we create a learner we call <code>to_fp16()</code>.</p>
 <div id="cell-106" class="cell" data-execution_count="12">
-<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a>learn <span class="op">=</span> vision_learner(dls, <span class="st">'resnet26d'</span>, metrics<span class="op">=</span>error_rate, path<span class="op">=</span><span class="st">'.'</span>).to_fp16()</span>
-<span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a>learn.lr_find(suggest_funcs<span class="op">=</span>[valley, slide])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a>learn <span class="op">=</span> vision_learner(dls, <span class="st">'resnet26d'</span>, metrics<span class="op">=</span>error_rate, path<span class="op">=</span><span class="st">'.'</span>).to_fp16()</span>
+<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a>learn.lr_find(suggest_funcs<span class="op">=</span>[valley, slide])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 
 <style>
@@ -1564,7 +1789,7 @@ Note
 </div>
 </div>
 <div id="cell-107" class="cell" data-execution_count="13">
-<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a>learn.fine_tune(<span class="dv">14</span>, <span class="fl">1e-2</span>, freeze_epochs<span class="op">=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb82"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a>learn.fine_tune(<span class="dv">14</span>, <span class="fl">1e-2</span>, freeze_epochs<span class="op">=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 
 <style>
@@ -1753,15 +1978,15 @@ Note
 </div>
 <p>Alright let’s see if it’s better, the best way to check is to submit it to kaggle we just do the same thing as above, just copy and past it here.</p>
 <div id="cell-109" class="cell" data-execution_count="14">
-<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a>ss <span class="op">=</span> pd.read_csv(path<span class="op">/</span><span class="st">'sample_submission.csv'</span>)</span>
-<span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a>tst_files <span class="op">=</span> get_image_files(path<span class="op">/</span><span class="st">'test_images'</span>).<span class="bu">sorted</span>()</span>
-<span id="cb85-3"><a href="#cb85-3" aria-hidden="true" tabindex="-1"></a>tst_dl <span class="op">=</span> dls.test_dl(tst_files)</span>
-<span id="cb85-4"><a href="#cb85-4" aria-hidden="true" tabindex="-1"></a>probs,_,idxs <span class="op">=</span> learn.get_preds(dl<span class="op">=</span>tst_dl, with_decoded<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb85-5"><a href="#cb85-5" aria-hidden="true" tabindex="-1"></a>mapping <span class="op">=</span> <span class="bu">dict</span>(<span class="bu">enumerate</span>(dls.vocab))</span>
-<span id="cb85-6"><a href="#cb85-6" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> pd.Series(idxs.numpy(), name<span class="op">=</span><span class="st">"idxs"</span>).<span class="bu">map</span>(mapping)</span>
-<span id="cb85-7"><a href="#cb85-7" aria-hidden="true" tabindex="-1"></a>ss[<span class="st">'label'</span>] <span class="op">=</span> results</span>
-<span id="cb85-8"><a href="#cb85-8" aria-hidden="true" tabindex="-1"></a>ss.to_csv(<span class="st">'subm.csv'</span>, index<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb85-9"><a href="#cb85-9" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>head subm.csv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a>ss <span class="op">=</span> pd.read_csv(path<span class="op">/</span><span class="st">'sample_submission.csv'</span>)</span>
+<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a>tst_files <span class="op">=</span> get_image_files(path<span class="op">/</span><span class="st">'test_images'</span>).<span class="bu">sorted</span>()</span>
+<span id="cb83-3"><a href="#cb83-3" aria-hidden="true" tabindex="-1"></a>tst_dl <span class="op">=</span> dls.test_dl(tst_files)</span>
+<span id="cb83-4"><a href="#cb83-4" aria-hidden="true" tabindex="-1"></a>probs,_,idxs <span class="op">=</span> learn.get_preds(dl<span class="op">=</span>tst_dl, with_decoded<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb83-5"><a href="#cb83-5" aria-hidden="true" tabindex="-1"></a>mapping <span class="op">=</span> <span class="bu">dict</span>(<span class="bu">enumerate</span>(dls.vocab))</span>
+<span id="cb83-6"><a href="#cb83-6" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> pd.Series(idxs.numpy(), name<span class="op">=</span><span class="st">"idxs"</span>).<span class="bu">map</span>(mapping)</span>
+<span id="cb83-7"><a href="#cb83-7" aria-hidden="true" tabindex="-1"></a>ss[<span class="st">'label'</span>] <span class="op">=</span> results</span>
+<span id="cb83-8"><a href="#cb83-8" aria-hidden="true" tabindex="-1"></a>ss.to_csv(<span class="st">'subm.csv'</span>, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb83-9"><a href="#cb83-9" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>head subm.csv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>/usr/local/lib/python3.10/dist-packages/fastai/callback/fp16.py:47: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
   self.autocast,self.learn.scaler,self.scales = autocast(dtype=dtype),GradScaler(**self.kwargs),L()
@@ -1820,12 +2045,12 @@ Note
 <p>Note that we can use <code>ImageDataLoader.from_folder</code> for our dataloader for make it shorter, but in general it the same as DataBlock</p>
 </div>
 </div>
-<div id="cell-113" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2025-01-02T10:58:38.001235Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-02T10:58:38.000944Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-02T10:58:38.006134Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-02T10:58:38.005191Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2025-01-02T10:58:38.001214Z&quot;}" data-trusted="true" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> train(arch, item, batch, epochs<span class="op">=</span><span class="dv">5</span>):</span>
-<span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a>  dls <span class="op">=</span> ImageDataLoaders.from_folder(train_path, seed<span class="op">=</span><span class="dv">42</span>, valid_pct<span class="op">=</span><span class="fl">0.2</span>, item_tfms<span class="op">=</span>item, batch_tfms<span class="op">=</span>batch)</span>
-<span id="cb88-3"><a href="#cb88-3" aria-hidden="true" tabindex="-1"></a>  learn <span class="op">=</span> vision_learner(dls, arch, metrics<span class="op">=</span>error_rate).to_fp16()</span>
-<span id="cb88-4"><a href="#cb88-4" aria-hidden="true" tabindex="-1"></a>  learn.fine_tune(epochs, <span class="fl">1e-2</span>)</span>
-<span id="cb88-5"><a href="#cb88-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> learn</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-113" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2025-01-02T10:58:38.001235Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-02T10:58:38.000944Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-02T10:58:38.006134Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-02T10:58:38.005191Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2025-01-02T10:58:38.001214Z&quot;}}" data-trusted="true" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> train(arch, item, batch, epochs<span class="op">=</span><span class="dv">5</span>):</span>
+<span id="cb86-2"><a href="#cb86-2" aria-hidden="true" tabindex="-1"></a>  dls <span class="op">=</span> ImageDataLoaders.from_folder(train_path, seed<span class="op">=</span><span class="dv">42</span>, valid_pct<span class="op">=</span><span class="fl">0.2</span>, item_tfms<span class="op">=</span>item, batch_tfms<span class="op">=</span>batch)</span>
+<span id="cb86-3"><a href="#cb86-3" aria-hidden="true" tabindex="-1"></a>  learn <span class="op">=</span> vision_learner(dls, arch, metrics<span class="op">=</span>error_rate).to_fp16()</span>
+<span id="cb86-4"><a href="#cb86-4" aria-hidden="true" tabindex="-1"></a>  learn.fine_tune(epochs, <span class="fl">1e-2</span>)</span>
+<span id="cb86-5"><a href="#cb86-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> learn</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>To have a better result, one way to archive this is to use a better model right, but what to choose, well Jeremy Howard has a really good <a href="https://www.kaggle.com/code/jhoward/the-best-vision-models-for-fine-tuning">notebook</a> that helps us choosing a appropriate architecture for our model based on what kind of problem you’re dealing, the GPU memory, error rate, time,… But basically there are two key to choose the right one:</p>
 <ol type="1">
@@ -1833,12 +2058,12 @@ Note
 <li>How large they are.</li>
 </ol>
 <p>Then it turned out that when it comes to computer vision model <code>convnext</code> model is one of the best, if not the best till now so let’s give it a try shall we?</p>
-<div id="cell-115" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2025-01-02T10:58:39.060620Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-02T10:58:39.060322Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-02T10:58:39.064862Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-02T10:58:39.063867Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2025-01-02T10:58:39.060596Z&quot;}" data-trusted="true" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a>arch <span class="op">=</span> <span class="st">"convnext_small_in22k"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-115" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2025-01-02T10:58:39.060620Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-02T10:58:39.060322Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-02T10:58:39.064862Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-02T10:58:39.063867Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2025-01-02T10:58:39.060596Z&quot;}}" data-trusted="true" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a>arch <span class="op">=</span> <span class="st">"convnext_small_in22k"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>From now on, if you not sure what architecture to use, just use this, right. And of course we have different version of <code>convnext</code> we have tinny, small, large… it will take more time to train but of course lower error rate. alright let’s see how it will go</p>
 <div id="cell-117" class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb90"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a>learn <span class="op">=</span> train(arch, item<span class="op">=</span>Resize(<span class="dv">192</span>,method<span class="op">=</span><span class="st">"squish"</span>), batch<span class="op">=</span>aug_transforms(size<span class="op">=</span><span class="dv">128</span>, min_scale<span class="op">=</span><span class="fl">0.75</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a>learn <span class="op">=</span> train(arch, item<span class="op">=</span>Resize(<span class="dv">192</span>,method<span class="op">=</span><span class="st">"squish"</span>), batch<span class="op">=</span>aug_transforms(size<span class="op">=</span><span class="dv">128</span>, min_scale<span class="op">=</span><span class="fl">0.75</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>/usr/local/lib/python3.10/dist-packages/timm/models/_factory.py:117: UserWarning: Mapping deprecated model name convnext_small_in22k to current convnext_small.fb_in22k.
   model = create_fn(</code></pre>
@@ -1969,9 +2194,9 @@ Note
 <div class="no-row-height column-margin column-container"><div class="">
 <p>padding is interesting because it’s the only way of pre-processing images which doesn’t distort them and doesn’t loose anything, if you crop you lose things, if you squish you distort things</p>
 </div></div><div id="cell-120" class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a>dls <span class="op">=</span> ImageDataLoaders.from_folder(train_path, valid_pct<span class="op">=</span><span class="fl">0.2</span>, seed<span class="op">=</span><span class="dv">42</span>,</span>
-<span id="cb93-2"><a href="#cb93-2" aria-hidden="true" tabindex="-1"></a>    item_tfms<span class="op">=</span>Resize(<span class="dv">480</span>, method<span class="op">=</span>ResizeMethod.Pad, pad_mode<span class="op">=</span>PadMode.Zeros))</span>
-<span id="cb93-3"><a href="#cb93-3" aria-hidden="true" tabindex="-1"></a>dls.show_batch(max_n<span class="op">=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a>dls <span class="op">=</span> ImageDataLoaders.from_folder(train_path, valid_pct<span class="op">=</span><span class="fl">0.2</span>, seed<span class="op">=</span><span class="dv">42</span>,</span>
+<span id="cb91-2"><a href="#cb91-2" aria-hidden="true" tabindex="-1"></a>    item_tfms<span class="op">=</span>Resize(<span class="dv">480</span>, method<span class="op">=</span>ResizeMethod.Pad, pad_mode<span class="op">=</span>PadMode.Zeros))</span>
+<span id="cb91-3"><a href="#cb91-3" aria-hidden="true" tabindex="-1"></a>dls.show_batch(max_n<span class="op">=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -1980,8 +2205,8 @@ Note
 </div>
 </div>
 </div>
-<div id="cell-121" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2025-01-02T09:53:36.244933Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-02T09:53:36.244542Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-02T10:03:20.563150Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-02T10:03:20.562113Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2025-01-02T09:53:36.244902Z&quot;}" data-trusted="true" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb94"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a>learn <span class="op">=</span> train(arch, item<span class="op">=</span>Resize((<span class="dv">480</span>, <span class="dv">360</span>), method<span class="op">=</span>ResizeMethod.Pad, pad_mode<span class="op">=</span>PadMode.Zeros), batch<span class="op">=</span>aug_transforms(size<span class="op">=</span>(<span class="dv">256</span>,<span class="dv">192</span>), min_scale<span class="op">=</span><span class="fl">0.75</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-121" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2025-01-02T09:53:36.244933Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-02T09:53:36.244542Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-02T10:03:20.563150Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-02T10:03:20.562113Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2025-01-02T09:53:36.244902Z&quot;}}" data-trusted="true" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb92"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a>learn <span class="op">=</span> train(arch, item<span class="op">=</span>Resize((<span class="dv">480</span>, <span class="dv">360</span>), method<span class="op">=</span>ResizeMethod.Pad, pad_mode<span class="op">=</span>PadMode.Zeros), batch<span class="op">=</span>aug_transforms(size<span class="op">=</span>(<span class="dv">256</span>,<span class="dv">192</span>), min_scale<span class="op">=</span><span class="fl">0.75</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>/usr/local/lib/python3.10/dist-packages/timm/models/_factory.py:117: UserWarning: Mapping deprecated model name convnext_small_in22k to current convnext_small.fb_in22k.
   model = create_fn(</code></pre>
@@ -2110,10 +2335,10 @@ Note
 <section id="test-time-augmentation" class="level3">
 <h3 class="anchored" data-anchor-id="test-time-augmentation">Test Time Augmentation</h3>
 <p>Well first let’s look how can we calculate the error rate manually with our normal prediction</p>
-<div id="cell-123" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2025-01-02T10:03:54.927689Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-02T10:03:54.927216Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-02T10:04:07.727666Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-02T10:04:07.726181Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2025-01-02T10:03:54.927654Z&quot;}" data-trusted="true" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb97"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a>valid <span class="op">=</span> learn.dls.valid</span>
-<span id="cb97-2"><a href="#cb97-2" aria-hidden="true" tabindex="-1"></a>preds,targs <span class="op">=</span> learn.get_preds(dl<span class="op">=</span>valid)</span>
-<span id="cb97-3"><a href="#cb97-3" aria-hidden="true" tabindex="-1"></a>error_rate(preds, targs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-123" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2025-01-02T10:03:54.927689Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-02T10:03:54.927216Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-02T10:04:07.727666Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-02T10:04:07.726181Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2025-01-02T10:03:54.927654Z&quot;}}" data-trusted="true" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb95"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a>valid <span class="op">=</span> learn.dls.valid</span>
+<span id="cb95-2"><a href="#cb95-2" aria-hidden="true" tabindex="-1"></a>preds,targs <span class="op">=</span> learn.get_preds(dl<span class="op">=</span>valid)</span>
+<span id="cb95-3"><a href="#cb95-3" aria-hidden="true" tabindex="-1"></a>error_rate(preds, targs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 
 <style>
@@ -2140,8 +2365,8 @@ Note
 </div>
 </div>
 <p>Well that actually the previous error-rate we got above, so what i’m doing here? well let’s take a look at the images blow</p>
-<div id="cell-125" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2025-01-02T10:04:10.629694Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-02T10:04:10.629391Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-02T10:04:11.977555Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-02T10:04:11.976421Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2025-01-02T10:04:10.629672Z&quot;}" data-trusted="true" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb99"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a>learn.dls.train.show_batch(max_n<span class="op">=</span><span class="dv">6</span>, unique<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-125" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2025-01-02T10:04:10.629694Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-02T10:04:10.629391Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-02T10:04:11.977555Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-02T10:04:11.976421Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2025-01-02T10:04:10.629672Z&quot;}}" data-trusted="true" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb97"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a>learn.dls.train.show_batch(max_n<span class="op">=</span><span class="dv">6</span>, unique<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -2151,8 +2376,8 @@ Note
 </div>
 </div>
 <p>Notice that, those are indeed the same picture but it gone through the data augmentation so sometimes it a bit darker, a bit lighter, sometimes it flipped horizontally, some times int zoom into a slightly different section, sometimes it rotate a little bit but those are all the same picture. So the idea of TTA(Test Time Augmentation) is maybe our model would like some of these version better than the others even the original image, so what we can do is we can pass all of these to our model get the prediction of all of them and take the average right, so if you read my previous blog, it’s indeed the mini version of bagging approach. In fastai you can archive this by using the <code>tta</code> in our <code>learn</code> object</p>
-<div id="cell-127" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2025-01-02T10:04:12.249981Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-02T10:04:12.249642Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-02T10:05:16.237725Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-02T10:05:16.236670Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2025-01-02T10:04:12.249954Z&quot;}" data-trusted="true" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb100"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a>tta_preds,_ <span class="op">=</span> learn.tta(dl<span class="op">=</span>valid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-127" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2025-01-02T10:04:12.249981Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-02T10:04:12.249642Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-02T10:05:16.237725Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-02T10:05:16.236670Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2025-01-02T10:04:12.249954Z&quot;}}" data-trusted="true" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb98"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a>tta_preds,_ <span class="op">=</span> learn.tta(dl<span class="op">=</span>valid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 
 <style>
@@ -2201,15 +2426,15 @@ Note
 
 </div>
 </div>
-<div id="cell-128" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2025-01-02T10:05:22.943221Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-02T10:05:22.942752Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-02T10:05:22.951969Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-02T10:05:22.951021Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2025-01-02T10:05:22.943184Z&quot;}" data-trusted="true" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb101"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a>error_rate(tta_preds, targs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-128" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2025-01-02T10:05:22.943221Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-02T10:05:22.942752Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-02T10:05:22.951969Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-02T10:05:22.951021Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2025-01-02T10:05:22.943184Z&quot;}}" data-trusted="true" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb99"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a>error_rate(tta_preds, targs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="11">
 <pre><code>TensorBase(0.0259)</code></pre>
 </div>
 </div>
 <p>See, we got better result like 10% better our previous. Alright let’s train it with more epochs but this time let’s just make a bigger image and something really interesting is that our images don’t have to be square they just need to be in the same size right, it can be rectangular, having said that all of our original images are nearly 640x480, so we just need to pick one has the same aspect ratio for example 256x192 is good</p>
-<div id="cell-130" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2025-01-02T10:58:44.236186Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-02T10:58:44.235876Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-02T11:17:32.223793Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-02T11:17:32.222832Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2025-01-02T10:58:44.236162Z&quot;}" data-trusted="true" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb103"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a>learn <span class="op">=</span> train(arch, epochs<span class="op">=</span><span class="dv">12</span>, item<span class="op">=</span>Resize((<span class="dv">480</span>, <span class="dv">360</span>), method<span class="op">=</span>ResizeMethod.Pad, pad_mode<span class="op">=</span>PadMode.Zeros), batch<span class="op">=</span>aug_transforms(size<span class="op">=</span>(<span class="dv">256</span>,<span class="dv">192</span>), min_scale<span class="op">=</span><span class="fl">0.75</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-130" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2025-01-02T10:58:44.236186Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-02T10:58:44.235876Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-02T11:17:32.223793Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-02T11:17:32.222832Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2025-01-02T10:58:44.236162Z&quot;}}" data-trusted="true" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb101"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a>learn <span class="op">=</span> train(arch, epochs<span class="op">=</span><span class="dv">12</span>, item<span class="op">=</span>Resize((<span class="dv">480</span>, <span class="dv">360</span>), method<span class="op">=</span>ResizeMethod.Pad, pad_mode<span class="op">=</span>PadMode.Zeros), batch<span class="op">=</span>aug_transforms(size<span class="op">=</span>(<span class="dv">256</span>,<span class="dv">192</span>), min_scale<span class="op">=</span><span class="fl">0.75</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>/usr/local/lib/python3.10/dist-packages/timm/models/_factory.py:117: UserWarning: Mapping deprecated model name convnext_small_in22k to current convnext_small.fb_in22k.
   model = create_fn(</code></pre>
@@ -2384,9 +2609,9 @@ Note
 </div>
 </div>
 <p>Alright our error_rate down to 2.3% which is pretty good, now, let’s what our error_rate when using tta</p>
-<div id="cell-132" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2025-01-02T11:18:00.693869Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-02T11:18:00.693464Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-02T11:19:00.635588Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-02T11:19:00.634596Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2025-01-02T11:18:00.693833Z&quot;}" data-trusted="true" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb106"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a>tta_preds,targs <span class="op">=</span> learn.tta(dl<span class="op">=</span>learn.dls.valid)</span>
-<span id="cb106-2"><a href="#cb106-2" aria-hidden="true" tabindex="-1"></a>error_rate(tta_preds, targs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-132" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2025-01-02T11:18:00.693869Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-02T11:18:00.693464Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-02T11:19:00.635588Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-02T11:19:00.634596Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2025-01-02T11:18:00.693833Z&quot;}}" data-trusted="true" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb104"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a>tta_preds,targs <span class="op">=</span> learn.tta(dl<span class="op">=</span>learn.dls.valid)</span>
+<span id="cb104-2"><a href="#cb104-2" aria-hidden="true" tabindex="-1"></a>error_rate(tta_preds, targs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 
 <style>
@@ -2439,17 +2664,17 @@ Note
 </div>
 </div>
 <p>Oops! it’s worse this time, that’s strange, i think it won’t always produce a better error_rate, but maybe it will work well in practice i guess, alright forget about it, let’s submit it</p>
-<div id="cell-134" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2025-01-02T11:19:00.637385Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-02T11:19:00.637036Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-02T11:20:43.617429Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-02T11:20:43.616028Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2025-01-02T11:19:00.637353Z&quot;}" data-trusted="true" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb108"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb108-1"><a href="#cb108-1" aria-hidden="true" tabindex="-1"></a>ss <span class="op">=</span> pd.read_csv(path<span class="op">/</span><span class="st">'sample_submission.csv'</span>)</span>
-<span id="cb108-2"><a href="#cb108-2" aria-hidden="true" tabindex="-1"></a>tst_files <span class="op">=</span> get_image_files(path<span class="op">/</span><span class="st">'test_images'</span>).<span class="bu">sorted</span>()</span>
-<span id="cb108-3"><a href="#cb108-3" aria-hidden="true" tabindex="-1"></a>tst_dl <span class="op">=</span> learn.dls.test_dl(tst_files)</span>
-<span id="cb108-4"><a href="#cb108-4" aria-hidden="true" tabindex="-1"></a>preds,_ <span class="op">=</span> learn.tta(dl<span class="op">=</span>tst_dl)</span>
-<span id="cb108-5"><a href="#cb108-5" aria-hidden="true" tabindex="-1"></a>idxs <span class="op">=</span> preds.argmax(dim<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb108-6"><a href="#cb108-6" aria-hidden="true" tabindex="-1"></a>vocab <span class="op">=</span> np.array(learn.dls.vocab)</span>
-<span id="cb108-7"><a href="#cb108-7" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> pd.Series(vocab[idxs], name<span class="op">=</span><span class="st">"idxs"</span>)</span>
-<span id="cb108-8"><a href="#cb108-8" aria-hidden="true" tabindex="-1"></a>ss[<span class="st">'label'</span>] <span class="op">=</span> results</span>
-<span id="cb108-9"><a href="#cb108-9" aria-hidden="true" tabindex="-1"></a>ss.to_csv(<span class="st">'subm.csv'</span>, index<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb108-10"><a href="#cb108-10" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>head subm.csv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-134" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2025-01-02T11:19:00.637385Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-02T11:19:00.637036Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-02T11:20:43.617429Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-02T11:20:43.616028Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2025-01-02T11:19:00.637353Z&quot;}}" data-trusted="true" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb106"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a>ss <span class="op">=</span> pd.read_csv(path<span class="op">/</span><span class="st">'sample_submission.csv'</span>)</span>
+<span id="cb106-2"><a href="#cb106-2" aria-hidden="true" tabindex="-1"></a>tst_files <span class="op">=</span> get_image_files(path<span class="op">/</span><span class="st">'test_images'</span>).<span class="bu">sorted</span>()</span>
+<span id="cb106-3"><a href="#cb106-3" aria-hidden="true" tabindex="-1"></a>tst_dl <span class="op">=</span> learn.dls.test_dl(tst_files)</span>
+<span id="cb106-4"><a href="#cb106-4" aria-hidden="true" tabindex="-1"></a>preds,_ <span class="op">=</span> learn.tta(dl<span class="op">=</span>tst_dl)</span>
+<span id="cb106-5"><a href="#cb106-5" aria-hidden="true" tabindex="-1"></a>idxs <span class="op">=</span> preds.argmax(dim<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb106-6"><a href="#cb106-6" aria-hidden="true" tabindex="-1"></a>vocab <span class="op">=</span> np.array(learn.dls.vocab)</span>
+<span id="cb106-7"><a href="#cb106-7" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> pd.Series(vocab[idxs], name<span class="op">=</span><span class="st">"idxs"</span>)</span>
+<span id="cb106-8"><a href="#cb106-8" aria-hidden="true" tabindex="-1"></a>ss[<span class="st">'label'</span>] <span class="op">=</span> results</span>
+<span id="cb106-9"><a href="#cb106-9" aria-hidden="true" tabindex="-1"></a>ss.to_csv(<span class="st">'subm.csv'</span>, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb106-10"><a href="#cb106-10" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>head subm.csv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>/usr/local/lib/python3.10/dist-packages/fastai/callback/fp16.py:47: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
   self.autocast,self.learn.scaler,self.scales = autocast(dtype=dtype),GradScaler(**self.kwargs),L()
@@ -2536,432 +2761,433 @@ Note
 <li id="fn8"><p>Number underflow occurs when a computation results in a number too small for computer to represent accurately, often leading to be rounded to 0<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main> <!-- /main -->
+<script type="text/javascript">
+// Enhance theme switching experience
+document.addEventListener('DOMContentLoaded', function() {
+  // Add smooth transitions to all elements when theme changes
+  const style = document.createElement('style');
+  style.textContent = `
+* {
+transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
+}
+
+.navbar, .card, .table, .btn {
+transition: all 0.3s ease !important;
+}
+`;
+  document.head.appendChild(style);
+
+  // Enhance code copy functionality
+  const codeBlocks = document.querySelectorAll('pre code');
+  codeBlocks.forEach(function(codeBlock) {
+    codeBlock.parentElement.style.position = 'relative';
+  });
+
+  // Add fade-in animation for post listings
+  const posts = document.querySelectorAll('.post-listing .card');
+  posts.forEach(function(post, index) {
+    post.style.opacity = '0';
+    post.style.transform = 'translateY(20px)';
+    setTimeout(() => {
+      post.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+      post.style.opacity = '1';
+      post.style.transform = 'translateY(0)';
+    }, index * 100);
+  });
+
+  // Smooth scroll for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    });
+  });
+
+  // Enhanced table styling
+  const tables = document.querySelectorAll('table');
+  tables.forEach(function(table) {
+    if (!table.classList.contains('table')) {
+      table.classList.add('table', 'table-striped');
+    }
+
+    // Wrap tables in responsive container
+    if (!table.parentElement.classList.contains('table-responsive')) {
+      const wrapper = document.createElement('div');
+      wrapper.classList.add('table-responsive');
+      table.parentNode.insertBefore(wrapper, table);
+      wrapper.appendChild(table);
+    }
+  });
+
+  // Replace keyboard shortcuts on non-Mac platforms
+  const kPlatformMac = typeof navigator !== 'undefined' ? /Mac/.test(navigator.platform) : false;
+  if (!kPlatformMac) {
+    var kbds = document.querySelectorAll("kbd");
+    kbds.forEach(function(kbd) {
+      kbd.innerHTML = kbd.innerHTML.replace(/⌘/g, '⌃');
+    });
+  }
+
+  // Add reading progress indicator
+  function addReadingProgress() {
+    const article = document.querySelector('main article, main .content, .post-content');
+    if (article) {
+      const progressBar = document.createElement('div');
+      progressBar.style.cssText = `
+position: fixed;
+top: 0;
+left: 0;
+width: 0%;
+height: 3px;
+background: var(--bs-primary);
+z-index: 1000;
+transition: width 0.3s ease;
+`;
+      document.body.appendChild(progressBar);
+
+      window.addEventListener('scroll', function() {
+        const scrolled = window.scrollY;
+        const height = article.offsetHeight - window.innerHeight;
+        const progress = Math.min(scrolled / height * 100, 100);
+        progressBar.style.width = progress + '%';
+      });
+    }
+  }
+
+  // Only add reading progress on individual blog posts
+  if (document.querySelector('.post-title') || document.querySelector('article')) {
+    addReadingProgress();
+  }
+});
+
+// Theme preference detection and saving
+(function() {
+  // Save theme preference to localStorage
+  const themeToggle = document.querySelector('[data-bs-toggle="color-scheme"]');
+  if (themeToggle) {
+    themeToggle.addEventListener('click', function() {
+      setTimeout(() => {
+        const currentTheme = document.documentElement.getAttribute('data-bs-theme');
+        localStorage.setItem('quarto-color-scheme', currentTheme);
+      }, 100);
+    });
+  }
+
+  // Load saved theme preference
+  const savedTheme = localStorage.getItem('quarto-color-scheme');
+  if (savedTheme) {
+    document.documentElement.setAttribute('data-bs-theme', savedTheme);
+  }
+})();
+</script>
+
 <script id="quarto-html-after-body" type="application/javascript">
-window.document.addEventListener("DOMContentLoaded", function (event) {
-  const toggleBodyColorMode = (bsSheetEl) => {
-    const mode = bsSheetEl.getAttribute("data-mode");
-    const bodyEl = window.document.querySelector("body");
-    if (mode === "dark") {
-      bodyEl.classList.add("quarto-dark");
-      bodyEl.classList.remove("quarto-light");
-    } else {
-      bodyEl.classList.add("quarto-light");
-      bodyEl.classList.remove("quarto-dark");
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
     }
-  }
-  const toggleBodyColorPrimary = () => {
-    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
-    if (bsSheetEl) {
-      toggleBodyColorMode(bsSheetEl);
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
     }
-  }
-  toggleBodyColorPrimary();  
-  const disableStylesheet = (stylesheets) => {
-    for (let i=0; i < stylesheets.length; i++) {
-      const stylesheet = stylesheets[i];
-      stylesheet.rel = 'prefetch';
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
     }
-  }
-  const enableStylesheet = (stylesheets) => {
-    for (let i=0; i < stylesheets.length; i++) {
-      const stylesheet = stylesheets[i];
-      stylesheet.rel = 'stylesheet';
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
     }
-  }
-  const manageTransitions = (selector, allowTransitions) => {
-    const els = window.document.querySelectorAll(selector);
-    for (let i=0; i < els.length; i++) {
-      const el = els[i];
-      if (allowTransitions) {
-        el.classList.remove('notransition');
-      } else {
-        el.classList.add('notransition');
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
       }
     }
-  }
-  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
-    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
-    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
-    let newTheme = '';
-    if(darkModeDefault) {
-      newTheme = isAlternate ? baseTheme : alternateTheme;
-    } else {
-      newTheme = isAlternate ? alternateTheme : baseTheme;
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
     }
-    const changeGiscusTheme = () => {
-      // From: https://github.com/giscus/giscus/issues/336
-      const sendMessage = (message) => {
-        const iframe = document.querySelector('iframe.giscus-frame');
-        if (!iframe) return;
-        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/bhdai\.github\.io\/blog\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
-      sendMessage({
-        setConfig: {
-          theme: newTheme
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
         }
       });
     }
-    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
-    if (isGiscussLoaded) {
-      changeGiscusTheme();
-    }
-  }
-  const toggleColorMode = (alternate) => {
-    // Switch the stylesheets
-    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
-    manageTransitions('#quarto-margin-sidebar .nav-link', false);
-    if (alternate) {
-      enableStylesheet(alternateStylesheets);
-      for (const sheetNode of alternateStylesheets) {
-        if (sheetNode.id === "quarto-bootstrap") {
-          toggleBodyColorMode(sheetNode);
-        }
-      }
-    } else {
-      disableStylesheet(alternateStylesheets);
-      toggleBodyColorPrimary();
-    }
-    manageTransitions('#quarto-margin-sidebar .nav-link', true);
-    // Switch the toggles
-    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
-    for (let i=0; i < toggles.length; i++) {
-      const toggle = toggles[i];
-      if (toggle) {
-        if (alternate) {
-          toggle.classList.add("alternate");     
-        } else {
-          toggle.classList.remove("alternate");
-        }
-      }
-    }
-    // Hack to workaround the fact that safari doesn't
-    // properly recolor the scrollbar when toggling (#1455)
-    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
-      manageTransitions("body", false);
-      window.scrollTo(0, 1);
-      setTimeout(() => {
-        window.scrollTo(0, 0);
-        manageTransitions("body", true);
-      }, 40);  
-    }
-  }
-  const isFileUrl = () => { 
-    return window.location.protocol === 'file:';
-  }
-  const hasAlternateSentinel = () => {  
-    let styleSentinel = getColorSchemeSentinel();
-    if (styleSentinel !== null) {
-      return styleSentinel === "alternate";
-    } else {
-      return false;
-    }
-  }
-  const setStyleSentinel = (alternate) => {
-    const value = alternate ? "alternate" : "default";
-    if (!isFileUrl()) {
-      window.localStorage.setItem("quarto-color-scheme", value);
-    } else {
-      localAlternateSentinel = value;
-    }
-  }
-  const getColorSchemeSentinel = () => {
-    if (!isFileUrl()) {
-      const storageValue = window.localStorage.getItem("quarto-color-scheme");
-      return storageValue != null ? storageValue : localAlternateSentinel;
-    } else {
-      return localAlternateSentinel;
-    }
-  }
-  const darkModeDefault = false;
-  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
-  // Dark / light mode switch
-  window.quartoToggleColorScheme = () => {
-    // Read the current dark / light value 
-    let toAlternate = !hasAlternateSentinel();
-    toggleColorMode(toAlternate);
-    setStyleSentinel(toAlternate);
-    toggleGiscusIfUsed(toAlternate, darkModeDefault);
-  };
-  // Ensure there is a toggle, if there isn't float one in the top right
-  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
-    const a = window.document.createElement('a');
-    a.classList.add('top-right');
-    a.classList.add('quarto-color-scheme-toggle');
-    a.href = "";
-    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
-    const i = window.document.createElement("i");
-    i.classList.add('bi');
-    a.appendChild(i);
-    window.document.body.appendChild(a);
-  }
-  // Switch to dark mode if need be
-  if (hasAlternateSentinel()) {
-    toggleColorMode(true);
-  } else {
-    toggleColorMode(false);
-  }
-  const icon = "";
-  const anchorJS = new window.AnchorJS();
-  anchorJS.options = {
-    placement: 'right',
-    icon: icon
-  };
-  anchorJS.add('.anchored');
-  const isCodeAnnotation = (el) => {
-    for (const clz of el.classList) {
-      if (clz.startsWith('code-annotation-')) {                     
-        return true;
-      }
-    }
-    return false;
-  }
-  const onCopySuccess = function(e) {
-    // button target
-    const button = e.trigger;
-    // don't keep focus
-    button.blur();
-    // flash "checked"
-    button.classList.add('code-copy-button-checked');
-    var currentTitle = button.getAttribute("title");
-    button.setAttribute("title", "Copied!");
-    let tooltip;
-    if (window.bootstrap) {
-      button.setAttribute("data-bs-toggle", "tooltip");
-      button.setAttribute("data-bs-placement", "left");
-      button.setAttribute("data-bs-title", "Copied!");
-      tooltip = new bootstrap.Tooltip(button, 
-        { trigger: "manual", 
-          customClass: "code-copy-button-tooltip",
-          offset: [0, -8]});
-      tooltip.show();    
-    }
-    setTimeout(function() {
-      if (tooltip) {
-        tooltip.hide();
-        button.removeAttribute("data-bs-title");
-        button.removeAttribute("data-bs-toggle");
-        button.removeAttribute("data-bs-placement");
-      }
-      button.setAttribute("title", currentTitle);
-      button.classList.remove('code-copy-button-checked');
-    }, 1000);
-    // clear code selection
-    e.clearSelection();
-  }
-  const getTextToCopy = function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-  }
-  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
-    text: getTextToCopy
-  });
-  clipboard.on('success', onCopySuccess);
-  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
-      text: getTextToCopy,
-      container: window.document.getElementById('quarto-embedded-source-code-modal')
-    });
-    clipboardModal.on('success', onCopySuccess);
-  }
-  const viewSource = window.document.getElementById('quarto-view-source') ||
-                     window.document.getElementById('quarto-code-tools-source');
-  if (viewSource) {
-    const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
-    viewSource.addEventListener("click", function(e) {
-      if (sourceUrl) {
-        // rstudio viewer pane
-        if (/\bcapabilities=\b/.test(window.location)) {
-          window.open(sourceUrl);
-        } else {
-          window.location.href = sourceUrl;
-        }
-      } else {
-        const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
-        modal.show();
-      }
-      return false;
-    });
-  }
-  function toggleCodeHandler(show) {
-    return function(e) {
-      const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
-      for (let i=0; i<detailsSrc.length; i++) {
-        const details = detailsSrc[i].parentElement;
-        if (show) {
-          details.open = true;
-        } else {
-          details.removeAttribute("open");
-        }
-      }
-      const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
-      const fromCls = show ? "hidden" : "unhidden";
-      const toCls = show ? "unhidden" : "hidden";
-      for (let i=0; i<cellCodeDivs.length; i++) {
-        const codeDiv = cellCodeDivs[i];
-        if (codeDiv.classList.contains(fromCls)) {
-          codeDiv.classList.remove(fromCls);
-          codeDiv.classList.add(toCls);
-        } 
-      }
-      return false;
-    }
-  }
-  const hideAllCode = window.document.getElementById("quarto-hide-all-code");
-  if (hideAllCode) {
-    hideAllCode.addEventListener("click", toggleCodeHandler(false));
-  }
-  const showAllCode = window.document.getElementById("quarto-show-all-code");
-  if (showAllCode) {
-    showAllCode.addEventListener("click", toggleCodeHandler(true));
-  }
-    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-    var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp("https:\/\/buidai123\.github\.io\/blog\/");
-    var isInternal = (href) => {
-        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
-    }
-    // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
-    for (var i=0; i<links.length; i++) {
-      const link = links[i];
-      if (!isInternal(link.href)) {
-        // undo the damage that might have been done by quarto-nav.js in the case of
-        // links that we want to consider external
-        if (link.dataset.originalHref !== undefined) {
-          link.href = link.dataset.originalHref;
-        }
-      }
-    }
-  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
-    const config = {
-      allowHTML: true,
-      maxWidth: 500,
-      delay: 100,
-      arrow: false,
-      appendTo: function(el) {
-          return el.parentElement;
-      },
-      interactive: true,
-      interactiveBorder: 10,
-      theme: 'quarto',
-      placement: 'bottom-start',
-    };
-    if (contentFn) {
-      config.content = contentFn;
-    }
-    if (onTriggerFn) {
-      config.onTrigger = onTriggerFn;
-    }
-    if (onUntriggerFn) {
-      config.onUntrigger = onUntriggerFn;
-    }
-    window.tippy(el, config); 
-  }
-  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
-  for (var i=0; i<noterefs.length; i++) {
-    const ref = noterefs[i];
-    tippyHover(ref, function() {
-      // use id or data attribute instead here
-      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
-      try { href = new URL(href).hash; } catch {}
-      const id = href.replace(/^#\/?/, "");
-      const note = window.document.getElementById(id);
-      if (note) {
-        return note.innerHTML;
-      } else {
-        return "";
-      }
-    });
-  }
-  const xrefs = window.document.querySelectorAll('a.quarto-xref');
-  const processXRef = (id, note) => {
-    // Strip column container classes
-    const stripColumnClz = (el) => {
-      el.classList.remove("page-full", "page-columns");
-      if (el.children) {
-        for (const child of el.children) {
-          stripColumnClz(child);
-        }
-      }
-    }
-    stripColumnClz(note)
-    if (id === null || id.startsWith('sec-')) {
-      // Special case sections, only their first couple elements
-      const container = document.createElement("div");
-      if (note.children && note.children.length > 2) {
-        container.appendChild(note.children[0].cloneNode(true));
-        for (let i = 1; i < note.children.length; i++) {
-          const child = note.children[i];
-          if (child.tagName === "P" && child.innerText === "") {
-            continue;
-          } else {
-            container.appendChild(child.cloneNode(true));
-            break;
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
           }
         }
-        if (window.Quarto?.typesetMath) {
-          window.Quarto.typesetMath(container);
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
         }
-        return container.innerHTML
       } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
         if (window.Quarto?.typesetMath) {
           window.Quarto.typesetMath(note);
         }
-        return note.innerHTML;
-      }
-    } else {
-      // Remove any anchor links if they are present
-      const anchorLink = note.querySelector('a.anchorjs-link');
-      if (anchorLink) {
-        anchorLink.remove();
-      }
-      if (window.Quarto?.typesetMath) {
-        window.Quarto.typesetMath(note);
-      }
-      if (note.classList.contains("callout")) {
-        return note.outerHTML;
-      } else {
-        return note.innerHTML;
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
       }
     }
-  }
-  for (var i=0; i<xrefs.length; i++) {
-    const xref = xrefs[i];
-    tippyHover(xref, undefined, function(instance) {
-      instance.disable();
-      let url = xref.getAttribute('href');
-      let hash = undefined; 
-      if (url.startsWith('#')) {
-        hash = url;
-      } else {
-        try { hash = new URL(url).hash; } catch {}
-      }
-      if (hash) {
-        const id = hash.replace(/^#\/?/, "");
-        const note = window.document.getElementById(id);
-        if (note !== null) {
-          try {
-            const html = processXRef(id, note.cloneNode(true));
-            instance.setContent(html);
-          } finally {
-            instance.enable();
-            instance.show();
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
           }
         } else {
-          // See if we can fetch this
-          fetch(url.split('#')[0])
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
           .then(res => res.text())
           .then(html => {
             const parser = new DOMParser();
             const htmlDoc = parser.parseFromString(html, "text/html");
-            const note = htmlDoc.getElementById(id);
+            const note = htmlDoc.querySelector('main.content');
             if (note !== null) {
-              const html = processXRef(id, note);
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
               instance.setContent(html);
             } 
           }).finally(() => {
@@ -2969,185 +3195,161 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             instance.show();
           });
         }
-      } else {
-        // See if we can fetch a full url (with no hash to target)
-        // This is a special case and we should probably do some content thinning / targeting
-        fetch(url)
-        .then(res => res.text())
-        .then(html => {
-          const parser = new DOMParser();
-          const htmlDoc = parser.parseFromString(html, "text/html");
-          const note = htmlDoc.querySelector('main.content');
-          if (note !== null) {
-            // This should only happen for chapter cross references
-            // (since there is no id in the URL)
-            // remove the first header
-            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
-              note.children[0].remove();
-            }
-            const html = processXRef(null, note);
-            instance.setContent(html);
-          } 
-        }).finally(() => {
-          instance.enable();
-          instance.show();
-        });
-      }
-    }, function(instance) {
-    });
-  }
-      let selectedAnnoteEl;
-      const selectorForAnnotation = ( cell, annotation) => {
-        let cellAttr = 'data-code-cell="' + cell + '"';
-        let lineAttr = 'data-code-annotation="' +  annotation + '"';
-        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
-        return selector;
-      }
-      const selectCodeLines = (annoteEl) => {
-        const doc = window.document;
-        const targetCell = annoteEl.getAttribute("data-target-cell");
-        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
-        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
-        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
-        const lineIds = lines.map((line) => {
-          return targetCell + "-" + line;
-        })
-        let top = null;
-        let height = null;
-        let parent = null;
-        if (lineIds.length > 0) {
-            //compute the position of the single el (top and bottom and make a div)
-            const el = window.document.getElementById(lineIds[0]);
-            top = el.offsetTop;
-            height = el.offsetHeight;
-            parent = el.parentElement.parentElement;
-          if (lineIds.length > 1) {
-            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-            height = bottom - top;
-          }
-          if (top !== null && height !== null && parent !== null) {
-            // cook up a div (if necessary) and position it 
-            let div = window.document.getElementById("code-annotation-line-highlight");
-            if (div === null) {
-              div = window.document.createElement("div");
-              div.setAttribute("id", "code-annotation-line-highlight");
-              div.style.position = 'absolute';
-              parent.appendChild(div);
-            }
-            div.style.top = top - 2 + "px";
-            div.style.height = height + 4 + "px";
-            div.style.left = 0;
-            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-            if (gutterDiv === null) {
-              gutterDiv = window.document.createElement("div");
-              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-              gutterDiv.style.position = 'absolute';
-              const codeCell = window.document.getElementById(targetCell);
-              const gutter = codeCell.querySelector('.code-annotation-gutter');
-              gutter.appendChild(gutterDiv);
-            }
-            gutterDiv.style.top = top - 2 + "px";
-            gutterDiv.style.height = height + 4 + "px";
-          }
-          selectedAnnoteEl = annoteEl;
-        }
-      };
-      const unselectCodeLines = () => {
-        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
-        elementsIds.forEach((elId) => {
-          const div = window.document.getElementById(elId);
-          if (div) {
-            div.remove();
-          }
-        });
-        selectedAnnoteEl = undefined;
-      };
-        // Handle positioning of the toggle
-    window.addEventListener(
-      "resize",
-      throttle(() => {
-        elRect = undefined;
-        if (selectedAnnoteEl) {
-          selectCodeLines(selectedAnnoteEl);
-        }
-      }, 10)
-    );
-    function throttle(fn, ms) {
-    let throttle = false;
-    let timer;
-      return (...args) => {
-        if(!throttle) { // first call gets through
-            fn.apply(this, args);
-            throttle = true;
-        } else { // all the others get throttled
-            if(timer) clearTimeout(timer); // cancel #2
-            timer = setTimeout(() => {
-              fn.apply(this, args);
-              timer = throttle = false;
-            }, ms);
-        }
-      };
-    }
-      // Attach click handler to the DT
-      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
-      for (const annoteDlNode of annoteDls) {
-        annoteDlNode.addEventListener('click', (event) => {
-          const clickedEl = event.target;
-          if (clickedEl !== selectedAnnoteEl) {
-            unselectCodeLines();
-            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
-            if (activeEl) {
-              activeEl.classList.remove('code-annotation-active');
-            }
-            selectCodeLines(clickedEl);
-            clickedEl.classList.add('code-annotation-active');
-          } else {
-            // Unselect the line
-            unselectCodeLines();
-            clickedEl.classList.remove('code-annotation-active');
-          }
-        });
-      }
-  const findCites = (el) => {
-    const parentEl = el.parentElement;
-    if (parentEl) {
-      const cites = parentEl.dataset.cites;
-      if (cites) {
-        return {
-          el,
-          cites: cites.split(' ')
-        };
-      } else {
-        return findCites(el.parentElement)
-      }
-    } else {
-      return undefined;
-    }
-  };
-  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-  for (var i=0; i<bibliorefs.length; i++) {
-    const ref = bibliorefs[i];
-    const citeInfo = findCites(ref);
-    if (citeInfo) {
-      tippyHover(citeInfo.el, function() {
-        var popup = window.document.createElement('div');
-        citeInfo.cites.forEach(function(cite) {
-          var citeDiv = window.document.createElement('div');
-          citeDiv.classList.add('hanging-indent');
-          citeDiv.classList.add('csl-entry');
-          var biblioDiv = window.document.getElementById('ref-' + cite);
-          if (biblioDiv) {
-            citeDiv.innerHTML = biblioDiv.innerHTML;
-          }
-          popup.appendChild(citeDiv);
-        });
-        return popup.innerHTML;
+      }, function(instance) {
       });
     }
-  }
-});
-</script>
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
 <script src="https://utteranc.es/client.js" repo="buidai123/buidai123.github.io.comments" issue-term="pathname" theme="github-light" crossorigin="anonymous" async="">
 </script>
 </div> <!-- /content -->
@@ -3156,13 +3358,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     <div class="nav-footer-left">
       <ul class="footer-items list-unstyled">
     <li class="nav-item">
- Copyright 2024, Bui Huu Dai
+ Copyright 2025, Bui Huu Dai
   </li>  
 </ul>
     </div>   
     <div class="nav-footer-center">
 
-<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.dev/buidai123/blog/blob/main/posts/2024-12-30-deep-learning-concepts/index.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/buidai123/blog/blob/main/posts/2024-12-30-deep-learning-concepts/index.ipynb" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/buidai123/blog/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="cookie-consent-footer"><a href="#" id="open_preferences_center">Cookie Preferences</a></div></div>
+<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.dev/bhdai/blog/blob/main/posts/2024-12-30-deep-learning-concepts/index.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bhdai/blog/blob/main/posts/2024-12-30-deep-learning-concepts/index.ipynb" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/bhdai/blog/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="cookie-consent-footer"><a href="#" id="open_preferences_center">Cookie Preferences</a></div></div>
     <div class="nav-footer-right">
       &nbsp;
     </div>

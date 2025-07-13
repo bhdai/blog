@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.6">
+<meta name="generator" content="quarto-1.7.32">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -23,8 +23,9 @@ ul.task-list li input[type="checkbox"] {
   vertical-align: middle;
 }
 /* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -35,7 +36,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -69,17 +70,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../Github_bird.png" rel="icon" type="image/png">
 <script src="../../site_libs/cookie-consent/cookie-consent.js"></script>
 <link href="../../site_libs/cookie-consent/cookie-consent.css" rel="stylesheet">
-<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-6c21014d9765ba549c6ebad95917e4d7.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-d0a9048d95e02c7ff9c82715fd5ddea4.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-2fef5ea3f8957b3e4ecc936fc74692ca.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-ddd961a2510921635943dfbbd19534c4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-ac7d032430511f044bc08d60cdc66499.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-8e47eaf163dee9e5ea02780d02199294.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-bca7bfc09c99158c9822bef989cf6fc8.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-8e47eaf163dee9e5ea02780d02199294.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -139,18 +143,190 @@ cookieconsent.run({
 <script src="https://unpkg.com/@jupyter-widgets/html-manager@*/dist/embed-amd.js" crossorigin="anonymous"></script>
 
 
+<link rel="stylesheet" href="../../styles.css">
 <link rel="stylesheet" href="styles.css">
 <meta property="og:title" content="Fundamentals of Text Classification and Correlation in Natural Language Processing – Bui Huu Dai">
 <meta property="og:description" content="Dai’s blog.">
-<meta property="og:image" content="https://buidai123.github.io/blog/posts/nlp-beginner/nlp.jpg">
+<meta property="og:image" content="https://bhdai.github.io/blog/posts/nlp-beginner/nlp.jpg">
 <meta property="og:site_name" content="Bui Huu Dai">
 <meta name="twitter:title" content="Fundamentals of Text Classification and Correlation in Natural Language Processing – Bui Huu Dai">
 <meta name="twitter:description" content="Dai’s blog.">
-<meta name="twitter:image" content="https://buidai123.github.io/blog/posts/nlp-beginner/nlp.jpg">
+<meta name="twitter:image" content="https://bhdai.github.io/blog/posts/nlp-beginner/nlp.jpg">
 <meta name="twitter:card" content="summary_large_image">
 </head>
 
-<body class="nav-fixed">
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const queryPrefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    const darkModeDefault = queryPrefersDark.matches;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    queryPrefersDark.addEventListener("change", e => {
+      if(window.localStorage.getItem("quarto-color-scheme") !== null)
+        return;
+      const alternate = e.matches
+      toggleColorMode(alternate);
+      localAlternateSentinel = e.matches ? 'alternate' : 'default'; // this is used alongside local storage!
+      toggleGiscusIfUsed(alternate, darkModeDefault);
+    });
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top quarto-banner">
@@ -248,10 +424,11 @@ cookieconsent.run({
   <li><a href="#training-with-hugging-face-transformers" id="toc-training-with-hugging-face-transformers" class="nav-link" data-scroll-target="#training-with-hugging-face-transformers">Training with Hugging Face Transformers</a></li>
   <li><a href="#evaluating-model-predictions" id="toc-evaluating-model-predictions" class="nav-link" data-scroll-target="#evaluating-model-predictions">Evaluating Model Predictions</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.dev/buidai123/blog/blob/main/posts/nlp-beginner/index.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/buidai123/blog/blob/main/posts/nlp-beginner/index.ipynb" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/buidai123/blog/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.dev/bhdai/blog/blob/main/posts/nlp-beginner/index.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bhdai/blog/blob/main/posts/nlp-beginner/index.ipynb" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/bhdai/blog/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content quarto-banner-title-block" id="quarto-document-content">
+
 
 
 
@@ -267,7 +444,7 @@ cookieconsent.run({
 <p>Alright, let’s drive into the data preparation for the <a href="https://www.kaggle.com/c/us-patent-phrase-to-phrase-matching">U.S. Patent Phrase to Phrase Matching</a> challenge. To start, you need to download the dataset using the <a href="https://github.com/Kaggle/kaggle-api">Kaggle APi</a>. Follow the installation instruction in their Github page, and then you can grab the dataset with the following command:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">kaggle</span> competitions download <span class="at">-c</span> us-patent-phrase-to-phrase-matching</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>With the data in hand, let’s firer up python environment and take a closer look:</p>
-<div id="cell-2" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:27.553966Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:27.553574Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:28.047935Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:28.046907Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:27.553920Z&quot;}" data-trusted="true" data-execution_count="1">
+<div id="cell-2" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:27.553966Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:27.553574Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:28.047935Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:28.046907Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:27.553920Z&quot;}}" data-trusted="true" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -342,7 +519,7 @@ cookieconsent.run({
 </div>
 </div>
 <p>Examining the data is always the first step. Let’s peek at some summery statics to get an initial sense of what we’re working with:</p>
-<div id="cell-4" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:28.050828Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:28.049953Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:28.138670Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:28.137731Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:28.050773Z&quot;}" data-trusted="true" data-execution_count="2">
+<div id="cell-4" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:28.050828Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:28.049953Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:28.138670Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:28.137731Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:28.050773Z&quot;}}" data-trusted="true" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df.describe(include<span class="op">=</span><span class="st">"object"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="2">
 <div>
@@ -395,14 +572,14 @@ cookieconsent.run({
 </div>
 <p>Notice something interesting? The <code>anchor</code> field has only 733 unique values in a dataset of 36,000 entries. That’s a clear sign of repetition, suggesting some phrases appear frequently.</p>
 <p>Now, onto preparing data for our model. In this task, our goal is to determine if two phrases have similar meanings. To give our model more context. Let’s add structure labels like “TEXT1:” and “TEXt2:”. This helps in making data more informative, alright because we have to do the same thing to our test set so i will write a function for this:</p>
-<div id="cell-6" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:28.140148Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:28.139835Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:28.145008Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:28.143927Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:28.140115Z&quot;}" data-trusted="true" data-execution_count="3">
+<div id="cell-6" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:28.140148Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:28.139835Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:28.145008Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:28.143927Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:28.140115Z&quot;}}" data-trusted="true" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> preprocess_function(examples):</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    examples[<span class="st">"input"</span>] <span class="op">=</span> <span class="st">'TEXT1: '</span> <span class="op">+</span> examples[<span class="st">"context"</span>] <span class="op">+</span> <span class="st">"; TEXT2: "</span> <span class="op">+</span> examples[<span class="st">"target"</span>] <span class="op">+</span> <span class="st">"; ANC1: "</span> <span class="op">+</span> examples[<span class="st">"anchor"</span>]</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> examples</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Adding context can be incredibly valuable providing the model with the background it need to understand nuanced of differences or similarities, especially in specialized field like patents.</p>
 <p>Next we convert our Pandas DataFrame into a Dataset Object and apply the process function:</p>
-<div id="cell-8" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:28.147941Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:28.147576Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:33.692824Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:33.691599Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:28.147905Z&quot;}" data-trusted="true" data-execution_count="4">
+<div id="cell-8" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:28.147941Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:28.147576Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:33.692824Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:33.691599Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:28.147905Z&quot;}}" data-trusted="true" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> datasets <span class="im">import</span> Dataset, DatasetDict</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert the DataFrame to a Dataset</span></span>
@@ -443,12 +620,12 @@ cookieconsent.run({
 <p>Choosing a tokenizer involves several little decisions. The good news? you don’t have to these decisions yourself. Pre-trained models come with their own tokenization methods, and to use these model effectively, you need to use same tokenization approach they were trained with.</p>
 <p>Enter HuggingFace’s <code>transformers</code> library. It provides a convenient way to load pre-trained models and their corresponding tokenizers. One highly versatile model is <code>deberta-v3</code></p>
 <p>Here’s how you can set it up:</p>
-<div id="cell-10" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:33.694602Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:33.694192Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:33.701758Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:33.700663Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:33.694553Z&quot;}" data-trusted="true" data-execution_count="5">
+<div id="cell-10" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:33.694602Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:33.694192Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:33.701758Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:33.700663Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:33.694553Z&quot;}}" data-trusted="true" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>model_nm <span class="op">=</span> <span class="st">"microsoft/deberta-v3-base"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We choose this model to ensure our tokenization matches the pre-trained model’s tokenization process. This consistency is crucial.</p>
 <p>To load the tokenizer that correspond to our chosen model, we you <code>AutoTokenizer</code> from Hugging Face’s <em>transformer</em> library. This utility automatically fetches the correct tokenizer for our model:</p>
-<div id="cell-12" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:33.703615Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:33.703190Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:39.793473Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:39.792624Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:33.703539Z&quot;}" data-trusted="true" data-execution_count="6">
+<div id="cell-12" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:33.703615Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:33.703190Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:39.793473Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:39.792624Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:33.703539Z&quot;}}" data-trusted="true" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> transformers <span class="im">import</span> AutoModelForSequenceClassification, AutoTokenizer</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the tokenizer for our model</span></span>
@@ -477,7 +654,7 @@ cookieconsent.run({
 </div>
 <p>With the tokenizer loaded, you can now tokenize your text data in the same way the model was trained to do.</p>
 <p>Alright, at this point we can use our tokenization to process strings. Let’s start with a simple example. If we pass this string “Hi folks, I’m Dai from my mother!” to the tokenizer, we can see how it breaks the text in to tokens</p>
-<div id="cell-14" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:39.795000Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:39.794529Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:39.801779Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:39.800703Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:39.794968Z&quot;}" data-trusted="true" data-execution_count="7">
+<div id="cell-14" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:39.795000Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:39.794529Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:39.801779Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:39.800703Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:39.794968Z&quot;}}" data-trusted="true" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>tokz.tokenize(<span class="st">"Hi folks, I'm Dai from my mother!"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="7">
 <pre><code>['▁Hi', '▁folks', ',', '▁I', "'", 'm', '▁Dai', '▁from', '▁my', '▁mother', '!']</code></pre>
@@ -485,7 +662,7 @@ cookieconsent.run({
 </div>
 <p>You’ll notice doesn’t just split the text into words. If you’ve wondered “I’m” is one word or two, you’ll find that it’s actually three tokens according to this tokenizer. These tokens include partial words and punctuations. The character looks like underscore here signify the start of the word</p>
 <p>Here’s a less common sentence: “A platypus is an ornithorhynchus anatinus”.</p>
-<div id="cell-16" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:39.803758Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:39.803341Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:39.810185Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:39.809254Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:39.803712Z&quot;}" data-trusted="true" data-execution_count="8">
+<div id="cell-16" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:39.803758Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:39.803341Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:39.810185Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:39.809254Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:39.803712Z&quot;}}" data-trusted="true" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>tokz.tokenize(<span class="st">"A platypus is an ornithorhynchus anatinus."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="8">
 <pre><code>['▁A',
@@ -504,11 +681,11 @@ cookieconsent.run({
 </div>
 </div>
 <p>In this vocabulary, “platypus” gets its own token, but “ornithorhynchus” is split into smaller parts. Each of these tokens corresponds to an entry in a predefined vocabulary list created during the model’s pre-training. Somewhere in that list, we’ll find “A”, and it will have a specific number. This process of converting tokens to numbers is called numericalization. To accomplish this for our dataset, we create a function that tokenizes the “input” field:</p>
-<div id="cell-18" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:39.811661Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:39.811196Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:39.817274Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:39.816323Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:39.811600Z&quot;}" data-trusted="true">
+<div id="cell-18" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:39.811661Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:39.811196Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:39.817274Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:39.816323Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:39.811600Z&quot;}}" data-trusted="true">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> tok_func(x): <span class="cf">return</span> tokz(x[<span class="st">"input"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Since tokenization can be time-consuming, especially for large dataset. Leveraging parallel processing can save time. we’ll utilize batching to process multiple entries simultaneously</p>
-<div id="cell-20" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:39.821290Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:39.820998Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:41.693450Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:41.692501Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:39.821258Z&quot;}" data-trusted="true" data-execution_count="10">
+<div id="cell-20" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:39.821290Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:39.820998Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:41.693450Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:41.692501Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:39.821258Z&quot;}}" data-trusted="true" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>tok_ds <span class="op">=</span> ds.<span class="bu">map</span>(tok_func, batched<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
@@ -518,7 +695,7 @@ cookieconsent.run({
 </div>
 <p>Ensure that <code>batched=True</code> is passed to enable batch processing. This approach uses the <code>tokenizer</code> library optimized for performance wit Rust. Batch processing can significantly speed up the tokenization process</p>
 <p>Now let’s examine a row from our tokenized dataset:</p>
-<div id="cell-22" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:41.700204Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:41.699928Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:41.709420Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:41.708449Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:41.700172Z&quot;}" data-trusted="true" data-execution_count="11">
+<div id="cell-22" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:41.700204Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:41.699928Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:41.709420Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:41.708449Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:41.700172Z&quot;}}" data-trusted="true" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>tok_ds[<span class="dv">0</span>][<span class="st">"input"</span>], tok_ds[<span class="dv">0</span>][<span class="st">"input_ids"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="11">
 <pre><code>('TEXT1: A47; TEXT2: abatement of pollution; ANC1: abatement',
@@ -545,11 +722,11 @@ cookieconsent.run({
 </div>
 <p>The output show that the dataset retains the original string in the “input” field and includes a new “input_ids” field with the numerical representation of each token. The numbers here are the numerical positions of tokens in the vocabulary. This step efficiently convert our text into number, readying it for model input.</p>
 <p>Alright, we now need to prepare our labels. <code>Transformer</code> always assumes that your labels has column name <code>labels</code>, but it our data set there’s no <code>labels</code> but <code>score</code>, we need to rename it.</p>
-<div id="cell-24" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:41.710835Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:41.710479Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:41.719753Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:41.718805Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:41.710784Z&quot;}" data-trusted="true" data-execution_count="12">
+<div id="cell-24" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:41.710835Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:41.710479Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:41.719753Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:41.718805Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:41.710784Z&quot;}}" data-trusted="true" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>tok_ds <span class="op">=</span> tok_ds.rename_column(<span class="st">"score"</span>, <span class="st">"labels"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now let’s split our dataset into train and validation set</p>
-<div id="cell-26" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:41.721333Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:41.721012Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:41.750278Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:41.749410Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:41.721296Z&quot;}" data-trusted="true" data-execution_count="13">
+<div id="cell-26" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:41.721333Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:41.721012Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:41.750278Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:41.749410Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:41.721296Z&quot;}}" data-trusted="true" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>dds <span class="op">=</span> tok_ds.train_test_split(<span class="fl">0.2</span>, seed<span class="op">=</span><span class="dv">42</span>)</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>dds</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="13">
@@ -578,7 +755,7 @@ cookieconsent.run({
 <h2 class="anchored" data-anchor-id="pearson-correlation-coefficient">Pearson Correlation Coefficient</h2>
 <p>Let’s focus on our metric of interest today, the <strong>Pearson Correlation Coefficient</strong> often abbreviated as <code>r</code>. This coefficient is a widely used measure that evaluates the similarity between two variable, if our predictions closely match the actual values, <code>r</code> will be high, ranging between -1 and 1. An <code>r</code> of -1 means predictions are exactly the wrong answers (which could still be useful, as reversing the answer would yield perfect results), while <code>r</code> of 1 signifies perfect predictions.</p>
 <p>You can read <a href="https://en.wikipedia.org/wiki/Pearson_correlation_coefficient">this</a> for more info about the formula and example but i think the best way to understand how data behaves is to look at real-life data. Scikit-learn offers numerous datasets, one of which is the “California housing” dataset. Here’s how you can explore this dataset:</p>
-<div id="cell-28" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:41.751720Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:41.751335Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:43.858980Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:43.857993Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:41.751667Z&quot;}" data-trusted="true" data-execution_count="14">
+<div id="cell-28" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:41.751720Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:41.751335Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:43.858980Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:43.857993Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:41.751667Z&quot;}}" data-trusted="true" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> fetch_california_housing</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>housing <span class="op">=</span> fetch_california_housing(as_frame<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>housing <span class="op">=</span> housing[<span class="st">'data'</span>].join(housing[<span class="st">'target'</span>]).sample(<span class="dv">1000</span>, random_state<span class="op">=</span><span class="dv">52</span>)</span>
@@ -670,7 +847,7 @@ cookieconsent.run({
 </div>
 </div>
 <p>To compute the Pearson correlation coefficient, Numpy provides the <code>corrcoef()</code> function, which return a correlation matrix:</p>
-<div id="cell-30" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:43.860736Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:43.860257Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:43.870686Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:43.869672Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:43.860695Z&quot;}" data-trusted="true" data-execution_count="15">
+<div id="cell-30" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:43.860736Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:43.860257Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:43.870686Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:43.869672Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:43.860695Z&quot;}}" data-trusted="true" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>np.set_printoptions(precision<span class="op">=</span><span class="dv">2</span>, suppress<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>np.corrcoef(housing, rowvar<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="15">
@@ -686,7 +863,7 @@ cookieconsent.run({
 </div>
 </div>
 <p>However, we need a single correlation number rather than a matrix. Fortunately, if we pass in a pair of variable, we could still get a matrix, from which we can extract the desired coefficient.</p>
-<div id="cell-32" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:43.872481Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:43.872056Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:43.880205Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:43.879019Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:43.872427Z&quot;}" data-trusted="true" data-execution_count="16">
+<div id="cell-32" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:43.872481Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:43.872056Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:43.880205Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:43.879019Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:43.872427Z&quot;}}" data-trusted="true" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>np.corrcoef(housing.MedInc, housing.MedHouseVal)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="16">
 <pre><code>array([[1.  , 0.68],
@@ -694,7 +871,7 @@ cookieconsent.run({
 </div>
 </div>
 <p>To get a specific correlation coefficient, simply select the zeroth row and the first column:</p>
-<div id="cell-34" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:43.882512Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:43.881745Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:43.890041Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:43.888916Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:43.882472Z&quot;}" data-trusted="true" data-execution_count="17">
+<div id="cell-34" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:43.882512Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:43.881745Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:43.890041Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:43.888916Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:43.882472Z&quot;}}" data-trusted="true" data-execution_count="17">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> corr(x, y):  <span class="cf">return</span> np.corrcoef(x, y)[<span class="dv">0</span>][<span class="dv">1</span>]</span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>corr(housing.MedInc, housing.MedHouseVal)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -703,7 +880,7 @@ cookieconsent.run({
 </div>
 </div>
 <p>To visualize the correlation, we can plot the data and display the correlation coefficient <code>r</code>:</p>
-<div id="cell-36" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:43.891498Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:43.891191Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:43.897796Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:43.896695Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:43.891458Z&quot;}" data-trusted="true" data-execution_count="18">
+<div id="cell-36" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:43.891498Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:43.891191Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:43.897796Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:43.896695Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:43.891458Z&quot;}}" data-trusted="true" data-execution_count="18">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> show_corr(df, a, b):</span>
@@ -712,7 +889,7 @@ cookieconsent.run({
 <span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="ss">f'</span><span class="sc">{</span>a<span class="sc">}</span><span class="ss"> vs </span><span class="sc">{</span>b<span class="sc">}</span><span class="ss">; r: </span><span class="sc">{</span>corr(x, y)<span class="sc">:.2f}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>For instance, the plot of “median income” vs.&nbsp;“median house value” shows an r of 0.68.</p>
-<div id="cell-38" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:43.899464Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:43.899133Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:44.220457Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:44.219533Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:43.899422Z&quot;}" data-trusted="true" data-execution_count="19">
+<div id="cell-38" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:43.899464Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:43.899133Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:44.220457Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:44.219533Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:43.899422Z&quot;}}" data-trusted="true" data-execution_count="19">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>show_corr(housing, <span class="st">'MedInc'</span>, <span class="st">'MedHouseVal'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -723,7 +900,7 @@ cookieconsent.run({
 </div>
 </div>
 <p>Exploring other pairs, like “median income” vs.&nbsp;“number of rooms per house,” gives an r of 0.43.</p>
-<div id="cell-40" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:44.222199Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:44.221811Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:44.546412Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:44.545562Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:44.222156Z&quot;}" data-trusted="true" data-execution_count="20">
+<div id="cell-40" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:44.222199Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:44.221811Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:44.546412Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:44.545562Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:44.222156Z&quot;}}" data-trusted="true" data-execution_count="20">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>show_corr(housing, <span class="st">'MedInc'</span>, <span class="st">'AveRooms'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -734,7 +911,7 @@ cookieconsent.run({
 </div>
 </div>
 <p>This plot reveals interesting insights and anomalies. Certain houses have many rooms but lower incomes, potentially indicate shared accommodations. Pearson’s <code>r</code> can be sensitive to outliers, and removing them can significantly change the correlation.</p>
-<div id="cell-42" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:44.547839Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:44.547515Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:44.855975Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:44.854993Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:44.547807Z&quot;}" data-trusted="true" data-execution_count="21">
+<div id="cell-42" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:44.547839Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:44.547515Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:44.855975Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:44.854993Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:44.547807Z&quot;}}" data-trusted="true" data-execution_count="21">
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>subset <span class="op">=</span> housing[housing.AveRooms <span class="op">&lt;</span> <span class="dv">15</span>]</span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>show_corr(subset, <span class="st">'MedInc'</span>, <span class="st">'AveRooms'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
@@ -747,7 +924,7 @@ cookieconsent.run({
 </div>
 <p>By removing outliers, the correlation increase fromm 0.43 to 0.68, emphasizing the importance of carefully considering outliers</p>
 <p>Here’s another example correlating “median hours value” with “average number of room”:</p>
-<div id="cell-44" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:44.857479Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:44.857171Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:45.148894Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:45.147911Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:44.857440Z&quot;}" data-trusted="true" data-execution_count="22">
+<div id="cell-44" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:44.857479Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:44.857171Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:45.148894Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:45.147911Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:44.857440Z&quot;}}" data-trusted="true" data-execution_count="22">
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>show_corr(subset, <span class="st">'MedHouseVal'</span>, <span class="st">'AveRooms'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -758,7 +935,7 @@ cookieconsent.run({
 </div>
 </div>
 <p>And another one correlating “house age” with “average number of rooms”:</p>
-<div id="cell-46" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:45.151139Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:45.150354Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:45.446860Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:45.446019Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:45.151088Z&quot;}" data-trusted="true" data-execution_count="23">
+<div id="cell-46" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:45.151139Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:45.150354Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:45.446860Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:45.446019Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:45.151088Z&quot;}}" data-trusted="true" data-execution_count="23">
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>show_corr(subset, <span class="st">'MedHouseVal'</span>, <span class="st">'AveRooms'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -769,20 +946,20 @@ cookieconsent.run({
 </div>
 </div>
 <p>To keep track of our training progress, it’s important to report the Pearson correlation coefficient after each epoch. Hugging Face’s Trainer API expects a dictionary as output, with keys labeling each metrics. Here’s how you can define a function to calculate and return the Pearson correlation coefficient:</p>
-<div id="cell-48" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:45.448445Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:45.448133Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:45.453322Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:45.452366Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:45.448403Z&quot;}" data-trusted="true" data-execution_count="24">
+<div id="cell-48" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:45.448445Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:45.448133Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:45.453322Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:45.452366Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:45.448403Z&quot;}}" data-trusted="true" data-execution_count="24">
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> corr_d(eval_pred): <span class="cf">return</span> {<span class="st">'pearson'</span>: corr(<span class="op">*</span>eval_pred)}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="training-with-hugging-face-transformers" class="level2">
 <h2 class="anchored" data-anchor-id="training-with-hugging-face-transformers">Training with Hugging Face Transformers</h2>
 <p>In the world of Hugging Face, the concept of a “learner” in fast.ai is paralleled by the <code>trainer</code>. Let’s start by importing necessary components:</p>
-<div id="cell-50" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:45.454909Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:45.454503Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:58.129589Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:58.128824Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:45.454863Z&quot;}" data-trusted="true" data-execution_count="25">
+<div id="cell-50" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:45.454909Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:45.454503Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:58.129589Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:58.128824Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:45.454863Z&quot;}}" data-trusted="true" data-execution_count="25">
 <div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> transformers <span class="im">import</span> TrainingArguments, Trainer</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>When training a model, we don’t process the entire dataset at once; instead we use a “batch” or “mini-batch” of data for each training step. This approach leverages the parallel processing capabilities of GPUs.</p>
 <p>In our case, let’s set the batch size to 128. Large batch size speed up training by maximizing GPU utilization but beware of potential “out of memory” errors if set too high.</p>
 <p>Next, configure the training arguments:</p>
-<div id="cell-52" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:58.134662Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:58.134064Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:58.245326Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:58.244507Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:58.134614Z&quot;}" data-trusted="true" data-execution_count="26">
+<div id="cell-52" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:58.134662Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:58.134064Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:24:58.245326Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:24:58.244507Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:58.134614Z&quot;}}" data-trusted="true" data-execution_count="26">
 <div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>bs <span class="op">=</span> <span class="dv">80</span></span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>epochs <span class="op">=</span> <span class="dv">4</span></span>
 <span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>lr <span class="op">=</span> <span class="fl">8e-5</span></span>
@@ -803,7 +980,7 @@ cookieconsent.run({
 </div>
 <p>Most of these arguments can be left as defaults, but the key ones to focus on are the batch size (<code>bs</code>), number of epoches (<code>epoches</code>), and learning rate (<code>lr</code>).</p>
 <p>To begin model training for sequence classification, we use <code>AutoModelForSequenceClassification</code>:</p>
-<div id="cell-54" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:58.246751Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:58.246384Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:25:01.429509Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:25:01.428680Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:58.246700Z&quot;}" data-trusted="true" data-execution_count="27">
+<div id="cell-54" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:24:58.246751Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:24:58.246384Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:25:01.429509Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:25:01.428680Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:24:58.246700Z&quot;}}" data-trusted="true" data-execution_count="27">
 <div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> AutoModelForSequenceClassification.from_pretrained(model_nm, num_labels<span class="op">=</span><span class="dv">1</span>)</span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>trainer <span class="op">=</span> Trainer(</span>
 <span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>    model, args, </span>
@@ -824,7 +1001,7 @@ You should probably TRAIN this model on a down-stream task to be able to use it 
 </div>
 <p>This function sets up our model, instantiates the trainer with the relevant datasets and tokenizer, and specifies the metric function.</p>
 <p>Finally, we sart the trainign process:</p>
-<div id="cell-56" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:25:01.431521Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:25:01.430842Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:34:32.580031Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:34:32.579155Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:25:01.431474Z&quot;}" data-trusted="true" data-execution_count="28">
+<div id="cell-56" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:25:01.431521Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:25:01.430842Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:34:32.580031Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:34:32.579155Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:25:01.431474Z&quot;}}" data-trusted="true" data-execution_count="28">
 <div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>trainer.train()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>/opt/conda/lib/python3.10/site-packages/torch/nn/parallel/parallel_apply.py:79: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
@@ -833,8 +1010,7 @@ You should probably TRAIN this model on a down-stream task to be able to use it 
   warnings.warn('Was asked to gather along dimension 0, but all '</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-
-    <div>
+<div>
       
       <progress value="732" max="732" style="width:300px; height:20px; vertical-align: middle;"></progress>
       [732/732 09:27, Epoch 4/4]
@@ -897,7 +1073,7 @@ You should probably TRAIN this model on a down-stream task to be able to use it 
 <h2 class="anchored" data-anchor-id="evaluating-model-predictions">Evaluating Model Predictions</h2>
 <p>With our model trained and achieving a promising Pearson correlation coefficient, it’s time to evaluate its performance on the test set.</p>
 <p>Just as we did with the training data we need to load and preprocess our test dataset.</p>
-<div id="cell-58" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:34:32.581831Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:34:32.581404Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:34:32.673541Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:34:32.672609Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:34:32.581784Z&quot;}" data-trusted="true" data-execution_count="29">
+<div id="cell-58" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:34:32.581831Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:34:32.581404Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:34:32.673541Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:34:32.672609Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:34:32.581784Z&quot;}}" data-trusted="true" data-execution_count="29">
 <div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>eval_df <span class="op">=</span> pd.read_csv(path<span class="op">/</span><span class="st">"test.csv"</span>)</span>
 <span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>eval_ds <span class="op">=</span> Dataset.from_pandas(eval_df)</span>
 <span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>eval_ds <span class="op">=</span> eval_ds.<span class="bu">map</span>(preprocess_function).<span class="bu">map</span>(tok_func, batched<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -917,7 +1093,7 @@ You should probably TRAIN this model on a down-stream task to be able to use it 
 <div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>preds <span class="op">=</span> trainer.predict(eval_ds).predictions.astype(<span class="bu">float</span>)</span>
 <span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>preds</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-61" class="cell output" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:34:32.674982Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:34:32.674713Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:34:32.816702Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:34:32.815744Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:34:32.674952Z&quot;}" data-trusted="true" data-execution_count="30">
+<div id="cell-61" class="cell output" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:34:32.674982Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:34:32.674713Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:34:32.816702Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:34:32.815744Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:34:32.674952Z&quot;}}" data-trusted="true" data-execution_count="30">
 <div class="cell-output cell-output-stderr">
 <pre><code>/opt/conda/lib/python3.10/site-packages/torch/nn/parallel/parallel_apply.py:79: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
   with torch.cuda.device(device), torch.cuda.stream(stream), autocast(enabled=autocast_enabled):</code></pre>
@@ -969,7 +1145,7 @@ You should probably TRAIN this model on a down-stream task to be able to use it 
 <div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>preds <span class="op">=</span> np.clip(preds, <span class="dv">0</span>, <span class="dv">1</span>)</span>
 <span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>preds</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-64" class="cell output" data-execution="{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:34:32.818248Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:34:32.817917Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:34:32.824993Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:34:32.824100Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:34:32.818216Z&quot;}" data-trusted="true" data-execution_count="31">
+<div id="cell-64" class="cell output" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2024-09-13T14:34:32.818248Z&quot;,&quot;iopub.status.busy&quot;:&quot;2024-09-13T14:34:32.817917Z&quot;,&quot;iopub.status.idle&quot;:&quot;2024-09-13T14:34:32.824993Z&quot;,&quot;shell.execute_reply&quot;:&quot;2024-09-13T14:34:32.824100Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2024-09-13T14:34:32.818216Z&quot;}}" data-trusted="true" data-execution_count="31">
 <div class="cell-output cell-output-display" data-execution_count="31">
 <pre><code>array([[0.7 ],
        [0.73],
@@ -1018,432 +1194,433 @@ You should probably TRAIN this model on a down-stream task to be able to use it 
 </section>
 
 </main> <!-- /main -->
+<script type="text/javascript">
+// Enhance theme switching experience
+document.addEventListener('DOMContentLoaded', function() {
+  // Add smooth transitions to all elements when theme changes
+  const style = document.createElement('style');
+  style.textContent = `
+* {
+transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
+}
+
+.navbar, .card, .table, .btn {
+transition: all 0.3s ease !important;
+}
+`;
+  document.head.appendChild(style);
+
+  // Enhance code copy functionality
+  const codeBlocks = document.querySelectorAll('pre code');
+  codeBlocks.forEach(function(codeBlock) {
+    codeBlock.parentElement.style.position = 'relative';
+  });
+
+  // Add fade-in animation for post listings
+  const posts = document.querySelectorAll('.post-listing .card');
+  posts.forEach(function(post, index) {
+    post.style.opacity = '0';
+    post.style.transform = 'translateY(20px)';
+    setTimeout(() => {
+      post.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+      post.style.opacity = '1';
+      post.style.transform = 'translateY(0)';
+    }, index * 100);
+  });
+
+  // Smooth scroll for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    });
+  });
+
+  // Enhanced table styling
+  const tables = document.querySelectorAll('table');
+  tables.forEach(function(table) {
+    if (!table.classList.contains('table')) {
+      table.classList.add('table', 'table-striped');
+    }
+
+    // Wrap tables in responsive container
+    if (!table.parentElement.classList.contains('table-responsive')) {
+      const wrapper = document.createElement('div');
+      wrapper.classList.add('table-responsive');
+      table.parentNode.insertBefore(wrapper, table);
+      wrapper.appendChild(table);
+    }
+  });
+
+  // Replace keyboard shortcuts on non-Mac platforms
+  const kPlatformMac = typeof navigator !== 'undefined' ? /Mac/.test(navigator.platform) : false;
+  if (!kPlatformMac) {
+    var kbds = document.querySelectorAll("kbd");
+    kbds.forEach(function(kbd) {
+      kbd.innerHTML = kbd.innerHTML.replace(/⌘/g, '⌃');
+    });
+  }
+
+  // Add reading progress indicator
+  function addReadingProgress() {
+    const article = document.querySelector('main article, main .content, .post-content');
+    if (article) {
+      const progressBar = document.createElement('div');
+      progressBar.style.cssText = `
+position: fixed;
+top: 0;
+left: 0;
+width: 0%;
+height: 3px;
+background: var(--bs-primary);
+z-index: 1000;
+transition: width 0.3s ease;
+`;
+      document.body.appendChild(progressBar);
+
+      window.addEventListener('scroll', function() {
+        const scrolled = window.scrollY;
+        const height = article.offsetHeight - window.innerHeight;
+        const progress = Math.min(scrolled / height * 100, 100);
+        progressBar.style.width = progress + '%';
+      });
+    }
+  }
+
+  // Only add reading progress on individual blog posts
+  if (document.querySelector('.post-title') || document.querySelector('article')) {
+    addReadingProgress();
+  }
+});
+
+// Theme preference detection and saving
+(function() {
+  // Save theme preference to localStorage
+  const themeToggle = document.querySelector('[data-bs-toggle="color-scheme"]');
+  if (themeToggle) {
+    themeToggle.addEventListener('click', function() {
+      setTimeout(() => {
+        const currentTheme = document.documentElement.getAttribute('data-bs-theme');
+        localStorage.setItem('quarto-color-scheme', currentTheme);
+      }, 100);
+    });
+  }
+
+  // Load saved theme preference
+  const savedTheme = localStorage.getItem('quarto-color-scheme');
+  if (savedTheme) {
+    document.documentElement.setAttribute('data-bs-theme', savedTheme);
+  }
+})();
+</script>
+
 <script id="quarto-html-after-body" type="application/javascript">
-window.document.addEventListener("DOMContentLoaded", function (event) {
-  const toggleBodyColorMode = (bsSheetEl) => {
-    const mode = bsSheetEl.getAttribute("data-mode");
-    const bodyEl = window.document.querySelector("body");
-    if (mode === "dark") {
-      bodyEl.classList.add("quarto-dark");
-      bodyEl.classList.remove("quarto-light");
-    } else {
-      bodyEl.classList.add("quarto-light");
-      bodyEl.classList.remove("quarto-dark");
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
     }
-  }
-  const toggleBodyColorPrimary = () => {
-    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
-    if (bsSheetEl) {
-      toggleBodyColorMode(bsSheetEl);
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
     }
-  }
-  toggleBodyColorPrimary();  
-  const disableStylesheet = (stylesheets) => {
-    for (let i=0; i < stylesheets.length; i++) {
-      const stylesheet = stylesheets[i];
-      stylesheet.rel = 'prefetch';
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
     }
-  }
-  const enableStylesheet = (stylesheets) => {
-    for (let i=0; i < stylesheets.length; i++) {
-      const stylesheet = stylesheets[i];
-      stylesheet.rel = 'stylesheet';
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
     }
-  }
-  const manageTransitions = (selector, allowTransitions) => {
-    const els = window.document.querySelectorAll(selector);
-    for (let i=0; i < els.length; i++) {
-      const el = els[i];
-      if (allowTransitions) {
-        el.classList.remove('notransition');
-      } else {
-        el.classList.add('notransition');
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
       }
     }
-  }
-  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
-    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
-    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
-    let newTheme = '';
-    if(darkModeDefault) {
-      newTheme = isAlternate ? baseTheme : alternateTheme;
-    } else {
-      newTheme = isAlternate ? alternateTheme : baseTheme;
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
     }
-    const changeGiscusTheme = () => {
-      // From: https://github.com/giscus/giscus/issues/336
-      const sendMessage = (message) => {
-        const iframe = document.querySelector('iframe.giscus-frame');
-        if (!iframe) return;
-        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/bhdai\.github\.io\/blog\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
-      sendMessage({
-        setConfig: {
-          theme: newTheme
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
         }
       });
     }
-    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
-    if (isGiscussLoaded) {
-      changeGiscusTheme();
-    }
-  }
-  const toggleColorMode = (alternate) => {
-    // Switch the stylesheets
-    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
-    manageTransitions('#quarto-margin-sidebar .nav-link', false);
-    if (alternate) {
-      enableStylesheet(alternateStylesheets);
-      for (const sheetNode of alternateStylesheets) {
-        if (sheetNode.id === "quarto-bootstrap") {
-          toggleBodyColorMode(sheetNode);
-        }
-      }
-    } else {
-      disableStylesheet(alternateStylesheets);
-      toggleBodyColorPrimary();
-    }
-    manageTransitions('#quarto-margin-sidebar .nav-link', true);
-    // Switch the toggles
-    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
-    for (let i=0; i < toggles.length; i++) {
-      const toggle = toggles[i];
-      if (toggle) {
-        if (alternate) {
-          toggle.classList.add("alternate");     
-        } else {
-          toggle.classList.remove("alternate");
-        }
-      }
-    }
-    // Hack to workaround the fact that safari doesn't
-    // properly recolor the scrollbar when toggling (#1455)
-    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
-      manageTransitions("body", false);
-      window.scrollTo(0, 1);
-      setTimeout(() => {
-        window.scrollTo(0, 0);
-        manageTransitions("body", true);
-      }, 40);  
-    }
-  }
-  const isFileUrl = () => { 
-    return window.location.protocol === 'file:';
-  }
-  const hasAlternateSentinel = () => {  
-    let styleSentinel = getColorSchemeSentinel();
-    if (styleSentinel !== null) {
-      return styleSentinel === "alternate";
-    } else {
-      return false;
-    }
-  }
-  const setStyleSentinel = (alternate) => {
-    const value = alternate ? "alternate" : "default";
-    if (!isFileUrl()) {
-      window.localStorage.setItem("quarto-color-scheme", value);
-    } else {
-      localAlternateSentinel = value;
-    }
-  }
-  const getColorSchemeSentinel = () => {
-    if (!isFileUrl()) {
-      const storageValue = window.localStorage.getItem("quarto-color-scheme");
-      return storageValue != null ? storageValue : localAlternateSentinel;
-    } else {
-      return localAlternateSentinel;
-    }
-  }
-  const darkModeDefault = false;
-  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
-  // Dark / light mode switch
-  window.quartoToggleColorScheme = () => {
-    // Read the current dark / light value 
-    let toAlternate = !hasAlternateSentinel();
-    toggleColorMode(toAlternate);
-    setStyleSentinel(toAlternate);
-    toggleGiscusIfUsed(toAlternate, darkModeDefault);
-  };
-  // Ensure there is a toggle, if there isn't float one in the top right
-  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
-    const a = window.document.createElement('a');
-    a.classList.add('top-right');
-    a.classList.add('quarto-color-scheme-toggle');
-    a.href = "";
-    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
-    const i = window.document.createElement("i");
-    i.classList.add('bi');
-    a.appendChild(i);
-    window.document.body.appendChild(a);
-  }
-  // Switch to dark mode if need be
-  if (hasAlternateSentinel()) {
-    toggleColorMode(true);
-  } else {
-    toggleColorMode(false);
-  }
-  const icon = "";
-  const anchorJS = new window.AnchorJS();
-  anchorJS.options = {
-    placement: 'right',
-    icon: icon
-  };
-  anchorJS.add('.anchored');
-  const isCodeAnnotation = (el) => {
-    for (const clz of el.classList) {
-      if (clz.startsWith('code-annotation-')) {                     
-        return true;
-      }
-    }
-    return false;
-  }
-  const onCopySuccess = function(e) {
-    // button target
-    const button = e.trigger;
-    // don't keep focus
-    button.blur();
-    // flash "checked"
-    button.classList.add('code-copy-button-checked');
-    var currentTitle = button.getAttribute("title");
-    button.setAttribute("title", "Copied!");
-    let tooltip;
-    if (window.bootstrap) {
-      button.setAttribute("data-bs-toggle", "tooltip");
-      button.setAttribute("data-bs-placement", "left");
-      button.setAttribute("data-bs-title", "Copied!");
-      tooltip = new bootstrap.Tooltip(button, 
-        { trigger: "manual", 
-          customClass: "code-copy-button-tooltip",
-          offset: [0, -8]});
-      tooltip.show();    
-    }
-    setTimeout(function() {
-      if (tooltip) {
-        tooltip.hide();
-        button.removeAttribute("data-bs-title");
-        button.removeAttribute("data-bs-toggle");
-        button.removeAttribute("data-bs-placement");
-      }
-      button.setAttribute("title", currentTitle);
-      button.classList.remove('code-copy-button-checked');
-    }, 1000);
-    // clear code selection
-    e.clearSelection();
-  }
-  const getTextToCopy = function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-  }
-  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
-    text: getTextToCopy
-  });
-  clipboard.on('success', onCopySuccess);
-  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
-      text: getTextToCopy,
-      container: window.document.getElementById('quarto-embedded-source-code-modal')
-    });
-    clipboardModal.on('success', onCopySuccess);
-  }
-  const viewSource = window.document.getElementById('quarto-view-source') ||
-                     window.document.getElementById('quarto-code-tools-source');
-  if (viewSource) {
-    const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
-    viewSource.addEventListener("click", function(e) {
-      if (sourceUrl) {
-        // rstudio viewer pane
-        if (/\bcapabilities=\b/.test(window.location)) {
-          window.open(sourceUrl);
-        } else {
-          window.location.href = sourceUrl;
-        }
-      } else {
-        const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
-        modal.show();
-      }
-      return false;
-    });
-  }
-  function toggleCodeHandler(show) {
-    return function(e) {
-      const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
-      for (let i=0; i<detailsSrc.length; i++) {
-        const details = detailsSrc[i].parentElement;
-        if (show) {
-          details.open = true;
-        } else {
-          details.removeAttribute("open");
-        }
-      }
-      const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
-      const fromCls = show ? "hidden" : "unhidden";
-      const toCls = show ? "unhidden" : "hidden";
-      for (let i=0; i<cellCodeDivs.length; i++) {
-        const codeDiv = cellCodeDivs[i];
-        if (codeDiv.classList.contains(fromCls)) {
-          codeDiv.classList.remove(fromCls);
-          codeDiv.classList.add(toCls);
-        } 
-      }
-      return false;
-    }
-  }
-  const hideAllCode = window.document.getElementById("quarto-hide-all-code");
-  if (hideAllCode) {
-    hideAllCode.addEventListener("click", toggleCodeHandler(false));
-  }
-  const showAllCode = window.document.getElementById("quarto-show-all-code");
-  if (showAllCode) {
-    showAllCode.addEventListener("click", toggleCodeHandler(true));
-  }
-    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-    var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp("https:\/\/buidai123\.github\.io\/blog\/");
-    var isInternal = (href) => {
-        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
-    }
-    // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
-    for (var i=0; i<links.length; i++) {
-      const link = links[i];
-      if (!isInternal(link.href)) {
-        // undo the damage that might have been done by quarto-nav.js in the case of
-        // links that we want to consider external
-        if (link.dataset.originalHref !== undefined) {
-          link.href = link.dataset.originalHref;
-        }
-      }
-    }
-  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
-    const config = {
-      allowHTML: true,
-      maxWidth: 500,
-      delay: 100,
-      arrow: false,
-      appendTo: function(el) {
-          return el.parentElement;
-      },
-      interactive: true,
-      interactiveBorder: 10,
-      theme: 'quarto',
-      placement: 'bottom-start',
-    };
-    if (contentFn) {
-      config.content = contentFn;
-    }
-    if (onTriggerFn) {
-      config.onTrigger = onTriggerFn;
-    }
-    if (onUntriggerFn) {
-      config.onUntrigger = onUntriggerFn;
-    }
-    window.tippy(el, config); 
-  }
-  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
-  for (var i=0; i<noterefs.length; i++) {
-    const ref = noterefs[i];
-    tippyHover(ref, function() {
-      // use id or data attribute instead here
-      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
-      try { href = new URL(href).hash; } catch {}
-      const id = href.replace(/^#\/?/, "");
-      const note = window.document.getElementById(id);
-      if (note) {
-        return note.innerHTML;
-      } else {
-        return "";
-      }
-    });
-  }
-  const xrefs = window.document.querySelectorAll('a.quarto-xref');
-  const processXRef = (id, note) => {
-    // Strip column container classes
-    const stripColumnClz = (el) => {
-      el.classList.remove("page-full", "page-columns");
-      if (el.children) {
-        for (const child of el.children) {
-          stripColumnClz(child);
-        }
-      }
-    }
-    stripColumnClz(note)
-    if (id === null || id.startsWith('sec-')) {
-      // Special case sections, only their first couple elements
-      const container = document.createElement("div");
-      if (note.children && note.children.length > 2) {
-        container.appendChild(note.children[0].cloneNode(true));
-        for (let i = 1; i < note.children.length; i++) {
-          const child = note.children[i];
-          if (child.tagName === "P" && child.innerText === "") {
-            continue;
-          } else {
-            container.appendChild(child.cloneNode(true));
-            break;
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
           }
         }
-        if (window.Quarto?.typesetMath) {
-          window.Quarto.typesetMath(container);
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
         }
-        return container.innerHTML
       } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
         if (window.Quarto?.typesetMath) {
           window.Quarto.typesetMath(note);
         }
-        return note.innerHTML;
-      }
-    } else {
-      // Remove any anchor links if they are present
-      const anchorLink = note.querySelector('a.anchorjs-link');
-      if (anchorLink) {
-        anchorLink.remove();
-      }
-      if (window.Quarto?.typesetMath) {
-        window.Quarto.typesetMath(note);
-      }
-      if (note.classList.contains("callout")) {
-        return note.outerHTML;
-      } else {
-        return note.innerHTML;
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
       }
     }
-  }
-  for (var i=0; i<xrefs.length; i++) {
-    const xref = xrefs[i];
-    tippyHover(xref, undefined, function(instance) {
-      instance.disable();
-      let url = xref.getAttribute('href');
-      let hash = undefined; 
-      if (url.startsWith('#')) {
-        hash = url;
-      } else {
-        try { hash = new URL(url).hash; } catch {}
-      }
-      if (hash) {
-        const id = hash.replace(/^#\/?/, "");
-        const note = window.document.getElementById(id);
-        if (note !== null) {
-          try {
-            const html = processXRef(id, note.cloneNode(true));
-            instance.setContent(html);
-          } finally {
-            instance.enable();
-            instance.show();
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
           }
         } else {
-          // See if we can fetch this
-          fetch(url.split('#')[0])
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
           .then(res => res.text())
           .then(html => {
             const parser = new DOMParser();
             const htmlDoc = parser.parseFromString(html, "text/html");
-            const note = htmlDoc.getElementById(id);
+            const note = htmlDoc.querySelector('main.content');
             if (note !== null) {
-              const html = processXRef(id, note);
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
               instance.setContent(html);
             } 
           }).finally(() => {
@@ -1451,185 +1628,161 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             instance.show();
           });
         }
-      } else {
-        // See if we can fetch a full url (with no hash to target)
-        // This is a special case and we should probably do some content thinning / targeting
-        fetch(url)
-        .then(res => res.text())
-        .then(html => {
-          const parser = new DOMParser();
-          const htmlDoc = parser.parseFromString(html, "text/html");
-          const note = htmlDoc.querySelector('main.content');
-          if (note !== null) {
-            // This should only happen for chapter cross references
-            // (since there is no id in the URL)
-            // remove the first header
-            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
-              note.children[0].remove();
-            }
-            const html = processXRef(null, note);
-            instance.setContent(html);
-          } 
-        }).finally(() => {
-          instance.enable();
-          instance.show();
-        });
-      }
-    }, function(instance) {
-    });
-  }
-      let selectedAnnoteEl;
-      const selectorForAnnotation = ( cell, annotation) => {
-        let cellAttr = 'data-code-cell="' + cell + '"';
-        let lineAttr = 'data-code-annotation="' +  annotation + '"';
-        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
-        return selector;
-      }
-      const selectCodeLines = (annoteEl) => {
-        const doc = window.document;
-        const targetCell = annoteEl.getAttribute("data-target-cell");
-        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
-        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
-        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
-        const lineIds = lines.map((line) => {
-          return targetCell + "-" + line;
-        })
-        let top = null;
-        let height = null;
-        let parent = null;
-        if (lineIds.length > 0) {
-            //compute the position of the single el (top and bottom and make a div)
-            const el = window.document.getElementById(lineIds[0]);
-            top = el.offsetTop;
-            height = el.offsetHeight;
-            parent = el.parentElement.parentElement;
-          if (lineIds.length > 1) {
-            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-            height = bottom - top;
-          }
-          if (top !== null && height !== null && parent !== null) {
-            // cook up a div (if necessary) and position it 
-            let div = window.document.getElementById("code-annotation-line-highlight");
-            if (div === null) {
-              div = window.document.createElement("div");
-              div.setAttribute("id", "code-annotation-line-highlight");
-              div.style.position = 'absolute';
-              parent.appendChild(div);
-            }
-            div.style.top = top - 2 + "px";
-            div.style.height = height + 4 + "px";
-            div.style.left = 0;
-            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-            if (gutterDiv === null) {
-              gutterDiv = window.document.createElement("div");
-              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-              gutterDiv.style.position = 'absolute';
-              const codeCell = window.document.getElementById(targetCell);
-              const gutter = codeCell.querySelector('.code-annotation-gutter');
-              gutter.appendChild(gutterDiv);
-            }
-            gutterDiv.style.top = top - 2 + "px";
-            gutterDiv.style.height = height + 4 + "px";
-          }
-          selectedAnnoteEl = annoteEl;
-        }
-      };
-      const unselectCodeLines = () => {
-        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
-        elementsIds.forEach((elId) => {
-          const div = window.document.getElementById(elId);
-          if (div) {
-            div.remove();
-          }
-        });
-        selectedAnnoteEl = undefined;
-      };
-        // Handle positioning of the toggle
-    window.addEventListener(
-      "resize",
-      throttle(() => {
-        elRect = undefined;
-        if (selectedAnnoteEl) {
-          selectCodeLines(selectedAnnoteEl);
-        }
-      }, 10)
-    );
-    function throttle(fn, ms) {
-    let throttle = false;
-    let timer;
-      return (...args) => {
-        if(!throttle) { // first call gets through
-            fn.apply(this, args);
-            throttle = true;
-        } else { // all the others get throttled
-            if(timer) clearTimeout(timer); // cancel #2
-            timer = setTimeout(() => {
-              fn.apply(this, args);
-              timer = throttle = false;
-            }, ms);
-        }
-      };
-    }
-      // Attach click handler to the DT
-      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
-      for (const annoteDlNode of annoteDls) {
-        annoteDlNode.addEventListener('click', (event) => {
-          const clickedEl = event.target;
-          if (clickedEl !== selectedAnnoteEl) {
-            unselectCodeLines();
-            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
-            if (activeEl) {
-              activeEl.classList.remove('code-annotation-active');
-            }
-            selectCodeLines(clickedEl);
-            clickedEl.classList.add('code-annotation-active');
-          } else {
-            // Unselect the line
-            unselectCodeLines();
-            clickedEl.classList.remove('code-annotation-active');
-          }
-        });
-      }
-  const findCites = (el) => {
-    const parentEl = el.parentElement;
-    if (parentEl) {
-      const cites = parentEl.dataset.cites;
-      if (cites) {
-        return {
-          el,
-          cites: cites.split(' ')
-        };
-      } else {
-        return findCites(el.parentElement)
-      }
-    } else {
-      return undefined;
-    }
-  };
-  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-  for (var i=0; i<bibliorefs.length; i++) {
-    const ref = bibliorefs[i];
-    const citeInfo = findCites(ref);
-    if (citeInfo) {
-      tippyHover(citeInfo.el, function() {
-        var popup = window.document.createElement('div');
-        citeInfo.cites.forEach(function(cite) {
-          var citeDiv = window.document.createElement('div');
-          citeDiv.classList.add('hanging-indent');
-          citeDiv.classList.add('csl-entry');
-          var biblioDiv = window.document.getElementById('ref-' + cite);
-          if (biblioDiv) {
-            citeDiv.innerHTML = biblioDiv.innerHTML;
-          }
-          popup.appendChild(citeDiv);
-        });
-        return popup.innerHTML;
+      }, function(instance) {
       });
     }
-  }
-});
-</script>
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
 <script src="https://utteranc.es/client.js" repo="buidai123/buidai123.github.io.comments" issue-term="pathname" theme="github-light" crossorigin="anonymous" async="">
 </script>
 </div> <!-- /content -->
@@ -1638,13 +1791,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     <div class="nav-footer-left">
       <ul class="footer-items list-unstyled">
     <li class="nav-item">
- Copyright 2024, Bui Huu Dai
+ Copyright 2025, Bui Huu Dai
   </li>  
 </ul>
     </div>   
     <div class="nav-footer-center">
 
-<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.dev/buidai123/blog/blob/main/posts/nlp-beginner/index.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/buidai123/blog/blob/main/posts/nlp-beginner/index.ipynb" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/buidai123/blog/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="cookie-consent-footer"><a href="#" id="open_preferences_center">Cookie Preferences</a></div></div>
+<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.dev/bhdai/blog/blob/main/posts/nlp-beginner/index.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bhdai/blog/blob/main/posts/nlp-beginner/index.ipynb" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/bhdai/blog/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="cookie-consent-footer"><a href="#" id="open_preferences_center">Cookie Preferences</a></div></div>
     <div class="nav-footer-right">
       &nbsp;
     </div>
