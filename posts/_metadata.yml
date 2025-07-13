@@ -11,6 +11,10 @@ title-block-banner: true
 format:
   html:
     code-tools: true
+    code-copy: hover
+    code-overflow: wrap
+    fig-responsive: true
+    fig-cap-location: bottom
 
 comments:
   utterances:

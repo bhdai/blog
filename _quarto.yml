@@ -33,10 +33,18 @@ website:
 
 format:
   html:
+    respect-user-color-scheme: true
     theme:
-      light: cosmo
-      dark: [darkly, styles-dark.scss]
+      light: [cosmo, theme.scss]
+      dark: [cosmo, theme-dark.scss]
     code-copy: hover
-    code-overflow: scroll
+    code-overflow: wrap
+    css: styles.css
+    include-after-body: js.html
+    toc: true
+    grid:
+      sidebar-width: 250px
+      body-width: 900px
+      margin-width: 300px
 
 editor: visual
