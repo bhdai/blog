@@ -9,8 +9,8 @@ about:
       href: https://x.com/daibui1234
     - icon: github
       text: Github
-      href: https://github.com/buidai123
+      href: https://github.com/bhdai
 
 ---
 
-Welcome to my blog! To learn more about me, check out my website [here](https://buidai123.github.io).
+Welcome to my blog! To learn more about me, check out my website [here](https://bhdai.github.io).
