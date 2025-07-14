@@ -16,7 +16,14 @@ format:
     fig-responsive: true
     fig-cap-location: bottom
 
+
 comments:
   giscus:
-    repo: bhdai/blog
-    category: Blog
+    repo: "bhdai/blog"
+    repo-id: "R_kgDOMP9wjw"
+    category: "Blog"
+    category-id: "DIC_kwDOMP9wj84Cs7pb"
+    mapping: "pathname"
+    reactions-enabled: true
+    input-position: "bottom"
+    theme: "preferred_color_scheme"
