@@ -19,11 +19,10 @@ format:
 
 comments:
   giscus:
-    repo: "bhdai/blog"
-    repo-id: "R_kgDOMP9wjw"
-    category: "Blog"
-    category-id: "DIC_kwDOMP9wj84Cs7wf"
-    mapping: "pathname"
+    repo: bhdai/blog
+    repo-id: R_kgDOMP9wjw
+    category: Blog
+    category-id: DIC_kwDOMP9wj84Cs7wf
+    mapping: pathname
     reactions-enabled: true
-    input-position: "bottom"
-    theme: "preferred_color_scheme"
+    theme: preferred_color_scheme
