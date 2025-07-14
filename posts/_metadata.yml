@@ -17,5 +17,6 @@ format:
     fig-cap-location: bottom
 
 comments:
-  utterances:
-    repo: bhdai/bhdai.github.io.comments
+  giscus:
+    repo: bhdai/blog
+    category: Blog
