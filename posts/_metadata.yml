@@ -25,4 +25,5 @@ comments:
     category-id: DIC_kwDOMP9wj84Cs7wf
     mapping: pathname
     reactions-enabled: true
+    input-position: bottom
     theme: preferred_color_scheme
