@@ -4,13 +4,14 @@
 # (see https://quarto.org/docs/projects/code-execution.html#freeze)
 freeze: true
 toc: true
+toc-location: left
 
 # Enable banner style title blocks
 title-block-banner: true
 
 format:
   html:
-    code-tools: true
+    # code-tools: true
     code-copy: hover
     code-overflow: wrap
     fig-responsive: true
@@ -26,4 +27,6 @@ comments:
     mapping: pathname
     reactions-enabled: true
     input-position: bottom
-    theme: preferred_color_scheme
+    theme:
+        light: light
+        dark: dark
