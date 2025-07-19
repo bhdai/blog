@@ -234,7 +234,7 @@ blockquote {
 img {
   max-width: 100%;
   height: auto;
-  border-radius: 0.375rem;
+  /* border-radius: 0.375rem; */
 }
 
 /* Figure caption styling */

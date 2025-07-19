@@ -1,2 +1,1626 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"></html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Bui Huu Dai">
+<meta name="dcterms.date" content="2025-07-13">
+<meta name="description" content="From early image processing to the rise of neural networks, now we will look back at the evolution of computer vision and deep learning.">
+
+<title>A brief history of computer vision and deep learning – Bui Huu Dai</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../Github_bird.png" rel="icon" type="image/png">
+<script src="../../site_libs/cookie-consent/cookie-consent.js"></script>
+<link href="../../site_libs/cookie-consent/cookie-consent.css" rel="stylesheet">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-2fef5ea3f8957b3e4ecc936fc74692ca.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-8e47eaf163dee9e5ea02780d02199294.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-bca7bfc09c99158c9822bef989cf6fc8.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-8e47eaf163dee9e5ea02780d02199294.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-6JR4N915S6"></script>
+
+<script type="text/plain" cookie-consent="tracking">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-6JR4N915S6', { 'anonymize_ip': true});
+</script>
+
+<script type="text/javascript" charset="UTF-8">
+document.addEventListener('DOMContentLoaded', function () {
+cookieconsent.run({
+  "notice_banner_type":"simple",
+  "consent_type":"implied",
+  "palette":"light",
+  "language":"en",
+  "page_load_consent_levels":["strictly-necessary","functionality","tracking","targeting"],
+  "notice_banner_reject_button_hide":false,
+  "preferences_center_close_button_hide":false,
+  "website_name":""
+  ,
+"language":"en"
+  });
+});
+</script> 
+  
+<script type="module" src="../../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+<link href="../../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="A brief history of computer vision and deep learning – Bui Huu Dai">
+<meta property="og:description" content="From early image processing to the rise of neural networks, now we will look back at the evolution of computer vision and deep learning.">
+<meta property="og:image" content="https://bhdai.github.io/blog/posts/history-of-computer-vision-and-deep-learning/images/cover_image.png">
+<meta property="og:site_name" content="Bui Huu Dai">
+<meta property="og:image:height" content="1024">
+<meta property="og:image:width" content="1024">
+<meta name="twitter:title" content="A brief history of computer vision and deep learning – Bui Huu Dai">
+<meta name="twitter:description" content="From early image processing to the rise of neural networks, now we will look back at the evolution of computer vision and deep learning.">
+<meta name="twitter:image" content="https://bhdai.github.io/blog/posts/history-of-computer-vision-and-deep-learning/images/cover_image.png">
+<meta name="twitter:image-height" content="1024">
+<meta name="twitter:image-width" content="1024">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="floating nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const queryPrefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    const darkModeDefault = queryPrefersDark.matches;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    queryPrefersDark.addEventListener("change", e => {
+      if(window.localStorage.getItem("quarto-color-scheme") !== null)
+        return;
+      const alternate = e.matches
+      toggleColorMode(alternate);
+      localAlternateSentinel = e.matches ? 'alternate' : 'default'; // this is used alongside local storage!
+      toggleGiscusIfUsed(alternate, darkModeDefault);
+    });
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Bui Huu Dai</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/bhdai"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://x.com/daibui1234"> <i class="bi bi-twitter-x" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml"> <i class="bi bi-rss" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">A brief history of computer vision and deep learning</h1>
+                  <div>
+        <div class="description">
+          From early image processing to the rise of neural networks, now we will look back at the evolution of computer vision and deep learning.
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">Computer Vision</div>
+                <div class="quarto-category">Deep Learning</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Bui Huu Dai </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">July 13, 2025</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#our-place-on-the-ai-map" id="toc-our-place-on-the-ai-map" class="nav-link active" data-scroll-target="#our-place-on-the-ai-map">Our place on the AI map</a></li>
+  <li><a href="#why-vision-from-first-eye-to-billion-cameras" id="toc-why-vision-from-first-eye-to-billion-cameras" class="nav-link" data-scroll-target="#why-vision-from-first-eye-to-billion-cameras">Why vision? From first eye to billion cameras</a></li>
+  <li><a href="#neuroscience-lights-the-way" id="toc-neuroscience-lights-the-way" class="nav-link" data-scroll-target="#neuroscience-lights-the-way">Neuroscience lights the way</a></li>
+  <li><a href="#learning-to-find-faces-in-a-crowd" id="toc-learning-to-find-faces-in-a-crowd" class="nav-link" data-scroll-target="#learning-to-find-faces-in-a-crowd">Learning to find faces in a crowd</a></li>
+  <li><a href="#the-rise-fall-and-return-of-neural-networks" id="toc-the-rise-fall-and-return-of-neural-networks" class="nav-link" data-scroll-target="#the-rise-fall-and-return-of-neural-networks">The rise, fall, and return of Neural Networks</a></li>
+  <li><a href="#the-dataset-that-changed-everything" id="toc-the-dataset-that-changed-everything" class="nav-link" data-scroll-target="#the-dataset-that-changed-everything">The dataset that changed everything</a></li>
+  <li><a href="#a-revolution-in-pixels" id="toc-a-revolution-in-pixels" class="nav-link" data-scroll-target="#a-revolution-in-pixels">A revolution in pixels</a></li>
+  <li><a href="#the-spark-and-the-fuel" id="toc-the-spark-and-the-fuel" class="nav-link" data-scroll-target="#the-spark-and-the-fuel">The spark and the fuel</a></li>
+  <li><a href="#beyond-the-benchmark" id="toc-beyond-the-benchmark" class="nav-link" data-scroll-target="#beyond-the-benchmark">Beyond the Benchmark</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/bhdai/blog/edit/main/posts/history-of-computer-vision-and-deep-learning/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bhdai/blog/blob/main/posts/history-of-computer-vision-and-deep-learning/index.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/bhdai/blog/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/cover_image.png" class="img-fluid figure-img"></p>
+<figcaption>“A split scene: on one side, an old master painter (think Da Vinci) painting a realistic portrait, and on the other, a futuristic robot painting a digital image using code or neural networks as its brush strokes”, generated by DALL·E 3</figcaption>
+</figure>
+</div>
+<p>My goal over the next ten weeks or so is to have a deep, foundational understanding of the principle and practices that are driving the state-of-the-art in visual intelligence. So to begin our journey, I find it useful to first situate what we will be studying within a broader intellectual landscape. We can start with the most encompassing field: Artificial Intelligence</p>
+<section id="our-place-on-the-ai-map" class="level2">
+<h2 class="anchored" data-anchor-id="our-place-on-the-ai-map">Our place on the AI map</h2>
+<p>AI is the grand, overarching ambition. It’s the quest to build machines that can perform tasks that have historically required human intelligence (task like reasoning, planing, and perception). It’s a field with a long and rich history, full of profound philosophical question and formidable engineering challenges.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/a-broad-view.png" class="img-fluid figure-img" style="width:80.0%"></p>
+<figcaption>Where are we at? A broad view of the field of AI - Image inspired by Justin Johnson</figcaption>
+</figure>
+</div>
+<p>Now, AI is an enormous domain. Within it, we can delineate several major sub-disciplines. Two of the most significant are <strong>Machine Learning</strong> and <strong>Computer Vision</strong>. <strong>Machine learning</strong> is a specific approach to archiving AI. Instead of explicitly programming a machine with a set of handcrafted rules to solve a task, the machine learning paradigm is to develop algorithms that allow machine to learn the rule by itself, by analyzing data. This shift from rule-based system to data-driven system is a fundamental concept that we will return to again and again. Then we have <strong>Computer Vision</strong>. This is the scientific and engineering discipline dedicated to different goal: enabling machine to see. That is, to take in visual information from the world, from images, from video and to derive understanding from it. These two field have a significant and ever-growing intersection. While there exits a body of classical computer vision work that does not rely on machine learning, think of the techniques from computational geometry or signal processing but the most powerful and prevalent methods in modern computer vision are fully rooted in machine learning.</p>
+<p>Now let’s zoom in one level deeper. Within Machine Learning, a particular subfield has emerged over the last decade or so that has completely revolutionized the landscape. And that is <strong>Deep Learning</strong>. Deep learning is a specific class of machine learning algorithm. The defining characteristic is the use of neural network with many layers hence “deep” networks. These architectures as we will go in to great detail, have proven to be exceptionally effective at learning intricate pattern and hierarchical representation from vast amount of data.</p>
+<p>This brings us to the core focus of our discussion. The intersection of <strong>Deep Learning</strong> and <strong>Computer Vision</strong>. The red area on the diagram above is where we will spent our time. Our objective is to understand and implement deep learning architectures and methodologies that are purpose-built to solve computer vision problems. This convergence is responsible for nearly all of the dramatic breakthrough in visual perception you may have seen in recent years.</p>
+<p>However, it’s crucial to understand that while our focus is on vision, deep learning is not exclusively a tool for computer vision. It is a general purpose computational paradigm that has had a similar transformative impact on other field of AI. For example, another major subfield is <strong>Natural Language Processing</strong>, or NLP, which deal with enabling computers to understand and generate human language. And a closely related field is <strong>Speech Recognition</strong>, which focuses on converting spoken language into text. Both NLP and Speech have been fundamentally reshaped by the application of deep learning models.</p>
+<p>We can further expand our map to include fields like <strong>Robotics</strong>. Robotics is an inherently integrated discipline. A truly autonomous must perceive its environment (which is a core computer vision problem) and then decide how to act, which is often evolves from experience(a machine learning problem). Therefore, robotics draws heavily from both computer vision and machine learning and increasingly, deep learning is the unifying methodology.</p>
+<p><strong>Mathematics</strong>, particularly linear algebra, probability, and calculus, provide the formal language and the core tool we used to define and optimize our models. <strong>Neuroscience</strong> and <strong>Psychology</strong> provide the biological inspiration for our network architectures and offer insights into the nature of intelligence itself. We also have <strong>Physics</strong> because we need to understand optics and image formation and how images are actually formed. We need to understand <strong>Biology</strong> and <strong>Psychology</strong> how animal brain physically see and process visual information. And of course, all of this is built upon the substrate of <strong>Computer Science</strong> which give us the algorithms, data structures, and high-performance computing system necessary to make these computationally intensive ideas a reality.</p>
+<p>Finally, it’s imperative to recognize that none of these fields exits in a vacuum. They are built upon, and draw inspiration from a wide array of fundamental scientific disciplines. So while we will live in that red intersection of deep learning and computer vision, I want you to maintain this broader perspective. The work we do here connects to a rich and interdisciplinary tapestry of human knowledge.</p>
+</section>
+<section id="why-vision-from-first-eye-to-billion-cameras" class="level2">
+<h2 class="anchored" data-anchor-id="why-vision-from-first-eye-to-billion-cameras">Why vision? From first eye to billion cameras</h2>
+<p>Alright, so that give you the sense of of the intellectual landscape so let’s begin with the history. And to truly appreciate the motivation of our field i find it instructive to go back… quite a long way.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/the-dawn-of-vision.png" class="img-fluid figure-img" style="width:80.0%"></p>
+<figcaption>Early multicellular life and the dawn of vision. All images from <a href="https://en.wikipedia.org/wiki/Cambrian_explosion">Wikipedia / CC‑BY</a>. Left: Burgess Shale trilobite fossil preserving antennae and legs. Top right: Dickinsonia costata, a quilted Ediacaran organism of unknown affinity. Bottom right: Artistic reconstruction of Opabinia, the five‑eyed Cambrian critter that helped ignite interest in the Cambrian explosion.</figcaption>
+</figure>
+</div>
+<p>Roughly 540 million years ago, our planet experienced a period of unprecedentedly rapid diversification of complex, multicellular life. This is known as the Cambrian Explosion. And a leading scientific hypothesis for what acted as the primary catalyst for this “big bang” of evolution… was the advent of vision.</p>
+<p>The development of the first primitive eyes created a enormous new set of evolutionary pressures. For the very first time, organisms could actively hunt, evade predators, and navigate their environment with a richness of information that was previously unimaginable. In a very real sense the ability to see changed the rules of life on Earth, and may have been the driving force behind the development and much of the biological complexity we see today.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/eyes.png" class="img-fluid figure-img" style="width:80.0%"></p>
+<figcaption>Octopus camera-type eye, insect compound eye, chameleon turret eye, human binocular eye.</figcaption>
+</figure>
+</div>
+<p>And the legacy of that ancient innovation is all around us. Vision is a power example of convergent evolution. It has been independently invented by nature dozens of times across the tree of life. From the compound eyes of insect, which excel at detecting motion, to the incredibly sophisticated camera-like eyes of octopus, to the remarkable independently moving eyes of a chameleon… and of course, to our own visual system. The fact that evolution has arrived at the solution of “the eye” so many times underscores it profound utility as a mechanism for interacting with the world</p>
+<p>For most of history vision was a purely biological phenomenon. But humanity has long been obsessed with capturing what we see, with creating an external record of our vision perception</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/camera-obscura.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption>The Camera Obscura. Top right: first published picture of camera obscura, in Gemma Frisius’ 1545. Bottom right: Leonardo da Vinci, 16th Century AD. Left: camera abscura in Encyclopedia, 18th Century (all images from <a href="https://en.wikipedia.org/wiki/Camera_obscura">From Wikipedia, the free encyclopedia</a>)</figcaption>
+</figure>
+</div>
+<p>This quest leads us one of the most foundational principle in the history of imaging: The Camera Obscura, which is Latin for “dark chamber”. As early as the 16th century, and with principles understood even in antiquity, scholars and artists recognized that if you have a darkened enclosure with a small aperture, an inverted image of the external scene is projected in to the opposite wall. This is the fundamental principle upon which all photography and even modern camera is built. It represents the first critical step in humanity’s attempt externalize the scene of sight.</p>
+<p>Now, if we fast-forward from the simple pinhole in a dark room to the 21st century, the consequence of that is… staggering.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/cv-everywhere.png" class="img-fluid figure-img"></p>
+<figcaption>Computer vision is now everywhere. First row, left to right: <a href="https://www.flickr.com/photos/sskennel/466632815">[1]</a>, <a href="https://pixabay.com/en/camera-lens-photographer-photo-193664/">[2]</a>, <a href="https://pixabay.com/en/drone-aerial-photo-djee-1142182/">[3]</a>, <a href="https://www.pexels.com/photo/red-hand-iphone-smartphone-80673/">[4]</a>. Second row, left to right: <a href="https://www.pexels.com/photo/woman-holding-a-white-samsung-galaxy-android-smartphone-taking-a-photo-of-hallway-38266/">[1]</a>, <a href="https://pixabay.com/en/selfie-couple-photography-dragooste-1363970/">[2]</a>, <a href="https://www.flickr.com/photos/gsfc/8145474144">[3]</a>, <a href="https://pixabay.com/p-1566884/">[4]</a>. Third row, left to right: <a href="https://www.pexels.com/photo/police-blue-sky-security-surveillance-96612/">[1]</a>, <a href="https://www.flickr.com/photos/dkeats/6363420863">[2]</a>, <a href="https://commons.wikimedia.org/wiki/File:Dashcams_P1210466.JPG">[3]</a>, <a href="https://commons.wikimedia.org/wiki/File:Google_Glass_detail.jpg">[4]</a></figcaption>
+</figure>
+</div>
+<p>The reason we have a field called computer vision today is, in large part, because the sensors of vision (cameras) which are utterly ubiquitous. They are in our pocket, in our cars, in our homes, attached to drones, flying through the air, and even roving the surface of other planets.</p>
+<p>The proliferation of inexpensive, high-resolution digital cameras has resulted in an unprecedented deluge of visual data. More images are now captured every two minutes than were captured in the entire 19th century. This vast sea of pixels is the raw material, the fuel, that powers the deep learning models we will talk about a lot.</p>
+<p>So this brings us to a critical question. We have this deep, biological imperative for vision, and we have this modern technological reality of ubiquitous cameras generating near-infinite data. Given this perfect storm of motivation and raw material… how did the scientific engineering discipline of <em>Computer Vision</em> actually come to be? Where did we, as a field, come from?</p>
+</section>
+<section id="neuroscience-lights-the-way" class="level2">
+<h2 class="anchored" data-anchor-id="neuroscience-lights-the-way">Neuroscience lights the way</h2>
+<p>The story often begins not in computer science, but in neuroscience. In 1959, two neuroscientists, David Hubel and Torsten Wiesel, conducted a series of now-famous experiments for which would later win the Nobel Prize. They sought to understand the architecture of the mammalian visual system. They did this by inserting microelectrodes into the primary virtual cortex—the first cortical area to receive input from the eyes of an anesthetized cat. They then presented the cat with very simple visual stimuli on a screen—things like bars of light, dots, or oriented edges.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/neroscience.png" class="img-fluid figure-img" style="width:80.0%"></p>
+<figcaption>Hubel &amp; Wiesel’s classic 1959 cat–visual‑cortex experiment (image inspired by Justin Johnson)</figcaption>
+</figure>
+</div>
+<p>What they discovered was remarkable. They found that individual neurons in the brain region were not responding to complex concepts like “a mouse” or “a food bowl”. Rather, they were highly specialized feature detectors. They identified tow principal classes of cells. First, <strong>simple cells</strong>. A given simple cell would fire vigorously as shown in the top respond graph, only when a bar of light with a very specific orientation appeared at a very specific location in the visual field. If the orientation was wrong, or if the stimulus was just a dot, the neuron remain silent. Then they found <strong>complex cells</strong>. These cells also respond to oriented edges, but they were invariant to the precise location of that edge within their receptive field. As you can see on the diagram, the bar can move, or translate, and the complex cell continue to fire. Many were also tuned to the direction of motion.</p>
+<p>This discovery was profoundly influential. It provided the first biological evidence for a hierarchical visual processing system. Where the initial stages are dedicated to detecting simple, local features like oriented edges. This idea of building up complex recognition from a hierarchy of simple feature detectors is a cornerstone of modern computer vision, and as we will see, it is the fundamental architectural principle behind convolutional neural networks.</p>
+<p>Just a few years later, inspired in part by this new understanding of biological vision, the field of computer vision had its genesis. Larry Robert’s 1963 PhD thesis MIT is widely considered to be the seminal work.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/edge-detector.png" class="img-fluid figure-img" style="width:50.0%"></p>
+<figcaption>Roberts’s 1963 “block world” vision pipeline (image from <a href="https://www.epicsysinc.com/blog/machine-vision-history-3/">epicsysinc</a>)</figcaption>
+</figure>
+</div>
+<p>His system aimed to solve what seems like a simple problem: understanding the 3D geometry of simple “block world” scenes from a single 2D image. His approach was a pipeline. First take the original image. Second compute a “differentiated picture” which is a computational method for finding sharp changes in intensity in other word, an edge detector. This is a direct computational analog of what Hubel and Wiesel’s simple cell was doing. Finally, from this edge map, he would select feature points like corner and junction and use geometric reasoning to infer the 3D shape. This was the start: a non-learning, rule-based system that decomposed vision into a series of explicit of steps: find edges, find junctions, infer geometry.</p>
+<p>This early success bred a great deal of optimism. So much so that in 1966, a group at MIT, led by Seymour Papert, proposed what is now famously known as <a href="https://dspace.mit.edu/handle/1721.1/6125">“The Summer Vision Project”</a>. The idea was, now we’ve got digital cameras, now they can detect edges, and Hubel and Wiesel told us how the brain works so basically what he wanted to do is hang a couple undergrads put them to work over the summer and after the summer we show it we should be able to construct a significant portion of visual system. The ambition was, in essence, to largely solve the problem of vision in a single summer by breaking it down into sub-problem. This, of course, turned out to be a profound underestimation of the problem’s difficulty. Now it’s clearly the computer vision was not solved and nearly 60 years later we’re still plugging away trying to archive this what they thought they could do it in a summer with few undergrads. But it speaks to the excitement and perceived tractability of the field in its infancy.</p>
+<p>Following this period of excitement and subsequence realization of the problem’s true depth, the field entered a phase of more systematic, theoretical thinking. The most influential of this era was David Marr.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/recognition-via-part.png" class="img-fluid figure-img"></p>
+<figcaption>Stages of Visual Representation, David Marr, 1970s. Bottom right: Recognition via Parts (1970s)</figcaption>
+</figure>
+</div>
+<p>In the 1970s, Marr proposed a comprehensive framework for how a visual system should be structured. He argued for a staged, bottom-up pipeline. You start with an input image just an array of pixel intensities. The first stage is to compute what he called the <strong>Primal Sketch</strong>. This is a representation of 2D image structure, identify primitive elements like zero-crossing, edges, bars, and blobs. Again, you see the direct intellectual lineage from Hubel and Wiesel. From the Primal Sketch, the system would then compute the <strong>2.5-D Sketch</strong>. This is a viewer-centric representation that captures local surface orientation and depth discontinuities. It’s not a full 3D model, but rather a map of how surfaces are angled relative to the observer. Finally from the 2.5-D Sketch, the system would construct a full, object-centered <strong>3-D Model Representation</strong>, describing the shapes and their spacial arrangement in a way that is independent from the viewpoint. This framework was immensely influential and guided vision research for many years.</p>
+<p>Marr’s ideas spurred a great deal of research into how one might actually represent these 3D models. One popular idea from the 1970s was “Recognition via Parts”. One formulation of this was the idea of <strong>Generalized Cylinders</strong> proposed by Brooks and Binfold. The concept is to represent complex objects as a composition of simple, parameterized volumetric primitives like cylinders. A human figure can be modeled as an articulated collection of these cylinders. Another related idea was that of <strong>Pictorial Structure</strong>, from Fischler and Elshlager. Here, an object is represented as a collection of parts arranged in a deformable configuration, like nodes, connected by springs. This captures both the appearance of the parts and their plausible spatial relationships. Both of these are instantiation of the core idea that object recognition proceeds by identifying constituent parts and their arrangement.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/canny-edge-detection.png" class="img-fluid figure-img" style="width:80.0%"></p>
+<figcaption>Recognition via Edge Detection (1980s) - Edge detection algorithms by John Canny, 1986</figcaption>
+</figure>
+</div>
+<p>Throughout the 1980s, much of the field’s energy was focused on perfecting the very first stage of Marr’s pipeline: edge detection. The thinking was that if we could just produce a perfect line drawing of the world from an image, as you see on the right, the subsequence steps of recognition would be much more tractable. This leds to seminal work on edge detection algorithm, most famously by John Canny in 1986, whose algorithm is still baseline today, and also by David Lowe, whom we will encounter again later. The field became very good at turning images of things like those razors into learn edge maps.</p>
+<p>Now, zooming out to the broader context of artificial intelligence during this period… something important has happening. The field was entering what became known as an “AI winter”. The massive enthusiasm, and critical, the government funding for AI research began to dwindle. This was largely the dominant paradigm of the time, so-called “Expert Systems” which tried to encode human expertise in vast, handcrafted rule-based had failed on their very grandiose promise. However, this didn’t mean that research stopped. Instead, the subfield of AI, like computer vision, NLP, and robotics, continued to mature. They grew into more distinct disciplines, focusing on their own specific problems and developing their own specialized techniques, often with less of the grand, unifying ambition of the early AI pioneers.</p>
+<p>But in the meantime.. while this entire arc of “classical” computer vision was unfolding, from Hubel and Wiesel to Marr to edge detector… another set of ideas, also with roots in neuroscience and cognitive science, was developing in parallel. And it is this other thread of history that will ultimately lead us to the “deep learning” part.</p>
+</section>
+<section id="learning-to-find-faces-in-a-crowd" class="level2">
+<h2 class="anchored" data-anchor-id="learning-to-find-faces-in-a-crowd">Learning to find faces in a crowd</h2>
+<p>Throughout the 1970s and 80s, cognitive scientists were conducting experiments that revealed just how complex and sophisticated the human system truly is, often in the way that these early models couldn’t account for.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/irving-biederman-experiment.png" class="img-fluid figure-img"></p>
+<figcaption>Irving Biederman’s experiment in the early 1970s.</figcaption>
+</figure>
+</div>
+<p>One such piece of work comes from Irving Biederman in the early 1970s. He represented subject with images like the one you see on the left—a coherent, real-world scene. Unsurprisingly, people can recognize this scene and its constituent object almost instantaneously. But then he would show them an image like the one on the right, which contain the exact image patches, but jumped into a non-sensical configuration. Recognition of the individual objects in this jumbled scene is significantly slower and more difficult. This simple but elegant experiment demonstrates a crucial point: our visual system doesn’t just recognize isolated parts. It relies heavily on the global context and the plausible spacial arrangement of those parts. The “whole” is more, and is processed differently than, the sum of its parts. This posed a significant challenge to a purely bottom-up, part-based recognition pipeline.</p>
+<p>Another line of inquiry focused on the sheer speed of human vision. A common experimental paradigm used to study this is called Rapid Serial Visual Perception, or RSVP. The setup is simple: a subject fixates on a cross at the center of a screen, and images are flashed very rapid succession often for only a few tens of million each.</p>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row quarto-layout-valign-center">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/RSVP.png" class="img-fluid figure-img"></p>
+<figcaption>EEG signal corresponding to the brain’s responses</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="./images/RSVP.gif" class="img-fluid"></p>
+</div>
+</div>
+</div>
+<p>In 1996, Thorpe and colleagues used this RSVP paradigm in conjunction with electroencephalography, or EEG, which measure electrical activity in the brain with very high temporal resolution, they flashed images of animals and non-animals and ask subjects to perform a simple categorization task. What they found, as you can see on the plot, was outstanding. The EEG signal correspond to the brain’s response to “animal” images, shown in darkest line, significantly diverged from the signal for “non-animal” images, shown in lightest line, at approximately 150 milliseconds after the image was presented. 150 milliseconds. To put that in perspective, a single blink of an eye takes about 300 to 400 milliseconds. This implies that the core computation underlying object recognition (from photons hitting the retina to a high-level semantic distinction) happen in a fraction of a blink. This is critical insight that will strongly inform the design of the deep neural network we will talk later.</p>
+<p>And where in the brain is this happening? The advent of <a href="https://en.wikipedia.org/wiki/Functional_magnetic_resonance_imaging">functional Magnetic Resonance Imaging</a>, or fMRI, in the 1990s allowed researchers to start answering this question. While fMRI has poor temporal resolution, it has good spacial resolution, allowing us to see what brain are active during a task. Seminal work by Nancy Kanwisher and her colleagues called <a href="https://royalsocietypublishing.org/doi/10.1098/rstb.2006.1934">“The fusiform face area: a cortical region specialized for the perception of faces”</a> identified specific regions in human brain show preferential activation for specific high-level categories. For instance they discovered a region in the fusiforrm gyrus, which they termed the Fusiform Face Area of FFA, that responds quickly to faces than other objects like houses. Conversely, they found another region, the Parahippocampal Place Area or PPA, that shows opposite preference: it responds strongly to scenes like houses, but not to faces. This provided concrete evidence for semantic organization and specialization within the higher level of visual cortex.</p>
+<p>So taking stock of these finding from neuroscience and cognitive science, a clear picture emerges. Visual recognition is fundamental, core competency of visual intelligence. And the biological solution to this problem is incredibly fast, it exploited global context, and it appears to culminate in specialized representations for semantically meaningful categories. This understand began to shift the focus of the computer vision community itself.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/1997-2001-face-detection.png" class="img-fluid figure-img"></p>
+<figcaption>Toward face recognition (~1997–2001). Top row: output of segmentation methods (normalized‑cuts in 1997) showing region grouping into visually coherent “blobs”. Middle of timeline: SIFT (1999) introduces keypoint detection and robust local feature description based on invariant orientation and scale matching. Bottom-right: Viola–Jones face detection framework (2001) applies a cascade of Haar‑like feature classifiers to group evidence into fast, reliable face detections in real time</figcaption>
+</figure>
+</div>
+<p>Coming out of the AI winter and into the 1990s, the field began to move a way from pure edge detection and towards tackling the recognition problem more directly. One prominent approach was what we called “Recognition via Grouping”. The idea here is that a critical step into recognition is to segment the image into perceptually meaning regions. A landmark algorithm in this era was <a href="https://dl.acm.org/doi/abs/10.5555/794189.794502">Normalized Cuts</a> developed by Jianbo Shi and Jitendra Malik in 1997. As you can see, it takes an input image and group pixels into coherent segments, effectively partitioning the image into a foreground object and a background. The underlying principle is based on graph theory, finding a cut in the pixel graph that minimizes a particular normalized cost. The thinking was, if we can archive a good segmentation, recognition of the isolated object become a much simpler problem.</p>
+<p>Then as we moved into the 2000s, another paradigm emerged that would become incredibly dominant: “Recognition via Matching”. The quintessential work here is <a href="https://en.wikipedia.org/wiki/Scale-invariant_feature_transform">David Lowe’s Scale-Invariant Feature Transform</a>, or SIFT, from 1999. The core innovation of SIFT was a procedure to find a set of local, high distinctive keypoints in an image and to describe them in a way that is invariant to transformation like changes in scale, image rotation, and to some extent, illumination. Recognition then become a task of matching these keypoint descriptors between a query image, and a database of known objects. As you can see here, the algorithm can robustly find corresponding points to the stop sign, even though it viewed from a different angle and at a different scale. For about a decade, feature based methods like SIFT were the state-of-the-art for many object recognition tasks.</p>
+<p>And right at the turn of the millennium, in 2001, we see a truly landmark achievement that pointed to the future. This was <a href="https://faculty.cc.gatech.edu/~hic/CS7616/Papers/Viola-Jones-2004.pdf">the face detector</a> developed by Paul Viola and Micheal Jones. This was one of the first truly robust and real-time objective detection. It was so effective that it was quickly incorporate into consumer digital cameras, enabling the auto-focus-on-faces feature that we now take for granted. What was so revolutionary about the Viola-Jones detector was that it was one of the most highly successful application of machine learning to a core computer vision problem. Instead of a human engineer meticulously designing feature to find faces, their algorithm learned a cascade of very simple rectangular feature using a machine learning algorithm called AdaBoost, trained on a large dataset of positive examples (faces) and negative examples (non-faces). This was a critical turning point. It demonstrated, in a practical and impactful way, the power of data-driven, learning-based approach over purely hand-engineered systems. And it’s this learning-based philosophy that, when taken to its extreme, will leads us to the deep learning revolution.</p>
+</section>
+<section id="the-rise-fall-and-return-of-neural-networks" class="level2">
+<h2 class="anchored" data-anchor-id="the-rise-fall-and-return-of-neural-networks">The rise, fall, and return of Neural Networks</h2>
+<p>So, we have now traced this timeline of computer vision up to the mid-2000s, We’ve seen the influential of neuroscience, the Marr paradigm, the focus on the features like SIFT, and the nascent rise of machine learning. Now to understand what happens next, to understand the “deep learning” revolution we need to pause this timeline rewind all the way to the beginning, and pickup a completely different intellectual thread that was developing in parallel. This second thread also begins in the late 1950s, concurrent with Hubel and Wiesel’s discovery, in 1958, a psychologist named Frank Rosenblatt developed the <strong>Perceptron</strong>. The Perceptron was a simple computational model of a single biological neuron. It took a set of inputs, multiply with a set of corresponding weight, summed them up and if that sum exceeded a certain threshold it would output a “1”, otherwise “0”. It was simple, linear classifiers. And crucially, Rosenblatt devised a learning rule to automatically adjust the weights based on training examples.</p>
+<p>However, this early enthusiasm for Perceptrons was dealt a serve blow in 1969 with the publication of the book Perceptron by Marvin Minsky and Seymour Papert. In this highly influential critique, they rigorously analyzed the mathematical properties of the single-layer Perceptron. They famously showed that there are certain, seemingly simple functions that a Perceptron is fundamentally incapable of learning. The canonical example is the logical XOR function.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/perceptron-fall.png" class="img-fluid figure-img"></p>
+<figcaption>The perceptron’s inability to solve XOR and its critique by Minsky &amp; Papert.</figcaption>
+</figure>
+</div>
+<p>As you can see, the XOR function is true if one of its true inputs are true, but not both. If you plot the four possible input pair, you find that you can not draw a single straight line to separate the ‘1’ outputs from ‘0’ outputs. Because the Perceptron is linear classifier, it is mathematically impossible for it to solve this non-linearly problem. This critique was so powerful that it led to a significant decline in funding and research into neural network, contributing to that first “AI winter” we discussed.</p>
+<p>Despite this, some research continued, and in 1980, Kunihiko Fukushima in Japan developed a model called Neocognitron in paper <a href="https://www.cs.princeton.edu/courses/archive/spr08/cos598B/Readings/Fukushima1980.pdf">“Neocognitron: A Self-organizing Neural Network Model for a Mechanism of Pattern Recognition Unaffected by Shift in Position”</a>. This is truly remarkable piece of work, because it’s arguably the direct architectural ancestor of modern convolutional neural networks. The Neocognitron was explicitly and directly inspired by Hubel and Wiesel’s hierarchical of virtual cortex. It consisted of multiple layers, alternating between what Fukushima called S-cells and C-cells. The S-cells or simple cells, perform pattern matching using operation that are mathematically equivalent to what we now called <strong>convolution</strong>. The C-cells or complex cells, then provided spatial invariance by performing an operation analogous to what we now called <strong>pooling</strong> or subsampling. This is the fundamental architectural motif of a modern ConvNet. However, the Neocognitron had a critical limitation: it lacked of principled, end-to-end training algorithm. It was largely trained layer-by-layer with an unsupervised learning rules, and much of it was still hand-designed.</p>
+<p>The missing piece of puzzle arrived in 1986. In a landmark paper <a href="https://direct.mit.edu/books/edited-volume/5431/chapter-abstract/3958547/1986-David-E-Rumelhart-Geoffrey-E-Hinton-and?redirectedFrom=fulltext">“Learning representations by back-propagating errors”</a>, David Rumelhart, Geoffrey Hinton, and Ronald Williams popularized the backpropagation algorithm. Backpropagation is, in essence, an efficient method for computing the gradient of a loss function with respect to the weights of a multi-layered neural network. It’s a clever application of the chain rule from calculus. This algorithm provided the key that Minsky and Papert had pointed out was missing: a very way to assign credit, or blame, to each neuron in each network, allowing one to systematically adjust the weights to improve performance. For the first time, it was possible to successfully train perceptrons with multiple layers, enabling them to learn non-linearity function like XOR.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/lenet.png" class="img-fluid figure-img"></p>
+<figcaption>Top: Lenet, applied backprop algorithm to a Neocognitron-like architecture, learned to recognize handwritten digits. Bottom: Unsupervised pre-training technique by Hinton, Bengio, and others</figcaption>
+</figure>
+</div>
+<p>Now, we see the synthesis, in 1998, Yann LeCun and his colleagues took the Neocognitron architecture (with its alternating layers of convolution and pooling) and applied the backpropagation algorithm and train it from end-to-end on a real world task: recognizing handwritten digits. The resulting model, known as LeNet-5, was a tremendous success. It archived state-of-the-art performance and was deployed commercially by AT&amp;T to read handwritten checks. If you look at this architecture diagram, it is strikingly similar to the convolutional neural networks we use today. This was a powerful proof of concept, demonstrating that these neurally-inspired, trained architectures could solve real, practical problems.</p>
+<p>This success spurred a small dedicated community of researchers throughout the 2000s to explore what was then beginning to be called “Deep Learning”. The central idea was to build networks that deeper and deeper, with the hypothesis that more layers would allow the learning of more complex and hierarchical features. However, this was not yet a mainstream topic. Training these very deep networks proved to be extremely difficult due to the optimization challenges like the vanishing gradient problem. Researchers like Hinton, Bengio, and others developed clever technique, like the unsupervised per-training shown here, to try to initialize these deep network in a better way before fine-tuning them with backpropation.</p>
+</section>
+<section id="the-dataset-that-changed-everything" class="level2">
+<h2 class="anchored" data-anchor-id="the-dataset-that-changed-everything">The dataset that changed everything</h2>
+<p>Alright. So, the Viola-Jones face detector in 2001 give us a powerful glimpse into the future, showing what was possible when you replaced hand-engineered rules with data-driven machine learning. This trend toward learning-based approaches and the need to rigorously evaluate them, led to another critical development in the field.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/caltech.png" class="img-fluid figure-img"></p>
+<figcaption>Left: The Caltech 101 images. Right: PASCAL Visual Object Challenge</figcaption>
+</figure>
+</div>
+<p>And that was the creation of standardized, large-scale benchmark datasets. Before the 2000s, it was common for researcher to test their algorithms on their own private, often small, collections of images. This made direct, quantitative comparison of different method exceptionally difficult. The establishment of datasets like Caltech101 in 2004, and later the PASCAL Visual Object Challenge, which run from 2005 to 2012, was a major step in transforming computer vision into a more regorous empirical science. PASCAL was particular influential because it went beyond simple image classification. It challenged algorithms to perform more complex tasks like object detection drawing a bounding box around an object and semantic segmentation. These shared benchmark created a common ground, a competitive arena, where entire community could measure progress.</p>
+<p>Still, deep learning remained something of a niche topic within a broader machine learning and computer vision communities. And there was a fundamental reason for this. Even with these new algorithms tricks, these deep high-capacity model were incredibly data-hungry they required vast amount of labeled data to learn meaningful representation and to avoid overfitting. And in the mid-2000s, There was simply no good dataset to work on. The existing benchmarks, like Caltech101, were order of magnitude too small to truly unlock the potential of these models. The algorithms were simply ahead of the data. And that brings us to the final, critical ingredient that would ignite the deep learning explosion. The <strong>ImageNet</strong> dataset.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/imagenet.png" class="img-fluid figure-img"></p>
+<figcaption>ImageNet Large Scale Visual Recognition Challenge</figcaption>
+</figure>
+</div>
+<p>Conceived and led by Fei-Fei Li, starting in 2007, the ImageNet project was an effort of unprecedented scale. The goal is to map out the entire noun hierarchy of WorldNet and populate it with millions of clean, annotated images. The result was a dataset with over 14 million images, spanning more than 20,000 categories. Crucially, in 2010, the project launch the ImageNet Large Scale Visual Recognition Challenge, or ILSVRC. This competition focused on subset of the data: 1,000 object classes, with roughly 1.3 million training images. The task was straightforward: given an image, produce a list of five object labels, and you get credit if the correct label is in your list. This dataset and this annual challenge provide a perfect crucible. It was a dataset massive and complex enough to finally demonstrate the power of data-hungry deep learning models, and a competition that would pit them directly against the state-of-the-art classical computer vision system of the day. The stage was now set for a revolution.</p>
+<p>So, ImageNet sets the stage. Now let’s look at the performance on this challenge over the years. The bar chart above show the top-5 error rate. That means the model get five guesses, and if the correct label isn’t in those five, it’s an error. In 2010, the winning entry from Lin et al.&nbsp;had an error of <strong>28.2%</strong>. In 2011, Sanchez &amp; Perronnin improved this to <strong>25.8%</strong>. These were typically system based on more traditional computer vision pipelines(hand-crafted features like SIFT or HoG), followed by machine learning classifiers like SVMs. Good progress, but still very high error rate. Then look at <strong>2012</strong>. A massive drop to <strong>16.4%</strong> with Krizhevsky et al.’s model, which we now famously known as <strong>AlexNet</strong>. We’ll talk a lot about AlexNet. The trend continues, 2013, Zeiler &amp; Fergus: <strong>11.7%</strong>, 2014, we see two big ones: VGG (Simonyan &amp; Zisserman) at <strong>7.3%</strong> and GoogLeNet (Szegedy et al.) at <strong>6.7%</strong>. And then, a really significant milestone in 2015: ResNet (He et al.) achieved 3.<strong>6%</strong> error. Now, why is that 3.6% so significant? Look over the far right. Andrej Karpathy, when he was PhD at Stanford and several others including Fei-Fei, did a study (Russakovsky et al.&nbsp;IJCV 2015) to benchmark human performance on the subset of ImageNet. And a well-trained human annotator gets around <strong>5.1% top-5 error</strong>. So, by 2015, deep learning model were, for the first time, <strong>surpassing human-level performance</strong> on this specific, very challenging task! The progress didn’t stop there, 2016, 2017 saw even lower error rates with models like SENet</p>
+<p>Now, let’s zero in on that pivotal moment, <strong>AlexNet, 2012</strong>. You see the red arrow pointing squarely at that 2012 bar. That 28% down to 16% was not an incremental improvement; it was a <strong>paradigm shift</strong>. This was the moment deep learning, specifically deep convolutional neural networks, truly announced its arrival and demonstrate its power to the broader computer vision community. AlexNet in 2012 right after Deep learning(2016) and ImageNet(2009), this isn’t a coincidence. The availability of a large dataset like ImageNet, coupled with the increasing computational power of GPUs, allowed deep learning models, which had been around conceptually for a while(you see LeNet from ’98, Neocognitron from ’80) , to finally be trained effectively at scale. AlexNet’s success fundamentally changed the direction of computer vision research. Almost overnight, people shifted from feature engineering to learning feature directly from data using deep neural networks. And the rest, as they say, is history, as subsequence years on that chart. So, ImageNet provided the challenge, and AlexNet provided the breakthrough deep learning solution. The combination really superchanged the field, and it’s why we’re here talking about these powerful models.</p>
+</section>
+<section id="a-revolution-in-pixels" class="level2">
+<h2 class="anchored" data-anchor-id="a-revolution-in-pixels">A revolution in pixels</h2>
+<p>Okay, we’ve seen how AlexNet in 2012 was a watershed moment for deep learning in computer vision, dramatically improving performance on ImageNet. Now let’s look at what happened after 2012</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/deep-learning-explosion.png" class="img-fluid figure-img"></p>
+<figcaption>Left: Publications at top Computer Vision conferences. Right: arXiv papers per month</figcaption>
+</figure>
+</div>
+<p>The graph on the left shows the number of paper submissions and acceptances to CVPR, which is one of the, if not the, top computer vision conferences. You can see a steady growth from 1985 up to around 2010-2012. But then, look what happens after 2012, especially the submissions. It just takes off, almost exponentially! We’re talking about going from around 2000, submissions to over 7000-8000 in just a few years. Now, the graph on the right shows the number of <strong>Machine Learning and AI papers uploaded to arXiv per month</strong>. arXiv, for those who don’t know, is a preprint server where researchers can upload their papers before or along side peer review. This allows for very rapid dissemination of ideas. Again, we have a relative modest until around 2012-2013, and then it just skyrockets. We’re looking at thousands of ML/AI paper per month now. This isn’t just computer vision; it’s the broader AI field, but computer vision and deep learning are huge drivers of this trend.</p>
+<p>So, we have an explosion of papers and research. But what kind of research? What were people are working on? Let’s look at the winner of the ImageNet challenge each years following AlexNet:</p>
+<ul>
+<li><strong>Year 2010(NEC-UIUC):</strong> Before the deep learning craze really hit ImageNet, this was what a state-of-the-art system looked like. You had a ‘Dense descriptor grid’ using features like HOG and LBP, then some ‘Coding’ (like local coordinate coding), ‘Pooling’ (Spacial Pyramid Matching - SPM), and finally a ‘Linear SVM’ for classification. This is a classic, handcrafted feature pipeline.</li>
+<li><strong>Year 2012 (SuperVision, aka AlexNet):</strong> We’ve talked about this, Krizhevsky, Sutskever, and Hinton. It’s a stack of layers(convolutions, pooling, fully connected layers). This is a deep convolutional neural network, learning features directly from data.</li>
+<li><strong>Year 2014 (GoogLeNet and VGG):</strong> Two years lter, and we see even more sophisticated architectures.
+<ul>
+<li><strong>GoogleNet</strong> (from Google, Szegedy et al.) the idea was to have filters of different sizes operating in parallel. It was also very deep but computationally quite efficient.</li>
+<li><strong>VGG</strong> (from Oxford, Simonyan &amp; Zisserman) took a different approach: very simple, uniform architecture, just stacking 3x2 convolutions and 2x2 pooling layers deeper and deeper.</li>
+</ul></li>
+<li><strong>Year 2015 (MSRA, aka ResNet):</strong> This was another huge leap, from Microsoft Research Asia(He et al.). This is ResNet, or Residual Network. They introduced ‘skip connections’ or ‘residual connections’ which allowed them to train networks that were incredibly deep, even over 100 or 1000 layers, which was previously impossible due to vanishing gradient problems. This architecture, or variants of it, become the backbone for many, many subsequent models.</li>
+</ul>
+<p>So, in just a few years, we went from handcrafted pipelines to relatively shallow (by today’s standards) CNNs, to very deep and complex architectures, each pushing the boundaries of performance and what we though was possible.</p>
+<p>Now let’s look at what these models can actually do</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/deep-learning-everywhere.png" class="img-fluid figure-img"></p>
+<figcaption>Deep learning is now everywhere</figcaption>
+</figure>
+</div>
+<p>On the far left, we have examples of <strong>Image Classification</strong> from AlexNet back in 2012. For each image, the model outputs a list of probabilities for different classes, and here we see the top predictions. These aren’t just simple ‘cat’ or ‘dog’ classifications; the model is identifying specific types of objects, often in challenging, cluttered scenes. And these are real images, not just sanitized datasets. This was a clear demonstration of the power of these learned features. In the middle, we see an application called Image <strong>Retrieval</strong>. The idea here is: given a query image, can the system find visually and semantically similar images from a large database? These are just two fundamental computer vision tasks, classification and retrieval. But the success of deep learning, starting around 2012, has meant it’s now being applied to virtually every area of computer vision: object detection, segmentation, image captioning, image generation, video analysis, 3D reconstruction and so much more.</p>
+<p>Continuing with the theme of understanding humans and dynamic scenes at the bottom, we have <strong>Pose Recognition</strong> also known as human pose estimation. The goal here is to identify the key joints of a person’s body like elbows, wrists, knees, ankles, head, shoulders. You can see in these examples (from Toshev and Szegedy, 2014, “DeepPose”, one of the first deep learning approaches for this) that the model can accurately locate these joints even with varied clothing, complex poses, and different backgrounds. This is fundamental for a deeper understanding of human actions, for animation, and augmented reality, and more.</p>
+<p>And the reach of deep learning extends far beyond everyday scenes, videos, or games. It’s making significant impacts in highly specialized scientific and medical domains. On the far right, we have <strong>Whale Recognition</strong>. This might seem niche, but it’s important for ecological studies and conversation. This particular image refers to a Kaggle challenge <a href="https://www.kaggle.com/c/whale-categorization-playground">here</a> is the link to the competition page, where participants build models to automatically identify individual whales from photograph. Deep learning is very good at these kind of fine-grained visual recognition tasks</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/even-more.png" class="img-fluid figure-img"></p>
+<figcaption>Top left: Image Captioning Vinyals et al, 2015 Karpathy and Fei-Fei, 2015. Top left: Krishna et al., ECCV 2016 the “Visual Genome” dataset and the work on generating scene graphs. Bottom: The Neural Style Transfer Algorithm (Gatys et al.&nbsp;2016), which stylizes a photograph in the style of a given artwork</figcaption>
+</figure>
+</div>
+<p>Now, this is where things get really interesting. We’re moving beyond just recognizing objects or pixels, and into the realm of understanding and describing images using natural language. This is <strong>Image Captioning</strong>. The task is, given an image, to automatically generate a human-like sentence that describes what’s happening in the image. These captions are remarkably accurate and fluent. This typically involves a combination of a Convolutional Neural Network (RNN), often an LSTM, to ‘generate’ the sentence word by word, conditioned on those visual features. The work here is from Vinyals et al.&nbsp;(from Google) and Karpathy and Fei-Fei (from Stanford), both published around 2015, were seminal works in this areas, showing how to effectively combine CNNs and RNNs for this task. This was huge step toward machines that can not only see but also communicate what they see.</p>
+<p>Image captioning gives us a sentence. But can we get a even deeper understanding of the relationships and interactions within an image? On the right you see an image with objects detected, and blow it we see something more structured: a <strong>scene graph</strong>. This moves us towards a much more comprehensive understanding of visual scenes. The work from Krishna at al.&nbsp;ECCV 2016, refers to the “Visual Genome” dataset and the work on generating scene graph, which provides a dense, structured annotation of images, capturing objects, attributes, and relationships. This is crucial for tasks like visual questions answering where the model answer questions about an image and more complex reasoning about visual content.</p>
+<p>So far, we’ve mostly seen deep learning used for understanding or analyzing images. But what about creating them? Or manipulating the artistic ways? At the bottom we see something called Neural Style Transfer pioneered by Gatys et al.&nbsp;in 2016. Here, you take two images, a <strong>content image</strong> here is the houses on the street and a <strong>style image</strong> like a famous painting like Van Gogh’s The Starry Night. The algorithm then synthesizes a new image that has the content of the first image but is rendered in the style of the second. So you get the houses looking as if they were painted by Van Gough, or in a strained-glass style. This is done by optimizing an image to match content features from one image and style features (correlations between activations in different layers) from another, using a pre-trained CNN.</p>
+<p>Continuing with generative models, we’ve showed artistic generation. But what about generating entirely new, photorealistic images from scratch? And this points to that capability, especially referencing <strong>Generative Adversarial Networks</strong> or GANs.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/gans.png" class="img-fluid figure-img"></p>
+<figcaption>Sliced Wasserstein distance (SWD) between the generated and training images (Section 5) and multi-scale structural similarity (MS-SSIM) among the generated images for several training setups at 128 × 128. And (a-g) CELEBA examples corresponding to rows in Table 1. (h) the converged result</figcaption>
+</figure>
+</div>
+<p>This is from Karras et al., for their work on <a href="https://arxiv.org/pdf/1710.10196">“Progressive Growing of GANs for improved Quality”</a> <strong>GANs</strong>, introduced by lan Goodfellow and his colleagues in 2014, work by having two networks compete against each other. A <strong>Generator</strong> network tries to create realistic images for example from random noise. And a <strong>Discriminator</strong> network tried to distinguish between real images (from training set) and take images created by generator. Through this adversarial process, the generator gets better and better at creating images that can fool the discriminator, and the discriminator gets better at telling them apart. The <strong>“Progressive Growing of GANs”</strong> technique, developed by Karras and his team at NVIDIA was a major breakthrough. It allowed for the generation of much higher-resolution and more stable results than previously possible. They started by generating very small images like 4x4 pixels and then progressively added layers to both the generator and discriminator to produce larger and more detailed images like 8x8, 16x16, all the way up to 1024x1024. You can see from the image above, faces that are not real people, yet they look entirely plausible. This ability to synthesize photorealistic imagery has huage implications for art, design, entertainment, data augmentation, and of course, also raises important ethical consideration about ‘deepfakes’ and misinformation. But these generative capabilities truly underscore how far deep learning has come since 2012, from classifying images to creating entirely new visual realities.</p>
+<p>We’ve seen some incredible generative capabilities, like GANs creating photorealistic faces. But what if we could guide that generation with more than just random noise or style images? What if we ccould tell the model exactly what we want it to create, using natural language?</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/dalle.png" class="img-fluid figure-img"></p>
+<figcaption>Ramesh et al, “DALL·E: Creating Images from Text”, 2021, images from <a href="https://openai.com/blog/dall-e/">https://openai.com/blog/dall-e/</a></figcaption>
+</figure>
+</div>
+<p>This brings us to one of the most mind-blowing development in recent years: <strong>Text-to-image Generation</strong>. These are not images found on the internet these were created by an AI model based purely on that text description. And they are remarkably good! You see various interpretations, some look more like a cut avocado half turned into a chair, others are more abstract but clearly evoke both “armchair”and ‘avocado’. What’s so powerful about this (and models like DALL-E, Imagen, Stable Diffusion, etc.) is the <strong>compositionality</strong> and <strong>zero-shot generalization</strong>. The model has likely never seen an “armchair in a shape of a avocado” dufing its training. But it knows what armchairs are, it knows what avocados are, and it understands how to combine these concepts based on the textual relationships. The images above from Ramesh et al, 2021, for <strong>DALL-E</strong>, a groundbreaking model from OpenAI. This kind of model is typically a very large transformer-based architecture, trained on massive datasets of image-text pairs. It learns to associate visual concepts with textual descriptions and can then generate novel images by combining these learned concepts in new ways. This ability to translate complex, even whimsical, textual prompts into coherent and creative visual outputs in a huge leap.</p>
+<p>This isn’t just about fun images. It has profound implications for creative industries, design, content creation, and even helping us understand how these large models represent and manipulate concepts. We’ve gone from classifying what’s in an image to generating entirely new visual realities from abstract textual descriptions. It’s truly an exciting time for AI and vision.</p>
+</section>
+<section id="the-spark-and-the-fuel" class="level2">
+<h2 class="anchored" data-anchor-id="the-spark-and-the-fuel">The spark and the fuel</h2>
+<p>So, we’ve spent a lot of time looking at this incredible explosion of deep learning applications from 2012 to the present. We’ve seen progress in classification, detection, segmentation, captioning, generation, and so much more. A natural question arises: Why now? What were the key ingredients that came together to make this revolution possible?</p>
+<p><img src="./images/the-fuel.png" class="img-fluid"></p>
+<p>There are three main reasons. The <strong>Computation</strong>, Deep learning models, especially the large ones we’ve been discussing, are incredibly computationally intensive to train. They require billions or even trillions of calculations. The <strong>Algorithms</strong>, while many core ideas of neural networks have been around for decades, there have been significant algorithm innovations. These include new architectures like ResNet, Transformers, better optimization techniques, new activation functions, regularization methods, and so on, which have made it possible to train much deeper and more complex models effectively. And finally the <strong>Data</strong>, datasets like ImageNet, which we discussed, were crucial. Deep learning models are data-hungry, they learn by seeing millions of examples. The internet, social media, and large-scale data collection efforts have provided this fuel.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/gpus.png" class="img-fluid figure-img"></p>
+<figcaption>the <strong>GFLOP per Dollar</strong> graph. ‘GFLOP’ stands for Giga Floating Point Operations Per Second. It’s a measure of computational power (how many billions of calculations a processor can do in one second). The graph shows this metric per dollar, so it’s a measure of cost-effectiveness</figcaption>
+</figure>
+</div>
+<p>Let’s focus on the <strong>Computation</strong> aspect. Look at the dramatic difference between CPUs and GPUs starting around 2007-2008 with GPUs like the GeForce 8800 GTX which was one of the first to support general-purpose computing via CUDA. Around 2010-2012 we have GeForce GTX 580, this is the era when AlexNet was developed. Alex Krizhevsky trained AlexNet on NVIDIA GPUs, and their parallel processing capabilities were absolutely critical for training such a large network in a reasonable amount of time. Then we have so-called “Deep learning Explosion” starting around 2012-2013, precisely when GPU performance and accessibility where taking off. Later GPUs like GTX 1080 Ti, RTX 2080 Ti, RTX 3090, and RTX 3080 continued this trend, offering massive parallel computation ant increasingly better price points (or at least, significantly more power for a high-end card).</p>
+<p>But the story doesn’t end there with the arrive of GPU (Tensor Core) which is a special hardware for deep learning. Starting with NVIDIA’s Volta architectures, GPUs began to include dedicated hardware nits specifically designed to accelerate the types of matrix multiplication and accumulation operations that are the heart of deep learning computations. These Tensor Cores can perform mixed-precision matrix math (e.g., multiplying FP16 matrices and accumulating in FP32) much, much aster than general-purpose FP32 units.</p>
+<p>This is fantastic example of positive feedback loop:</p>
+<ol type="1">
+<li>Deep learning shows promise.</li>
+<li>Researchers start using GPUs for their parallel processing capabilities.</li>
+<li>The demand for deep learning computation grows.</li>
+<li>Hardware manufactures (like NVIDIA) see this massive market and start designing specialized hardware units like Tensor Cores to further accelerate deep learning workloads.</li>
+<li>This new, even more powerful hardware enables researchers to train even larger, more complex models pushing the boundaries of AI further.</li>
+</ol>
+<p>So it’s not just that GPU happened to be good for deep learning; the hardware itself has evolved because of deep learning, making it even more powerful and efficient for these tasks. This co-evolution of algorithms, software, and hardware is a key characteristic of current AI boom.</p>
+<p>Now let’s zoom out and look at the broader AI’s explosive growth and impact. This isn’t just an academic phenomenon, it’s having a massive real-world impact.</p>
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb1" data-startfrom="251" data-source-offset="-27"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 250;"><span id="cb1-251"><a href="#cb1-251" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> <span class="fu">FileAttachment</span>(<span class="st">"./data/attendance-major-artificial-intelligence-conferences.csv"</span>)<span class="op">.</span><span class="fu">csv</span>()</span>
+<span id="cb1-252"><a href="#cb1-252" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-253"><a href="#cb1-253" aria-hidden="true" tabindex="-1"></a><span class="co">// Group data by conference</span></span>
+<span id="cb1-254"><a href="#cb1-254" aria-hidden="true" tabindex="-1"></a>aaai_data <span class="op">=</span> data<span class="op">.</span><span class="fu">filter</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">Entity</span> <span class="op">===</span> <span class="st">"AAAI"</span>)</span>
+<span id="cb1-255"><a href="#cb1-255" aria-hidden="true" tabindex="-1"></a>cvpr_data <span class="op">=</span> data<span class="op">.</span><span class="fu">filter</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">Entity</span> <span class="op">===</span> <span class="st">"CVPR"</span>)</span>
+<span id="cb1-256"><a href="#cb1-256" aria-hidden="true" tabindex="-1"></a>iclr_data <span class="op">=</span> data<span class="op">.</span><span class="fu">filter</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">Entity</span> <span class="op">===</span> <span class="st">"ICLR"</span>)</span>
+<span id="cb1-257"><a href="#cb1-257" aria-hidden="true" tabindex="-1"></a>icml_data <span class="op">=</span> data<span class="op">.</span><span class="fu">filter</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">Entity</span> <span class="op">===</span> <span class="st">"ICML"</span>)</span>
+<span id="cb1-258"><a href="#cb1-258" aria-hidden="true" tabindex="-1"></a>neurips_data <span class="op">=</span> data<span class="op">.</span><span class="fu">filter</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">Entity</span> <span class="op">===</span> <span class="st">"NeurIPS"</span>)</span>
+<span id="cb1-259"><a href="#cb1-259" aria-hidden="true" tabindex="-1"></a>total_data <span class="op">=</span> data<span class="op">.</span><span class="fu">filter</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">Entity</span> <span class="op">===</span> <span class="st">"Total"</span>)</span>
+<span id="cb1-260"><a href="#cb1-260" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-261"><a href="#cb1-261" aria-hidden="true" tabindex="-1"></a><span class="co">// Create the Plotly chart</span></span>
+<span id="cb1-262"><a href="#cb1-262" aria-hidden="true" tabindex="-1"></a>Plotly <span class="op">=</span> <span class="pp">require</span>(<span class="st">"plotly.js-dist@2"</span>)</span>
+<span id="cb1-263"><a href="#cb1-263" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-264"><a href="#cb1-264" aria-hidden="true" tabindex="-1"></a>chart <span class="op">=</span> {</span>
+<span id="cb1-265"><a href="#cb1-265" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> traces <span class="op">=</span> [</span>
+<span id="cb1-266"><a href="#cb1-266" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb1-267"><a href="#cb1-267" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x</span><span class="op">:</span> aaai_data<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">Year</span>)<span class="op">,</span></span>
+<span id="cb1-268"><a href="#cb1-268" aria-hidden="true" tabindex="-1"></a>      <span class="dt">y</span><span class="op">:</span> aaai_data<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d[<span class="st">"Number of attendees"</span>])<span class="op">,</span></span>
+<span id="cb1-269"><a href="#cb1-269" aria-hidden="true" tabindex="-1"></a>      <span class="dt">type</span><span class="op">:</span> <span class="st">'scatter'</span><span class="op">,</span></span>
+<span id="cb1-270"><a href="#cb1-270" aria-hidden="true" tabindex="-1"></a>      <span class="dt">mode</span><span class="op">:</span> <span class="st">'lines+markers'</span><span class="op">,</span></span>
+<span id="cb1-271"><a href="#cb1-271" aria-hidden="true" tabindex="-1"></a>      <span class="dt">name</span><span class="op">:</span> <span class="st">'AAAI'</span><span class="op">,</span></span>
+<span id="cb1-272"><a href="#cb1-272" aria-hidden="true" tabindex="-1"></a>      <span class="dt">line</span><span class="op">:</span> { <span class="dt">color</span><span class="op">:</span> <span class="st">'#9467bd'</span><span class="op">,</span> <span class="dt">width</span><span class="op">:</span> <span class="dv">3</span> }<span class="op">,</span></span>
+<span id="cb1-273"><a href="#cb1-273" aria-hidden="true" tabindex="-1"></a>      <span class="dt">marker</span><span class="op">:</span> { <span class="dt">size</span><span class="op">:</span> <span class="dv">8</span> }<span class="op">,</span></span>
+<span id="cb1-274"><a href="#cb1-274" aria-hidden="true" tabindex="-1"></a>      <span class="dt">hovertemplate</span><span class="op">:</span> <span class="st">'%{fullData.name}: %{y:,}&lt;extra&gt;&lt;/extra&gt;'</span></span>
+<span id="cb1-275"><a href="#cb1-275" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
+<span id="cb1-276"><a href="#cb1-276" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb1-277"><a href="#cb1-277" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x</span><span class="op">:</span> cvpr_data<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">Year</span>)<span class="op">,</span></span>
+<span id="cb1-278"><a href="#cb1-278" aria-hidden="true" tabindex="-1"></a>      <span class="dt">y</span><span class="op">:</span> cvpr_data<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d[<span class="st">"Number of attendees"</span>])<span class="op">,</span></span>
+<span id="cb1-279"><a href="#cb1-279" aria-hidden="true" tabindex="-1"></a>      <span class="dt">type</span><span class="op">:</span> <span class="st">'scatter'</span><span class="op">,</span></span>
+<span id="cb1-280"><a href="#cb1-280" aria-hidden="true" tabindex="-1"></a>      <span class="dt">mode</span><span class="op">:</span> <span class="st">'lines+markers'</span><span class="op">,</span></span>
+<span id="cb1-281"><a href="#cb1-281" aria-hidden="true" tabindex="-1"></a>      <span class="dt">name</span><span class="op">:</span> <span class="st">'CVPR'</span><span class="op">,</span></span>
+<span id="cb1-282"><a href="#cb1-282" aria-hidden="true" tabindex="-1"></a>      <span class="dt">line</span><span class="op">:</span> { <span class="dt">color</span><span class="op">:</span> <span class="st">'#1f77b4'</span><span class="op">,</span> <span class="dt">width</span><span class="op">:</span> <span class="dv">3</span> }<span class="op">,</span></span>
+<span id="cb1-283"><a href="#cb1-283" aria-hidden="true" tabindex="-1"></a>      <span class="dt">marker</span><span class="op">:</span> { <span class="dt">size</span><span class="op">:</span> <span class="dv">8</span> }<span class="op">,</span></span>
+<span id="cb1-284"><a href="#cb1-284" aria-hidden="true" tabindex="-1"></a>      <span class="dt">hovertemplate</span><span class="op">:</span> <span class="st">'%{fullData.name}: %{y:,}&lt;extra&gt;&lt;/extra&gt;'</span></span>
+<span id="cb1-285"><a href="#cb1-285" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
+<span id="cb1-286"><a href="#cb1-286" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb1-287"><a href="#cb1-287" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x</span><span class="op">:</span> iclr_data<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">Year</span>)<span class="op">,</span></span>
+<span id="cb1-288"><a href="#cb1-288" aria-hidden="true" tabindex="-1"></a>      <span class="dt">y</span><span class="op">:</span> iclr_data<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d[<span class="st">"Number of attendees"</span>])<span class="op">,</span></span>
+<span id="cb1-289"><a href="#cb1-289" aria-hidden="true" tabindex="-1"></a>      <span class="dt">type</span><span class="op">:</span> <span class="st">'scatter'</span><span class="op">,</span></span>
+<span id="cb1-290"><a href="#cb1-290" aria-hidden="true" tabindex="-1"></a>      <span class="dt">mode</span><span class="op">:</span> <span class="st">'lines+markers'</span><span class="op">,</span></span>
+<span id="cb1-291"><a href="#cb1-291" aria-hidden="true" tabindex="-1"></a>      <span class="dt">name</span><span class="op">:</span> <span class="st">'ICLR'</span><span class="op">,</span></span>
+<span id="cb1-292"><a href="#cb1-292" aria-hidden="true" tabindex="-1"></a>      <span class="dt">line</span><span class="op">:</span> { <span class="dt">color</span><span class="op">:</span> <span class="st">'#ff7f0e'</span><span class="op">,</span> <span class="dt">width</span><span class="op">:</span> <span class="dv">3</span> }<span class="op">,</span></span>
+<span id="cb1-293"><a href="#cb1-293" aria-hidden="true" tabindex="-1"></a>      <span class="dt">marker</span><span class="op">:</span> { <span class="dt">size</span><span class="op">:</span> <span class="dv">8</span> }<span class="op">,</span></span>
+<span id="cb1-294"><a href="#cb1-294" aria-hidden="true" tabindex="-1"></a>      <span class="dt">hovertemplate</span><span class="op">:</span> <span class="st">'%{fullData.name}: %{y:,}&lt;extra&gt;&lt;/extra&gt;'</span></span>
+<span id="cb1-295"><a href="#cb1-295" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
+<span id="cb1-296"><a href="#cb1-296" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb1-297"><a href="#cb1-297" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x</span><span class="op">:</span> icml_data<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">Year</span>)<span class="op">,</span></span>
+<span id="cb1-298"><a href="#cb1-298" aria-hidden="true" tabindex="-1"></a>      <span class="dt">y</span><span class="op">:</span> icml_data<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d[<span class="st">"Number of attendees"</span>])<span class="op">,</span></span>
+<span id="cb1-299"><a href="#cb1-299" aria-hidden="true" tabindex="-1"></a>      <span class="dt">type</span><span class="op">:</span> <span class="st">'scatter'</span><span class="op">,</span></span>
+<span id="cb1-300"><a href="#cb1-300" aria-hidden="true" tabindex="-1"></a>      <span class="dt">mode</span><span class="op">:</span> <span class="st">'lines+markers'</span><span class="op">,</span></span>
+<span id="cb1-301"><a href="#cb1-301" aria-hidden="true" tabindex="-1"></a>      <span class="dt">name</span><span class="op">:</span> <span class="st">'ICML'</span><span class="op">,</span></span>
+<span id="cb1-302"><a href="#cb1-302" aria-hidden="true" tabindex="-1"></a>      <span class="dt">line</span><span class="op">:</span> { <span class="dt">color</span><span class="op">:</span> <span class="st">'#8c564b'</span><span class="op">,</span> <span class="dt">width</span><span class="op">:</span> <span class="dv">3</span> }<span class="op">,</span></span>
+<span id="cb1-303"><a href="#cb1-303" aria-hidden="true" tabindex="-1"></a>      <span class="dt">marker</span><span class="op">:</span> { <span class="dt">size</span><span class="op">:</span> <span class="dv">8</span> }<span class="op">,</span></span>
+<span id="cb1-304"><a href="#cb1-304" aria-hidden="true" tabindex="-1"></a>      <span class="dt">hovertemplate</span><span class="op">:</span> <span class="st">'%{fullData.name}: %{y:,}&lt;extra&gt;&lt;/extra&gt;'</span></span>
+<span id="cb1-305"><a href="#cb1-305" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
+<span id="cb1-306"><a href="#cb1-306" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb1-307"><a href="#cb1-307" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x</span><span class="op">:</span> neurips_data<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">Year</span>)<span class="op">,</span></span>
+<span id="cb1-308"><a href="#cb1-308" aria-hidden="true" tabindex="-1"></a>      <span class="dt">y</span><span class="op">:</span> neurips_data<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d[<span class="st">"Number of attendees"</span>])<span class="op">,</span></span>
+<span id="cb1-309"><a href="#cb1-309" aria-hidden="true" tabindex="-1"></a>      <span class="dt">type</span><span class="op">:</span> <span class="st">'scatter'</span><span class="op">,</span></span>
+<span id="cb1-310"><a href="#cb1-310" aria-hidden="true" tabindex="-1"></a>      <span class="dt">mode</span><span class="op">:</span> <span class="st">'lines+markers'</span><span class="op">,</span></span>
+<span id="cb1-311"><a href="#cb1-311" aria-hidden="true" tabindex="-1"></a>      <span class="dt">name</span><span class="op">:</span> <span class="st">'NeurIPS'</span><span class="op">,</span></span>
+<span id="cb1-312"><a href="#cb1-312" aria-hidden="true" tabindex="-1"></a>      <span class="dt">line</span><span class="op">:</span> { <span class="dt">color</span><span class="op">:</span> <span class="st">'#2ca02c'</span><span class="op">,</span> <span class="dt">width</span><span class="op">:</span> <span class="dv">3</span> }<span class="op">,</span></span>
+<span id="cb1-313"><a href="#cb1-313" aria-hidden="true" tabindex="-1"></a>      <span class="dt">marker</span><span class="op">:</span> { <span class="dt">size</span><span class="op">:</span> <span class="dv">8</span> }<span class="op">,</span></span>
+<span id="cb1-314"><a href="#cb1-314" aria-hidden="true" tabindex="-1"></a>      <span class="dt">hovertemplate</span><span class="op">:</span> <span class="st">'%{fullData.name}: %{y:,}&lt;extra&gt;&lt;/extra&gt;'</span></span>
+<span id="cb1-315"><a href="#cb1-315" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
+<span id="cb1-316"><a href="#cb1-316" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb1-317"><a href="#cb1-317" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x</span><span class="op">:</span> total_data<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">Year</span>)<span class="op">,</span></span>
+<span id="cb1-318"><a href="#cb1-318" aria-hidden="true" tabindex="-1"></a>      <span class="dt">y</span><span class="op">:</span> total_data<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d[<span class="st">"Number of attendees"</span>])<span class="op">,</span></span>
+<span id="cb1-319"><a href="#cb1-319" aria-hidden="true" tabindex="-1"></a>      <span class="dt">type</span><span class="op">:</span> <span class="st">'scatter'</span><span class="op">,</span></span>
+<span id="cb1-320"><a href="#cb1-320" aria-hidden="true" tabindex="-1"></a>      <span class="dt">mode</span><span class="op">:</span> <span class="st">'lines+markers'</span><span class="op">,</span></span>
+<span id="cb1-321"><a href="#cb1-321" aria-hidden="true" tabindex="-1"></a>      <span class="dt">name</span><span class="op">:</span> <span class="st">'Total'</span><span class="op">,</span></span>
+<span id="cb1-322"><a href="#cb1-322" aria-hidden="true" tabindex="-1"></a>      <span class="dt">line</span><span class="op">:</span> { <span class="dt">color</span><span class="op">:</span> <span class="st">'#d62728'</span><span class="op">,</span> <span class="dt">width</span><span class="op">:</span> <span class="dv">3</span><span class="op">,</span> <span class="dt">dash</span><span class="op">:</span> <span class="st">'dash'</span> }<span class="op">,</span></span>
+<span id="cb1-323"><a href="#cb1-323" aria-hidden="true" tabindex="-1"></a>      <span class="dt">marker</span><span class="op">:</span> { <span class="dt">size</span><span class="op">:</span> <span class="dv">8</span> }<span class="op">,</span></span>
+<span id="cb1-324"><a href="#cb1-324" aria-hidden="true" tabindex="-1"></a>      <span class="dt">hovertemplate</span><span class="op">:</span> <span class="st">'%{fullData.name}: %{y:,}&lt;extra&gt;&lt;/extra&gt;'</span></span>
+<span id="cb1-325"><a href="#cb1-325" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb1-326"><a href="#cb1-326" aria-hidden="true" tabindex="-1"></a>  ]<span class="op">;</span></span>
+<span id="cb1-327"><a href="#cb1-327" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-328"><a href="#cb1-328" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> layout <span class="op">=</span> {</span>
+<span id="cb1-329"><a href="#cb1-329" aria-hidden="true" tabindex="-1"></a>    <span class="dt">title</span><span class="op">:</span> {</span>
+<span id="cb1-330"><a href="#cb1-330" aria-hidden="true" tabindex="-1"></a>      <span class="dt">text</span><span class="op">:</span> <span class="st">'Conference Attendance Over Time'</span><span class="op">,</span></span>
+<span id="cb1-331"><a href="#cb1-331" aria-hidden="true" tabindex="-1"></a>      <span class="dt">font</span><span class="op">:</span> { <span class="dt">size</span><span class="op">:</span> <span class="dv">20</span> }</span>
+<span id="cb1-332"><a href="#cb1-332" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
+<span id="cb1-333"><a href="#cb1-333" aria-hidden="true" tabindex="-1"></a>    <span class="dt">xaxis</span><span class="op">:</span> {</span>
+<span id="cb1-334"><a href="#cb1-334" aria-hidden="true" tabindex="-1"></a>      <span class="dt">title</span><span class="op">:</span> <span class="st">'Year'</span><span class="op">,</span></span>
+<span id="cb1-335"><a href="#cb1-335" aria-hidden="true" tabindex="-1"></a>      <span class="dt">showgrid</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></span>
+<span id="cb1-336"><a href="#cb1-336" aria-hidden="true" tabindex="-1"></a>      <span class="dt">gridcolor</span><span class="op">:</span> <span class="st">'rgba(0,0,0,0.1)'</span></span>
+<span id="cb1-337"><a href="#cb1-337" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
+<span id="cb1-338"><a href="#cb1-338" aria-hidden="true" tabindex="-1"></a>    <span class="dt">yaxis</span><span class="op">:</span> {</span>
+<span id="cb1-339"><a href="#cb1-339" aria-hidden="true" tabindex="-1"></a>      <span class="dt">title</span><span class="op">:</span> <span class="st">'Number of Attendees'</span><span class="op">,</span></span>
+<span id="cb1-340"><a href="#cb1-340" aria-hidden="true" tabindex="-1"></a>      <span class="dt">showgrid</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></span>
+<span id="cb1-341"><a href="#cb1-341" aria-hidden="true" tabindex="-1"></a>      <span class="dt">gridcolor</span><span class="op">:</span> <span class="st">'rgba(0,0,0,0.1)'</span><span class="op">,</span></span>
+<span id="cb1-342"><a href="#cb1-342" aria-hidden="true" tabindex="-1"></a>      <span class="dt">tickformat</span><span class="op">:</span> <span class="st">',d'</span></span>
+<span id="cb1-343"><a href="#cb1-343" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
+<span id="cb1-344"><a href="#cb1-344" aria-hidden="true" tabindex="-1"></a>    <span class="dt">legend</span><span class="op">:</span> {</span>
+<span id="cb1-345"><a href="#cb1-345" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x</span><span class="op">:</span> <span class="fl">0.02</span><span class="op">,</span></span>
+<span id="cb1-346"><a href="#cb1-346" aria-hidden="true" tabindex="-1"></a>      <span class="dt">y</span><span class="op">:</span> <span class="fl">0.98</span><span class="op">,</span></span>
+<span id="cb1-347"><a href="#cb1-347" aria-hidden="true" tabindex="-1"></a>      <span class="dt">bgcolor</span><span class="op">:</span> <span class="st">'rgba(255,255,255,0.8)'</span><span class="op">,</span></span>
+<span id="cb1-348"><a href="#cb1-348" aria-hidden="true" tabindex="-1"></a>      <span class="dt">bordercolor</span><span class="op">:</span> <span class="st">'rgba(0,0,0,0.2)'</span><span class="op">,</span></span>
+<span id="cb1-349"><a href="#cb1-349" aria-hidden="true" tabindex="-1"></a>      <span class="dt">borderwidth</span><span class="op">:</span> <span class="dv">1</span></span>
+<span id="cb1-350"><a href="#cb1-350" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
+<span id="cb1-351"><a href="#cb1-351" aria-hidden="true" tabindex="-1"></a>    <span class="dt">hovermode</span><span class="op">:</span> <span class="st">'x unified'</span><span class="op">,</span></span>
+<span id="cb1-352"><a href="#cb1-352" aria-hidden="true" tabindex="-1"></a>    <span class="dt">plot_bgcolor</span><span class="op">:</span> <span class="st">'white'</span><span class="op">,</span></span>
+<span id="cb1-353"><a href="#cb1-353" aria-hidden="true" tabindex="-1"></a>    <span class="dt">paper_bgcolor</span><span class="op">:</span> <span class="st">'white'</span><span class="op">,</span></span>
+<span id="cb1-354"><a href="#cb1-354" aria-hidden="true" tabindex="-1"></a>    <span class="dt">margin</span><span class="op">:</span> { <span class="dt">l</span><span class="op">:</span> <span class="dv">80</span><span class="op">,</span> <span class="dt">r</span><span class="op">:</span> <span class="dv">40</span><span class="op">,</span> <span class="dt">t</span><span class="op">:</span> <span class="dv">80</span><span class="op">,</span> <span class="dt">b</span><span class="op">:</span> <span class="dv">80</span> }</span>
+<span id="cb1-355"><a href="#cb1-355" aria-hidden="true" tabindex="-1"></a>  }<span class="op">;</span></span>
+<span id="cb1-356"><a href="#cb1-356" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-357"><a href="#cb1-357" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> config <span class="op">=</span> {</span>
+<span id="cb1-358"><a href="#cb1-358" aria-hidden="true" tabindex="-1"></a>    <span class="dt">displayModeBar</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></span>
+<span id="cb1-359"><a href="#cb1-359" aria-hidden="true" tabindex="-1"></a>    <span class="dt">displaylogo</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></span>
+<span id="cb1-360"><a href="#cb1-360" aria-hidden="true" tabindex="-1"></a>    <span class="dt">modeBarButtonsToRemove</span><span class="op">:</span> [<span class="st">'pan2d'</span><span class="op">,</span> <span class="st">'lasso2d'</span><span class="op">,</span> <span class="st">'select2d'</span>]<span class="op">,</span></span>
+<span id="cb1-361"><a href="#cb1-361" aria-hidden="true" tabindex="-1"></a>    <span class="dt">responsive</span><span class="op">:</span> <span class="kw">true</span></span>
+<span id="cb1-362"><a href="#cb1-362" aria-hidden="true" tabindex="-1"></a>  }<span class="op">;</span></span>
+<span id="cb1-363"><a href="#cb1-363" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-364"><a href="#cb1-364" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> div <span class="op">=</span> DOM<span class="op">.</span><span class="fu">element</span>(<span class="st">"div"</span>)<span class="op">;</span></span>
+<span id="cb1-365"><a href="#cb1-365" aria-hidden="true" tabindex="-1"></a>  div<span class="op">.</span><span class="at">style</span><span class="op">.</span><span class="at">width</span> <span class="op">=</span> <span class="st">"100%"</span><span class="op">;</span></span>
+<span id="cb1-366"><a href="#cb1-366" aria-hidden="true" tabindex="-1"></a>  div<span class="op">.</span><span class="at">style</span><span class="op">.</span><span class="at">height</span> <span class="op">=</span> <span class="st">"500px"</span><span class="op">;</span></span>
+<span id="cb1-367"><a href="#cb1-367" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-368"><a href="#cb1-368" aria-hidden="true" tabindex="-1"></a>  Plotly<span class="op">.</span><span class="fu">newPlot</span>(div<span class="op">,</span> traces<span class="op">,</span> layout<span class="op">,</span> config)<span class="op">;</span></span>
+<span id="cb1-369"><a href="#cb1-369" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-370"><a href="#cb1-370" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> div<span class="op">;</span></span>
+<span id="cb1-371"><a href="#cb1-371" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-4" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-5" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-6" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-7" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-8" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-9" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<p>This chart show the number of attendance at major AI conferences like CVPR(Computer Vision), NeurlPS(Neural Information Processing System, a top ML conference), ICML (International Conference on Machine Learning), AAAI (Association for the Advancement of Artificial Intelligence), ICLR (International conference on Learning Representations), and others, from around 2010 to 2024. Look at what happens around 2012-2015 onwards. The attendance for many of these conferences, especially those focused on machine learning and computer vision (like CVPR, NeurlPS, ICML, ICLR) just explodes. We’re talking about conferences going from a few thousand attendees to over 20,000, somethimes even more, in just a few years. This signifies a huge influx of researchers, students, and industry practitioners into the field. The source is from <a href="https://ourworldindata.org/grapher/attendance-major-artificial-intelligence-conferences?country=NeurIPS~Total~CVPR~ICLR~ICML~AAAI">Our World in Data</a>.</p>
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb2" data-startfrom="378" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 377;"><span id="cb2-378"><a href="#cb2-378" aria-hidden="true" tabindex="-1"></a>aiData <span class="op">=</span> <span class="fu">FileAttachment</span>(<span class="st">"./data/enterprise-ai-revenue.csv"</span>)<span class="op">.</span><span class="fu">csv</span>()</span>
+<span id="cb2-379"><a href="#cb2-379" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-380"><a href="#cb2-380" aria-hidden="true" tabindex="-1"></a>aiChart <span class="op">=</span> {</span>
+<span id="cb2-381"><a href="#cb2-381" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> trace <span class="op">=</span> {</span>
+<span id="cb2-382"><a href="#cb2-382" aria-hidden="true" tabindex="-1"></a>    <span class="dt">x</span><span class="op">:</span> aiData<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">Year</span>)<span class="op">,</span></span>
+<span id="cb2-383"><a href="#cb2-383" aria-hidden="true" tabindex="-1"></a>    <span class="dt">y</span><span class="op">:</span> aiData<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">Revenue</span>)<span class="op">,</span></span>
+<span id="cb2-384"><a href="#cb2-384" aria-hidden="true" tabindex="-1"></a>    <span class="dt">type</span><span class="op">:</span> <span class="st">'bar'</span><span class="op">,</span></span>
+<span id="cb2-385"><a href="#cb2-385" aria-hidden="true" tabindex="-1"></a>    <span class="dt">name</span><span class="op">:</span> <span class="st">'AI Market Revenue'</span><span class="op">,</span></span>
+<span id="cb2-386"><a href="#cb2-386" aria-hidden="true" tabindex="-1"></a>    <span class="dt">marker</span><span class="op">:</span> {</span>
+<span id="cb2-387"><a href="#cb2-387" aria-hidden="true" tabindex="-1"></a>      <span class="dt">color</span><span class="op">:</span> <span class="st">'#4285f4'</span><span class="op">,</span></span>
+<span id="cb2-388"><a href="#cb2-388" aria-hidden="true" tabindex="-1"></a>      <span class="dt">opacity</span><span class="op">:</span> <span class="fl">0.8</span><span class="op">,</span></span>
+<span id="cb2-389"><a href="#cb2-389" aria-hidden="true" tabindex="-1"></a>      <span class="dt">line</span><span class="op">:</span> {</span>
+<span id="cb2-390"><a href="#cb2-390" aria-hidden="true" tabindex="-1"></a>        <span class="dt">color</span><span class="op">:</span> <span class="st">'#1a73e8'</span><span class="op">,</span></span>
+<span id="cb2-391"><a href="#cb2-391" aria-hidden="true" tabindex="-1"></a>        <span class="dt">width</span><span class="op">:</span> <span class="dv">1</span></span>
+<span id="cb2-392"><a href="#cb2-392" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb2-393"><a href="#cb2-393" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
+<span id="cb2-394"><a href="#cb2-394" aria-hidden="true" tabindex="-1"></a>    <span class="dt">text</span><span class="op">:</span> aiData<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> <span class="vs">`$</span><span class="sc">${</span>(<span class="op">+</span>d<span class="op">.</span><span class="at">Revenue</span>)<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">2</span>)<span class="sc">}</span><span class="vs">`</span>)<span class="op">,</span></span>
+<span id="cb2-395"><a href="#cb2-395" aria-hidden="true" tabindex="-1"></a>    <span class="dt">textposition</span><span class="op">:</span> <span class="st">'outside'</span><span class="op">,</span></span>
+<span id="cb2-396"><a href="#cb2-396" aria-hidden="true" tabindex="-1"></a>    <span class="dt">textfont</span><span class="op">:</span> {</span>
+<span id="cb2-397"><a href="#cb2-397" aria-hidden="true" tabindex="-1"></a>      <span class="dt">color</span><span class="op">:</span> <span class="st">'#333'</span><span class="op">,</span></span>
+<span id="cb2-398"><a href="#cb2-398" aria-hidden="true" tabindex="-1"></a>      <span class="dt">size</span><span class="op">:</span> <span class="dv">11</span></span>
+<span id="cb2-399"><a href="#cb2-399" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
+<span id="cb2-400"><a href="#cb2-400" aria-hidden="true" tabindex="-1"></a>    <span class="dt">hovertemplate</span><span class="op">:</span> <span class="st">'&lt;b&gt;%{x}&lt;/b&gt;&lt;br&gt;'</span> <span class="op">+</span></span>
+<span id="cb2-401"><a href="#cb2-401" aria-hidden="true" tabindex="-1"></a>                   <span class="st">'Revenue: $%{y:,.2f} million USD&lt;br&gt;'</span> <span class="op">+</span></span>
+<span id="cb2-402"><a href="#cb2-402" aria-hidden="true" tabindex="-1"></a>                   <span class="st">'&lt;extra&gt;&lt;/extra&gt;'</span></span>
+<span id="cb2-403"><a href="#cb2-403" aria-hidden="true" tabindex="-1"></a>  }<span class="op">;</span></span>
+<span id="cb2-404"><a href="#cb2-404" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-405"><a href="#cb2-405" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> layout <span class="op">=</span> {</span>
+<span id="cb2-406"><a href="#cb2-406" aria-hidden="true" tabindex="-1"></a>    <span class="dt">title</span><span class="op">:</span> {</span>
+<span id="cb2-407"><a href="#cb2-407" aria-hidden="true" tabindex="-1"></a>      <span class="dt">text</span><span class="op">:</span> <span class="st">'Enterprise Artificial Intelligence Market Revenue Worldwide 2016-2025'</span><span class="op">,</span></span>
+<span id="cb2-408"><a href="#cb2-408" aria-hidden="true" tabindex="-1"></a>      <span class="dt">font</span><span class="op">:</span> { <span class="dt">size</span><span class="op">:</span> <span class="dv">18</span> }<span class="op">,</span></span>
+<span id="cb2-409"><a href="#cb2-409" aria-hidden="true" tabindex="-1"></a>      <span class="dt">x</span><span class="op">:</span> <span class="fl">0.5</span></span>
+<span id="cb2-410"><a href="#cb2-410" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
+<span id="cb2-411"><a href="#cb2-411" aria-hidden="true" tabindex="-1"></a>    <span class="dt">xaxis</span><span class="op">:</span> {</span>
+<span id="cb2-412"><a href="#cb2-412" aria-hidden="true" tabindex="-1"></a>      <span class="dt">title</span><span class="op">:</span> <span class="st">'Year'</span><span class="op">,</span></span>
+<span id="cb2-413"><a href="#cb2-413" aria-hidden="true" tabindex="-1"></a>      <span class="dt">showgrid</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></span>
+<span id="cb2-414"><a href="#cb2-414" aria-hidden="true" tabindex="-1"></a>      <span class="dt">tickmode</span><span class="op">:</span> <span class="st">'array'</span><span class="op">,</span></span>
+<span id="cb2-415"><a href="#cb2-415" aria-hidden="true" tabindex="-1"></a>      <span class="dt">tickvals</span><span class="op">:</span> aiData<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">Year</span>)<span class="op">,</span></span>
+<span id="cb2-416"><a href="#cb2-416" aria-hidden="true" tabindex="-1"></a>      <span class="dt">ticktext</span><span class="op">:</span> aiData<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">Year</span> <span class="op">&lt;</span> <span class="dv">2025</span> <span class="op">?</span> <span class="vs">`</span><span class="sc">${</span>d<span class="op">.</span><span class="at">Year</span><span class="sc">}</span><span class="vs">*`</span> <span class="op">:</span> <span class="vs">`</span><span class="sc">${</span>d<span class="op">.</span><span class="at">Year</span><span class="sc">}</span><span class="vs">*`</span>)</span>
+<span id="cb2-417"><a href="#cb2-417" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
+<span id="cb2-418"><a href="#cb2-418" aria-hidden="true" tabindex="-1"></a>    <span class="dt">yaxis</span><span class="op">:</span> {</span>
+<span id="cb2-419"><a href="#cb2-419" aria-hidden="true" tabindex="-1"></a>      <span class="dt">title</span><span class="op">:</span> <span class="st">'Revenue in million U.S. dollars'</span><span class="op">,</span></span>
+<span id="cb2-420"><a href="#cb2-420" aria-hidden="true" tabindex="-1"></a>      <span class="dt">showgrid</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></span>
+<span id="cb2-421"><a href="#cb2-421" aria-hidden="true" tabindex="-1"></a>      <span class="dt">gridcolor</span><span class="op">:</span> <span class="st">'rgba(0,0,0,0.1)'</span><span class="op">,</span></span>
+<span id="cb2-422"><a href="#cb2-422" aria-hidden="true" tabindex="-1"></a>      <span class="dt">tickformat</span><span class="op">:</span> <span class="st">',.0f'</span><span class="op">,</span></span>
+<span id="cb2-423"><a href="#cb2-423" aria-hidden="true" tabindex="-1"></a>      <span class="dt">range</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">max</span>(<span class="op">...</span>aiData<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> <span class="op">+</span>d<span class="op">.</span><span class="at">Revenue</span>)) <span class="op">*</span> <span class="fl">1.1</span>]</span>
+<span id="cb2-424"><a href="#cb2-424" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
+<span id="cb2-425"><a href="#cb2-425" aria-hidden="true" tabindex="-1"></a>    <span class="dt">plot_bgcolor</span><span class="op">:</span> <span class="st">'white'</span><span class="op">,</span></span>
+<span id="cb2-426"><a href="#cb2-426" aria-hidden="true" tabindex="-1"></a>    <span class="dt">paper_bgcolor</span><span class="op">:</span> <span class="st">'white'</span><span class="op">,</span></span>
+<span id="cb2-427"><a href="#cb2-427" aria-hidden="true" tabindex="-1"></a>    <span class="dt">margin</span><span class="op">:</span> { <span class="dt">l</span><span class="op">:</span> <span class="dv">80</span><span class="op">,</span> <span class="dt">r</span><span class="op">:</span> <span class="dv">40</span><span class="op">,</span> <span class="dt">t</span><span class="op">:</span> <span class="dv">100</span><span class="op">,</span> <span class="dt">b</span><span class="op">:</span> <span class="dv">80</span> }<span class="op">,</span></span>
+<span id="cb2-428"><a href="#cb2-428" aria-hidden="true" tabindex="-1"></a>    <span class="dt">showlegend</span><span class="op">:</span> <span class="kw">false</span></span>
+<span id="cb2-429"><a href="#cb2-429" aria-hidden="true" tabindex="-1"></a>  }<span class="op">;</span></span>
+<span id="cb2-430"><a href="#cb2-430" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-431"><a href="#cb2-431" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> config <span class="op">=</span> {</span>
+<span id="cb2-432"><a href="#cb2-432" aria-hidden="true" tabindex="-1"></a>    <span class="dt">displayModeBar</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></span>
+<span id="cb2-433"><a href="#cb2-433" aria-hidden="true" tabindex="-1"></a>    <span class="dt">displaylogo</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></span>
+<span id="cb2-434"><a href="#cb2-434" aria-hidden="true" tabindex="-1"></a>    <span class="dt">modeBarButtonsToRemove</span><span class="op">:</span> [<span class="st">'pan2d'</span><span class="op">,</span> <span class="st">'lasso2d'</span><span class="op">,</span> <span class="st">'select2d'</span>]<span class="op">,</span></span>
+<span id="cb2-435"><a href="#cb2-435" aria-hidden="true" tabindex="-1"></a>    <span class="dt">responsive</span><span class="op">:</span> <span class="kw">true</span></span>
+<span id="cb2-436"><a href="#cb2-436" aria-hidden="true" tabindex="-1"></a>  }<span class="op">;</span></span>
+<span id="cb2-437"><a href="#cb2-437" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-438"><a href="#cb2-438" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> div <span class="op">=</span> DOM<span class="op">.</span><span class="fu">element</span>(<span class="st">"div"</span>)<span class="op">;</span></span>
+<span id="cb2-439"><a href="#cb2-439" aria-hidden="true" tabindex="-1"></a>  div<span class="op">.</span><span class="at">style</span><span class="op">.</span><span class="at">width</span> <span class="op">=</span> <span class="st">"100%"</span><span class="op">;</span></span>
+<span id="cb2-440"><a href="#cb2-440" aria-hidden="true" tabindex="-1"></a>  div<span class="op">.</span><span class="at">style</span><span class="op">.</span><span class="at">height</span> <span class="op">=</span> <span class="st">"500px"</span><span class="op">;</span></span>
+<span id="cb2-441"><a href="#cb2-441" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-442"><a href="#cb2-442" aria-hidden="true" tabindex="-1"></a>  Plotly<span class="op">.</span><span class="fu">newPlot</span>(div<span class="op">,</span> [trace]<span class="op">,</span> layout<span class="op">,</span> config)<span class="op">;</span></span>
+<span id="cb2-443"><a href="#cb2-443" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-444"><a href="#cb2-444" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> div<span class="op">;</span></span>
+<span id="cb2-445"><a href="#cb2-445" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<p>Next is Enterprise application AI revenue, the bar chart shows the revenue generated from enterprise applications of AI, in billions of U.S. dollars, from 2016 projected out to 2025. Even starting in 2016, there’s already noticeable revenue. But the projected growth is staggering. It goes from a few hundred billion dollars, and then projected to over thirty trillion dollars by 2025. This shows that AI is not just research or startups, it’s begin deployed in established businesses across various sectors generating significant economic value. The source is from <a href="https://cloudlevante.com/2023/04/25/the-booming-cloud-how-artificial-intelligence-is-transforming-businesses/">cloudlevante</a></p>
+</section>
+<section id="beyond-the-benchmark" class="level2">
+<h2 class="anchored" data-anchor-id="beyond-the-benchmark">Beyond the Benchmark</h2>
+<p>We’ve had a whirlwind tour through the incredible achievements of deep learning in computer vision since 2012. We’ve seen models classify, detect, segment, caption, and even generate incredibly realistic images. Now, it’s crucial to bring us back to reality and acknowledge that while the successes are profound, there’s still a lot of work to be done.</p>
+<blockquote class="blockquote">
+<p>Despite the successes, computer vision still has a long way to go</p>
+</blockquote>
+<p>We’ve archived incredible feats on specific benchmarks, but true human-level visual intelligence, with common sense, robustness, and ethical considerations, is still a grand challenge. This isn’t to diminish the progress, but to inspire you for the future.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/harmful.png" class="img-fluid figure-img"></p>
+<figcaption>Source: <a href="https://www.washingtonpos%20t.com/technology/2019/%2010/22/ai-hiring-face-scan%20ning-algorithm-increasingly-decides-whether-you-deserve-job/">https://www.washingtonpos t.com/technology/2019/ 10/22/ai-hiring-face-scan ning-algorithm-increasingly-decides-whether-you-deserve-job/</a> and <a href="https://www.hirevue.com/platform/%20online-video-interviewing-software">https://www.hirevue.com/platform/ online-video-interviewing-software</a></figcaption>
+</figure>
+</div>
+<p>In fact, while computer vision can do immense good, it also has the potential to <strong>cause harm</strong> if not developed and deployed carefully. As future engineers and scientists in this field, it’s vital to be aware of those risks. Consider this concenred example <strong>Harmful Sterreotypes</strong>, specifically related to gender classification. the table on the left shows the accuracy of gender classifiers from major tech companies like Microsoft, FACE++, IBM on different demographic groups. The largest gap column, while accuracy for lighter males and feamales is very high, it significantly drops for darker-skinned individuals, especially darker females. This means these system are <strong>biased</strong>. Why does this happen? Often due to the lack of diverse and representative training data, or biases inherent in the data collection process. The averaged faces below visually represent these biased training sets. This is a critical issue, AI systems, if trained on biased data, will perpetuate and even amplify existing societal biases.</p>
+<p>On the right, we see this can <strong>Affect people’s lives</strong>. The headline from The Washington Post: “A face-scanning algorithm increasingly decides whether”you deserve the job”. This refers to companies like HireVue, which use AI-powered video analysis in job interviews to assess candidates. The system analyzes facial expression, speech patterns, and other cues. While the intent might be to standardize hiring, outside experts call it “profoundly disturbing”. Imagine an algorithm, potentially biased, making decisions about your career prospects. This highlights that computer vision system, when deployed in high-stakes environments like hiring, criminal justice, or healthcare, must be rigorously tested for fairness, transparency, and accuracy across all demographics. The ethical implications are enormous, and we, as a community, have a responsibility to address them.</p>
+<p>But it’s not all about potential harm. We also need to recognize the immense potential for good. <strong>Computer vision can sive lives</strong>. Consider the challenge of <strong>how to take care of seniors while keeping them safe?</strong> This is a growing societal problem with an aging global population. Computer vision offers a promising non-invasive solution. Imagine a camera system in a senior’s home, it can help early symptom detection of COVID-19 by monitoring cough, breathing changes, fever-like symptoms through thermal imaging. It can Monitor patients with mild symptoms by reducing the need for frequent in-person visits. It can help manage chronic conditions like detecting changes in gait for mobility issues, monitoring sleep patterns, diet, or overall activities levels.</p>
+<p>These system are versatile and, crucially scalable. They can be low-cost compared to continuous human care and can be burden-free for the seniors themselves, allowing them to maintain independence while providing pace of mind to their families and caregivers. This is a powerful example of how computer vision, when designed ethically and thoughtfully can be a force for immense societal benefit.</p>
+<p>But even with these powerful applications, there are fundamentally limitations in reasoning and common sense that remind us just how far we still have to go. This brings us to a classic, and still deeply relevant, thought experiment in computer vision.</p>
+<p><img src="./images/karpathy.png" class="img-fluid"></p>
+<p>Back in 2012, Andrej Karpathy (who you may know as a former Director of AI at Tesla and a key figure in the field) wrote a blog post called <a href="https://karpathy.github.io/2012/10/22/state-of-computer-vision/">“The state of Computer Vision and AI: we are really, really far away.”</a> about the image you see above. He argued that it perfectly illustrated challenge facing AI. He called the state of computer vision at the time “pathetic” in the face of what this image requires. To truly understand the humor and the story in this photo, a computer would need to go far beyond just identifying pixels. It would need to synthesize an incredible amount of world knowledge.</p>
+<p>First it needs to understand the complex <strong>scene geometry</strong>. It has to recognize people, but also realize that some of them are reflections in a mirror, not separate individuals.</p>
+<p>Second it needs to grasp <strong>physical interaction and object affordance</strong>. It as to identify the object as a weight scale, understand that the person is standing on it to measure their weight, and then notice that then President Obama has his foot slyly placed on the back of the scale. This requires understanding that applying force to a scale alters its measurement a basic concept of physics.</p>
+<p>But the real challenge, the part that truly tests intelligence, is <strong>reasoning about minds</strong>. The system would need to infer that the person on the scale is unaware of Obama’s prank because of his pose and limited field of view. It would need to anticipate the person’s imminent confusion when he sees the inflated number. Add it’s a deeply social, psychological, and physical understanding, all from a single 2D image of RGB pixels</p>
+<p>So, that was 2012. Now, let’s fast forward to the present day, over a decade into the deep learning revolution. Did we solve it? This very question resurfaced in 2023. When asked about the original Obama image, Karpathy’s response was telling:</p>
+<blockquote class="blockquote">
+<p>We tried and it solves it :o.</p>
+</blockquote>
+<p>For a moment, it seems like the problem was solved. But the story gets more complex. Karpathy immediately followed up with this own skepticism:</p>
+<blockquote class="blockquote">
+<p>I still didn’t believe it could be true.</p>
+</blockquote>
+<p>The reason for his doubt is a critical concept in modern AI: <strong>data contamination</strong>. The Obama photo is famous. It, along with Karpathy’s original blog post and thousands of articles explain the joke, are almost certainly part of the massive datasets used to train today’s large vision-language models. So, when the model “explains” the joke, is it truly reasoning from first principles, or is it performing an act of incredibly sophisticated retrieval? Is it recreating an explanation it has already seen, or is it generating one from scratch? Maybe the image might be leaked into the training set. This ambiguity is perfectly captured by Karpathy’s own words:</p>
+<blockquote class="blockquote">
+<p>The waters are muddied…</p>
+</blockquote>
+<p>And this is where we stand today, truly beyond the benchmark. The lines are blurring. Our models have become so powerful that we are no longer just asking “Is it accurate?” but the much harder question: “Does it understand?” The challenge is no longer simply about building a better classifier, but about building system with verifiable reasoning, untangling true intelligence from phenomenal memory.</p>
+<p>The road ahead is still long, but the problem we face are no longer just about recognizing pixels. They are about navigating ambiguity, context, and common sense which is the very fabric of intelligence itself. The canvas is far from finished, but the picture we are beginning to paint is more intricate and fascinating than we could have ever imagined.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script type="text/javascript">
+// Enhance theme switching experience
+document.addEventListener('DOMContentLoaded', function() {
+  // Add smooth transitions to all elements when theme changes
+  const style = document.createElement('style');
+  style.textContent = `
+* {
+transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
+}
+
+.navbar, .card, .table, .btn {
+transition: all 0.3s ease !important;
+}
+`;
+  document.head.appendChild(style);
+
+  // Enhance code copy functionality
+  const codeBlocks = document.querySelectorAll('pre code');
+  codeBlocks.forEach(function(codeBlock) {
+    codeBlock.parentElement.style.position = 'relative';
+  });
+
+  // Add fade-in animation for post listings
+  const posts = document.querySelectorAll('.post-listing .card');
+  posts.forEach(function(post, index) {
+    post.style.opacity = '0';
+    post.style.transform = 'translateY(20px)';
+    setTimeout(() => {
+      post.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+      post.style.opacity = '1';
+      post.style.transform = 'translateY(0)';
+    }, index * 100);
+  });
+
+  // Smooth scroll for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    });
+  });
+
+  // Enhanced table styling
+  const tables = document.querySelectorAll('table');
+  tables.forEach(function(table) {
+    if (!table.classList.contains('table')) {
+      table.classList.add('table', 'table-striped');
+    }
+
+    // Wrap tables in responsive container
+    if (!table.parentElement.classList.contains('table-responsive')) {
+      const wrapper = document.createElement('div');
+      wrapper.classList.add('table-responsive');
+      table.parentNode.insertBefore(wrapper, table);
+      wrapper.appendChild(table);
+    }
+  });
+
+  // Replace keyboard shortcuts on non-Mac platforms
+  const kPlatformMac = typeof navigator !== 'undefined' ? /Mac/.test(navigator.platform) : false;
+  if (!kPlatformMac) {
+    var kbds = document.querySelectorAll("kbd");
+    kbds.forEach(function(kbd) {
+      kbd.innerHTML = kbd.innerHTML.replace(/⌘/g, '⌃');
+    });
+  }
+
+  // Add reading progress indicator
+  function addReadingProgress() {
+    const article = document.querySelector('main article, main .content, .post-content');
+    if (article) {
+      const progressBar = document.createElement('div');
+      progressBar.style.cssText = `
+position: fixed;
+top: 0;
+left: 0;
+width: 0%;
+height: 3px;
+background: var(--bs-primary);
+z-index: 1000;
+transition: width 0.3s ease;
+`;
+      document.body.appendChild(progressBar);
+
+      window.addEventListener('scroll', function() {
+        const scrolled = window.scrollY;
+        const height = article.offsetHeight - window.innerHeight;
+        const progress = Math.min(scrolled / height * 100, 100);
+        progressBar.style.width = progress + '%';
+      });
+    }
+  }
+
+  // Only add reading progress on individual blog posts
+  if (document.querySelector('.post-title') || document.querySelector('article')) {
+    addReadingProgress();
+  }
+});
+
+// Theme preference detection and saving
+(function() {
+  // Save theme preference to localStorage
+  const themeToggle = document.querySelector('[data-bs-toggle="color-scheme"]');
+  if (themeToggle) {
+    themeToggle.addEventListener('click', function() {
+      setTimeout(() => {
+        const currentTheme = document.documentElement.getAttribute('data-bs-theme');
+        localStorage.setItem('quarto-color-scheme', currentTheme);
+      }, 100);
+    });
+  }
+
+  // Load saved theme preference
+  const savedTheme = localStorage.getItem('quarto-color-scheme');
+  if (savedTheme) {
+    document.documentElement.setAttribute('data-bs-theme', savedTheme);
+  }
+})();
+</script>
+
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6Ii8vIExvYWQgZGF0YSBmcm9tIENTViBmaWxlXG5kYXRhID0gRmlsZUF0dGFjaG1lbnQoXCIuL2RhdGEvYXR0ZW5kYW5jZS1tYWpvci1hcnRpZmljaWFsLWludGVsbGlnZW5jZS1jb25mZXJlbmNlcy5jc3ZcIikuY3N2KClcblxuLy8gR3JvdXAgZGF0YSBieSBjb25mZXJlbmNlXG5hYWFpX2RhdGEgPSBkYXRhLmZpbHRlcihkID0+IGQuRW50aXR5ID09PSBcIkFBQUlcIilcbmN2cHJfZGF0YSA9IGRhdGEuZmlsdGVyKGQgPT4gZC5FbnRpdHkgPT09IFwiQ1ZQUlwiKVxuaWNscl9kYXRhID0gZGF0YS5maWx0ZXIoZCA9PiBkLkVudGl0eSA9PT0gXCJJQ0xSXCIpXG5pY21sX2RhdGEgPSBkYXRhLmZpbHRlcihkID0+IGQuRW50aXR5ID09PSBcIklDTUxcIilcbm5ldXJpcHNfZGF0YSA9IGRhdGEuZmlsdGVyKGQgPT4gZC5FbnRpdHkgPT09IFwiTmV1cklQU1wiKVxudG90YWxfZGF0YSA9IGRhdGEuZmlsdGVyKGQgPT4gZC5FbnRpdHkgPT09IFwiVG90YWxcIilcblxuLy8gQ3JlYXRlIHRoZSBQbG90bHkgY2hhcnRcblBsb3RseSA9IHJlcXVpcmUoXCJwbG90bHkuanMtZGlzdEAyXCIpXG5cbmNoYXJ0ID0ge1xuICBjb25zdCB0cmFjZXMgPSBbXG4gICAge1xuICAgICAgeDogYWFhaV9kYXRhLm1hcChkID0+IGQuWWVhciksXG4gICAgICB5OiBhYWFpX2RhdGEubWFwKGQgPT4gZFtcIk51bWJlciBvZiBhdHRlbmRlZXNcIl0pLFxuICAgICAgdHlwZTogJ3NjYXR0ZXInLFxuICAgICAgbW9kZTogJ2xpbmVzK21hcmtlcnMnLFxuICAgICAgbmFtZTogJ0FBQUknLFxuICAgICAgbGluZTogeyBjb2xvcjogJyM5NDY3YmQnLCB3aWR0aDogMyB9LFxuICAgICAgbWFya2VyOiB7IHNpemU6IDggfSxcbiAgICAgIGhvdmVydGVtcGxhdGU6ICcle2Z1bGxEYXRhLm5hbWV9OiAle3k6LH08ZXh0cmE+PC9leHRyYT4nXG4gICAgfSxcbiAgICB7XG4gICAgICB4OiBjdnByX2RhdGEubWFwKGQgPT4gZC5ZZWFyKSxcbiAgICAgIHk6IGN2cHJfZGF0YS5tYXAoZCA9PiBkW1wiTnVtYmVyIG9mIGF0dGVuZGVlc1wiXSksXG4gICAgICB0eXBlOiAnc2NhdHRlcicsXG4gICAgICBtb2RlOiAnbGluZXMrbWFya2VycycsXG4gICAgICBuYW1lOiAnQ1ZQUicsXG4gICAgICBsaW5lOiB7IGNvbG9yOiAnIzFmNzdiNCcsIHdpZHRoOiAzIH0sXG4gICAgICBtYXJrZXI6IHsgc2l6ZTogOCB9LFxuICAgICAgaG92ZXJ0ZW1wbGF0ZTogJyV7ZnVsbERhdGEubmFtZX06ICV7eTosfTxleHRyYT48L2V4dHJhPidcbiAgICB9LFxuICAgIHtcbiAgICAgIHg6IGljbHJfZGF0YS5tYXAoZCA9PiBkLlllYXIpLFxuICAgICAgeTogaWNscl9kYXRhLm1hcChkID0+IGRbXCJOdW1iZXIgb2YgYXR0ZW5kZWVzXCJdKSxcbiAgICAgIHR5cGU6ICdzY2F0dGVyJyxcbiAgICAgIG1vZGU6ICdsaW5lcyttYXJrZXJzJyxcbiAgICAgIG5hbWU6ICdJQ0xSJyxcbiAgICAgIGxpbmU6IHsgY29sb3I6ICcjZmY3ZjBlJywgd2lkdGg6IDMgfSxcbiAgICAgIG1hcmtlcjogeyBzaXplOiA4IH0sXG4gICAgICBob3ZlcnRlbXBsYXRlOiAnJXtmdWxsRGF0YS5uYW1lfTogJXt5Oix9PGV4dHJhPjwvZXh0cmE+J1xuICAgIH0sXG4gICAge1xuICAgICAgeDogaWNtbF9kYXRhLm1hcChkID0+IGQuWWVhciksXG4gICAgICB5OiBpY21sX2RhdGEubWFwKGQgPT4gZFtcIk51bWJlciBvZiBhdHRlbmRlZXNcIl0pLFxuICAgICAgdHlwZTogJ3NjYXR0ZXInLFxuICAgICAgbW9kZTogJ2xpbmVzK21hcmtlcnMnLFxuICAgICAgbmFtZTogJ0lDTUwnLFxuICAgICAgbGluZTogeyBjb2xvcjogJyM4YzU2NGInLCB3aWR0aDogMyB9LFxuICAgICAgbWFya2VyOiB7IHNpemU6IDggfSxcbiAgICAgIGhvdmVydGVtcGxhdGU6ICcle2Z1bGxEYXRhLm5hbWV9OiAle3k6LH08ZXh0cmE+PC9leHRyYT4nXG4gICAgfSxcbiAgICB7XG4gICAgICB4OiBuZXVyaXBzX2RhdGEubWFwKGQgPT4gZC5ZZWFyKSxcbiAgICAgIHk6IG5ldXJpcHNfZGF0YS5tYXAoZCA9PiBkW1wiTnVtYmVyIG9mIGF0dGVuZGVlc1wiXSksXG4gICAgICB0eXBlOiAnc2NhdHRlcicsXG4gICAgICBtb2RlOiAnbGluZXMrbWFya2VycycsXG4gICAgICBuYW1lOiAnTmV1cklQUycsXG4gICAgICBsaW5lOiB7IGNvbG9yOiAnIzJjYTAyYycsIHdpZHRoOiAzIH0sXG4gICAgICBtYXJrZXI6IHsgc2l6ZTogOCB9LFxuICAgICAgaG92ZXJ0ZW1wbGF0ZTogJyV7ZnVsbERhdGEubmFtZX06ICV7eTosfTxleHRyYT48L2V4dHJhPidcbiAgICB9LFxuICAgIHtcbiAgICAgIHg6IHRvdGFsX2RhdGEubWFwKGQgPT4gZC5ZZWFyKSxcbiAgICAgIHk6IHRvdGFsX2RhdGEubWFwKGQgPT4gZFtcIk51bWJlciBvZiBhdHRlbmRlZXNcIl0pLFxuICAgICAgdHlwZTogJ3NjYXR0ZXInLFxuICAgICAgbW9kZTogJ2xpbmVzK21hcmtlcnMnLFxuICAgICAgbmFtZTogJ1RvdGFsJyxcbiAgICAgIGxpbmU6IHsgY29sb3I6ICcjZDYyNzI4Jywgd2lkdGg6IDMsIGRhc2g6ICdkYXNoJyB9LFxuICAgICAgbWFya2VyOiB7IHNpemU6IDggfSxcbiAgICAgIGhvdmVydGVtcGxhdGU6ICcle2Z1bGxEYXRhLm5hbWV9OiAle3k6LH08ZXh0cmE+PC9leHRyYT4nXG4gICAgfVxuICBdO1xuXG4gIGNvbnN0IGxheW91dCA9IHtcbiAgICB0aXRsZToge1xuICAgICAgdGV4dDogJ0NvbmZlcmVuY2UgQXR0ZW5kYW5jZSBPdmVyIFRpbWUnLFxuICAgICAgZm9udDogeyBzaXplOiAyMCB9XG4gICAgfSxcbiAgICB4YXhpczoge1xuICAgICAgdGl0bGU6ICdZZWFyJyxcbiAgICAgIHNob3dncmlkOiB0cnVlLFxuICAgICAgZ3JpZGNvbG9yOiAncmdiYSgwLDAsMCwwLjEpJ1xuICAgIH0sXG4gICAgeWF4aXM6IHtcbiAgICAgIHRpdGxlOiAnTnVtYmVyIG9mIEF0dGVuZGVlcycsXG4gICAgICBzaG93Z3JpZDogdHJ1ZSxcbiAgICAgIGdyaWRjb2xvcjogJ3JnYmEoMCwwLDAsMC4xKScsXG4gICAgICB0aWNrZm9ybWF0OiAnLGQnXG4gICAgfSxcbiAgICBsZWdlbmQ6IHtcbiAgICAgIHg6IDAuMDIsXG4gICAgICB5OiAwLjk4LFxuICAgICAgYmdjb2xvcjogJ3JnYmEoMjU1LDI1NSwyNTUsMC44KScsXG4gICAgICBib3JkZXJjb2xvcjogJ3JnYmEoMCwwLDAsMC4yKScsXG4gICAgICBib3JkZXJ3aWR0aDogMVxuICAgIH0sXG4gICAgaG92ZXJtb2RlOiAneCB1bmlmaWVkJyxcbiAgICBwbG90X2JnY29sb3I6ICd3aGl0ZScsXG4gICAgcGFwZXJfYmdjb2xvcjogJ3doaXRlJyxcbiAgICBtYXJnaW46IHsgbDogODAsIHI6IDQwLCB0OiA4MCwgYjogODAgfVxuICB9O1xuXG4gIGNvbnN0IGNvbmZpZyA9IHtcbiAgICBkaXNwbGF5TW9kZUJhcjogdHJ1ZSxcbiAgICBkaXNwbGF5bG9nbzogZmFsc2UsXG4gICAgbW9kZUJhckJ1dHRvbnNUb1JlbW92ZTogWydwYW4yZCcsICdsYXNzbzJkJywgJ3NlbGVjdDJkJ10sXG4gICAgcmVzcG9uc2l2ZTogdHJ1ZVxuICB9O1xuXG4gIGNvbnN0IGRpdiA9IERPTS5lbGVtZW50KFwiZGl2XCIpO1xuICBkaXYuc3R5bGUud2lkdGggPSBcIjEwMCVcIjtcbiAgZGl2LnN0eWxlLmhlaWdodCA9IFwiNTAwcHhcIjtcblxuICBQbG90bHkubmV3UGxvdChkaXYsIHRyYWNlcywgbGF5b3V0LCBjb25maWcpO1xuXG4gIHJldHVybiBkaXY7XG59XG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTIiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJhaURhdGEgPSBGaWxlQXR0YWNobWVudChcIi4vZGF0YS9lbnRlcnByaXNlLWFpLXJldmVudWUuY3N2XCIpLmNzdigpXG5cbmFpQ2hhcnQgPSB7XG4gIGNvbnN0IHRyYWNlID0ge1xuICAgIHg6IGFpRGF0YS5tYXAoZCA9PiBkLlllYXIpLFxuICAgIHk6IGFpRGF0YS5tYXAoZCA9PiBkLlJldmVudWUpLFxuICAgIHR5cGU6ICdiYXInLFxuICAgIG5hbWU6ICdBSSBNYXJrZXQgUmV2ZW51ZScsXG4gICAgbWFya2VyOiB7XG4gICAgICBjb2xvcjogJyM0Mjg1ZjQnLFxuICAgICAgb3BhY2l0eTogMC44LFxuICAgICAgbGluZToge1xuICAgICAgICBjb2xvcjogJyMxYTczZTgnLFxuICAgICAgICB3aWR0aDogMVxuICAgICAgfVxuICAgIH0sXG4gICAgdGV4dDogYWlEYXRhLm1hcChkID0+IGAkJHsoK2QuUmV2ZW51ZSkudG9GaXhlZCgyKX1gKSxcbiAgICB0ZXh0cG9zaXRpb246ICdvdXRzaWRlJyxcbiAgICB0ZXh0Zm9udDoge1xuICAgICAgY29sb3I6ICcjMzMzJyxcbiAgICAgIHNpemU6IDExXG4gICAgfSxcbiAgICBob3ZlcnRlbXBsYXRlOiAnPGI+JXt4fTwvYj48YnI+JyArXG4gICAgICAgICAgICAgICAgICAgJ1JldmVudWU6ICQle3k6LC4yZn0gbWlsbGlvbiBVU0Q8YnI+JyArXG4gICAgICAgICAgICAgICAgICAgJzxleHRyYT48L2V4dHJhPidcbiAgfTtcblxuICBjb25zdCBsYXlvdXQgPSB7XG4gICAgdGl0bGU6IHtcbiAgICAgIHRleHQ6ICdFbnRlcnByaXNlIEFydGlmaWNpYWwgSW50ZWxsaWdlbmNlIE1hcmtldCBSZXZlbnVlIFdvcmxkd2lkZSAyMDE2LTIwMjUnLFxuICAgICAgZm9udDogeyBzaXplOiAxOCB9LFxuICAgICAgeDogMC41XG4gICAgfSxcbiAgICB4YXhpczoge1xuICAgICAgdGl0bGU6ICdZZWFyJyxcbiAgICAgIHNob3dncmlkOiBmYWxzZSxcbiAgICAgIHRpY2ttb2RlOiAnYXJyYXknLFxuICAgICAgdGlja3ZhbHM6IGFpRGF0YS5tYXAoZCA9PiBkLlllYXIpLFxuICAgICAgdGlja3RleHQ6IGFpRGF0YS5tYXAoZCA9PiBkLlllYXIgPCAyMDI1ID8gYCR7ZC5ZZWFyfSpgIDogYCR7ZC5ZZWFyfSpgKVxuICAgIH0sXG4gICAgeWF4aXM6IHtcbiAgICAgIHRpdGxlOiAnUmV2ZW51ZSBpbiBtaWxsaW9uIFUuUy4gZG9sbGFycycsXG4gICAgICBzaG93Z3JpZDogdHJ1ZSxcbiAgICAgIGdyaWRjb2xvcjogJ3JnYmEoMCwwLDAsMC4xKScsXG4gICAgICB0aWNrZm9ybWF0OiAnLC4wZicsXG4gICAgICByYW5nZTogWzAsIE1hdGgubWF4KC4uLmFpRGF0YS5tYXAoZCA9PiArZC5SZXZlbnVlKSkgKiAxLjFdXG4gICAgfSxcbiAgICBwbG90X2JnY29sb3I6ICd3aGl0ZScsXG4gICAgcGFwZXJfYmdjb2xvcjogJ3doaXRlJyxcbiAgICBtYXJnaW46IHsgbDogODAsIHI6IDQwLCB0OiAxMDAsIGI6IDgwIH0sXG4gICAgc2hvd2xlZ2VuZDogZmFsc2VcbiAgfTtcblxuICBjb25zdCBjb25maWcgPSB7XG4gICAgZGlzcGxheU1vZGVCYXI6IHRydWUsXG4gICAgZGlzcGxheWxvZ286IGZhbHNlLFxuICAgIG1vZGVCYXJCdXR0b25zVG9SZW1vdmU6IFsncGFuMmQnLCAnbGFzc28yZCcsICdzZWxlY3QyZCddLFxuICAgIHJlc3BvbnNpdmU6IHRydWVcbiAgfTtcblxuICBjb25zdCBkaXYgPSBET00uZWxlbWVudChcImRpdlwiKTtcbiAgZGl2LnN0eWxlLndpZHRoID0gXCIxMDAlXCI7XG4gIGRpdi5zdHlsZS5oZWlnaHQgPSBcIjUwMHB4XCI7XG5cbiAgUGxvdGx5Lm5ld1Bsb3QoZGl2LCBbdHJhY2VdLCBsYXlvdXQsIGNvbmZpZyk7XG5cbiAgcmV0dXJuIGRpdjtcbn1cbiJ9XX0=
+</script>
+<script type="module">
+if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+window._ojs.paths.runtimeToDoc = "../../posts/history-of-computer-vision-and-deep-learning";
+window._ojs.paths.runtimeToRoot = "../..";
+window._ojs.paths.docToRoot = "../..";
+window._ojs.selfContained = false;
+window._ojs.runtime.interpretFromScriptTags();
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/bhdai\.github\.io\/blog\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<input type="hidden" id="giscus-base-theme" value="light">
+<input type="hidden" id="giscus-alt-theme" value="dark">
+<script>
+  function loadGiscus() {
+    // Function to get the theme based on body class
+    const getTheme = () => {
+      let baseTheme = document.getElementById('giscus-base-theme').value;
+      let altTheme = document.getElementById('giscus-alt-theme').value;
+      if (authorPrefersDark) {
+          [baseTheme, altTheme] = [altTheme, baseTheme];
+      }
+      return document.body.classList.contains('quarto-dark') ? altTheme : baseTheme;
+    };
+    const script = document.createElement("script");
+    script.src = "https://giscus.app/client.js";
+    script.async = true;
+    script.dataset.repo = "bhdai/blog";
+    script.dataset.repoId = "R_kgDOMP9wjw";
+    script.dataset.category = "Blog";
+    script.dataset.categoryId = "DIC_kwDOMP9wj84Cs7wf";
+    script.dataset.mapping = "pathname";
+    script.dataset.reactionsEnabled = "1";
+    script.dataset.emitMetadata = "0";
+    script.dataset.inputPosition = "bottom";
+    script.dataset.theme = getTheme();
+    script.dataset.lang = "en";
+    script.crossOrigin = "anonymous";
+    // Append the script to the desired div instead of at the end of the body
+    document.getElementById("quarto-content").appendChild(script);
+  }
+  loadGiscus();
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+ Copyright 2025, Bui Huu Dai
+  </li>  
+</ul>
+    </div>   
+    <div class="nav-footer-center">
+
+<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/bhdai/blog/edit/main/posts/history-of-computer-vision-and-deep-learning/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bhdai/blog/blob/main/posts/history-of-computer-vision-and-deep-learning/index.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/bhdai/blog/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="cookie-consent-footer"><a href="#" id="open_preferences_center">Cookie Preferences</a></div></div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
