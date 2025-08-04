@@ -10,7 +10,241 @@
 <atom:link href="https://bhdai.github.io/blog/index.xml" rel="self" type="application/rss+xml"/>
 <description>Dai&#39;s blog.</description>
 <generator>quarto-1.7.32</generator>
-<lastBuildDate>Sat, 12 Jul 2025 17:00:00 GMT</lastBuildDate>
+<lastBuildDate>Fri, 01 Aug 2025 17:00:00 GMT</lastBuildDate>
+<item>
+  <title>Image classification with linear classifiers</title>
+  <dc:creator>Bui Huu Dai</dc:creator>
+  <link>https://bhdai.github.io/blog/posts/linear_classification/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+
+<p>Image classification is truly a core task in computer vision. It’s the simplest and most fundamental problem, and mastering it forms the basis for more complex tasks like object detection and segmentation.</p>
+<section id="what-makes-a-cat-a-cat" class="level2">
+<h2 class="anchored" data-anchor-id="what-makes-a-cat-a-cat">What makes a cat a cat?</h2>
+<p>Let’s explicitly define image classification. The task is: given an input image, assign it one label from a predefine set of possible categories. If we have an image of a cat. Our system would label ‘cat’. Crucially for this task, we assume we are given a set of possible labels, like {dog, cat, truck, plane, …}. The model job is to pick the most appropriate label from this list for any given input image. We’re not asking it for generate new label or descriptions, just to categorize.</p>
+<p>Now, this simple task of image to label hides a fundamental challenge in computer vision, what we call <strong>Semantic Gap</strong>. With an image what you see is a beautiful, tabby cat maybe with green eyes, you immediately understand it’s a living creature a pet, specifically a cat. But what the computer sees is a grid of numbers. The <strong>semantic gap</strong> is precisely this challenge: how do we bridge the enormous gap between these raw numerical pixel values (what computer sees) and the high-level semantic concepts that we human effortlessly understand? That’s the core problem we’re trying to solve in image classification, and indeed, in much of computer vision.</p>
+<p>Now let’s look at why this is so hard for a computers. The world is messy, and images with a lot of variability.</p>
+<p>One of the primitive challenge is <strong>Viewpoint variation</strong>. Take our friendly cat again. You see if from one angle. But what if the camera moved slightly? Or what if you’re looking at a different photo of a same cat from a completely different side, or from above, blow? The camera illustrated around the cat show different potential viewpoints. From these different angles, even if it’s the exact same physical cat, the resulting image (the grid of pixel values) will be drastically different. For us it’s still ‘a cat’. For a computer it’s a completely new set of numbers. Our model need to learn that all these wildly different arrangements of pixels still correspond to the same underlying object. This invariance viewpoints is a huge challenge.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./images/illumination.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Challenges: Illumination"><img src="https://bhdai.github.io/blog/posts/linear_classification/images/illumination.png" class="img-fluid figure-img" alt="Challenges: Illumination"></a></p>
+<figcaption>Challenges: Illumination</figcaption>
+</figure>
+</div>
+<p>Another major hurdle is <strong>Illumination</strong>. The way an object is lit dramatically changes its appearance in an image. All of these are cat, but the pixel values, the color, the contrast they are completely different across these images due to varying light conditions. Our model must be robust enough to recognize a cat regardless of whether it’s in bright sunlight, deep snow, or under artifact light.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./images/background-clutter.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Challenges: Background Clutter"><img src="https://bhdai.github.io/blog/posts/linear_classification/images/background-clutter.png" class="img-fluid figure-img" alt="Challenges: Background Clutter"></a></p>
+<figcaption>Challenges: Background Clutter</figcaption>
+</figure>
+</div>
+<p>Then we have <strong>Background Clutter</strong>. Objects in real world rarely appears against a plain, uniform background. They are embedded in complex often messy environments. The challenge here is for the computer to distinguish the object of interest from everything else in the image. It needs to focus on the relevant features and ignore the distractors, even when the background is cluttered or has similar textures of colors.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./images/occulusion.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Challenges: Occlusion"><img src="https://bhdai.github.io/blog/posts/linear_classification/images/occulusion.png" class="img-fluid figure-img" alt="Challenges: Occlusion"></a></p>
+<figcaption>Challenges: Occlusion</figcaption>
+</figure>
+</div>
+<p>A very common and difficult challenge is <strong>Occlusion</strong>. This occurs when parts of the object you’re trying to recognize are hidden from view from other objects. Despite missing large portion of the object, as human, we can still easily identify the cat. For a computer, dealing with these partial view and reasoning about what’s missing is incredibly difficult. It needs to learn to recognize an object even when only some of its characteristic features are present, or when they are distorted by being partially covered.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./images/deformation.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="Challenges: Deformation"><img src="https://bhdai.github.io/blog/posts/linear_classification/images/deformation.png" class="img-fluid figure-img" alt="Challenges: Deformation"></a></p>
+<figcaption>Challenges: Deformation</figcaption>
+</figure>
+</div>
+<p>Another significant challenge is <strong>deformation</strong>. Many objects especially animate ones like animals and people, are not rigid They can change their shape, their pose, their configuration in countless ways. These are all cats, but their body shapes and the relative position of their limbs are drastically different. This isn’t just about camera moving around a rigid object, the object itself is deforming. Our visual system needs to be able to recognize an object class despite these non-rigid transformation. A simple template or a fix set of geometric rule would struggle immensely with these level of variability.</p>
+<p>And if deformation wasn’t enough, we also have the huge challenge of <strong>Intraclass variation</strong>. What this means is that even within a single category, like ‘cat’ there can be an enormous amount of visual diversity. Think about different breed of cats look very different, they come in all sorts of colors and patterns. A good image classifier need to learn a concept of ‘cat’ that is general enough that encompass all these variation. It can’t just memorize one specific type of cat, it has to understand the underlying shared characteristic that define the entire class, despite the wide range of appearances. This is a core reason why simple, rule-based approaches often fail and why we need powerful learning algorithms.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./images/context.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="Challenges: Context"><img src="https://bhdai.github.io/blog/posts/linear_classification/images/context.png" class="img-fluid figure-img" alt="Challenges: Context"></a></p>
+<figcaption>Challenges: Context</figcaption>
+</figure>
+</div>
+<p>And that final challenge is <strong>Context</strong>. Humans are incredibly adept at using context to understand the world. We don’t just see objects in isolation; we see them within a scene, and that surrounding information heavily influences our perception. So what went wrong here? Here our model tend to latch onto local patterns, the stripping alone is enough to push our model prediction toward ‘tiger’. Our model didn’t sufficiently incorporate the fact this is on pavement, in front of a gate, and it turns out that it’s just someone’s small dog, and the tiger-stripes are the shadows cast by the iron bars of the gate across its fur. So, understanding and leveraging context is crucial for robust visual intelligence, but it’s also very difficult for current models to do this effectively. They often rely too heavily on local features and can miss the bigger picture or be fooled by misleading contextual cues.</p>
+<p>Given all these hurdles, it should be clear that trying to write a program with explicit rules to identify, say, a ‘cat’ in all its possible manifestations and situations is an almost impossible task. We’d be writing <code>if-else</code> statements for years!</p>
+</section>
+<section id="the-three-faces-of-a-classifier" class="level2">
+<h2 class="anchored" data-anchor-id="the-three-faces-of-a-classifier">The three faces of a classifier</h2>
+<p>So now, we’re going to move on to a type of classifier, and arguably one of the most fundamental building blogs in machine learning and deep learning: the <strong>Linear Classifier</strong>. Linear classifier fall under what’s known as the <strong>Parametric Approach</strong>. This is a key distinction from K-Nearest Neighbors, which is a non-parametric method. In the parametric approach, we define a <strong>score function</strong>, let’s call it <img src="https://latex.codecogs.com/png.latex?f(x,%20W)">, that map the raw input data(our image x) to class scores. The crucial part here is this <img src="https://latex.codecogs.com/png.latex?W">. <img src="https://latex.codecogs.com/png.latex?W"> represents a set of <strong>parameters</strong> or <strong>weights</strong> that the model uses. The “learning” process in a parametric model involves finding the optimal values for these parameters <img src="https://latex.codecogs.com/png.latex?W"> using the training data. Once we’ve learned these parameters, we can effectively discard the training data itself! To make a prediction for a new image, we just need the learned parameters <img src="https://latex.codecogs.com/png.latex?W"> and the function <img src="https://latex.codecogs.com/png.latex?f">. This is very different from K-NN where we had to keep all the training data around.</p>
+<p>Now, let’s get specific. What form does this function <img src="https://latex.codecogs.com/png.latex?f(x,W)"> take for a linear classifier? It’s beautifully simple:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0Af(x,%20W)%20=%20Wx%0A"></p>
+<p>That’s it! It’s a matrix-vector multiplication. The result of <img src="https://latex.codecogs.com/png.latex?Wx"> will be a vector of class scores. There’s one more small addition we typically make to this linear score function. We often add a <strong>bias term</strong>, <img src="https://latex.codecogs.com/png.latex?b"> (though often we just write f(x,W) and assume W implicitly includes b, or b is handled separately).. So, the full form of our linear classifier’s score function becomes:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0Af(x,W,b)%20=%20Wx%20+%20b%0A"></p>
+<p>What is this bias <img src="https://latex.codecogs.com/png.latex?b">? It allows the score function to have some class-specific preferences that are independent of the input image <img src="https://latex.codecogs.com/png.latex?x">. Think of it as shifting the baseline score for each class. For example, if in our training data, cats are just generally more common than airplanes, the bias term for “cat” might learn to be slightly higher, giving cats a bit of an advantage even before looking at the image pixels. It’s also common practice to sometimes absorb the bias term into the weight matrix <img src="https://latex.codecogs.com/png.latex?W"> by appending a constant 1 to the input vector <img src="https://latex.codecogs.com/png.latex?x">, and adding an extra column to <img src="https://latex.codecogs.com/png.latex?W"> to hold the bias values. This just makes the notation a bit cleaner, <img src="https://latex.codecogs.com/png.latex?f(x,W)%20=%20Wx">, but conceptually, it’s useful to think of <img src="https://latex.codecogs.com/png.latex?W"> (the part that multiplies <img src="https://latex.codecogs.com/png.latex?x">) and <img src="https://latex.codecogs.com/png.latex?b"> (the additive part) separately for a moment.</p>
+<p>When it comes to interpreting a linear classifier, I think it’s easier for us to look at it from a few different perspectives</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./images/algebraic-viewpoint.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6" title="Algebraic Viewpoint"><img src="https://bhdai.github.io/blog/posts/linear_classification/images/algebraic-viewpoint.png" class="img-fluid figure-img" alt="Algebraic Viewpoint"></a></p>
+<figcaption>Algebraic Viewpoint</figcaption>
+</figure>
+</div>
+<p>First is <strong>Algebraic Viewpoint</strong>. We need to produce 3 scores (one for cat, one for dog, one for ship). So our output should be a 3x1 vector. This means our weight matrix <img src="https://latex.codecogs.com/png.latex?W"> must have dimensions [3 x 4] (3 rows for 3 classes, 4 columns to match the 4 pixels in <img src="https://latex.codecogs.com/png.latex?x">). And our bias vector <img src="https://latex.codecogs.com/png.latex?b"> will be [3 x 1]. The first row of <img src="https://latex.codecogs.com/png.latex?W"> are the weights for the “cat” class. The second row are the weights for the “dog” class. The third row are for the “ship” class. To get the scores, we perform the matrix multiplication <img src="https://latex.codecogs.com/png.latex?Wx"> and then add <img src="https://latex.codecogs.com/png.latex?b."> So, for this input image and these particular weights <img src="https://latex.codecogs.com/png.latex?W"> and biases <img src="https://latex.codecogs.com/png.latex?b">, we get scores: Cat: -96.8, Dog: 437.9, Ship: 61.95. Based on these scores, which class would our linear classifier predict? It would predict “Dog,” because 437.9 is the highest score. The “learning” process, which we haven’t discussed yet, would be about finding values for <img src="https://latex.codecogs.com/png.latex?W"> and <img src="https://latex.codecogs.com/png.latex?b"> such that for an image that is a cat, the cat score is highest; for an image that is a dog, the dog score is highest, and so on.</p>
+<p>Okay, we’ve seen the algebra. But can we get a more Visual Viewpoint of what these weights W actually represent? For CIFAR-10, each row of <img src="https://latex.codecogs.com/png.latex?W"> is a vector of 3072 weights. Since our input <img src="https://latex.codecogs.com/png.latex?x"> is an image, we can reshape each row of <img src="https://latex.codecogs.com/png.latex?W"> back into a 32x32x3 image. What do these “images” corresponding to the rows of <img src="https://latex.codecogs.com/png.latex?W"> look like?</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./images/visual-vewpoint.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7" title="Visual Viewpoint"><img src="https://bhdai.github.io/blog/posts/linear_classification/images/visual-vewpoint.png" class="img-fluid figure-img" alt="Visual Viewpoint"></a></p>
+<figcaption>Visual Viewpoint</figcaption>
+</figure>
+</div>
+<p>What the linear classifier is learning is essentially a single template for each class. When a new image comes in, it’s like the classifier is “matching” that input image against each of these 10 templates using a dot product. If the input image has, say, a lot of blue pixels in the regions where the “plane” template has blue pixels, and not many red pixels where the “plane” template has red pixels, that will contribute to a high score for the “plane” class. These templates are often very blurry and try to capture the “average” appearance of objects in that class. For example, cars can be many colors, but if there are more red cars in the training set, the “car” template might end up looking reddish. If planes are often pictured against a blue sky, the “plane” template might pick up on that blue. This also highlight a limitation: a linear learns only one template per class. But a class like “car” has many variations (red cars, blue cars, trucks, cars viewed from the side, car viewed from the front). A single template will struggle to capture this variability. It might learn a sort “average car”.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./images/geometric-viewpoint.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8" title="Geometric Viewpoint"><img src="https://bhdai.github.io/blog/posts/linear_classification/images/geometric-viewpoint.png" class="img-fluid figure-img" alt="Geometric Viewpoint"></a></p>
+<figcaption>Geometric Viewpoint</figcaption>
+</figure>
+</div>
+<p>Finally let’s consider the <strong>Geometric Viewpoint</strong>. Our score function is <img src="https://latex.codecogs.com/png.latex?s%20=%20Wx%20+%20b">. For each class c, the score for that class is <img src="https://latex.codecogs.com/png.latex?s_c%20=%20W_c%20%E2%8B%85%20x%20+%20b_c">, where <img src="https://latex.codecogs.com/png.latex?W_c"> is the c-th row of <img src="https://latex.codecogs.com/png.latex?W">. This is the equation of a line (or a hyperplane in higher dimensions). So, linear classifier is learning a set of hyperplane in the high-dimensional pixel space. Each hyperplane correspond to a class. The decision boundary between any two classes, say class <img src="https://latex.codecogs.com/png.latex?i"> and class <img src="https://latex.codecogs.com/png.latex?j">, occurs where their score are equal: <img src="https://latex.codecogs.com/png.latex?W_ix%20+%20b_i%20=%20W_jx%20+%20b_j">. This equation also defines a hyperplane.</p>
+<p>The 3D plot on the bottom left shows the actual score surfaces for three classes. Each colored plane represents the scores for one class as a function of a 2D input. The decision boundaries are where these planes intersect. You can see that the regions where one plane is highest correspond to the classification regions for that class. These regions are always convex polygons (or polyhedra in higher dimensions) for a linear classifier. So, geometrically, a linear classifier is carving up the high-dimensional input space using these hyperplanes. It’s trying to find orientations and positions for these hyperplanes such that most of the training examples for a given class fall on the “correct” side of their respective decision boundaries.</p>
+<p>These three viewpoints – algebraic, visual (template matching), and geometric (hyperplanes) – all describe the same underlying mathematical operation <img src="https://latex.codecogs.com/png.latex?Wx%20+%20b">. Understanding it from these different angles helps build a much richer intuition for what a linear classifier is doing, what it can learn, and also, importantly, what its limitations might be.</p>
+</section>
+<section id="hard-cases-for-a-linear-classifier" class="level2">
+<h2 class="anchored" data-anchor-id="hard-cases-for-a-linear-classifier">Hard cases for a linear classifier</h2>
+<p>There are scenarios where, no matter how you orient your lines (or hyperplanes in higher dimensions), you simply cannot perfectly separate the classes.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./images/hard_cases.png" class="lightbox" data-gallery="quarto-lightbox-gallery-9" title="Case 1 (left): The XOR problem. Case 2 (middle): The donut problem. Case 3 (right): Multiple modes."><img src="https://bhdai.github.io/blog/posts/linear_classification/images/hard_cases.png" class="img-fluid figure-img" alt="Case 1 (left): The XOR problem. Case 2 (middle): The donut problem. Case 3 (right): Multiple modes."></a></p>
+<figcaption>Case 1 (left): The XOR problem. Case 2 (middle): The donut problem. Case 3 (right): Multiple modes.</figcaption>
+</figure>
+</div>
+<p>In case 1 we have the XOR problem where class 1 is in the first and third quadrants, class 2 is in the second and forth quadrants. Try to draw a single straight line, that separate the class 1 and class 2. You can do it! You’d need at least two lines, or a non-linear boundary. A linear classifier will fall here, it will make mistakes no matter what i places its decision boundary.</p>
+<p>Case 2 is the donut problem, here, class 1 is an annulus or a ring – points whose L2 norm is between 1 and 2. Class 2 is everything else (inside the inner circle and outside the outer circle). Again, can you separate the blue ring from the pink regions with a single straight line? No.&nbsp;You’d need something like a circular boundary, which is non-linear.</p>
+<p>Case 3 is Multiple modes, Class 1 consists of three distinct, separated circular regions. Class 2 is everything else. A single linear classifier tries to learn one template per class. If a class has multiple, well-separated “prototypes” or modes in the feature space, a linear classifier will struggle. It can’t draw a line to nicely encapsulate all three blue regions while excluding the pink. It might try to find a single hyperplane that does its best, but it will inevitably misclassify many points.</p>
+</section>
+<section id="choose-a-good-w" class="level2">
+<h2 class="anchored" data-anchor-id="choose-a-good-w">Choose a good W</h2>
+<p>So, given that we have this linear score function <img src="https://latex.codecogs.com/png.latex?f(x,W)%20=%20Wx%20+%20b">, and we understand its capabilities and limitations, the central question becomes: How do we choose a good <img src="https://latex.codecogs.com/png.latex?W"> (and <img src="https://latex.codecogs.com/png.latex?b">)? We need a systematic way to 1) define a loss function (or cost function or objective function). This function will take our current <img src="https://latex.codecogs.com/png.latex?W"> and <img src="https://latex.codecogs.com/png.latex?b">, run our classifier on the training data, look at the scores it produces, and tell us how “unhappy” we are with those scores. A high loss means our <img src="https://latex.codecogs.com/png.latex?W"> and <img src="https://latex.codecogs.com/png.latex?b"> are bad (producing scores that lead to incorrect classifications or low confidence in correct classifications). A low loss means our <img src="https://latex.codecogs.com/png.latex?W"> and <img src="https://latex.codecogs.com/png.latex?b"> are good. 2) Once we have this loss function, we need to come up with a way of efficiently finding the parameters (<img src="https://latex.codecogs.com/png.latex?W"> and <img src="https://latex.codecogs.com/png.latex?b">) that minimize this loss function. This is an optimization problem. We want to search through the space of all possible <img src="https://latex.codecogs.com/png.latex?W">’s and <img src="https://latex.codecogs.com/png.latex?b">’s to find the set that makes our classifier perform best on the training data, according to our loss function.</p>
+<p>More formally, we are given a dataset of <img src="https://latex.codecogs.com/png.latex?N"> training examples:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%7B%20(x_i,%20y_i)%20%7D_%7Bi=1%7D%5E%7BN%7D%0A"></p>
+<p>Where <img src="https://latex.codecogs.com/png.latex?x_i"> is an image (our input vector) and <img src="https://latex.codecogs.com/png.latex?y_i"> is its true integer label (e.g., 0 for cat, 1 for car, 2 for frog). Typically, the total loss over the entire dataset, <img src="https://latex.codecogs.com/png.latex?L">, is the average of the losses computed for each individual training example:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0AL%20=%20%5Cfrac%7B1%7D%7BN%7D%20%5Csum_i%20L_i(f(x_i,%20W),%20y_i)%0A"></p>
+<p>Here:</p>
+<ul>
+<li><img src="https://latex.codecogs.com/png.latex?f(x_i,%20W)"> are the scores our current classifier (with weights <img src="https://latex.codecogs.com/png.latex?W">) produces for the i-th training image <img src="https://latex.codecogs.com/png.latex?x_i">.</li>
+<li><img src="https://latex.codecogs.com/png.latex?y_i"> is the true label for that i-th training image.</li>
+<li><img src="https://latex.codecogs.com/png.latex?L_i"> is the loss function calculated for that single i-th example. It takes the predicted scores and the true label and tells us how bad the prediction was for that one example.</li>
+<li>We sum these individual losses <img src="https://latex.codecogs.com/png.latex?L_i"> over all <img src="https://latex.codecogs.com/png.latex?N"> training examples and then divide by <img src="https://latex.codecogs.com/png.latex?N"> to get the average loss</li>
+</ul>
+<p>Our goal will be to find the <img src="https://latex.codecogs.com/png.latex?W"> that minimizes this total loss <img src="https://latex.codecogs.com/png.latex?L">. Now, the crucial piece we still need to define is: what exactly is this <img src="https://latex.codecogs.com/png.latex?L_i"> function? How do we take a vector of scores and a true label and turn that into a single number representing the loss for that example? There are several ways to do this, and we’ll look at a very common one for classification next: the Softmax classifier (which uses cross-entropy loss), and also the SVM (hinge) loss.</p>
+</section>
+<section id="softmax-classifier" class="level2">
+<h2 class="anchored" data-anchor-id="softmax-classifier">Softmax classifier</h2>
+<p>The core idea behind the Softmax classifier is that we want to interpret the raw classifier scores as probabilities. Our linear classifier <img src="https://latex.codecogs.com/png.latex?s%20=%20f(x_i,%20W)"> produces these raw scores. For example our cat image example, we had scores: Cat: 3.2, Car: 5.1, Frog: -1.7. These are just arbitrary real numbers. They could be positive, negative, large, small. They don’t look like probabilities, which should be between 0 and 1 and sum to 1. The Softmax function is what allows us to convert these raw scores into a valid probability distribution over the classes. The formula for the probability of the true class <img src="https://latex.codecogs.com/png.latex?k"> given the input image <img src="https://latex.codecogs.com/png.latex?x_i"> (and our weights <img src="https://latex.codecogs.com/png.latex?W">) is:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0AP(Y%20=%20k%20%7C%20X%20=%20x_i)%20=%20%5Cfrac%7Be%5E%7Bs_k%7D%7D%7B%5Csum_j%20e%5E%7Bs_j%7D%7D%0A"></p>
+<p>Where:</p>
+<ul>
+<li><img src="https://latex.codecogs.com/png.latex?s_k"> is the raw score for class <img src="https://latex.codecogs.com/png.latex?k"> (e.g., 3.2 for cat).</li>
+<li><img src="https://latex.codecogs.com/png.latex?s_j"> are the raw scores for all classes <img src="https://latex.codecogs.com/png.latex?j"> (cat, car, frog).</li>
+<li>We exponentiate each score (<img src="https://latex.codecogs.com/png.latex?e%5E%7Bs_k%7D">). This makes all the numbers positive, which is good for probabilities.</li>
+<li>Then we normalize by dividing by the sum of all these exponentiated scores. This ensures that the resulting probabilities for all classes sum to 1.</li>
+</ul>
+<p>The raw scores s that go into the Softmax function (our 3.2, 5.1, -1.7) are often called logits or unnormalized log-probabilities. The term “logit” comes from logistic regression, of which Softmax is a generalization to multiple classes</p>
+<p>Okay, so we’ve used the Softmax function to get a probability distribution over the classes for a given input image <img src="https://latex.codecogs.com/png.latex?x_i."> Now, how do we define the loss <img src="https://latex.codecogs.com/png.latex?L_i"> for this single example? If the true class for our example image (the cat) is y_i (let’s say “cat” is class 0), then the loss for this example is defined as the negative log probability of the true class:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0AL_i%20=%20-%5Clog%7BP(Y%20=%20y_i%7CX%20=%20x_i)%7D%0A"></p>
+<p>Why this particular form for the loss? Probabilities <img src="https://latex.codecogs.com/png.latex?P"> are between <img src="https://latex.codecogs.com/png.latex?0"> and <img src="https://latex.codecogs.com/png.latex?1">. <img src="https://latex.codecogs.com/png.latex?log(P)"> will be negative (or <img src="https://latex.codecogs.com/png.latex?0"> if <img src="https://latex.codecogs.com/png.latex?P=1">). If the probability of the true class is very high (close to <img src="https://latex.codecogs.com/png.latex?1">, e.g., <img src="https://latex.codecogs.com/png.latex?P=0.99">), then <img src="https://latex.codecogs.com/png.latex?log(P)"> is close to <img src="https://latex.codecogs.com/png.latex?0">, and <img src="https://latex.codecogs.com/png.latex?-log(P)"> is also close to <img src="https://latex.codecogs.com/png.latex?0"> (a small loss, which is good!). If the probability of the true class is very low (close to <img src="https://latex.codecogs.com/png.latex?0">, e.g., <img src="https://latex.codecogs.com/png.latex?P=0.01">), then <img src="https://latex.codecogs.com/png.latex?log(P)"> is a large negative number, and <img src="https://latex.codecogs.com/png.latex?-log(P)"> will be a large positive number (a high loss, which is bad!). So, this <img src="https://latex.codecogs.com/png.latex?-log(P_true_class)"> loss function does what we want: it penalizes the model heavily if it assigns low probability to the correct answer, and penalizes it very little if it assigns high probability to the correct answer. Minimizing this loss will push the model to make the probability of the true class as close to <img src="https://latex.codecogs.com/png.latex?1"> as possible. This approach also known as <strong>Maximum Likelihood Estimation (MLE)</strong>. We are choosing the parameters <img src="https://latex.codecogs.com/png.latex?W"> to maximize the likelihood (or equivalently, the log-likelihood) of observing the true labels <img src="https://latex.codecogs.com/png.latex?y_i"> given the input data <img src="https://latex.codecogs.com/png.latex?x_i."> Taking the negative log-likelihood turns it into a loss minimization problem.</p>
+<p>We can also think about this loss from an information theory perspective. The “correct probabilities” for our cat image would be: Cat: 1.00, Car: 0.00, Frog: 0.00. This is a probability distribution where all the mass is on the true class. Let’s call this target distribution <img src="https://latex.codecogs.com/png.latex?P">. Our Softmax classifier produced the distribution Q: Cat: 0.13, Car: 0.87, Frog: 0.00. The loss function we are using, <img src="https://latex.codecogs.com/png.latex?-log%20P(Y=y_i%20%7C%20X=x_i)">, is actually equivalent to the Kullback-Leibler (KL) divergence between the true distribution P (which is 1 for the correct class and 0 otherwise) and the predicted distribution Q from our Softmax. The KL divergence <img src="https://latex.codecogs.com/png.latex?D_KL(P%20%7C%7C%20Q)"> measures how different the distribution <img src="https://latex.codecogs.com/png.latex?Q"> is from the distribution <img src="https://latex.codecogs.com/png.latex?P">. It’s defined as <img src="https://latex.codecogs.com/png.latex?%5Csum_y%20P(y)%5Clog%5Cfrac%7BP(y)%7D%7BQ(y)%7D">. When P is a one-hot distribution (1 for the true class <img src="https://latex.codecogs.com/png.latex?y_i">, <img src="https://latex.codecogs.com/png.latex?0"> elsewhere), this simplifies to <img src="https://latex.codecogs.com/png.latex?-logQ(y_i)">, which is exactly our loss function!</p>
+<p>So, the loss <img src="https://latex.codecogs.com/png.latex?L_i%20=%20-log%20P(Y=y_i%20%7C%20X=x_i)"> for a Softmax classifier is often called the Cross-Entropy loss between the true distribution (one-hot encoding of the correct label) and the predicted probability distribution from the Softmax.</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0AH(P,Q)%20=%20-%20%5Csum_y%20P(y)%20log%20Q(y)%0A"></p>
+<p>When <img src="https://latex.codecogs.com/png.latex?P"> is one-hot, <img src="https://latex.codecogs.com/png.latex?P(y)"> is <img src="https://latex.codecogs.com/png.latex?1"> for the true class <img src="https://latex.codecogs.com/png.latex?y_i"> and <img src="https://latex.codecogs.com/png.latex?0"> otherwise. So, the sum collapses to a single term: <img src="https://latex.codecogs.com/png.latex?-1%20log%20Q(y_i)%20=%20-log%20Q(y_i)">.</p>
+<p>So, whether you think of it as maximizing the log-likelihood of the correct class, or minimizing the KL divergence, or minimizing the cross-entropy between the true and predicted distributions, it all leads to the same loss function for the Softmax classifier: <img src="https://latex.codecogs.com/png.latex?L_i%20=%20-log(%5Ctext%7Bprobability%5C_of%5C_true%5C_class%7D)">. This is a cornerstone loss function for classification problems in deep learning. The overall loss for the dataset, L, would then be the average of these L_i’s over all training examples. Our goal is to find the W that minimizes this total cross-entropy loss.</p>
+<p>So, just to recap:</p>
+<ol type="1">
+<li>We start with raw scores <img src="https://latex.codecogs.com/png.latex?s%20=%20f(x_i,%20W)"> from our linear classifier.</li>
+<li>We want to interpret these as probabilities, so we use the Softmax function: <img src="https://latex.codecogs.com/png.latex?P(Y%20=%20k%20%7C%20X%20=%20x_i)%20=%20%5Cfrac%7Be%5E%7Bs_k%7D%7D%7B%5Csum_j%20e%5E%7Bs_j%7D%7D">. This gives us a probability for each class <img src="https://latex.codecogs.com/png.latex?k">.</li>
+<li>Our goal is to maximize the probability of the correct class <img src="https://latex.codecogs.com/png.latex?y_i">.</li>
+<li>The loss function <img src="https://latex.codecogs.com/png.latex?L_i"> for a single example is the negative log probability of the true class: <img src="https://latex.codecogs.com/png.latex?L_i%20=%20-log%20P(Y%20=%20y_i%20%7C%20X%20=%20x_i)">.</li>
+</ol>
+<p>Putting it all together, we can write the loss for a single example <img src="https://latex.codecogs.com/png.latex?x_i"> with true label <img src="https://latex.codecogs.com/png.latex?y_i"> and scores <img src="https://latex.codecogs.com/png.latex?s_j"> (where <img src="https://latex.codecogs.com/png.latex?s_j"> is the score for class <img src="https://latex.codecogs.com/png.latex?j">) directly as:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%20L_i%20=%20-log%20(%20%5Cfrac%7Be%5E%7B%20s_%7By_i%7D%20%7D%7D%7B%5Csum_j%20e%5E%7B%20s_j%20%7D%7D%20)"></p>
+<p>Here, <img src="https://latex.codecogs.com/png.latex?s_yi"> is the score for the true class <img src="https://latex.codecogs.com/png.latex?y_i">. This formula combines the Softmax calculation and the negative log operation into one expression for the loss. Minimizing this <img src="https://latex.codecogs.com/png.latex?L_i"> will push the score of the correct class <img src="https://latex.codecogs.com/png.latex?s_yi"> to be high relative to the scores of the other classes <img src="https://latex.codecogs.com/png.latex?s_j">.</p>
+<p>Now, let’s think about some properties of this Softmax loss <img src="https://latex.codecogs.com/png.latex?L_i">. Two good questions to consider: What is the minimum and maximum possible Softmax loss <img src="https://latex.codecogs.com/png.latex?L_i">? And at initialization, our weights W are typically small random numbers. So, the initial scores <img src="https://latex.codecogs.com/png.latex?s_j"> for all classes will be approximately equal (and close to zero). What will the Softmax loss <img src="https://latex.codecogs.com/png.latex?L_i"> be in this scenario, assuming there are C classes?</p>
+<p>Answer for the first question: <strong>Minimum possible loss</strong>, the loss is <img src="https://latex.codecogs.com/png.latex?L_i%20=%20-log(%5Ctext%7BP%5C_correct%5C_class%7D)">. To minimize <img src="https://latex.codecogs.com/png.latex?L_i">, we need to maximize P_correct_class. The maximum possible probability for the correct class is 1 (i.e., the classifier is 100% certain and correct). If <img src="https://latex.codecogs.com/png.latex?P%5C_correct%5C_class%20=%201">, then <img src="https://latex.codecogs.com/png.latex?log(1)%20=%200">, so <img src="https://latex.codecogs.com/png.latex?L_i%20=%20-0%20=%200">. Thus, the minimum possible Softmax loss is 0. This occurs when the model perfectly predicts the true class with probability 1. <strong>Maximum possible loss</strong>, to maximize <img src="https://latex.codecogs.com/png.latex?L_i">, we need to minimize P_correct_class. The minimum possible probability for the correct class is something very close to 0 (it can’t be exactly 0 because of the exponentiation, but it can be arbitrarily small if the score for the correct class is very, very negative relative to other scores). As P_correct_class approaches 0 from the positive side, log(P_correct_class) approaches negative infinity. Therefore, <img src="https://latex.codecogs.com/png.latex?-log(%5Ctext%7B%20P%5C_correct%5C_class%20%7D)"> approaches positive infinity. So, the Softmax loss can, in theory, go to infinity if the model is extremely confident in a wrong class and assigns vanishingly small probability to the true class.</p>
+<p>Now for question 2: If all <img src="https://latex.codecogs.com/png.latex?s_j"> are approximately equal (say, <img src="https://latex.codecogs.com/png.latex?s_j%20%5Capprox%20s%5C_constant">), then <img src="https://latex.codecogs.com/png.latex?e%5E%7Bs_j%7D"> will also be approximately equal for all <img src="https://latex.codecogs.com/png.latex?j">. The probability for any given class k will be:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%20P(Y=k%20%7C%20X=x_i)%20=%20%5Cfrac%7Be%5E%7Bs_k%7D%7D%7B%5Csum_j%20e%5E%7Bs_j%7D%7D%20"></p>
+<p>Since all <img src="https://latex.codecogs.com/png.latex?e%5E%7Bs_j%7D"> are roughly the same, let’s say <img src="https://latex.codecogs.com/png.latex?e%5E%7Bs%5C_constant%7D">, the sum in the denominator will be <img src="https://latex.codecogs.com/png.latex?C%20e%5E%7Bs%5C_constant%7D">. So, <img src="https://latex.codecogs.com/png.latex?P(Y=k%20%7C%20X=x_i)%20%5Capprox%20%5Cfrac%7Be%5E%7Bs%5C_constant%7D%7D%7BC%20e%5E%7B%20s%5C_constant%20%7D%7D%20=%20%5Cfrac%7B1%7D%7BC%7D">.</p>
+<p>This makes intuitive sense: if the classifier has no information yet (all scores are equal), it should assign an equal probability of 1/C to each of the C classes. This is a uniform distribution. Now, the loss for any example <img src="https://latex.codecogs.com/png.latex?x_i"> (regardless of its true class <img src="https://latex.codecogs.com/png.latex?y_i">, since the probability assigned to every class is 1/C) will be:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%20L_i%20=%20-log(P%5C_correct%5C_class)%20=%20-log(%5Cfrac%7B1%7D%7BC%7D)%20"></p>
+<p>Using the logarithm property <img src="https://latex.codecogs.com/png.latex?log(%5Cfrac%7B1%7D%7BC%7D)%20=%20log(1)%20-%20log(C)%20=%200%20-%20log(C)%20=%20-log(C)">. So, <img src="https://latex.codecogs.com/png.latex?L_i%20=%20-(-log(C))%20=%20log(C)">. Therefore, at initialization, when the classifier is essentially guessing uniformly, the Softmax loss per example will be approximately <img src="https://latex.codecogs.com/png.latex?log(C)">, where <img src="https://latex.codecogs.com/png.latex?C"> is the number of classes. For example, if we have <img src="https://latex.codecogs.com/png.latex?C%20=%2010"> classes (like in CIFAR-10), then the initial loss we expect to see is <img src="https://latex.codecogs.com/png.latex?L_i%20=%20log(10)"> (natural logarithm of 10), which is approximately 2.3. This is a very useful “sanity check”! When you’re implementing a Softmax classifier and you initialize your weights, if you compute the loss on your first batch of data and it’s wildly different from <img src="https://latex.codecogs.com/png.latex?log(C)">, you might have a bug somewhere in your loss calculation or your Softmax implementation. For CIFAR-10, you should see an initial loss around 2.3. If you see a loss of, say, 20 or 0.01 at the very start, something is likely wrong.</p>
+</section>
+<section id="multiclass-svm-loss" class="level2">
+<h2 class="anchored" data-anchor-id="multiclass-svm-loss">Multiclass SVM loss</h2>
+<p>Alright, so we’ve seen the Softmax classifier and its cross-entropy loss. Now, let’s turn to the other major type of loss function for linear classifiers: the <strong>Multiclass SVM loss</strong>, also known as the hinge loss. The Multiclass SVM loss has a different philosophy than Softmax. The SVM wants the score of the correct class <img src="https://latex.codecogs.com/png.latex?s_%7By_i%7D"> to be greater than the score of any incorrect class <img src="https://latex.codecogs.com/png.latex?s_j"> (where <img src="https://latex.codecogs.com/png.latex?j%20%E2%89%A0%20y_i">) by at least a certain fixed margin, which is commonly denoted by <img src="https://latex.codecogs.com/png.latex?%5CDelta"> and often set to 1. Here’s the form of the loss L_i for a single example:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0AL_i%20=%20%5Csum_%7Bj%20%5Cne%20y_i%7D%0A%5Cbegin%7Bcases%7D%0A0%20&amp;%20%5Ctext%7Bif%20%7D%20s_%7By_i%7D%20%5Cgeq%20s_j%20+%201%20%5C%5C%0As_j%20-%20s_%7By_i%7D%20+%201%20&amp;%20%5Ctext%7Botherwise%7D%0A%5Cend%7Bcases%7D%0A=%20%5Csum_%7Bj%20%5Cne%20y_i%7D%20%5Cmax(0,%20s_j%20-%20s%7By_i%7D%20+%201)%0A"></p>
+<p>So, for each training example, we sum up these margin violation penalties over all incorrect classes. If all incorrect classes have scores that are at least <img src="https://latex.codecogs.com/png.latex?%5CDelta"> less than the score of the correct class, then <img src="https://latex.codecogs.com/png.latex?L_i"> will be 0 for that example.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./images/svm.png" class="lightbox" data-gallery="quarto-lightbox-gallery-10" title="SVM loss"><img src="https://bhdai.github.io/blog/posts/linear_classification/images/svm.png" class="img-fluid figure-img" alt="SVM loss"></a></p>
+<figcaption>SVM loss</figcaption>
+</figure>
+</div>
+<p>Let’s visualize what one term <img src="https://latex.codecogs.com/png.latex?%5Cmax(0,%20s_j%20-%20s_%7By_i%7D%20+%201)"> of this loss looks like. The x-axis here is representing <img src="https://latex.codecogs.com/png.latex?s_%7By_i%7D%20-%20s_j">, which is the difference between the score of the correct class and the score of one particular incorrect class <img src="https://latex.codecogs.com/png.latex?j">. The SVM loss wants the score of the correct class <img src="https://latex.codecogs.com/png.latex?s_%7By_i%7D"> to be greater than the score of an incorrect class <img src="https://latex.codecogs.com/png.latex?s_j"> by at least the margin <img src="https://latex.codecogs.com/png.latex?%5CDelta"> (which is 1 in our plot). So, if <img src="https://latex.codecogs.com/png.latex?s_%7By_i%7D%20-%20s_j%20%5Cgeq%201">, meaning the correct score is already beating the incorrect score by the desired margin then the loss for that pair is 0. You can see the loss function is flat at 0 on the right side of the plot, where <img src="https://latex.codecogs.com/png.latex?s_%7By_i%7D%20-%20s_j%20%5Cgeq%201">. The SVM doesn’t care how much better the correct score is, as long as it’s better by at least the margin. It doesn’t try to push the correct score infinitely higher or the incorrect scores infinitely lower, unlike Softmax which is never fully satisfied. However, if <img src="https://latex.codecogs.com/png.latex?s_%7By_i%7D%20-%20s_j%20%5Clt%201"> (i.e., the margin is violated), then the loss becomes positive. The loss increases linearly as the difference <img src="https://latex.codecogs.com/png.latex?s_%7By_i%7D%20-%20s_j"> gets smaller (or more negative, meaning <img src="https://latex.codecogs.com/png.latex?s_j"> is much larger than <img src="https://latex.codecogs.com/png.latex?s_%7By_i%7D">). This is the hinge shape - zero loss if the margin is met and then a linear penalty for violations. The total <img src="https://latex.codecogs.com/png.latex?L_i"> for an example is the sum of these hinge losses over all incorrect classes <img src="https://latex.codecogs.com/png.latex?j">. This encourages the score of the true class <img src="https://latex.codecogs.com/png.latex?y_i"> to stand out from all other incorrect class scores by at least <img src="https://latex.codecogs.com/png.latex?%5CDelta">. This is a fundamentally different way of thinking about loss compared to Softmax. Softmax wants to correctly estimate the probability distribution; SVM wants to find a decision boundary that separates classes with a good margin.</p>
+<p>So <strong>what is the min/max possible SVM loss L_i?</strong> <strong>Minimum possible loss</strong>, if all margins are satisfied (i.e., for all incorrect classes <img src="https://latex.codecogs.com/png.latex?j">, <img src="https://latex.codecogs.com/png.latex?s_%7By_i%7D%20%5Cgeq%20s_j%20+%20%5CDelta">), then every term in the <img src="https://latex.codecogs.com/png.latex?%5Csum%20%5Cmax(0,%20s_j%20-%20s_%7By_i%7D%20+%20%5CDelta)"> will be 0. So, the minimum SVM loss <img src="https://latex.codecogs.com/png.latex?L_i"> is 0. <strong>Maximum possible loss</strong>, if the score for the correct class <img src="https://latex.codecogs.com/png.latex?s_%7By_i%7D"> is extremely negative, and scores for incorrect classes <img src="https://latex.codecogs.com/png.latex?s_j"> are very positive, then <img src="https://latex.codecogs.com/png.latex?s_j%20-%20s_%7By_i%7D%20+%20%5CDelta"> can become arbitrarily large and positive for each incorrect class. Since we sum these terms, the total <img src="https://latex.codecogs.com/png.latex?L_i"> can go to positive infinity.</p>
+<p><strong>At initialization, <img src="https://latex.codecogs.com/png.latex?W"> is small, so all scores <img src="https://latex.codecogs.com/png.latex?s_j%20%5Capprox%200">. What is the loss <img src="https://latex.codecogs.com/png.latex?L_i">, assuming <img src="https://latex.codecogs.com/png.latex?C"> classes?</strong> If all <img src="https://latex.codecogs.com/png.latex?s_j%20%5Capprox%200"> (including <img src="https://latex.codecogs.com/png.latex?s_%7By_i%7D%20%5Capprox%200">), then for each of the <img src="https://latex.codecogs.com/png.latex?C-1"> incorrect classes j, the term is:</p>
+<p><img src="https://latex.codecogs.com/png.latex?s_j%20-%20s_%7By_i%7D%20+%20%5CDelta%20%E2%89%88%200%20-%200%20+%20%5CDelta%20=%20%5CDelta"></p>
+<p>So, <img src="https://latex.codecogs.com/png.latex?%5Cmax(0,%20%5CDelta)"> is just <img src="https://latex.codecogs.com/png.latex?%5CDelta"> (assuming our margin <img src="https://latex.codecogs.com/png.latex?%5CDelta"> is positive, e.g., <img src="https://latex.codecogs.com/png.latex?%5CDelta=1">). We sum this <img src="https://latex.codecogs.com/png.latex?%5CDelta"> over all <img src="https://latex.codecogs.com/png.latex?C-1"> incorrect classes. Therefore, <img src="https://latex.codecogs.com/png.latex?L_i%20%E2%89%88%20(C-1)%20%5CDelta">. If <img src="https://latex.codecogs.com/png.latex?%5CDelta=1">, then the initial loss <img src="https://latex.codecogs.com/png.latex?L"> is approximately <img src="https://latex.codecogs.com/png.latex?C-1">. For CIFAR-10 with <img src="https://latex.codecogs.com/png.latex?C=10"> classes and <img src="https://latex.codecogs.com/png.latex?%5CDelta=1">, the initial SVM loss per example would be around 9. This is another good sanity check for your implementation. If you see an initial SVM loss far from <img src="https://latex.codecogs.com/png.latex?C-1">, you might have an issue.</p>
+<p><strong>What if we used a squared term for the loss: <img src="https://latex.codecogs.com/png.latex?L_i%20=%20%5Csum_%7Bj%20%5Cneq%20y_i%7D%20%5Cmax(0,%20s_j%20-%20s_%7By_i%7D%20+%20%5CDelta)%5E2">?</strong> This is known as the squared hinge loss (or L2-SVM). The standard (L1) hinge loss <img src="https://latex.codecogs.com/png.latex?%5Cmax(0,%20margin%5C_violation)"> penalizes any violation linearly. Every unit of margin violation contributes equally to the loss. The squared (L2) hinge loss <img src="https://latex.codecogs.com/png.latex?%5Cmax(0,%20margin%5C_violation)%5E2"> penalizes larger violations much more heavily than smaller ones due to the squaring. It’s more sensitive to outliers or examples that are very wrong. This can sometimes lead to different solutions. Both have been used, though the L1 hinge loss is perhaps more standard for the classic SVM. The L2 version is smoother (differentiable even when the margin violation is zero, though the max(0,…) still introduces a non-differentiability point when the argument to max is exactly zero), which can sometimes be beneficial for certain optimization algorithms.</p>
+<p>Here’s a python function that calculates the SVM loss for a single example x with true label y, given weight W.</p>
+<div class="sourceCode" id="annotated-cell-1" style="background: #f1f3f5;"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-1-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> L_i_vecterized(x, y, W):</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-1-2" class="code-annotation-target">  scores <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> W.dot(x)</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-1-3" class="code-annotation-target">  margins <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.maximum(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, scores <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> score[y] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-1-4" class="code-annotation-target">  margins[y] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span></span>
+<span id="annotated-cell-1-5">  loss_i <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">sum</span>(margin)</span>
+<span id="annotated-cell-1-6">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> loss_i</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div>
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-1" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-1" data-code-lines="2" data-code-annotation="1">calculate scores</span>
+</dd>
+<dt data-target-cell="annotated-cell-1" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-1" data-code-lines="3" data-code-annotation="2">then calculate the margins <img src="https://latex.codecogs.com/png.latex?s_j%20-%20s_%7By_i%7D%20+%201"></span>
+</dd>
+<dt data-target-cell="annotated-cell-1" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-1" data-code-lines="4" data-code-annotation="3">only sum <img src="https://latex.codecogs.com/png.latex?j"> is not <img src="https://latex.codecogs.com/png.latex?y_i"> so when <img src="https://latex.codecogs.com/png.latex?j%20=%20y_i">, set to zero</span>
+</dd>
+</dl>
+<p>This is a nice, compact vectorized implementation. To get the loss for a whole batch of data, you’d typically loop over your batch, call this function for each example, and then average the results.</p>
+<p>SVM is a margin-based loss. Softmax is a probabilistic loss that cares about the full distribution. In practice, both are widely used, and sometimes one might perform slightly better than the other depending on the dataset and task, but often their performance is quite similar when used in deep networks. The choice can also come down to whether you explicitly need probability outputs from your model.</p>
+
+
+</section>
+
+ ]]></description>
+  <category>Deep Learning</category>
+  <guid>https://bhdai.github.io/blog/posts/linear_classification/</guid>
+  <pubDate>Fri, 01 Aug 2025 17:00:00 GMT</pubDate>
+  <media:content url="https://bhdai.github.io/blog/posts/linear_classification/images/cover.png" medium="image" type="image/png" height="80" width="144"/>
+</item>
 <item>
   <title>A brief history of computer vision and deep learning</title>
   <dc:creator>Bui Huu Dai</dc:creator>
@@ -15985,6 +16219,687 @@ Example of overfitting
   <guid>https://bhdai.github.io/blog/posts/2024-06-30-your-deep-learning-journey/</guid>
   <pubDate>Wed, 03 Jul 2024 17:00:00 GMT</pubDate>
   <media:content url="https://bhdai.github.io/blog/posts/2024-06-30-your-deep-learning-journey/xkcd.png" medium="image" type="image/png" height="127" width="144"/>
+</item>
+<item>
+  <title>Regularization and Optimization</title>
+  <dc:creator>Bui Huu Dai</dc:creator>
+  <link>https://bhdai.github.io/blog/posts/regularization_and_optimization/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./images/cover.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="“An explorer seen from behind, standing on a high rocky ridge looking through binoculars. The figure overlooks a vast valley rendered as a topographical map with intricate, glowing contour lines. At the bottom of this valley, a radiant orb pulses with energy. Two paths descend the landscape: one is a chaotic, jagged red line, and the other is a smooth river of glowing blue light flowing directly to the orb,” generated by DALL-E 3"><img src="https://bhdai.github.io/blog/posts/regularization_and_optimization/images/cover.png" class="img-fluid figure-img" alt="“An explorer seen from behind, standing on a high rocky ridge looking through binoculars. The figure overlooks a vast valley rendered as a topographical map with intricate, glowing contour lines. At the bottom of this valley, a radiant orb pulses with energy. Two paths descend the landscape: one is a chaotic, jagged red line, and the other is a smooth river of glowing blue light flowing directly to the orb,” generated by DALL-E 3"></a></p>
+<figcaption>“An explorer seen from behind, standing on a high rocky ridge looking through binoculars. The figure overlooks a vast valley rendered as a topographical map with intricate, glowing contour lines. At the bottom of this valley, a radiant orb pulses with energy. Two paths descend the landscape: one is a chaotic, jagged red line, and the other is a smooth river of glowing blue light flowing directly to the orb,” generated by DALL-E 3</figcaption>
+</figure>
+</div>
+<section id="we-have-a-loss-function-now-what" class="level2">
+<h2 class="anchored" data-anchor-id="we-have-a-loss-function-now-what">We have a loss function, now what?</h2>
+<p>In the last blog post we started by framing our core problem <strong>Image Classification</strong>. This is a fundamental task in computer vision. Given an image, our goal is to assign it one label from a predefined set of categories, the model needs to output the correct label. And we talked about why this is so challenging, right? It’s not trivial for a computer. We have immense variability due to viewpoint changes, different illumination conditions, deformations (cats are particularly good at this!), occlusion where parts of the object are hidden, clutter in the background, and of course, massive intraclass variation, think of all the different breeds and appearances of cats. To tackle this, we introduced the data-driven approach. Instead of trying to explicitly code rules for every variation, we collect a large dataset of images and their labels. We then use machine learning to learn the patterns. We talk about a powerful, parametric approach the <strong>Linear Classifier</strong>. Here, the idea is to learn a set of parameters, or weights, denoted by <img src="https://latex.codecogs.com/png.latex?W"> (and a bias term <img src="https://latex.codecogs.com/png.latex?b">). For an input image <img src="https://latex.codecogs.com/png.latex?x">, which we typically flatten into a vector, our score function is <img src="https://latex.codecogs.com/png.latex?f(x,%20W)%20=%20Wx%20+%20b">. This function computes scores for each class. We looked at this from a few different perspectives. The <strong>Algebraic Viewpoint</strong>: just a matrix multiplication and a bias addition. The <strong>Visual Viewpoint</strong>: where each row of W can be seen as a template for a class. The model is trying to learn what an “ideal” cat or dog template looks like. And the <strong>Geometric Viewpoint</strong>: where each row of W defines a hyperplane, and the classifier is essentially carving up the high-dimensional image space with these hyperplanes.</p>
+<p>Okay, so we have these scores from our linear classifier. The question is: How good are these scores? How good is our current set of parameters <img src="https://latex.codecogs.com/png.latex?W">? For this, we introduced the concept of a <strong>loss function</strong>. A loss function, often denoted <img src="https://latex.codecogs.com/png.latex?L_i"> for a single example, quantify how unhappy we are with the prediction of that example. Given a dataset of N examples <img src="https://latex.codecogs.com/png.latex?%7B(x_i,%20y_i)%7D"> where <img src="https://latex.codecogs.com/png.latex?x_i"> is the image and <img src="https://latex.codecogs.com/png.latex?y_i"> is its true integer label, we can compute the total loss. Typically the overall loss <img src="https://latex.codecogs.com/png.latex?L"> is the average of the individual loss <img src="https://latex.codecogs.com/png.latex?L_i"> over all the training example. This loss function is our guide. It tells us how well our current classifier is performing. A high loss means our classifier is doing poorly; a low loss means it’s doing well. So we have a way to score images and a way to measure how good those score are. The next natural question are: how do we find the parameters <img src="https://latex.codecogs.com/png.latex?W"> that minimize this loss? And how do we make sure our model doesn’t just memorize the training data but actually learn to generalize? And that precisely where we’re headed today with <strong>Regularization and Optimization</strong> We’ll start by looking at regularization.</p>
+<p>So far, here’s our loss function:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0AL(W)%20=%20%5Cfrac%7B1%7D%7BN%7D%20%5Csum_%7Bi%20=%201%7D%5EN%20L_i(f(x_i,%20W),%20y_i)%0A"></p>
+<p>Currently our loss function just has the <strong>data loss</strong>. This term, the average of <img src="https://latex.codecogs.com/png.latex?L_i"> over our <img src="https://latex.codecogs.com/png.latex?N"> training examples, measure how well our model’s prediction, <img src="https://latex.codecogs.com/png.latex?f(x_i,%20W)">, match the true labels, <img src="https://latex.codecogs.com/png.latex?y_i"> on the training data. Our goal is to make this data loss small. However, if we only focus on minimizing the data loss, we can run into a problem called overfitting. Our model might become too good at fitting the training data, including its noise and then fail to generalize to new, unseen data.</p>
+</section>
+<section id="keeping-model-honest" class="level2">
+<h2 class="anchored" data-anchor-id="keeping-model-honest">Keeping model honest</h2>
+<p>This is where <strong>regularization</strong> comes in. We modify our loss function to include an additional term, often denoted as <img src="https://latex.codecogs.com/png.latex?R(W)">, which is the regularization penalty. So, our full loss function now become the sum of the data loss and this regularization term, scaled by a hyperparameter <strong>lambda (<img src="https://latex.codecogs.com/png.latex?%5Clambda">)</strong></p>
+<p><img src="https://latex.codecogs.com/png.latex?%0AL(W)%20=%20%5Cfrac%7B1%7D%7BN%7D%20%5Csum_%7Bi%20=%201%7D%5EN%20L_i(f(x_i,%20W),%20y_i)%20+%20%5Clambda%20R(W)%0A"></p>
+<p>The data loss part as before, pushes the model to fit the training data. The new <strong>regularization term</strong>, <img src="https://latex.codecogs.com/png.latex?R(W)">, is designed to penalize model complexity. Its job is essentially to prevent the model from doing too well on the training data, or more precisely, fitting the training data in an overly complex way. Lambda, the regularization strength, control the trade-off between these two terms: fitting the data well versus keeping the model simple.</p>
+<p>This preference for simpler models, as we discussed, is nicely encapsulated by <strong>Occam’s Razor</strong>. The principle, attributed to William of Ockham, states that among multiple competing hypotheses, the simplest one is generally the best. Our regularization term <img src="https://latex.codecogs.com/png.latex?R(W)"> is our way of mathematically encoding a preference for certain types of “simpler” weight matrices <img src="https://latex.codecogs.com/png.latex?W">.</p>
+</section>
+<section id="a-penalty-for-complexity" class="level2">
+<h2 class="anchored" data-anchor-id="a-penalty-for-complexity">A penalty for complexity</h2>
+<p>So what are some common form of this regularization term <img src="https://latex.codecogs.com/png.latex?R(W)">? Here are a few classic examples:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0AR(W)%20=%20%5Csum_%7Bk%7D%20%5Csum_%7Bl%7D%20W%5E%7B2%7D_%7Bk,l%7D%0A"></p>
+<p><strong>L2 regularization</strong>, also known as weight decay or Ridge regression in other contexts. Here, <img src="https://latex.codecogs.com/png.latex?R(W)"> is the sum of the squares of all the individual weight elements <img src="https://latex.codecogs.com/png.latex?W_%7Bk,l%7D">. This penalty discourages very large weights. It prefers to distribute weights among many features rather than having a few features with very large weights. It leads to diffuse, small weight vector</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0AR(W)%20=%20%5Csum_%7Bk%7D%20%5Csum_%7Bl%7D%20%7CW_%7Bk,l%7D%7C%0A"></p>
+<p><strong>L1 regularization</strong>, also known as Lasso. Here, R(W) is the sum of the absolute values of the weights. L1 regularization has an interesting property: it tends to produce sparse weight vectors, meaning many of the weights will become exactly zero. This can be useful for feature selection, as it effectively tells you which input features the model deems unimportant.</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0AR(W)%20=%20%5Csum_%7Bk%7D%20%5Csum_%7Bl%7D%20%5Cbeta%20W%5E%7B2%7D_%7Bk,l%7D%20+%20%7CW_%7Bk,l%7D%7C%0A"></p>
+<p><strong>Elastic Net regularization</strong> is simply a linear combination of L1 and L2 regularization. This tries to get the best of both worlds, offering a balance between the diffuse weights of L2 and the sparsity of L1. The <img src="https://latex.codecogs.com/png.latex?%5Cbeta"> here would be another hyperparameter controlling the mix.</p>
+<p>These are some of the most common, traditional forms of regularization that directly penalize the magnitudes of the weights. But the concept of regularization is broader than just L1 and L2 penalty on weights. There are many other techniques, particularly in deep learning, that have a regularizing effect, even if they don’t explicitly appear as an R(W) term added to the loss. For examples,</p>
+<ul>
+<li><strong>Dropout</strong>: This involves randomly setting some neuron activations to zero during training. It prevents co-adaptation of neurons and encourages more robust feature learning</li>
+<li><strong>Batch Normalization</strong>: This normalized the activations between mini-batch. While primarily introduced to help with optimization and training stability, it also has a slight regularizing effect.</li>
+<li>And there are others like <strong>Stochastic Depth</strong>(randomly drop entire layer during training) or <strong>fractional pooling</strong>, which introduce stochasticity or constrains during training to improve regularization.</li>
+</ul>
+<p>So, while we often start by thinking about L1 or L2, keep in mind that regularization is a general concept of adding something to your training process to prevent overfitting and improve performance on unseen data.</p>
+<p>Note that one of the reason that I think really interesting about why we regularize is to improve optimization by adding curvature. This is a more subtle point, especially relevant for L2 regularization. Sometimes, the loss landscape can be very flat in certain directions, making optimization difficult. Adding an L2 penalty (which is a quadratic bowl shape) can add curvature to the loss surface, potentially making it easier for optimization algorithms like gradient descent to find a good minimum.</p>
+</section>
+<section id="finding-the-bottom-of-the-valley" class="level2">
+<h2 class="anchored" data-anchor-id="finding-the-bottom-of-the-valley">Finding the bottom of the valley</h2>
+<p>So, we’ve defined what it means for a set of weights W to be “good”, it should result in a low values for the total loss <img src="https://latex.codecogs.com/png.latex?L">. The big question that remain is: <strong>How do we find the best <img src="https://latex.codecogs.com/png.latex?W"></strong>? This is not a trivial task, especially <img src="https://latex.codecogs.com/png.latex?W"> is consist of millions or even billions, of parameters in modern neural networks. We’re searching in an incredibly high-dimensional space. And this leads us to our major topic for today: <strong>Optimization</strong></p>
+<p><a href="./images/valley.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img src="https://bhdai.github.io/blog/posts/regularization_and_optimization/images/valley.png" class="img-fluid"></a></p>
+<p>To build some intuition, let’s think about a simpler analogy. Imagine this beautiful mountain landscape. You can think of the terrain here as representing our loss function. The east-west and north-south directions could represent, say, two of our weights, W1 and W2 (though in reality, we have many more dimensions). And the altitude at any point (W1, W2) represents the value of our loss function L(W) for those particular weight settings. Our goal, then, is to find the lowest point in this valley – the point where the loss is minimized. So if we imagine ourselves, or this intrepid hiker, standing somewhere in the landscape, what’s our strategy for getting to the bottom of the valley? We’re trying to find the minimum. This is precisely what optimization algorithms are designed to do: to provide a systematic way to navigate this loss landscape and find a good set of parameters <img src="https://latex.codecogs.com/png.latex?W">. Now, how might we go about this? What strategy could we employ to find this minimum? Let’s consider a few approaches, starting with a very simple one, perhaps naive, one.</p>
+<section id="strategy-1-random-search" class="level3">
+<h3 class="anchored" data-anchor-id="strategy-1-random-search">Strategy 1: Random search</h3>
+<p>This is generally a very bad idea for optimizing a complex models, but it’s a simple baseline to start with. The idea is straightforward</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># assume X_train is the data where each column is an example (e.g. 3073 x 50,000)</span></span>
+<span id="cb1-2"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># assume Y_train are the labels (e.g. 1D array of 50,000)</span></span>
+<span id="cb1-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># assume the function L evaluates the loss function</span></span>
+<span id="cb1-4"></span>
+<span id="cb1-5">bestloss <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">float</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'inf'</span>)  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Python assigns the highest possible float value</span></span>
+<span id="cb1-6"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> num <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">xrange</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1000</span>):</span>
+<span id="cb1-7">    W <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.random.randn(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3073</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.0001</span>  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># generate random parameters</span></span>
+<span id="cb1-8">    loss <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> L(X_train, Y_train, W)  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># get the loss over the entire training set</span></span>
+<span id="cb1-9">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> loss <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> bestloss:  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># keep track of the best solution</span></span>
+<span id="cb1-10">        bestloss <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> loss</span>
+<span id="cb1-11">        bestW <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> W</span>
+<span id="cb1-12">    <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'in attempt </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%d</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;"> the loss was </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%f</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">, best </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%f</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%</span> (num, loss, bestloss))</span></code></pre></div>
+<pre><code>in attempt 0 the loss was 9.401632, best 9.401632
+in attempt 1 the loss was 8.959668, best 8.959668
+in attempt 2 the loss was 9.044034, best 8.959668
+in attempt 3 the loss was 9.278948, best 8.959668
+in attempt 4 the loss was 8.857370, best 8.857370
+in attempt 5 the loss was 8.943151, best 8.857370
+in attempt 6 the loss was 8.605604, best 8.605604
+... (truncated: continues for 1000 lines)</code></pre>
+<p>As you can see from the example printout, with each attempt, we got a loss value. Sometimes we find a better <img src="https://latex.codecogs.com/png.latex?W">, sometimes we don’t. We just keep trying random configurations and hope to stumble upon a good one. This is, as you might imagine, highly inefficient. The space of possible W matrices is astronomically vast. Just randomly sampling points in this space is like trying to find a specific grain of sand on all the beaches of the world by randomly picking up grains. But, let’s humor ourselves. Suppose we run this random search for a while and get our bestW. How well does it actually perform on unseen data?</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># assume X_test is [3073 x 10000A], y_test [10000 x 1]</span></span>
+<span id="cb3-2">scores <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> bestW.dot(X_test) <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 10 x 10000, the class scores for all test examples</span></span>
+<span id="cb3-3">y_pred <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.argmax(scores, axis<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)</span>
+<span id="cb3-4">np.mean(y_pred <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> y_test)</span></code></pre></div>
+<pre><code>0.1555</code></pre>
+<p>And the result? We get 15.5% accuracy! Now, for a 10-class classification problem like CIFAR-10, random guessing would give you 10% accuracy. So, 15.5% is… well, it’s better than random! One might sarcastically say “not bad!” given the simplicity of the approach. However, if we compare this to the state-of-the-art (SOTA) for image classification on datasets like CIFAR-10, which can be well above 90%, even approaching 99.7% for sophisticated models, 15.5% is clearly terrible. It highlights that simply guessing random parameters is not a viable strategy for training effective machine learning models. So, random search is a non-starter for any serious application. We need a more intelligent way to navigate the loss landscape. We need a strategy that uses information about the landscape itself to guide the search. This brings us to our next, much more sensible, strategy. We want to “follow the slope.”</p>
+</section>
+<section id="strategy-2-follow-the-slope" class="level3">
+<h3 class="anchored" data-anchor-id="strategy-2-follow-the-slope">Strategy 2: Follow the slope</h3>
+<p>Going back to our mountain analogy, if you’re standing on a hillside and want to get to the bottom of the valley, what’s the most intuitive thing to do? You look around, feel for the direction where the ground slopes downwards most steeply, and you take a step in that direction. Right? You follow the path of steepest descent. This intuitive idea of “slope” has a precise mathematical counterpart.</p>
+<p>In 1-dimension, if we have a function <img src="https://latex.codecogs.com/png.latex?f(x)">, the concept of slope is captured by derivative <img src="https://latex.codecogs.com/png.latex?%5Cfrac%7Bdf%7D%7Bdx%7D">. As you’ll recall from calculus, the derivative is defined as</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cfrac%7Bdf(x)%7D%7Bdx%7D%20=%20%5Clim_%7Bh%20%5Cto%200%7D%20%5Cfrac%7Bf(x%20+%20h)%20-%20f(x)%7D%7Bh%7D%0A"></p>
+<p>It tells us how much the function <img src="https://latex.codecogs.com/png.latex?f(x)"> changes for an infinitesimally small change in <img src="https://latex.codecogs.com/png.latex?x">. A positive derivative means the function is increasing, and a negative derivative means it’s decreasing. Now our loss function <img src="https://latex.codecogs.com/png.latex?L(W)"> is not a function of a single variable; it’s a function of many variables (all the elements of our weight matrix <img src="https://latex.codecogs.com/png.latex?W">). So, we’re in a multiple-dimension scenario. In this case, the equivalent of the derivative is the <strong>gradient</strong>. The gradient of <img src="https://latex.codecogs.com/png.latex?L"> with respect to <img src="https://latex.codecogs.com/png.latex?W"> often denoted as <img src="https://latex.codecogs.com/png.latex?%5CDelta%20L(W)"> or <img src="https://latex.codecogs.com/png.latex?%5CDelta_W%20L">, is a <strong>vector of partial derivatives</strong>. Each elements of this gradient vector tells us the slope of the loss function along the direction of the corresponding weight. For example <img src="https://latex.codecogs.com/png.latex?%5Cfrac%7B%5CDelta%20L%7D%7B%5CDelta%20W_%7Bij%7D%7D"> tells us how the loss <img src="https://latex.codecogs.com/png.latex?L"> change if we make a tiny change to the weight <img src="https://latex.codecogs.com/png.latex?W_%7Bij%7D">, keeping other weights constant.</p>
+<p>So, the gradient vector <img src="https://latex.codecogs.com/png.latex?%5CDelta%20L(W)"> points in the direction in which the loss function L(W) increases the fastest. How do we find the slope in any arbitrary direction? If we have some direction vector <img src="https://latex.codecogs.com/png.latex?u">, the slope in that direction is given by the dot product of that direction vector <img src="https://latex.codecogs.com/png.latex?u"> with the gradient vector <img src="https://latex.codecogs.com/png.latex?%5CDelta%20L(W)">. And most importantly for our goal of minimizing the loss: the direction of steepest descent – the direction in which the loss function decreases the fastest it’s simple but happens to be true is the negative gradient, i.e., <img src="https://latex.codecogs.com/png.latex?-%5CDelta%20L(W)">. So, if we can compute this gradient vector, we have a clear instruction: to reduce the loss, take a small step in the direction opposite to the gradient. This is the fundamental idea behind one of the most important optimization algorithms in machine learning.</p>
+<p>This method is called the <strong>Numeric Gradient</strong>. And it has a couple of important properties: 1) It’s <strong>Slow</strong>! We need to loop over all dimensions (all parameters) and perform a full loss computation for each one. For models with millions of parameters, this is completely impractical for training. 2) It’s <strong>Approximate</strong>. Because we’re using a finite h instead of the true limit as h approaches zero, what we calculate is an approximation of the true gradient. The choice of h is also a bit tricky – too small and you hit numerical precision issues; too large and the approximation is poor. So, while the numeric gradient is conceptually simple and directly follows from the definition of a derivative, it’s not how we typically train our models due to its inefficiency. However, it’s an incredibly useful tool for debugging our more efficient gradient calculation methods, which we’ll get to. If you implement a more complex way to calculate the gradient (like backpropagation), you can compare its output to the numeric gradient on a small example to check if your implementation is correct. This is called a gradient check. But for actually doing the optimization, we need something much faster. The loss function <img src="https://latex.codecogs.com/png.latex?L(W)"> is, after all, just a mathematical function of <img src="https://latex.codecogs.com/png.latex?W">. Can’t we use calculus to find an exact, analytical expression for the gradient?</p>
+<p>The key insight is that our <strong>loss function <img src="https://latex.codecogs.com/png.latex?L"> is just a function of <img src="https://latex.codecogs.com/png.latex?W"></strong></p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Balign%7D%0AL%20%20%20&amp;=%20%5Cfrac%7B1%7D%7BN%7D%20%5Csum_%7Bi=1%7D%5E%7BN%7D%20L_i%20+%20%5Csum_%7Bk%7D%20W_%7Bk%7D%5E2%20%5C%5C%0AL_i%20&amp;=%20%5Csum_%7Bi%20%5Cneq%20y_i%7D%20%5Cmax(0,%20s_j%20-%20s_%7By_i%7D%20+%201)%20%5Ctext%7B%20or%20%7D%20L_i%20=%20-%5Clog(%5Cfrac%7Be%5E%7Bs_%7By_i%7D%7D%7D%7B%5Csum_%7Bj%7De%5E%7Bs_j%7D%7D)%20%5C%5C%0As%20%20&amp;=%20f(x,W)%20=%20Wx%20%5C%5C%0A&amp;%5Ctext%7B%20want%20%7D%20%5CDelta_W%20L%0A%5Cend%7Balign%7D%0A"></p>
+<p>So you can see <img src="https://latex.codecogs.com/png.latex?L"> ultimately a mathematical function of <img src="https://latex.codecogs.com/png.latex?W">, the input <img src="https://latex.codecogs.com/png.latex?x"> and the true label <img src="https://latex.codecogs.com/png.latex?y_i"> are fix constant from our dataset, the only thing we’re changing is <img src="https://latex.codecogs.com/png.latex?W">. What we want is the gradient of this entire expression L with respect to <img src="https://latex.codecogs.com/png.latex?W"> denoted as <img src="https://latex.codecogs.com/png.latex?%5CDelta_W%20L">. Instead of numerically approximating this gradient by adjusting each <img src="https://latex.codecogs.com/png.latex?W_k">, we should be able to use the rules of calculus.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./images/calculus.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Newton and Leibniz"><img src="https://bhdai.github.io/blog/posts/regularization_and_optimization/images/calculus.png" class="img-fluid figure-img" alt="Newton and Leibniz"></a></p>
+<figcaption>Newton and Leibniz</figcaption>
+</figure>
+</div>
+<p>Given that we have these well-defined mathematical functions, we can <strong>use calculus to compute an analytic gradient</strong>. This means we can derive a direct mathematical formula for _W. This is where our friend Newton and Leibniz, the inventors of calculus, come into play. Their work allow us to find these gradient efficiently and exactly (up to machine precision), without any of this iteration perturbation. Computing the analytic gradient involves applying the chain rule repeatedly, because our loss function is a composition of several functions (linear score function, then the loss calculation like hinge or softmax, then averaging, then adding regularization). For complex, deep neural networks, this process of applying the chain rule systematically is known as backpropagation which we will talk about very soon in other post. For now, let’s appreciate that deriving an analytic formula for the gradient is the efficient and exact way to go. It’s much faster than the numerical gradient because we just evaluate one formula, rather than N+1 evaluations of the loss function. So now instead of numerically calculating <img src="https://latex.codecogs.com/png.latex?dW"> element by element, if we had derived the analytic gradient, <img src="https://latex.codecogs.com/png.latex?dW"> would be given by some function that depends on our input data and the current <img src="https://latex.codecogs.com/png.latex?W">. We would plug our data and current <img src="https://latex.codecogs.com/png.latex?W"> into this derived formula, and it would directly give us the entire gradient matrix <img src="https://latex.codecogs.com/png.latex?dW"> in one go.</p>
+<p>So we have two ways to think about computing gradient:</p>
+<ul>
+<li><strong>Numerical gradient</strong>:
+<ul>
+<li>It’s <strong>approximate</strong> (due to the finite h).</li>
+<li>It’s very <strong>slow</strong> (requires N+1 evaluations of the loss function for N parameters).</li>
+<li>However, it’s generally <strong>easy to write</strong> the code for, as it directly implements the definition of a derivative.</li>
+</ul></li>
+<li><strong>Analytic gradient</strong>:
+<ul>
+<li>It’s <strong>exact</strong> (up to machine precision).</li>
+<li>It’s very <strong>fast</strong> (typically a single pass of computation once the formula is derived).</li>
+<li>However, deriving and implementing the formula, especially for complex models, can be <strong>error-prone</strong>. It’s easy to make a mistake in the calculus or in the code.</li>
+</ul></li>
+</ul>
+<p>So, what does this lead us to in practice? <strong>In practice: Always use the analytic gradient for training your models because of its speed and exactness.</strong> However, because it’s error-prone to implement, you should <strong>check your implementation with the numerical gradient</strong>. This crucial debugging step is called a gradient check. How does gradient check work? You implement your analytic gradient. Then for a small test case like a small <img src="https://latex.codecogs.com/png.latex?W"> and a few data point, you also compute the numerical gradient. You then compare the two results. If they are very close, you can be reasonably confident that your analytic gradient implementation is correct. If they differ significantly, you have a bug in your analytic gradient derivation or code.</p>
+</section>
+</section>
+<section id="sgd" class="level2">
+<h2 class="anchored" data-anchor-id="sgd">SGD</h2>
+<p>Okay, so now we have an efficient and exact way to compute the gradient <img src="https://latex.codecogs.com/png.latex?%5CDelta_W%20L">, which tells us the direction of steepest ascent. To minimize the loss, we want to go in the opposite direction. This brings us to the core algorithm for optimization in deep learning: Gradient Descent. The core idea is remarkably simple, here is a simple implementation of “Vanilla Gradient Decent”.</p>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">while</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>:</span>
+<span id="cb5-2">  weights_grad <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> evaluate_gradient(loss_fun, data, weights)</span>
+<span id="cb5-3">  weights <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> step_size <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> weights_grad <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># perform parameter update</span></span></code></pre></div>
+<p>So basically we start with some initial guess for our weights, then we enter a loop that (conceptually) runs “True” or until some stopping criterion is met. Inside the loop, the first crucial step is <code>weights_grad = evaluate_gradient(loss_fun, data, weights)</code>. This is where we compute the analytic gradient of our loss function (loss_fun) with respect to the current weights, using our training data. This weights_grad is our <img src="https://latex.codecogs.com/png.latex?%5CDelta_W%20L">. Next is parameter update, we take the weights_grad multiply it by - step_size the negative sign is because we want to move in the direction opposite to the gradient (the direction of steepest descent). The step_size (also known as the learning rate) is a small positive scalar hyperparameter. It controls how far we step in that negative gradient direction. If it’s too large, we might overshoot the minimum. If it’s too small, training will be very slow. We then add this scaled negative gradient to our current weights to get the updated weights. And we repeat. We re-evaluate the gradient at the new weights, take another step, and so on, iteratively moving “downhill” on the loss surface.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./images/gd.gif" class="lightbox" data-gallery="quarto-lightbox-gallery-4"><img src="https://bhdai.github.io/blog/posts/regularization_and_optimization/images/gd.gif" class="img-fluid quarto-figure quarto-figure-center figure-img"></a></p>
+</figure>
+</div>
+<p>This is Vanilla Gradient Descent. The “vanilla” part implies there are more sophisticated variants, which we’ll get to. One important detail in this vanilla version is that <code>evaluate_gradient</code> typically involves computing the gradient over the entire training dataset to get the true gradient of <img src="https://latex.codecogs.com/png.latex?L">. This can be very computationally expensive if our dataset is large. This brings us to <strong>Stochastic Gradient Descent (SGD)</strong>, or more commonly in practice, <strong>Minibatch Gradient Descent</strong>.</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Balign%7D%0AL(W)%20&amp;=%20%5Cfrac%7B1%7D%7BN%7D%20%5Csum_%7Bi=1%7D%5E%7BN%7D%20L_i(x_i,%20y_i,%20W)%20+%20%5Clambda%20R(W)%5C%5C%0A%5CDelta_W%20L%20&amp;=%20%5Cfrac%7B1%7D%7BN%7D%20%5Csum_%7Bi%20=%201%7D%5EN%20%5CDelta_W%20L_i(x_i,%20y_i,%20W)%20+%20%5Clambda%20%5CDelta_W%20R(W)%0A%5Cend%7Balign%7D%0A"></p>
+<p>The problem is that computing this full sum over all N examples for <img src="https://latex.codecogs.com/png.latex?%5CDelta_W%20L_i"> is expensive when <img src="https://latex.codecogs.com/png.latex?N"> is large. If you have millions of training examples, calculating the gradient across all of them just to make one tiny step with your weights is very inefficient. You’d be spending a lot of computation for a potentially very small update. The core idea of Stochastic Gradient Descent is to <strong>approximate this sum using a small random subset of the data called a minibatch</strong>. Instead of summing the gradients over all N examples, we sum them over just a small batch of, say, 32, 64, or 128 examples. Common minibatch sizes often range from 32 to 256, sometimes larger, depending on memory constraints and the specific problem. So, the gradient we compute on a minibatch is not the true gradient of the total loss L, but it’s an estimate or an approximation. Since the minibatch is sampled randomly, this estimate is unbiased on average, and it’s much, much faster to compute.</p>
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Vanilla Minibatch Gradient Descent</span></span>
+<span id="cb6-2"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">while</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>:</span>
+<span id="cb6-3">  data_batch <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> sample_training_data(data, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">256</span>) <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># sample 256 examples</span></span>
+<span id="cb6-4">  weights_grad <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> evaluate_gradient(loss_fun, data_batch, weights)</span>
+<span id="cb6-5">  weights <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> step_size <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> weights_grad <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># perform parameter update</span></span></code></pre></div>
+<p>The key difference from Vanilla Gradient Descent is the first line inside the loop: <code>data_batch = sample_training_data(data, 256)</code>. Here, instead of using the full data, we randomly sample a data_batch (e.g., 256 examples). This approach is “stochastic” because each gradient estimate is noisy and depends on the specific random minibatch chosen. However, by taking many such noisy steps, we still tend to move towards the minimum of the loss function, often much faster in terms of wall-clock time than full batch gradient descent because each step is so much cheaper. The term “Stochastic Gradient Descent (SGD)” technically refers to the extreme case where the minibatch size is 1 – you update the weights after seeing just one example. In practice, when people say “SGD” in deep learning, they almost always mean minibatch gradient descent. Using minibatches not only speeds up training but can also sometimes help the optimization process escape poor local minima or saddle points due to the noise in the gradient estimates, leading to better generalization.</p>
+<p>So, SGD with minibatches is the workhorse for training almost all large-scale deep learning models. However, it’s not without its own set of challenges and nuances.</p>
+<section id="problem-1-with-sgd-dealing-with-ill-conditioned-loss-landscapes" class="level3">
+<h3 class="anchored" data-anchor-id="problem-1-with-sgd-dealing-with-ill-conditioned-loss-landscapes">Problem #1 with SGD: Dealing with ill-conditioned loss landscapes</h3>
+<p><a href="./images/sgd.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5"><img src="https://bhdai.github.io/blog/posts/regularization_and_optimization/images/sgd.png" class="img-fluid"></a></p>
+<p>Consider a scenario where our loss function landscape looks like this: a long, narrow valley, or a ravine. The ellipses here represent level sets of the loss function, and the smiley face is at the minimum we want to reach. The question is: <strong>What if the loss changes quickly in one direction and slowly in another?</strong> For example, along the w2 direction (vertically), the valley is very steep – the loss changes rapidly. But along the w1 direction (horizontally), the valley is very shallow and elongated – the loss changes slowly. If we start at the red dot and apply standard SGD, what will happen? What gradient descent does is it always points in the direction of steepest descent. In such a ravine, the steepest direction is mostly perpendicular to the valley floor, pointing across the steep walls. So, SGD will tend to take large steps that oscillate back and forth across the narrow valley (the w2 direction, where the gradient is large). Because of these large oscillations, if we use a single learning rate, it has to be small enough to prevent divergence in this steep direction. However, this small learning rate means that progress along the shallow direction of the valley (the w1 direction, where the gradient component is small) will be agonizingly slow. The result is very slow progress along the shallow dimension, and a lot of jitter or oscillation along the steep direction, as shown by the red zigzag path. We’re making very inefficient progress towards the true minimum. This kind of behavior is characteristic of loss functions that are ill-conditioned.</p>
+</section>
+<section id="problem-2-with-sgd-local-minima-and-saddle-points" class="level3">
+<h3 class="anchored" data-anchor-id="problem-2-with-sgd-local-minima-and-saddle-points">Problem #2 with SGD: Local Minima and Saddle Points</h3>
+<p>The loss functions for deep neural networks are highly non-convex. This means they can have many local minima – points where the loss is lower than all its immediate neighbors, but not necessarily the global minimum (the lowest possible loss overall). They can also have saddle points.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./images/saddlepoint.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6" title="Saddle point, image source: https://en.wikipedia.org/wiki/Saddle_point"><img src="https://bhdai.github.io/blog/posts/regularization_and_optimization/images/saddlepoint.png" class="img-fluid figure-img" alt="Saddle point, image source: https://en.wikipedia.org/wiki/Saddle_point"></a></p>
+<figcaption>Saddle point, image source: <a href="https://en.wikipedia.org/wiki/Saddle_point">https://en.wikipedia.org/wiki/Saddle_point</a></figcaption>
+</figure>
+</div>
+<p>At a local minimum, or at a saddle point, the gradient is zero (or very close to zero). If the gradient is zero, then weights_grad in our update <code>rule weights += - step_size * weights_grad</code> is zero. This means the weights stop updating. Gradient descent gets stuck! It thinks it has found the bottom of a valley, but it might just be a small dip, or a point that’s flat in some directions but goes up in others.</p>
+<p>Now, for a long time, people were very concerned about local minima being a major impediment to training deep networks. The fear was that SGD would get trapped in a poor local minimum and never find a good solution. However, more recent research, like <a href="https://arxiv.org/abs/1406.2572">the paper</a> by Dauphin et al.&nbsp;(2014) cited here, suggests that in very high-dimensional spaces (which is where our weight matrices W live), <strong>saddle points are actually much more common than local minima</strong>. For a point to be a local minimum, the loss function needs to curve upwards in all dimensions around that point. For it to be a local maximum, it needs to curve downwards in all dimensions. For it to be a saddle point, it needs to curve upwards in some dimensions and downwards in others. In high dimensions, it’s statistically much more likely to have a mix of curvatures than for all curvatures to go in the same direction. So, while getting stuck is a problem, it’s often saddle points, rather than bad local minima, that are the primary culprits for slowing down or halting SGD. At a saddle point, the gradient is zero, but it’s not a minimum.</p>
+<p>So, that’s the second major issue: points with zero or near-zero gradient (local minima and, more commonly, saddle points) can trap or significantly slow down SGD.</p>
+</section>
+<section id="problem-3-with-sgd-noisy-gradients" class="level3">
+<h3 class="anchored" data-anchor-id="problem-3-with-sgd-noisy-gradients">Problem #3 with SGD: Noisy Gradients</h3>
+<p>This problem is inherent in the “S” of SGD – the stochasticity. As we discussed, our loss <img src="https://latex.codecogs.com/png.latex?L(W)"> is an average over all <img src="https://latex.codecogs.com/png.latex?N"> training examples (plus regularization, which we’ll ignore for this point for simplicity). And it’s true gradient is:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5CDelta_W%20L%20=%20%5Cfrac%7B1%7D%7BN%7D%20%5Csum_%7Bi%20=%201%7D%5EN%20%5CDelta_W%20L_i(x_i,%20y_i,%20W)%0A"></p>
+<p>However, with minibatch SGD, we don’t compute this full sum. We compute the gradient on a small minibatch. This minibatch gradient is an estimate of the true gradient. Because the minibatch is a random sample, this estimate will be noisy. It won’t point exactly in the direction of the true steepest descent. If you take many different minibatches at the same point <img src="https://latex.codecogs.com/png.latex?W">, you’ll get slightly different gradient vectors.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./images/noisy-grad.gif" class="lightbox" data-gallery="quarto-lightbox-gallery-7"><img src="https://bhdai.github.io/blog/posts/regularization_and_optimization/images/noisy-grad.gif" class="img-fluid quarto-figure quarto-figure-center figure-img"></a></p>
+</figure>
+</div>
+<p>The noisy gradients mean that our steps won’t be as smooth as the idealized animation we saw earlier. They’ll be a bit erratic. While this noise can sometimes be helpful (e.g., for escaping sharp local minima or some saddle points), it also means that the convergence path can be jittery, and finding the exact minimum can be harder. The optimization path might dance around the minimum without settling perfectly.</p>
+<p>So, these three problems – ill-conditioned landscapes (ravines), local minima/saddle points, and noisy gradients – are key challenges that standard SGD faces. This has motivated the development of more advanced optimization algorithms that try to mitigate these issues. One of the first and most important enhancements is the idea of momentum.</p>
+</section>
+</section>
+<section id="momentum" class="level2">
+<h2 class="anchored" data-anchor-id="momentum">Momentum</h2>
+<p>The first major improvement we’ll discuss is adding Momentum to SGD. If SGD gets to a flat region where the gradient is zero, it stops. Momentum, like a ball rolling downhill, has inertia. It might be able to “roll through” small local minima or flat regions of saddle points because it has built up speed from previous gradients. In that zigzagging scenario, the gradient components across the ravine tend to cancel out on average over iterations due to the oscillation. However, the small gradient components along the valley consistently point in the same direction. Momentum helps to average out these oscillations and amplify the consistent movement along the valley floor. You can see the blue line (SGD+Momentum) makes much more direct progress towards the minimum compared to the black zigzagging SGD line. The noise in minibatch gradients causes SGD to jitter. Momentum helps to smooth out these noisy updates by taking a running average of the gradients. This leads to a more stable and often faster convergence towards the minimum</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./images/momentum.gif" class="lightbox" data-gallery="quarto-lightbox-gallery-8"><img src="https://bhdai.github.io/blog/posts/regularization_and_optimization/images/momentum.gif" class="img-fluid quarto-figure quarto-figure-center figure-img"></a></p>
+</figure>
+</div>
+<p>Now, for SGD + Momentum. The key idea is to continue moving in the general direction as the previous iterations. We introduce a “velocity” term, v, which accumulates a running mean of the gradients.</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Balign%7D%0Av_%7Bt+1%7D%20&amp;=%20%20%5Crho%20v_t%20+%20%5CDelta%20f(x_t)%20%5C%5C%0Ax_%7Bt+1%7D%20&amp;=%20x_t%20-%20%5Calpha%20v_%7Bt+1%7D%0A%5Cend%7Balign%7D%0A"></p>
+<ul>
+<li><img src="https://latex.codecogs.com/png.latex?v_%7Bt%7D"> is the velocity vector from the previous step. It’s initialized to zero.</li>
+<li><img src="https://latex.codecogs.com/png.latex?%5Crho"> is the momentum coefficient (or friction term). It’s typically a value like 0.9 or 0.99. It determines how much of the previous velocity is retained. If ρ=0, we recover standard SGD (almost, as we’ll see the learning rate is applied differently).</li>
+<li>In the first equation, we update the velocity: we take the old velocity <img src="https://latex.codecogs.com/png.latex?v_t">, scale it down by <img src="https://latex.codecogs.com/png.latex?%5Crho">, and then add the current gradient <img src="https://latex.codecogs.com/png.latex?%5CDelta%20f(x_t)">. So, the velocity v is essentially an exponentially decaying moving average of the past gradients.</li>
+<li>In the second equation, we update the parameters <img src="https://latex.codecogs.com/png.latex?x"> by taking a step in the direction of this new velocity <img src="https://latex.codecogs.com/png.latex?v_t+1">, scaled by the learning rate <img src="https://latex.codecogs.com/png.latex?%5Calpha">. Crucially, we are now stepping with the velocity, not directly with the current gradient.</li>
+</ul>
+<p>The intuition is that we build up “velocity” as a running mean of gradients. If gradients consistently point in the same direction, the velocity in that direction grows. If gradients oscillate, those components of the velocity tend to be dampened. The term <img src="https://latex.codecogs.com/png.latex?%5Crho"> acts like friction. If <img src="https://latex.codecogs.com/png.latex?%5Crho"> is close to 1 (e.g., 0.99), we have high momentum, and the velocity persists for a long time. If <img src="https://latex.codecogs.com/png.latex?%5Crho"> is smaller (e.g., 0.5), it’s like having more friction, and the velocity relies more on recent gradients. <a href="https://proceedings.mlr.press/v28/sutskever13.pdf">The paper</a> by Sutskever et al.&nbsp;(2013) is a classic reference highlighting the importance of momentum in deep learning</p>
+<p>Here’s how this might look in code:</p>
+<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1">vx <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span> <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># initialize velocity to zero</span></span>
+<span id="cb7-2"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">while</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>:</span>
+<span id="cb7-3">  dx <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> compute_gradient(x) <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># current gradient</span></span>
+<span id="cb7-4">  vx <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> rho <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> vx <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> dx       <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># update velocity</span></span>
+<span id="cb7-5">  x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-=</span> learning_rate <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> vx  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># update parameters</span></span></code></pre></div>
+<p>Momentum is a very powerful and widely used technique. But it’s not the only improvement over vanilla SGD. Other methods try to adapt the learning rate on a per-parameter basis, which can be particularly helpful for those ill-conditioned ravine-like loss surfaces.</p>
+</section>
+<section id="smarter-steps-with-adaptive-optimizer" class="level2">
+<h2 class="anchored" data-anchor-id="smarter-steps-with-adaptive-optimizer">Smarter steps with adaptive optimizer</h2>
+<p>Okay, so SGD with Momentum helps to accelerate in consistent directions and dampen oscillations. But what about that problem of different curvatures in different dimensions – the ravines? Momentum helps, but can we do even better? This leads us to optimizers that try to adapt the learning rate on a per-parameter basis. One popular example is <strong>RMSProp</strong>. Recall SGD+Momentum: we compute a velocity <code>vx</code> and update <code>x</code> using <code>learning_rate * vx</code>. Now, for RMSProp, developed by Tieleman and Hinton:</p>
+<div class="sourceCode" id="annotated-cell-8" style="background: #f1f3f5;"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><a class="code-annotation-anchor" data-target-cell="annotated-cell-8" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-8-1" class="code-annotation-target">grad_square <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span></span>
+<span id="annotated-cell-8-2"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">while</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>:</span>
+<span id="annotated-cell-8-3">  dx <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> compute_gradient(x)</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-8" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-8-4" class="code-annotation-target">  grad_square <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> decay_rate <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> grad_square <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> decay_rate) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> dx <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> dx</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-8" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-8-5" class="code-annotation-target">  x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-=</span> learning_rate <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> dx <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> (np.sqrt(grad_squared) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1e-7</span>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div>
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-8" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-8" data-code-lines="1" data-code-annotation="1">We maintain a variable <code>grad_squared</code>. This variable will keep track of an exponentially decaying average of the squared gradients for each parameter. It’s initialized to zero.</span>
+</dd>
+<dt data-target-cell="annotated-cell-8" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-8" data-code-lines="4" data-code-annotation="2">This is an exponentially weighted moving average. <code>decay_rate</code> is a hyperparameter, typically something like 0.9 or 0.99. We’re taking the previous <code>grad_squared</code>, decaying it, and adding the newly computed <code>dx * dx</code> (element-wise square of the current gradient), scaled by <code>1 - decay_rate</code>. So, <code>grad_squared</code> accumulates information about the typical magnitude of recent gradients for each parameter.</span>
+</dd>
+<dt data-target-cell="annotated-cell-8" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-8" data-code-lines="5" data-code-annotation="3">this is the parameter update rule, we take our square root of our accumulated <code>grad_squared</code> this gives us something like the Root Mean Square of recent gradients, add a small epsilon (like 1e-7) for numerical stability to prevent division by zero if grad_squared is tiny, and then we divide the current gradient <code>dx</code> by this term.</span>
+</dd>
+</dl>
+<p>The effect of this division by <code>np.sqrt(grad_squared)</code> is crucial. If a particular parameter has consistently had large gradients in the past (meaning its corresponding element in <code>grad_squared</code> is large), then <code>np.sqrt(grad_squared)</code> will be large, and the effective step size for that parameter <code>learning_rate / (np.sqrt(grad_squared) + epsilon)</code> will be smaller. Conversely, if a parameter has consistently had small gradients (so grad_squared for it is small), then <code>np.sqrt(grad_squared)</code> will be small, and its effective step size will be larger. This effectively gives us <strong>per-parameter learning rates</strong> or <strong>adaptive learning rates.</strong> The learning rate is adapted for each parameter based on the history of its gradient magnitudes.</p>
+<p><strong>What happens with RMSProp?</strong> Specifically, how does this help with that ravine problem? What happens is that progress along “steep” directions is damped, and progress along “flat” directions is accelerated. Think back to our ravie. In the steep direction (e.g., <code>w2</code>), the gradients dx are large. This means <code>dx * dx</code> will be large, and <code>grad_squared</code> will accumulate to a large value for that dimension. Consequently, when we divide <code>dx</code> by <code>np.sqrt(grad_squared)</code>, we significantly reduce the step size in that steep direction. This helps to prevent the oscillations. In the flat, shallow direction (e.g., <code>w1</code>), the gradients <code>dx</code> are small. <code>dx * dx</code> will be small, and <code>grad_squared</code> will be small for that dimension. When we divide <code>dx</code> by a small <code>np.sqrt(grad_squared)</code>, the effective step size for that direction is relatively larger (or at least not as suppressed). This helps to make faster progress along the shallow valley. So, RMSProp automatically adjusts the learning rate for each parameter, making bigger steps in directions where gradients have been small and smaller steps in directions where gradients have been large.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./images/RMSProp.gif" class="lightbox" data-gallery="quarto-lightbox-gallery-9" title="blue line: RMSProp, red line: SGD+Momentum, black line: SGD"><img src="https://bhdai.github.io/blog/posts/regularization_and_optimization/images/RMSProp.gif" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="blue line: RMSProp, red line: SGD+Momentum, black line: SGD"></a></p>
+</figure>
+</div>
+<figcaption>blue line: RMSProp, red line: SGD+Momentum, black line: SGD</figcaption>
+</figure>
+</div>
+<p>RMSProp is a very effective optimizer and was a popular choice for quite some time. It directly addresses the issue of different learning rates being needed for different parameter dimensions. Now, what if we could combine the benefits of momentum with the adaptive learning rates of RMSProp? That leads us to <strong>Adam</strong>.</p>
+<p>Here’s a look at the core of the Adam optimizer, presented as “Adam (almost)” because it’s missing one small but important detail we’ll get to. This was introduced by Kingma and Ba in their 2015 ICLR paper.</p>
+<div class="sourceCode" id="annotated-cell-9" style="background: #f1f3f5;"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-9-1">first_moment <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span></span>
+<span id="annotated-cell-9-2">second_moment <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span></span>
+<span id="annotated-cell-9-3"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">while</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>:</span>
+<span id="annotated-cell-9-4">  dx <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> compute_gradient(x)</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-9" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-9-5" class="code-annotation-target">  first_moment <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> beta1 <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> first_moment <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> beta1) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> dx</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-9" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-9-6" class="code-annotation-target">  second_moment <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> beta2 <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> second_moment <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> beta2) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> dx <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> dx</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-9" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-9-7" class="code-annotation-target">  x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-=</span> learning_rate <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> first_moment <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> (np.sqrt(second_moment) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1e-7</span>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div>
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-9" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-9" data-code-lines="5" data-code-annotation="1">This is an exponentially decaying moving average of the gradient itself. <code>beta1</code> is a decay rate (e.g., 0.9). This looks very much like the velocity update in SGD+Momentum! It’s capturing the “momentum” aspect which is an estimate of the mean of the gradients.</span>
+</dd>
+<dt data-target-cell="annotated-cell-9" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-9" data-code-lines="6" data-code-annotation="2">This is an exponentially decaying moving average of the squared gradients. <code>beta2</code> is another decay rate (e.g., 0.999). This looks exactly like the <code>grad_squared</code> update in RMSProp! It’s capturing information about the variance (or uncentered second moment) of the gradients.</span>
+</dd>
+<dt data-target-cell="annotated-cell-9" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-9" data-code-lines="7" data-code-annotation="3">Here, we’re using the <code>first_moment</code> (our momentum term) in the numerator, and we’re dividing by the square root of the <code>second_moment</code> (our RMSProp-like adaptive scaling term) in the denominator.</span>
+</dd>
+</dl>
+<p>It’s <strong>sort of like RMSProp with momentum</strong>. It’s trying to get the best of both worlds: the acceleration benefits of momentum and the per-parameter adaptive learning rates. Remember, <code>first_moment</code> and <code>second_moment</code> are initialized to zero. What’s the implication of this?</p>
+<p>At the very first timestep (and for the first few timesteps), because <code>first_moment</code> and <code>second_moment</code> start at zero and the decay rates <code>beta1</code> and <code>beta2</code> are typically close to 1 (e.g., 0.9, 0.999), these moving average estimates will be biased towards zero. They haven’t had enough gradient information to “warm up” to their true values. This can cause the initial steps to be undesirably small. This is where the “almost” part is resolved. The full form of Adam includes a bias correction step to address this initialization bias.</p>
+<div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1">first_moment <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span></span>
+<span id="cb8-2">second_moment <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span></span>
+<span id="cb8-3"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> t <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, num_iterations): <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># t is the timestep</span></span>
+<span id="cb8-4">  dx <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> compute_gradient(x)</span>
+<span id="cb8-5">  first_moment <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> beta1 <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> first_moment <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> beta1) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> dx</span>
+<span id="cb8-6">  second_moment <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> beta2 <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> second_moment <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> beta2) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> dx <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> dx</span>
+<span id="cb8-7"></span>
+<span id="cb8-8">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Bias correction</span></span>
+<span id="cb8-9">  first_unbias <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> first_moment <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> beta1<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">**</span>t)</span>
+<span id="cb8-10">  second_unbias <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> second_moment <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> beta2<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">**</span>t)</span>
+<span id="cb8-11"></span>
+<span id="cb8-12">  x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-=</span> learning_rate <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> first_unbias <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> (np.sqrt(second_unbias) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1e-7</span>)</span></code></pre></div>
+<p>Here <code>t</code> is the current iteration number (timestep). At the beginning with small <code>t</code>, <code>beta1**t</code> and <code>beta2**t</code> are close to <code>beta1</code> and <code>beta2</code>. So, <code>(1 - beta1**t)</code> and <code>(1 - beta2**t)</code> are small numbers, which effectively scales up the <code>first_moment</code> and <code>second_moment</code> estimates, counteracting their initial bias towards zero. As <code>t</code> gets large, <code>beta1**t</code> and <code>beta2**t</code> approach zero (since <code>beta1</code>, <code>beta2</code> &lt; 1), so <code>(1 - beta1**t)</code> and <code>(1 - beta2**t)</code> approach 1, and the bias correction has less and less effect. The parameter update then uses these bias-corrected <code>first_unbias</code> and <code>second_unbias</code> estimates. This bias correction is for the fact that the first and second moment estimates start at zero and would otherwise be biased, especially during the early stages of training.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./images/adam.gif" class="lightbox" data-gallery="quarto-lightbox-gallery-10" title="blue line: RMSProp, red line: SGD+Momentum, black line: SGD, purple: Adam"><img src="https://bhdai.github.io/blog/posts/regularization_and_optimization/images/adam.gif" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="blue line: RMSProp, red line: SGD+Momentum, black line: SGD, purple: Adam"></a></p>
+</figure>
+</div>
+<figcaption>blue line: RMSProp, red line: SGD+Momentum, black line: SGD, purple: Adam</figcaption>
+</figure>
+</div>
+<p>The Adam optimizer, with its combination of momentum-like behavior and RMSProp-like adaptive scaling, plus this bias correction, has proven to be very effective and robust across a wide range of deep learning tasks and architectures. The original paper suggests default values for the hyperparameters:</p>
+<ul>
+<li><code>beta1</code> = 0.9 (for the first moment/momentum)</li>
+<li><code>beta2</code> = 0.999 (for the second moment/RMSProp-like scaling)</li>
+<li><code>learning_rate</code> typically in the range of 1e-3 (0.001) or 5e-4 (0.0005).</li>
+<li>The epsilon for numerical stability is often 1e-7 or 1e-8.</li>
+</ul>
+<p>And indeed, Adam with these default settings (<code>beta1</code>=0.9, <code>beta2</code>=0.999, and a <code>learning_rate</code> like 1e-3) is often a great starting point for many models! It’s frequently the first optimizer people try, and it often works quite well out of the box without extensive hyperparameter tuning, though tuning the learning rate is still important. Adam is a fantastic general-purpose optimizer. However, like all things, it’s not perfect, and some subtleties have emerged, particularly regarding how it interacts with weight decay (L2 regularization).</p>
+<p>This leads us to <strong>AdamW</strong>: an Adam Variant with Weight Decay. The question to consider is: <strong>How does regularization interact with the optimizer? (e.g., L2)</strong></p>
+<p>Remember that our full loss function is typically <img src="https://latex.codecogs.com/png.latex?L_%7Bdata%7D%20+%20%5Clambda%20R(W)">. If <img src="https://latex.codecogs.com/png.latex?R(W)"> is L2 regularization, then its gradient is <img src="https://latex.codecogs.com/png.latex?2%5Clambda%20W."> This gradient of the regularization term gets added to the gradient of the data loss term to form the total <code>dx = compute_gradient(x)</code>. So, how does this interaction play out with an adaptive optimizer like Adam? The answer, perhaps unsurprisingly, is: <strong>It depends!</strong> Specifically, it depends on how the L2 regularization (weight decay) is implemented with respect to the adaptive learning rate mechanism. In Standard Adam (and many other adaptive gradient methods like RMSProp or AdaGrad), the L2 regularization term <img src="https://latex.codecogs.com/png.latex?%5Clambda%20W"> is typically added to the gradient of the data loss before the moment calculations. So, <code>dx = gradient_of_data_loss + gradient_of_L2_regularization</code>. This combined <code>dx</code> is then used during the moment calculations (for <code>first_moment</code> and <code>second_moment</code>). What this means is that the L2 regularization gradient gets scaled by the adaptive learning rates (the <code>1/sqrt(second_moment)</code> term). If <code>second_moment</code> is large for a particular weight (meaning its gradients have been large), then the effective weight decay for that parameter is also reduced. This coupling means that the strength of the weight decay is not uniform and can be different for different parameters, and can change over time in a way that might not be optimal. Larger gradients lead to smaller effective weight decay.</p>
+<p>AdamW introduced by Loshchilov and Hutter, 2017, in <a href="https://arxiv.org/abs/1711.05101">“Decoupled Weight Decay Regularization”</a> proposes a different approach. Instead of adding the L2 regularization gradient into <code>dx</code> before the moment calculations, AdamW performs weight decay after the moment updates, directly on the weights themselves. So, the <code>first_moment</code> and <code>second_moment</code> are computed using only the gradient of the data loss. Then, the weight decay is applied as a separate step, effectively by subtracting <code>learning_rate * weight_decay_coefficient * weights</code> from the weights after the Adam step that uses <code>first_unbias</code> and <code>second_unbias</code>. So, AdamW is now often preferred over standard Adam when L2 regularization is used, as it implements weight decay in a way that is often more effective and closer to its original intention. Many deep learning libraries now offer AdamW as a distinct optimizer.</p>
+</section>
+<section id="learning-rate-schedules" class="level2">
+<h2 class="anchored" data-anchor-id="learning-rate-schedules">Learning rate schedules</h2>
+<p>Now, let’s turn our attention to a hyperparameter that is critical for all of them: the <strong>learning rate</strong>, often referred to as step_size. In the vanilla gradient descent update, <code>weights += - step_size * weights_grad</code>, the learning rate determines how big of a step we take in the negative gradient direction. All the optimizers we’ve discussed – SGD, SGD+Momentum, RMSProp, Adam, AdamW all have the learning rate as a crucial hyperparameter. Choosing the right learning rate is often one of the most important parts of getting good performance from a deep learning model.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./images/lr.png" class="lightbox" data-gallery="quarto-lightbox-gallery-11" title="How learning rate effect our training?"><img src="https://bhdai.github.io/blog/posts/regularization_and_optimization/images/lr.png" class="img-fluid figure-img" alt="How learning rate effect our training?"></a></p>
+<figcaption>How learning rate effect our training?</figcaption>
+</figure>
+</div>
+<p>So, the question is: <strong>Which one of these learning rates is best to use?</strong> Is there a single magic value? The answer is: <strong>In reality, all of these could be good learning rates… at different stages of training</strong>. This is a key insight. A single, fixed learning rate throughout the entire training process might not be optimal. Early in training, when you’re far from a good solution, a relatively larger learning rate can help you make rapid progress across the loss landscape. However, as you get closer to a minimum, that same large learning rate might cause you to overshoot and bounce around the minimum, preventing you from settling into the very bottom of the valley. In this later stage, a smaller learning rate is often beneficial to fine-tune the weights and converge more precisely. This idea that the optimal learning rate might change during training leads directly to the concept of <strong>learning rate schedules</strong>, also known as learning rate decay. We don’t just pick one learning rate and stick with it; we dynamically adjust it as training progresses.</p>
+<p>One common strategy is <strong>Step Decay</strong>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./images/lr-decay.png" class="lightbox" data-gallery="quarto-lightbox-gallery-12" title="training loss epoch, notice the distinct drops in loss at certain epochs"><img src="https://bhdai.github.io/blog/posts/regularization_and_optimization/images/lr-decay.png" class="img-fluid figure-img" alt="training loss epoch, notice the distinct drops in loss at certain epochs"></a></p>
+<figcaption>training loss epoch, notice the distinct drops in loss at certain epochs</figcaption>
+</figure>
+</div>
+<p>The strategy here is to reduce the learning rate at a few fixed points during training. For example, a common schedule for training ResNets on ImageNet is to start with a certain learning rate, and then multiply it by 0.1 after, say, 30 epochs, then again by 0.1 after 60 epochs, and perhaps one more time after 90 epochs. You can see that after the learning rate is reduced (indicated by the arrows), the loss often plateaus for a bit and then finds a new, lower level. This happens because with a smaller learning rate, the optimizer can more finely navigate the bottom of the loss valley it has reached</p>
+<p>Step decay is quite effective, but it requires choosing when to drop the learning rate and by how much. Are there smoother ways to decay the learning rate? Yes! Another very popular schedule is <strong>Cosine Decay</strong>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./images/cosine-decay.png" class="lightbox" data-gallery="quarto-lightbox-gallery-13" title="Cosine Decay (or cosine annealing)"><img src="https://bhdai.github.io/blog/posts/regularization_and_optimization/images/cosine-decay.png" class="img-fluid figure-img" alt="Cosine Decay (or cosine annealing)"></a></p>
+<figcaption>Cosine Decay (or cosine annealing)</figcaption>
+</figure>
+</div>
+<p>The formula is:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Calpha_t%20=%20%5Cfrac%7B1%7D%7B2%7D%20%5Calpha_0%20%5Cleft(1%20+%20%5Ccos%5Cleft(%5Cfrac%7Bt%7D%7BT%7D%20%5Cpi%5Cright)%5Cright)%0A"></p>
+<p>Where:</p>
+<ul>
+<li><img src="https://latex.codecogs.com/png.latex?%5Calpha_0"> is initial learning rate</li>
+<li><img src="https://latex.codecogs.com/png.latex?%5Calpha_t"> is the learning rate at epoch <img src="https://latex.codecogs.com/png.latex?t"></li>
+<li><img src="https://latex.codecogs.com/png.latex?T"> is the total number of epochs you plan to train for</li>
+</ul>
+<p>The plot shows how this learning rate evolves over epochs. It starts at <img src="https://latex.codecogs.com/png.latex?%5Calpha_0"> and smoothly decreases, following a cosine curve, until it reaches near zero at the end of training (epoch <img src="https://latex.codecogs.com/png.latex?T">). This smooth decay is often found to work very well in practice and is less sensitive to the exact choice of drop points compared to step decay. Many recent state-of-the-art models use cosine annealing, sometimes with warm restarts which we’re not covering in detail here but involves periodically resetting the learning rate and re-annealing, as in the Loshchilov and Hutter paper. And on the right is an example of what the training loss might look like when using a cosine decay schedule. You see a generally smooth decrease in loss over a larger number of epochs, without the sharp drops associated with step decay. It just gradually refines the solution as the learning rate smoothly anneals.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./images/linear-inverse.png" class="lightbox" data-gallery="quarto-lightbox-gallery-14" title="left: Linear Decay, right: Inverse Square Root Decay"><img src="https://bhdai.github.io/blog/posts/regularization_and_optimization/images/linear-inverse.png" class="img-fluid figure-img" alt="left: Linear Decay, right: Inverse Square Root Decay"></a></p>
+<figcaption>left: Linear Decay, right: Inverse Square Root Decay</figcaption>
+</figure>
+</div>
+<p>Another simple schedule is <strong>Linear Decay</strong>, the formula is:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Calpha_t%20=%20%5Calpha_0%20(1%20-%20%5Cfrac%7Bt%7D%7BT%7D)%0A"></p>
+<p>The learning rate decreases linearly from <img src="https://latex.codecogs.com/png.latex?%5Calpha_0"> down to 0 over <img src="https://latex.codecogs.com/png.latex?T"> epochs. This is also a common choice, used in famous models like BERT, for example. The plot shows this straight-line decrease.</p>
+<p>And one more example: <strong>Inverse Square Root Decay</strong>. The formula is:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Calpha_t%20=%20%5Cfrac%7B%5Calpha_0%7D%7B%5Csqrt%7Bt%7D%7D%0A"></p>
+<p>The learning rate decreases proportionally to the inverse square root of the epoch number <img src="https://latex.codecogs.com/png.latex?t">. This schedule makes the learning rate drop relatively quickly at the beginning and then more slowly later on. This was famously used in the original <a href="https://arxiv.org/abs/1706.03762">“Attention is All You Need”</a> Transformer paper.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./images/linear-warmup.png" class="lightbox" data-gallery="quarto-lightbox-gallery-15" title="Linear Warmup"><img src="https://bhdai.github.io/blog/posts/regularization_and_optimization/images/linear-warmup.png" class="img-fluid figure-img" alt="Linear Warmup"></a></p>
+<figcaption>Linear Warmup</figcaption>
+</figure>
+</div>
+<p>There’s one more important trick related to learning rates, especially when using large initial learning rates or large batch sizes: <strong>Linear Warmup</strong>. The idea is that high initial learning rates can sometimes make the loss explode right at the beginning of training, especially if the initial weights are far from good and produce very large gradients. The model can become unstable. To prevent this, a common practice is to linearly increase the learning rate from 0 (or a very small value) up to your target initial learning rate <img src="https://latex.codecogs.com/png.latex?%5Calpha_0"> over the first few thousand iterations (e.g., the first ~5,000 iterations or the first epoch). The plot shows this: the learning rate starts at 0, ramps up linearly to a peak (this is our <img src="https://latex.codecogs.com/png.latex?%5Calpha_0">), and then a decay schedule like cosine or step takes over. This “warmup” phase allows the model to stabilize a bit with small updates before the more aggressive learning rate kicks in. It’s a very common and effective technique, particularly in training large models like Transformers. There’s also an interesting <strong>empirical rule of thumb</strong> often cited (e.g., from Goyal et al.’s paper <a href="https://www.semanticscholar.org/paper/Accurate%2C-Large-Minibatch-SGD%3A-Training-ImageNet-in-Goyal-Doll%C3%A1r/0d57ba12a6d958e178d83be4c84513f7e42b24e5">“Accurate, Large Minibatch SGD”</a>): If you increase the batch size by N, you should also scale the initial learning rate by N (or <img src="https://latex.codecogs.com/png.latex?%5Csqrt%7BN%7D"> in some cases), often in conjunction with a warmup. The intuition is that larger batches give more stable gradient estimates, so you can afford to take larger steps.</p>
+<p>So, managing the learning rate is not just about picking a single value, but often about defining a schedule that includes an initial phase (like warmup) and a decay phase. This is a critical part of the “art” of training deep neural networks.</p>
+<p>So, in practice:</p>
+<ul>
+<li><strong>Adam(W) is a good default choice in many cases</strong>. It often works reasonably well even with a constant learning rate (though a schedule is still generally better) and requires less manual tuning of the learning rate compared to SGD with momentum. AdamW is preferred if you’re using L2 regularization.</li>
+<li><strong>SGD+Momentum can outperform Adam but may require more tuning of the learning rate and its schedule</strong>. There’s a bit of an ongoing debate and empirical evidence suggesting that with careful tuning, SGD+Momentum can sometimes find solutions that generalize better than those found by Adam, especially for certain types of vision models. However, “careful tuning” is the operative phrase.</li>
+</ul>
+
+
+</section>
+
+ ]]></description>
+  <category>Deep Learning</category>
+  <category>Optimization</category>
+  <guid>https://bhdai.github.io/blog/posts/regularization_and_optimization/</guid>
+  <pubDate>Mon, 04 Aug 2025 16:32:04 GMT</pubDate>
+  <media:content url="https://bhdai.github.io/blog/posts/regularization_and_optimization/images/cover.png" medium="image" type="image/png" height="96" width="144"/>
 </item>
 </channel>
 </rss>

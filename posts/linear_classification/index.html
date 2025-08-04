@@ -1,0 +1,1301 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Bui Huu Dai">
+<meta name="dcterms.date" content="2025-08-02">
+
+<title>Image classification with linear classifiers – Bui Huu Dai</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../Github_bird.png" rel="icon" type="image/png">
+<script src="../../site_libs/cookie-consent/cookie-consent.js"></script>
+<link href="../../site_libs/cookie-consent/cookie-consent.css" rel="stylesheet">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-2fef5ea3f8957b3e4ecc936fc74692ca.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-8e47eaf163dee9e5ea02780d02199294.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-bca7bfc09c99158c9822bef989cf6fc8.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-8e47eaf163dee9e5ea02780d02199294.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-6JR4N915S6"></script>
+
+<script type="text/plain" cookie-consent="tracking">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-6JR4N915S6', { 'anonymize_ip': true});
+</script>
+
+<script type="text/javascript" charset="UTF-8">
+document.addEventListener('DOMContentLoaded', function () {
+cookieconsent.run({
+  "notice_banner_type":"simple",
+  "consent_type":"implied",
+  "palette":"light",
+  "language":"en",
+  "page_load_consent_levels":["strictly-necessary","functionality","tracking","targeting"],
+  "notice_banner_reject_button_hide":false,
+  "preferences_center_close_button_hide":false,
+  "website_name":""
+  ,
+"language":"en"
+  });
+});
+</script> 
+  
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="Image classification with linear classifiers – Bui Huu Dai">
+<meta property="og:description" content="Dai’s blog.">
+<meta property="og:image" content="https://bhdai.github.io/blog/posts/linear_classification/images/cover.png">
+<meta property="og:site_name" content="Bui Huu Dai">
+<meta property="og:image:height" content="750">
+<meta property="og:image:width" content="1357">
+<meta name="twitter:title" content="Image classification with linear classifiers – Bui Huu Dai">
+<meta name="twitter:description" content="Dai’s blog.">
+<meta name="twitter:image" content="https://bhdai.github.io/blog/posts/linear_classification/images/cover.png">
+<meta name="twitter:image-height" content="750">
+<meta name="twitter:image-width" content="1357">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="floating nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const queryPrefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    const darkModeDefault = queryPrefersDark.matches;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    queryPrefersDark.addEventListener("change", e => {
+      if(window.localStorage.getItem("quarto-color-scheme") !== null)
+        return;
+      const alternate = e.matches
+      toggleColorMode(alternate);
+      localAlternateSentinel = e.matches ? 'alternate' : 'default'; // this is used alongside local storage!
+      toggleGiscusIfUsed(alternate, darkModeDefault);
+    });
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Bui Huu Dai</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/bhdai"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://x.com/daibui1234"> <i class="bi bi-twitter-x" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml"> <i class="bi bi-rss" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Image classification with linear classifiers</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">Deep Learning</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Bui Huu Dai </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">August 2, 2025</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#what-makes-a-cat-a-cat" id="toc-what-makes-a-cat-a-cat" class="nav-link active" data-scroll-target="#what-makes-a-cat-a-cat">What makes a cat a cat?</a></li>
+  <li><a href="#the-three-faces-of-a-classifier" id="toc-the-three-faces-of-a-classifier" class="nav-link" data-scroll-target="#the-three-faces-of-a-classifier">The three faces of a classifier</a></li>
+  <li><a href="#hard-cases-for-a-linear-classifier" id="toc-hard-cases-for-a-linear-classifier" class="nav-link" data-scroll-target="#hard-cases-for-a-linear-classifier">Hard cases for a linear classifier</a></li>
+  <li><a href="#choose-a-good-w" id="toc-choose-a-good-w" class="nav-link" data-scroll-target="#choose-a-good-w">Choose a good W</a></li>
+  <li><a href="#softmax-classifier" id="toc-softmax-classifier" class="nav-link" data-scroll-target="#softmax-classifier">Softmax classifier</a></li>
+  <li><a href="#multiclass-svm-loss" id="toc-multiclass-svm-loss" class="nav-link" data-scroll-target="#multiclass-svm-loss">Multiclass SVM loss</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/bhdai/blog/edit/main/posts/linear_classification/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bhdai/blog/blob/main/posts/linear_classification/index.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/bhdai/blog/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+
+<p>Image classification is truly a core task in computer vision. It’s the simplest and most fundamental problem, and mastering it forms the basis for more complex tasks like object detection and segmentation.</p>
+<section id="what-makes-a-cat-a-cat" class="level2">
+<h2 class="anchored" data-anchor-id="what-makes-a-cat-a-cat">What makes a cat a cat?</h2>
+<p>Let’s explicitly define image classification. The task is: given an input image, assign it one label from a predefine set of possible categories. If we have an image of a cat. Our system would label ‘cat’. Crucially for this task, we assume we are given a set of possible labels, like {dog, cat, truck, plane, …}. The model job is to pick the most appropriate label from this list for any given input image. We’re not asking it for generate new label or descriptions, just to categorize.</p>
+<p>Now, this simple task of image to label hides a fundamental challenge in computer vision, what we call <strong>Semantic Gap</strong>. With an image what you see is a beautiful, tabby cat maybe with green eyes, you immediately understand it’s a living creature a pet, specifically a cat. But what the computer sees is a grid of numbers. The <strong>semantic gap</strong> is precisely this challenge: how do we bridge the enormous gap between these raw numerical pixel values (what computer sees) and the high-level semantic concepts that we human effortlessly understand? That’s the core problem we’re trying to solve in image classification, and indeed, in much of computer vision.</p>
+<p>Now let’s look at why this is so hard for a computers. The world is messy, and images with a lot of variability.</p>
+<p>One of the primitive challenge is <strong>Viewpoint variation</strong>. Take our friendly cat again. You see if from one angle. But what if the camera moved slightly? Or what if you’re looking at a different photo of a same cat from a completely different side, or from above, blow? The camera illustrated around the cat show different potential viewpoints. From these different angles, even if it’s the exact same physical cat, the resulting image (the grid of pixel values) will be drastically different. For us it’s still ‘a cat’. For a computer it’s a completely new set of numbers. Our model need to learn that all these wildly different arrangements of pixels still correspond to the same underlying object. This invariance viewpoints is a huge challenge.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./images/illumination.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Challenges: Illumination"><img src="./images/illumination.png" class="img-fluid figure-img" alt="Challenges: Illumination"></a></p>
+<figcaption>Challenges: Illumination</figcaption>
+</figure>
+</div>
+<p>Another major hurdle is <strong>Illumination</strong>. The way an object is lit dramatically changes its appearance in an image. All of these are cat, but the pixel values, the color, the contrast they are completely different across these images due to varying light conditions. Our model must be robust enough to recognize a cat regardless of whether it’s in bright sunlight, deep snow, or under artifact light.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./images/background-clutter.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Challenges: Background Clutter"><img src="./images/background-clutter.png" class="img-fluid figure-img" alt="Challenges: Background Clutter"></a></p>
+<figcaption>Challenges: Background Clutter</figcaption>
+</figure>
+</div>
+<p>Then we have <strong>Background Clutter</strong>. Objects in real world rarely appears against a plain, uniform background. They are embedded in complex often messy environments. The challenge here is for the computer to distinguish the object of interest from everything else in the image. It needs to focus on the relevant features and ignore the distractors, even when the background is cluttered or has similar textures of colors.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./images/occulusion.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Challenges: Occlusion"><img src="./images/occulusion.png" class="img-fluid figure-img" alt="Challenges: Occlusion"></a></p>
+<figcaption>Challenges: Occlusion</figcaption>
+</figure>
+</div>
+<p>A very common and difficult challenge is <strong>Occlusion</strong>. This occurs when parts of the object you’re trying to recognize are hidden from view from other objects. Despite missing large portion of the object, as human, we can still easily identify the cat. For a computer, dealing with these partial view and reasoning about what’s missing is incredibly difficult. It needs to learn to recognize an object even when only some of its characteristic features are present, or when they are distorted by being partially covered.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./images/deformation.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="Challenges: Deformation"><img src="./images/deformation.png" class="img-fluid figure-img" alt="Challenges: Deformation"></a></p>
+<figcaption>Challenges: Deformation</figcaption>
+</figure>
+</div>
+<p>Another significant challenge is <strong>deformation</strong>. Many objects especially animate ones like animals and people, are not rigid They can change their shape, their pose, their configuration in countless ways. These are all cats, but their body shapes and the relative position of their limbs are drastically different. This isn’t just about camera moving around a rigid object, the object itself is deforming. Our visual system needs to be able to recognize an object class despite these non-rigid transformation. A simple template or a fix set of geometric rule would struggle immensely with these level of variability.</p>
+<p>And if deformation wasn’t enough, we also have the huge challenge of <strong>Intraclass variation</strong>. What this means is that even within a single category, like ‘cat’ there can be an enormous amount of visual diversity. Think about different breed of cats look very different, they come in all sorts of colors and patterns. A good image classifier need to learn a concept of ‘cat’ that is general enough that encompass all these variation. It can’t just memorize one specific type of cat, it has to understand the underlying shared characteristic that define the entire class, despite the wide range of appearances. This is a core reason why simple, rule-based approaches often fail and why we need powerful learning algorithms.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./images/context.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="Challenges: Context"><img src="./images/context.png" class="img-fluid figure-img" alt="Challenges: Context"></a></p>
+<figcaption>Challenges: Context</figcaption>
+</figure>
+</div>
+<p>And that final challenge is <strong>Context</strong>. Humans are incredibly adept at using context to understand the world. We don’t just see objects in isolation; we see them within a scene, and that surrounding information heavily influences our perception. So what went wrong here? Here our model tend to latch onto local patterns, the stripping alone is enough to push our model prediction toward ‘tiger’. Our model didn’t sufficiently incorporate the fact this is on pavement, in front of a gate, and it turns out that it’s just someone’s small dog, and the tiger-stripes are the shadows cast by the iron bars of the gate across its fur. So, understanding and leveraging context is crucial for robust visual intelligence, but it’s also very difficult for current models to do this effectively. They often rely too heavily on local features and can miss the bigger picture or be fooled by misleading contextual cues.</p>
+<p>Given all these hurdles, it should be clear that trying to write a program with explicit rules to identify, say, a ‘cat’ in all its possible manifestations and situations is an almost impossible task. We’d be writing <code>if-else</code> statements for years!</p>
+</section>
+<section id="the-three-faces-of-a-classifier" class="level2">
+<h2 class="anchored" data-anchor-id="the-three-faces-of-a-classifier">The three faces of a classifier</h2>
+<p>So now, we’re going to move on to a type of classifier, and arguably one of the most fundamental building blogs in machine learning and deep learning: the <strong>Linear Classifier</strong>. Linear classifier fall under what’s known as the <strong>Parametric Approach</strong>. This is a key distinction from K-Nearest Neighbors, which is a non-parametric method. In the parametric approach, we define a <strong>score function</strong>, let’s call it <span class="math inline">\(f(x, W)\)</span>, that map the raw input data(our image x) to class scores. The crucial part here is this <span class="math inline">\(W\)</span>. <span class="math inline">\(W\)</span> represents a set of <strong>parameters</strong> or <strong>weights</strong> that the model uses. The “learning” process in a parametric model involves finding the optimal values for these parameters <span class="math inline">\(W\)</span> using the training data. Once we’ve learned these parameters, we can effectively discard the training data itself! To make a prediction for a new image, we just need the learned parameters <span class="math inline">\(W\)</span> and the function <span class="math inline">\(f\)</span>. This is very different from K-NN where we had to keep all the training data around.</p>
+<p>Now, let’s get specific. What form does this function <span class="math inline">\(f(x,W)\)</span> take for a linear classifier? It’s beautifully simple:</p>
+<p><span class="math display">\[
+f(x, W) = Wx
+\]</span></p>
+<p>That’s it! It’s a matrix-vector multiplication. The result of <span class="math inline">\(Wx\)</span> will be a vector of class scores. There’s one more small addition we typically make to this linear score function. We often add a <strong>bias term</strong>, <span class="math inline">\(b\)</span> (though often we just write f(x,W) and assume W implicitly includes b, or b is handled separately).. So, the full form of our linear classifier’s score function becomes:</p>
+<p><span class="math display">\[
+f(x,W,b) = Wx + b
+\]</span></p>
+<p>What is this bias <span class="math inline">\(b\)</span>? It allows the score function to have some class-specific preferences that are independent of the input image <span class="math inline">\(x\)</span>. Think of it as shifting the baseline score for each class. For example, if in our training data, cats are just generally more common than airplanes, the bias term for “cat” might learn to be slightly higher, giving cats a bit of an advantage even before looking at the image pixels. It’s also common practice to sometimes absorb the bias term into the weight matrix <span class="math inline">\(W\)</span> by appending a constant 1 to the input vector <span class="math inline">\(x\)</span>, and adding an extra column to <span class="math inline">\(W\)</span> to hold the bias values. This just makes the notation a bit cleaner, <span class="math inline">\(f(x,W) = Wx\)</span>, but conceptually, it’s useful to think of <span class="math inline">\(W\)</span> (the part that multiplies <span class="math inline">\(x\)</span>) and <span class="math inline">\(b\)</span> (the additive part) separately for a moment.</p>
+<p>When it comes to interpreting a linear classifier, I think it’s easier for us to look at it from a few different perspectives</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./images/algebraic-viewpoint.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6" title="Algebraic Viewpoint"><img src="./images/algebraic-viewpoint.png" class="img-fluid figure-img" alt="Algebraic Viewpoint"></a></p>
+<figcaption>Algebraic Viewpoint</figcaption>
+</figure>
+</div>
+<p>First is <strong>Algebraic Viewpoint</strong>. We need to produce 3 scores (one for cat, one for dog, one for ship). So our output should be a 3x1 vector. This means our weight matrix <span class="math inline">\(W\)</span> must have dimensions [3 x 4] (3 rows for 3 classes, 4 columns to match the 4 pixels in <span class="math inline">\(x\)</span>). And our bias vector <span class="math inline">\(b\)</span> will be [3 x 1]. The first row of <span class="math inline">\(W\)</span> are the weights for the “cat” class. The second row are the weights for the “dog” class. The third row are for the “ship” class. To get the scores, we perform the matrix multiplication <span class="math inline">\(Wx\)</span> and then add <span class="math inline">\(b.\)</span> So, for this input image and these particular weights <span class="math inline">\(W\)</span> and biases <span class="math inline">\(b\)</span>, we get scores: Cat: -96.8, Dog: 437.9, Ship: 61.95. Based on these scores, which class would our linear classifier predict? It would predict “Dog,” because 437.9 is the highest score. The “learning” process, which we haven’t discussed yet, would be about finding values for <span class="math inline">\(W\)</span> and <span class="math inline">\(b\)</span> such that for an image that is a cat, the cat score is highest; for an image that is a dog, the dog score is highest, and so on.</p>
+<p>Okay, we’ve seen the algebra. But can we get a more Visual Viewpoint of what these weights W actually represent? For CIFAR-10, each row of <span class="math inline">\(W\)</span> is a vector of 3072 weights. Since our input <span class="math inline">\(x\)</span> is an image, we can reshape each row of <span class="math inline">\(W\)</span> back into a 32x32x3 image. What do these “images” corresponding to the rows of <span class="math inline">\(W\)</span> look like?</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./images/visual-vewpoint.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7" title="Visual Viewpoint"><img src="./images/visual-vewpoint.png" class="img-fluid figure-img" alt="Visual Viewpoint"></a></p>
+<figcaption>Visual Viewpoint</figcaption>
+</figure>
+</div>
+<p>What the linear classifier is learning is essentially a single template for each class. When a new image comes in, it’s like the classifier is “matching” that input image against each of these 10 templates using a dot product. If the input image has, say, a lot of blue pixels in the regions where the “plane” template has blue pixels, and not many red pixels where the “plane” template has red pixels, that will contribute to a high score for the “plane” class. These templates are often very blurry and try to capture the “average” appearance of objects in that class. For example, cars can be many colors, but if there are more red cars in the training set, the “car” template might end up looking reddish. If planes are often pictured against a blue sky, the “plane” template might pick up on that blue. This also highlight a limitation: a linear learns only one template per class. But a class like “car” has many variations (red cars, blue cars, trucks, cars viewed from the side, car viewed from the front). A single template will struggle to capture this variability. It might learn a sort “average car”.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./images/geometric-viewpoint.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8" title="Geometric Viewpoint"><img src="./images/geometric-viewpoint.png" class="img-fluid figure-img" alt="Geometric Viewpoint"></a></p>
+<figcaption>Geometric Viewpoint</figcaption>
+</figure>
+</div>
+<p>Finally let’s consider the <strong>Geometric Viewpoint</strong>. Our score function is <span class="math inline">\(s = Wx + b\)</span>. For each class c, the score for that class is <span class="math inline">\(s_c = W_c ⋅ x + b_c\)</span>, where <span class="math inline">\(W_c\)</span> is the c-th row of <span class="math inline">\(W\)</span>. This is the equation of a line (or a hyperplane in higher dimensions). So, linear classifier is learning a set of hyperplane in the high-dimensional pixel space. Each hyperplane correspond to a class. The decision boundary between any two classes, say class <span class="math inline">\(i\)</span> and class <span class="math inline">\(j\)</span>, occurs where their score are equal: <span class="math inline">\(W_ix + b_i = W_jx + b_j\)</span>. This equation also defines a hyperplane.</p>
+<p>The 3D plot on the bottom left shows the actual score surfaces for three classes. Each colored plane represents the scores for one class as a function of a 2D input. The decision boundaries are where these planes intersect. You can see that the regions where one plane is highest correspond to the classification regions for that class. These regions are always convex polygons (or polyhedra in higher dimensions) for a linear classifier. So, geometrically, a linear classifier is carving up the high-dimensional input space using these hyperplanes. It’s trying to find orientations and positions for these hyperplanes such that most of the training examples for a given class fall on the “correct” side of their respective decision boundaries.</p>
+<p>These three viewpoints – algebraic, visual (template matching), and geometric (hyperplanes) – all describe the same underlying mathematical operation <span class="math inline">\(Wx + b\)</span>. Understanding it from these different angles helps build a much richer intuition for what a linear classifier is doing, what it can learn, and also, importantly, what its limitations might be.</p>
+</section>
+<section id="hard-cases-for-a-linear-classifier" class="level2">
+<h2 class="anchored" data-anchor-id="hard-cases-for-a-linear-classifier">Hard cases for a linear classifier</h2>
+<p>There are scenarios where, no matter how you orient your lines (or hyperplanes in higher dimensions), you simply cannot perfectly separate the classes.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./images/hard_cases.png" class="lightbox" data-gallery="quarto-lightbox-gallery-9" title="Case 1 (left): The XOR problem. Case 2 (middle): The donut problem. Case 3 (right): Multiple modes."><img src="./images/hard_cases.png" class="img-fluid figure-img" alt="Case 1 (left): The XOR problem. Case 2 (middle): The donut problem. Case 3 (right): Multiple modes."></a></p>
+<figcaption>Case 1 (left): The XOR problem. Case 2 (middle): The donut problem. Case 3 (right): Multiple modes.</figcaption>
+</figure>
+</div>
+<p>In case 1 we have the XOR problem where class 1 is in the first and third quadrants, class 2 is in the second and forth quadrants. Try to draw a single straight line, that separate the class 1 and class 2. You can do it! You’d need at least two lines, or a non-linear boundary. A linear classifier will fall here, it will make mistakes no matter what i places its decision boundary.</p>
+<p>Case 2 is the donut problem, here, class 1 is an annulus or a ring – points whose L2 norm is between 1 and 2. Class 2 is everything else (inside the inner circle and outside the outer circle). Again, can you separate the blue ring from the pink regions with a single straight line? No.&nbsp;You’d need something like a circular boundary, which is non-linear.</p>
+<p>Case 3 is Multiple modes, Class 1 consists of three distinct, separated circular regions. Class 2 is everything else. A single linear classifier tries to learn one template per class. If a class has multiple, well-separated “prototypes” or modes in the feature space, a linear classifier will struggle. It can’t draw a line to nicely encapsulate all three blue regions while excluding the pink. It might try to find a single hyperplane that does its best, but it will inevitably misclassify many points.</p>
+</section>
+<section id="choose-a-good-w" class="level2">
+<h2 class="anchored" data-anchor-id="choose-a-good-w">Choose a good W</h2>
+<p>So, given that we have this linear score function <span class="math inline">\(f(x,W) = Wx + b\)</span>, and we understand its capabilities and limitations, the central question becomes: How do we choose a good <span class="math inline">\(W\)</span> (and <span class="math inline">\(b\)</span>)? We need a systematic way to 1) define a loss function (or cost function or objective function). This function will take our current <span class="math inline">\(W\)</span> and <span class="math inline">\(b\)</span>, run our classifier on the training data, look at the scores it produces, and tell us how “unhappy” we are with those scores. A high loss means our <span class="math inline">\(W\)</span> and <span class="math inline">\(b\)</span> are bad (producing scores that lead to incorrect classifications or low confidence in correct classifications). A low loss means our <span class="math inline">\(W\)</span> and <span class="math inline">\(b\)</span> are good. 2) Once we have this loss function, we need to come up with a way of efficiently finding the parameters (<span class="math inline">\(W\)</span> and <span class="math inline">\(b\)</span>) that minimize this loss function. This is an optimization problem. We want to search through the space of all possible <span class="math inline">\(W\)</span>’s and <span class="math inline">\(b\)</span>’s to find the set that makes our classifier perform best on the training data, according to our loss function.</p>
+<p>More formally, we are given a dataset of <span class="math inline">\(N\)</span> training examples:</p>
+<p><span class="math display">\[
+{ (x_i, y_i) }_{i=1}^{N}
+\]</span></p>
+<p>Where <span class="math inline">\(x_i\)</span> is an image (our input vector) and <span class="math inline">\(y_i\)</span> is its true integer label (e.g., 0 for cat, 1 for car, 2 for frog). Typically, the total loss over the entire dataset, <span class="math inline">\(L\)</span>, is the average of the losses computed for each individual training example:</p>
+<p><span class="math display">\[
+L = \frac{1}{N} \sum_i L_i(f(x_i, W), y_i)
+\]</span></p>
+<p>Here:</p>
+<ul>
+<li><span class="math inline">\(f(x_i, W)\)</span> are the scores our current classifier (with weights <span class="math inline">\(W\)</span>) produces for the i-th training image <span class="math inline">\(x_i\)</span>.</li>
+<li><span class="math inline">\(y_i\)</span> is the true label for that i-th training image.</li>
+<li><span class="math inline">\(L_i\)</span> is the loss function calculated for that single i-th example. It takes the predicted scores and the true label and tells us how bad the prediction was for that one example.</li>
+<li>We sum these individual losses <span class="math inline">\(L_i\)</span> over all <span class="math inline">\(N\)</span> training examples and then divide by <span class="math inline">\(N\)</span> to get the average loss</li>
+</ul>
+<p>Our goal will be to find the <span class="math inline">\(W\)</span> that minimizes this total loss <span class="math inline">\(L\)</span>. Now, the crucial piece we still need to define is: what exactly is this <span class="math inline">\(L_i\)</span> function? How do we take a vector of scores and a true label and turn that into a single number representing the loss for that example? There are several ways to do this, and we’ll look at a very common one for classification next: the Softmax classifier (which uses cross-entropy loss), and also the SVM (hinge) loss.</p>
+</section>
+<section id="softmax-classifier" class="level2">
+<h2 class="anchored" data-anchor-id="softmax-classifier">Softmax classifier</h2>
+<p>The core idea behind the Softmax classifier is that we want to interpret the raw classifier scores as probabilities. Our linear classifier <span class="math inline">\(s = f(x_i, W)\)</span> produces these raw scores. For example our cat image example, we had scores: Cat: 3.2, Car: 5.1, Frog: -1.7. These are just arbitrary real numbers. They could be positive, negative, large, small. They don’t look like probabilities, which should be between 0 and 1 and sum to 1. The Softmax function is what allows us to convert these raw scores into a valid probability distribution over the classes. The formula for the probability of the true class <span class="math inline">\(k\)</span> given the input image <span class="math inline">\(x_i\)</span> (and our weights <span class="math inline">\(W\)</span>) is:</p>
+<p><span class="math display">\[
+P(Y = k | X = x_i) = \frac{e^{s_k}}{\sum_j e^{s_j}}
+\]</span></p>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">\(s_k\)</span> is the raw score for class <span class="math inline">\(k\)</span> (e.g., 3.2 for cat).</li>
+<li><span class="math inline">\(s_j\)</span> are the raw scores for all classes <span class="math inline">\(j\)</span> (cat, car, frog).</li>
+<li>We exponentiate each score (<span class="math inline">\(e^{s_k}\)</span>). This makes all the numbers positive, which is good for probabilities.</li>
+<li>Then we normalize by dividing by the sum of all these exponentiated scores. This ensures that the resulting probabilities for all classes sum to 1.</li>
+</ul>
+<p>The raw scores s that go into the Softmax function (our 3.2, 5.1, -1.7) are often called logits or unnormalized log-probabilities. The term “logit” comes from logistic regression, of which Softmax is a generalization to multiple classes</p>
+<p>Okay, so we’ve used the Softmax function to get a probability distribution over the classes for a given input image <span class="math inline">\(x_i.\)</span> Now, how do we define the loss <span class="math inline">\(L_i\)</span> for this single example? If the true class for our example image (the cat) is y_i (let’s say “cat” is class 0), then the loss for this example is defined as the negative log probability of the true class:</p>
+<p><span class="math display">\[
+L_i = -\log{P(Y = y_i|X = x_i)}
+\]</span></p>
+<p>Why this particular form for the loss? Probabilities <span class="math inline">\(P\)</span> are between <span class="math inline">\(0\)</span> and <span class="math inline">\(1\)</span>. <span class="math inline">\(log(P)\)</span> will be negative (or <span class="math inline">\(0\)</span> if <span class="math inline">\(P=1\)</span>). If the probability of the true class is very high (close to <span class="math inline">\(1\)</span>, e.g., <span class="math inline">\(P=0.99\)</span>), then <span class="math inline">\(log(P)\)</span> is close to <span class="math inline">\(0\)</span>, and <span class="math inline">\(-log(P)\)</span> is also close to <span class="math inline">\(0\)</span> (a small loss, which is good!). If the probability of the true class is very low (close to <span class="math inline">\(0\)</span>, e.g., <span class="math inline">\(P=0.01\)</span>), then <span class="math inline">\(log(P)\)</span> is a large negative number, and <span class="math inline">\(-log(P)\)</span> will be a large positive number (a high loss, which is bad!). So, this <span class="math inline">\(-log(P_true_class)\)</span> loss function does what we want: it penalizes the model heavily if it assigns low probability to the correct answer, and penalizes it very little if it assigns high probability to the correct answer. Minimizing this loss will push the model to make the probability of the true class as close to <span class="math inline">\(1\)</span> as possible. This approach also known as <strong>Maximum Likelihood Estimation (MLE)</strong>. We are choosing the parameters <span class="math inline">\(W\)</span> to maximize the likelihood (or equivalently, the log-likelihood) of observing the true labels <span class="math inline">\(y_i\)</span> given the input data <span class="math inline">\(x_i.\)</span> Taking the negative log-likelihood turns it into a loss minimization problem.</p>
+<p>We can also think about this loss from an information theory perspective. The “correct probabilities” for our cat image would be: Cat: 1.00, Car: 0.00, Frog: 0.00. This is a probability distribution where all the mass is on the true class. Let’s call this target distribution <span class="math inline">\(P\)</span>. Our Softmax classifier produced the distribution Q: Cat: 0.13, Car: 0.87, Frog: 0.00. The loss function we are using, <span class="math inline">\(-log P(Y=y_i | X=x_i)\)</span>, is actually equivalent to the Kullback-Leibler (KL) divergence between the true distribution P (which is 1 for the correct class and 0 otherwise) and the predicted distribution Q from our Softmax. The KL divergence <span class="math inline">\(D_KL(P || Q)\)</span> measures how different the distribution <span class="math inline">\(Q\)</span> is from the distribution <span class="math inline">\(P\)</span>. It’s defined as <span class="math inline">\(\sum_y P(y)\log\frac{P(y)}{Q(y)}\)</span>. When P is a one-hot distribution (1 for the true class <span class="math inline">\(y_i\)</span>, <span class="math inline">\(0\)</span> elsewhere), this simplifies to <span class="math inline">\(-logQ(y_i)\)</span>, which is exactly our loss function!</p>
+<p>So, the loss <span class="math inline">\(L_i = -log P(Y=y_i | X=x_i)\)</span> for a Softmax classifier is often called the Cross-Entropy loss between the true distribution (one-hot encoding of the correct label) and the predicted probability distribution from the Softmax.</p>
+<p><span class="math display">\[
+H(P,Q) = - \sum_y P(y) log Q(y)
+\]</span></p>
+<p>When <span class="math inline">\(P\)</span> is one-hot, <span class="math inline">\(P(y)\)</span> is <span class="math inline">\(1\)</span> for the true class <span class="math inline">\(y_i\)</span> and <span class="math inline">\(0\)</span> otherwise. So, the sum collapses to a single term: <span class="math inline">\(-1 log Q(y_i) = -log Q(y_i)\)</span>.</p>
+<p>So, whether you think of it as maximizing the log-likelihood of the correct class, or minimizing the KL divergence, or minimizing the cross-entropy between the true and predicted distributions, it all leads to the same loss function for the Softmax classifier: <span class="math inline">\(L_i = -log(\text{probability\_of\_true\_class})\)</span>. This is a cornerstone loss function for classification problems in deep learning. The overall loss for the dataset, L, would then be the average of these L_i’s over all training examples. Our goal is to find the W that minimizes this total cross-entropy loss.</p>
+<p>So, just to recap:</p>
+<ol type="1">
+<li>We start with raw scores <span class="math inline">\(s = f(x_i, W)\)</span> from our linear classifier.</li>
+<li>We want to interpret these as probabilities, so we use the Softmax function: <span class="math inline">\(P(Y = k | X = x_i) = \frac{e^{s_k}}{\sum_j e^{s_j}}\)</span>. This gives us a probability for each class <span class="math inline">\(k\)</span>.</li>
+<li>Our goal is to maximize the probability of the correct class <span class="math inline">\(y_i\)</span>.</li>
+<li>The loss function <span class="math inline">\(L_i\)</span> for a single example is the negative log probability of the true class: <span class="math inline">\(L_i = -log P(Y = y_i | X = x_i)\)</span>.</li>
+</ol>
+<p>Putting it all together, we can write the loss for a single example <span class="math inline">\(x_i\)</span> with true label <span class="math inline">\(y_i\)</span> and scores <span class="math inline">\(s_j\)</span> (where <span class="math inline">\(s_j\)</span> is the score for class <span class="math inline">\(j\)</span>) directly as:</p>
+<p><span class="math display">\[ L_i = -log ( \frac{e^{ s_{y_i} }}{\sum_j e^{ s_j }} )\]</span></p>
+<p>Here, <span class="math inline">\(s_yi\)</span> is the score for the true class <span class="math inline">\(y_i\)</span>. This formula combines the Softmax calculation and the negative log operation into one expression for the loss. Minimizing this <span class="math inline">\(L_i\)</span> will push the score of the correct class <span class="math inline">\(s_yi\)</span> to be high relative to the scores of the other classes <span class="math inline">\(s_j\)</span>.</p>
+<p>Now, let’s think about some properties of this Softmax loss <span class="math inline">\(L_i\)</span>. Two good questions to consider: What is the minimum and maximum possible Softmax loss <span class="math inline">\(L_i\)</span>? And at initialization, our weights W are typically small random numbers. So, the initial scores <span class="math inline">\(s_j\)</span> for all classes will be approximately equal (and close to zero). What will the Softmax loss <span class="math inline">\(L_i\)</span> be in this scenario, assuming there are C classes?</p>
+<p>Answer for the first question: <strong>Minimum possible loss</strong>, the loss is <span class="math inline">\(L_i = -log(\text{P\_correct\_class})\)</span>. To minimize <span class="math inline">\(L_i\)</span>, we need to maximize P_correct_class. The maximum possible probability for the correct class is 1 (i.e., the classifier is 100% certain and correct). If <span class="math inline">\(P\_correct\_class = 1\)</span>, then <span class="math inline">\(log(1) = 0\)</span>, so <span class="math inline">\(L_i = -0 = 0\)</span>. Thus, the minimum possible Softmax loss is 0. This occurs when the model perfectly predicts the true class with probability 1. <strong>Maximum possible loss</strong>, to maximize <span class="math inline">\(L_i\)</span>, we need to minimize P_correct_class. The minimum possible probability for the correct class is something very close to 0 (it can’t be exactly 0 because of the exponentiation, but it can be arbitrarily small if the score for the correct class is very, very negative relative to other scores). As P_correct_class approaches 0 from the positive side, log(P_correct_class) approaches negative infinity. Therefore, <span class="math inline">\(-log(\text{ P\_correct\_class })\)</span> approaches positive infinity. So, the Softmax loss can, in theory, go to infinity if the model is extremely confident in a wrong class and assigns vanishingly small probability to the true class.</p>
+<p>Now for question 2: If all <span class="math inline">\(s_j\)</span> are approximately equal (say, <span class="math inline">\(s_j \approx s\_constant\)</span>), then <span class="math inline">\(e^{s_j}\)</span> will also be approximately equal for all <span class="math inline">\(j\)</span>. The probability for any given class k will be:</p>
+<p><span class="math display">\[ P(Y=k | X=x_i) = \frac{e^{s_k}}{\sum_j e^{s_j}} \]</span></p>
+<p>Since all <span class="math inline">\(e^{s_j}\)</span> are roughly the same, let’s say <span class="math inline">\(e^{s\_constant}\)</span>, the sum in the denominator will be <span class="math inline">\(C e^{s\_constant}\)</span>. So, <span class="math inline">\(P(Y=k | X=x_i) \approx \frac{e^{s\_constant}}{C e^{ s\_constant }} = \frac{1}{C}\)</span>.</p>
+<p>This makes intuitive sense: if the classifier has no information yet (all scores are equal), it should assign an equal probability of 1/C to each of the C classes. This is a uniform distribution. Now, the loss for any example <span class="math inline">\(x_i\)</span> (regardless of its true class <span class="math inline">\(y_i\)</span>, since the probability assigned to every class is 1/C) will be:</p>
+<p><span class="math display">\[ L_i = -log(P\_correct\_class) = -log(\frac{1}{C}) \]</span></p>
+<p>Using the logarithm property <span class="math inline">\(log(\frac{1}{C}) = log(1) - log(C) = 0 - log(C) = -log(C)\)</span>. So, <span class="math inline">\(L_i = -(-log(C)) = log(C)\)</span>. Therefore, at initialization, when the classifier is essentially guessing uniformly, the Softmax loss per example will be approximately <span class="math inline">\(log(C)\)</span>, where <span class="math inline">\(C\)</span> is the number of classes. For example, if we have <span class="math inline">\(C = 10\)</span> classes (like in CIFAR-10), then the initial loss we expect to see is <span class="math inline">\(L_i = log(10)\)</span> (natural logarithm of 10), which is approximately 2.3. This is a very useful “sanity check”! When you’re implementing a Softmax classifier and you initialize your weights, if you compute the loss on your first batch of data and it’s wildly different from <span class="math inline">\(log(C)\)</span>, you might have a bug somewhere in your loss calculation or your Softmax implementation. For CIFAR-10, you should see an initial loss around 2.3. If you see a loss of, say, 20 or 0.01 at the very start, something is likely wrong.</p>
+</section>
+<section id="multiclass-svm-loss" class="level2">
+<h2 class="anchored" data-anchor-id="multiclass-svm-loss">Multiclass SVM loss</h2>
+<p>Alright, so we’ve seen the Softmax classifier and its cross-entropy loss. Now, let’s turn to the other major type of loss function for linear classifiers: the <strong>Multiclass SVM loss</strong>, also known as the hinge loss. The Multiclass SVM loss has a different philosophy than Softmax. The SVM wants the score of the correct class <span class="math inline">\(s_{y_i}\)</span> to be greater than the score of any incorrect class <span class="math inline">\(s_j\)</span> (where <span class="math inline">\(j ≠ y_i\)</span>) by at least a certain fixed margin, which is commonly denoted by <span class="math inline">\(\Delta\)</span> and often set to 1. Here’s the form of the loss L_i for a single example:</p>
+<p><span class="math display">\[
+L_i = \sum_{j \ne y_i}
+\begin{cases}
+0 &amp; \text{if } s_{y_i} \geq s_j + 1 \\
+s_j - s_{y_i} + 1 &amp; \text{otherwise}
+\end{cases}
+= \sum_{j \ne y_i} \max(0, s_j - s{y_i} + 1)
+\]</span></p>
+<p>So, for each training example, we sum up these margin violation penalties over all incorrect classes. If all incorrect classes have scores that are at least <span class="math inline">\(\Delta\)</span> less than the score of the correct class, then <span class="math inline">\(L_i\)</span> will be 0 for that example.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./images/svm.png" class="lightbox" data-gallery="quarto-lightbox-gallery-10" title="SVM loss"><img src="./images/svm.png" class="img-fluid figure-img" alt="SVM loss"></a></p>
+<figcaption>SVM loss</figcaption>
+</figure>
+</div>
+<p>Let’s visualize what one term <span class="math inline">\(\max(0, s_j - s_{y_i} + 1)\)</span> of this loss looks like. The x-axis here is representing <span class="math inline">\(s_{y_i} - s_j\)</span>, which is the difference between the score of the correct class and the score of one particular incorrect class <span class="math inline">\(j\)</span>. The SVM loss wants the score of the correct class <span class="math inline">\(s_{y_i}\)</span> to be greater than the score of an incorrect class <span class="math inline">\(s_j\)</span> by at least the margin <span class="math inline">\(\Delta\)</span> (which is 1 in our plot). So, if <span class="math inline">\(s_{y_i} - s_j \geq 1\)</span>, meaning the correct score is already beating the incorrect score by the desired margin then the loss for that pair is 0. You can see the loss function is flat at 0 on the right side of the plot, where <span class="math inline">\(s_{y_i} - s_j \geq 1\)</span>. The SVM doesn’t care how much better the correct score is, as long as it’s better by at least the margin. It doesn’t try to push the correct score infinitely higher or the incorrect scores infinitely lower, unlike Softmax which is never fully satisfied. However, if <span class="math inline">\(s_{y_i} - s_j \lt 1\)</span> (i.e., the margin is violated), then the loss becomes positive. The loss increases linearly as the difference <span class="math inline">\(s_{y_i} - s_j\)</span> gets smaller (or more negative, meaning <span class="math inline">\(s_j\)</span> is much larger than <span class="math inline">\(s_{y_i}\)</span>). This is the hinge shape - zero loss if the margin is met and then a linear penalty for violations. The total <span class="math inline">\(L_i\)</span> for an example is the sum of these hinge losses over all incorrect classes <span class="math inline">\(j\)</span>. This encourages the score of the true class <span class="math inline">\(y_i\)</span> to stand out from all other incorrect class scores by at least <span class="math inline">\(\Delta\)</span>. This is a fundamentally different way of thinking about loss compared to Softmax. Softmax wants to correctly estimate the probability distribution; SVM wants to find a decision boundary that separates classes with a good margin.</p>
+<p>So <strong>what is the min/max possible SVM loss L_i?</strong> <strong>Minimum possible loss</strong>, if all margins are satisfied (i.e., for all incorrect classes <span class="math inline">\(j\)</span>, <span class="math inline">\(s_{y_i} \geq s_j + \Delta\)</span>), then every term in the <span class="math inline">\(\sum \max(0, s_j - s_{y_i} + \Delta)\)</span> will be 0. So, the minimum SVM loss <span class="math inline">\(L_i\)</span> is 0. <strong>Maximum possible loss</strong>, if the score for the correct class <span class="math inline">\(s_{y_i}\)</span> is extremely negative, and scores for incorrect classes <span class="math inline">\(s_j\)</span> are very positive, then <span class="math inline">\(s_j - s_{y_i} + \Delta\)</span> can become arbitrarily large and positive for each incorrect class. Since we sum these terms, the total <span class="math inline">\(L_i\)</span> can go to positive infinity.</p>
+<p><strong>At initialization, <span class="math inline">\(W\)</span> is small, so all scores <span class="math inline">\(s_j \approx 0\)</span>. What is the loss <span class="math inline">\(L_i\)</span>, assuming <span class="math inline">\(C\)</span> classes?</strong> If all <span class="math inline">\(s_j \approx 0\)</span> (including <span class="math inline">\(s_{y_i} \approx 0\)</span>), then for each of the <span class="math inline">\(C-1\)</span> incorrect classes j, the term is:</p>
+<p><span class="math display">\[s_j - s_{y_i} + \Delta ≈ 0 - 0 + \Delta = \Delta\]</span></p>
+<p>So, <span class="math inline">\(\max(0, \Delta)\)</span> is just <span class="math inline">\(\Delta\)</span> (assuming our margin <span class="math inline">\(\Delta\)</span> is positive, e.g., <span class="math inline">\(\Delta=1\)</span>). We sum this <span class="math inline">\(\Delta\)</span> over all <span class="math inline">\(C-1\)</span> incorrect classes. Therefore, <span class="math inline">\(L_i ≈ (C-1) \Delta\)</span>. If <span class="math inline">\(\Delta=1\)</span>, then the initial loss <span class="math inline">\(L\)</span> is approximately <span class="math inline">\(C-1\)</span>. For CIFAR-10 with <span class="math inline">\(C=10\)</span> classes and <span class="math inline">\(\Delta=1\)</span>, the initial SVM loss per example would be around 9. This is another good sanity check for your implementation. If you see an initial SVM loss far from <span class="math inline">\(C-1\)</span>, you might have an issue.</p>
+<p><strong>What if we used a squared term for the loss: <span class="math inline">\(L_i = \sum_{j \neq y_i} \max(0, s_j - s_{y_i} + \Delta)^2\)</span>?</strong> This is known as the squared hinge loss (or L2-SVM). The standard (L1) hinge loss <span class="math inline">\(\max(0, margin\_violation)\)</span> penalizes any violation linearly. Every unit of margin violation contributes equally to the loss. The squared (L2) hinge loss <span class="math inline">\(\max(0, margin\_violation)^2\)</span> penalizes larger violations much more heavily than smaller ones due to the squaring. It’s more sensitive to outliers or examples that are very wrong. This can sometimes lead to different solutions. Both have been used, though the L1 hinge loss is perhaps more standard for the classic SVM. The L2 version is smoother (differentiable even when the margin violation is zero, though the max(0,…) still introduces a non-differentiability point when the argument to max is exactly zero), which can sometimes be beneficial for certain optimization algorithms.</p>
+<p>Here’s a python function that calculates the SVM loss for a single example x with true label y, given weight W.</p>
+<div class="sourceCode" id="annotated-cell-1"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-1-1"><a href="#annotated-cell-1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> L_i_vecterized(x, y, W):</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-1-2" class="code-annotation-target"><a href="#annotated-cell-1-2" aria-hidden="true" tabindex="-1"></a>  scores <span class="op">=</span> W.dot(x)</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-1-3" class="code-annotation-target"><a href="#annotated-cell-1-3" aria-hidden="true" tabindex="-1"></a>  margins <span class="op">=</span> np.maximum(<span class="dv">0</span>, scores <span class="op">-</span> score[y] <span class="op">+</span> <span class="dv">1</span>)</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-1-4" class="code-annotation-target"><a href="#annotated-cell-1-4" aria-hidden="true" tabindex="-1"></a>  margins[y] <span class="op">=</span> <span class="dv">0</span></span>
+<span id="annotated-cell-1-5"><a href="#annotated-cell-1-5" aria-hidden="true" tabindex="-1"></a>  loss_i <span class="op">=</span> np.<span class="bu">sum</span>(margin)</span>
+<span id="annotated-cell-1-6"><a href="#annotated-cell-1-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> loss_i</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-1" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-1" data-code-lines="2" data-code-annotation="1">calculate scores</span>
+</dd>
+<dt data-target-cell="annotated-cell-1" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-1" data-code-lines="3" data-code-annotation="2">then calculate the margins <span class="math inline">\(s_j - s_{y_i} + 1\)</span></span>
+</dd>
+<dt data-target-cell="annotated-cell-1" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-1" data-code-lines="4" data-code-annotation="3">only sum <span class="math inline">\(j\)</span> is not <span class="math inline">\(y_i\)</span> so when <span class="math inline">\(j = y_i\)</span>, set to zero</span>
+</dd>
+</dl>
+<p>This is a nice, compact vectorized implementation. To get the loss for a whole batch of data, you’d typically loop over your batch, call this function for each example, and then average the results.</p>
+<p>SVM is a margin-based loss. Softmax is a probabilistic loss that cares about the full distribution. In practice, both are widely used, and sometimes one might perform slightly better than the other depending on the dataset and task, but often their performance is quite similar when used in deep networks. The choice can also come down to whether you explicitly need probability outputs from your model.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script type="text/javascript">
+// Enhance theme switching experience
+document.addEventListener('DOMContentLoaded', function() {
+  // Add smooth transitions to all elements when theme changes
+  const style = document.createElement('style');
+  style.textContent = `
+* {
+transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
+}
+
+.navbar, .card, .table, .btn {
+transition: all 0.3s ease !important;
+}
+`;
+  document.head.appendChild(style);
+
+  // Enhance code copy functionality
+  const codeBlocks = document.querySelectorAll('pre code');
+  codeBlocks.forEach(function(codeBlock) {
+    codeBlock.parentElement.style.position = 'relative';
+  });
+
+  // Add fade-in animation for post listings
+  const posts = document.querySelectorAll('.post-listing .card');
+  posts.forEach(function(post, index) {
+    post.style.opacity = '0';
+    post.style.transform = 'translateY(20px)';
+    setTimeout(() => {
+      post.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+      post.style.opacity = '1';
+      post.style.transform = 'translateY(0)';
+    }, index * 100);
+  });
+
+  // Smooth scroll for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    });
+  });
+
+  // Enhanced table styling
+  const tables = document.querySelectorAll('table');
+  tables.forEach(function(table) {
+    if (!table.classList.contains('table')) {
+      table.classList.add('table', 'table-striped');
+    }
+
+    // Wrap tables in responsive container
+    if (!table.parentElement.classList.contains('table-responsive')) {
+      const wrapper = document.createElement('div');
+      wrapper.classList.add('table-responsive');
+      table.parentNode.insertBefore(wrapper, table);
+      wrapper.appendChild(table);
+    }
+  });
+
+  // Replace keyboard shortcuts on non-Mac platforms
+  const kPlatformMac = typeof navigator !== 'undefined' ? /Mac/.test(navigator.platform) : false;
+  if (!kPlatformMac) {
+    var kbds = document.querySelectorAll("kbd");
+    kbds.forEach(function(kbd) {
+      kbd.innerHTML = kbd.innerHTML.replace(/⌘/g, '⌃');
+    });
+  }
+
+  // Add reading progress indicator
+  function addReadingProgress() {
+    const article = document.querySelector('main article, main .content, .post-content');
+    if (article) {
+      const progressBar = document.createElement('div');
+      progressBar.style.cssText = `
+position: fixed;
+top: 0;
+left: 0;
+width: 0%;
+height: 3px;
+background: var(--bs-primary);
+z-index: 1000;
+transition: width 0.3s ease;
+`;
+      document.body.appendChild(progressBar);
+
+      window.addEventListener('scroll', function() {
+        const scrolled = window.scrollY;
+        const height = article.offsetHeight - window.innerHeight;
+        const progress = Math.min(scrolled / height * 100, 100);
+        progressBar.style.width = progress + '%';
+      });
+    }
+  }
+
+  // Only add reading progress on individual blog posts
+  if (document.querySelector('.post-title') || document.querySelector('article')) {
+    addReadingProgress();
+  }
+});
+
+// Theme preference detection and saving
+(function() {
+  // Save theme preference to localStorage
+  const themeToggle = document.querySelector('[data-bs-toggle="color-scheme"]');
+  if (themeToggle) {
+    themeToggle.addEventListener('click', function() {
+      setTimeout(() => {
+        const currentTheme = document.documentElement.getAttribute('data-bs-theme');
+        localStorage.setItem('quarto-color-scheme', currentTheme);
+      }, 100);
+    });
+  }
+
+  // Load saved theme preference
+  const savedTheme = localStorage.getItem('quarto-color-scheme');
+  if (savedTheme) {
+    document.documentElement.setAttribute('data-bs-theme', savedTheme);
+  }
+})();
+</script>
+
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/bhdai\.github\.io\/blog\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<input type="hidden" id="giscus-base-theme" value="light">
+<input type="hidden" id="giscus-alt-theme" value="dark">
+<script>
+  function loadGiscus() {
+    // Function to get the theme based on body class
+    const getTheme = () => {
+      let baseTheme = document.getElementById('giscus-base-theme').value;
+      let altTheme = document.getElementById('giscus-alt-theme').value;
+      if (authorPrefersDark) {
+          [baseTheme, altTheme] = [altTheme, baseTheme];
+      }
+      return document.body.classList.contains('quarto-dark') ? altTheme : baseTheme;
+    };
+    const script = document.createElement("script");
+    script.src = "https://giscus.app/client.js";
+    script.async = true;
+    script.dataset.repo = "bhdai/blog";
+    script.dataset.repoId = "R_kgDOMP9wjw";
+    script.dataset.category = "Blog";
+    script.dataset.categoryId = "DIC_kwDOMP9wj84Cs7wf";
+    script.dataset.mapping = "pathname";
+    script.dataset.reactionsEnabled = "1";
+    script.dataset.emitMetadata = "0";
+    script.dataset.inputPosition = "bottom";
+    script.dataset.theme = getTheme();
+    script.dataset.lang = "en";
+    script.crossOrigin = "anonymous";
+    // Append the script to the desired div instead of at the end of the body
+    document.getElementById("quarto-content").appendChild(script);
+  }
+  loadGiscus();
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+ Copyright 2025, Bui Huu Dai
+  </li>  
+</ul>
+    </div>   
+    <div class="nav-footer-center">
+
+<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/bhdai/blog/edit/main/posts/linear_classification/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bhdai/blog/blob/main/posts/linear_classification/index.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/bhdai/blog/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="cookie-consent-footer"><a href="#" id="open_preferences_center">Cookie Preferences</a></div></div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
+
+
+
+
+</body></html>

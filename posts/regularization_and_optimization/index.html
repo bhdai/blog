@@ -1,0 +1,1484 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Bui Huu Dai">
+<meta name="description" content="Regularization and optimization are the two absolute critical concepts in deep learning that allow our model to learn effectively and generalize well to new data">
+
+<title>Regularization and Optimization – Bui Huu Dai</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../Github_bird.png" rel="icon" type="image/png">
+<script src="../../site_libs/cookie-consent/cookie-consent.js"></script>
+<link href="../../site_libs/cookie-consent/cookie-consent.css" rel="stylesheet">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-2fef5ea3f8957b3e4ecc936fc74692ca.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-8e47eaf163dee9e5ea02780d02199294.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-bca7bfc09c99158c9822bef989cf6fc8.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-8e47eaf163dee9e5ea02780d02199294.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-6JR4N915S6"></script>
+
+<script type="text/plain" cookie-consent="tracking">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-6JR4N915S6', { 'anonymize_ip': true});
+</script>
+
+<script type="text/javascript" charset="UTF-8">
+document.addEventListener('DOMContentLoaded', function () {
+cookieconsent.run({
+  "notice_banner_type":"simple",
+  "consent_type":"implied",
+  "palette":"light",
+  "language":"en",
+  "page_load_consent_levels":["strictly-necessary","functionality","tracking","targeting"],
+  "notice_banner_reject_button_hide":false,
+  "preferences_center_close_button_hide":false,
+  "website_name":""
+  ,
+"language":"en"
+  });
+});
+</script> 
+  
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="Regularization and Optimization – Bui Huu Dai">
+<meta property="og:description" content="Regularization and optimization are the two absolute critical concepts in deep learning that allow our model to learn effectively and generalize well to new data">
+<meta property="og:image" content="https://bhdai.github.io/blog/posts/regularization_and_optimization/images/cover.png">
+<meta property="og:site_name" content="Bui Huu Dai">
+<meta property="og:image:height" content="1024">
+<meta property="og:image:width" content="1536">
+<meta name="twitter:title" content="Regularization and Optimization – Bui Huu Dai">
+<meta name="twitter:description" content="Regularization and optimization are the two absolute critical concepts in deep learning that allow our model to learn effectively and generalize well to new data">
+<meta name="twitter:image" content="https://bhdai.github.io/blog/posts/regularization_and_optimization/images/cover.png">
+<meta name="twitter:image-height" content="1024">
+<meta name="twitter:image-width" content="1536">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="floating nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const queryPrefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    const darkModeDefault = queryPrefersDark.matches;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    queryPrefersDark.addEventListener("change", e => {
+      if(window.localStorage.getItem("quarto-color-scheme") !== null)
+        return;
+      const alternate = e.matches
+      toggleColorMode(alternate);
+      localAlternateSentinel = e.matches ? 'alternate' : 'default'; // this is used alongside local storage!
+      toggleGiscusIfUsed(alternate, darkModeDefault);
+    });
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Bui Huu Dai</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/bhdai"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://x.com/daibui1234"> <i class="bi bi-twitter-x" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml"> <i class="bi bi-rss" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Regularization and Optimization</h1>
+                  <div>
+        <div class="description">
+          Regularization and optimization are the two absolute critical concepts in deep learning that allow our model to learn effectively and generalize well to new data
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">Deep Learning</div>
+                <div class="quarto-category">Optimization</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Bui Huu Dai </p>
+            </div>
+    </div>
+      
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#we-have-a-loss-function-now-what" id="toc-we-have-a-loss-function-now-what" class="nav-link active" data-scroll-target="#we-have-a-loss-function-now-what">We have a loss function, now what?</a></li>
+  <li><a href="#keeping-model-honest" id="toc-keeping-model-honest" class="nav-link" data-scroll-target="#keeping-model-honest">Keeping model honest</a></li>
+  <li><a href="#a-penalty-for-complexity" id="toc-a-penalty-for-complexity" class="nav-link" data-scroll-target="#a-penalty-for-complexity">A penalty for complexity</a></li>
+  <li><a href="#finding-the-bottom-of-the-valley" id="toc-finding-the-bottom-of-the-valley" class="nav-link" data-scroll-target="#finding-the-bottom-of-the-valley">Finding the bottom of the valley</a>
+  <ul class="collapse">
+  <li><a href="#strategy-1-random-search" id="toc-strategy-1-random-search" class="nav-link" data-scroll-target="#strategy-1-random-search">Strategy 1: Random search</a></li>
+  <li><a href="#strategy-2-follow-the-slope" id="toc-strategy-2-follow-the-slope" class="nav-link" data-scroll-target="#strategy-2-follow-the-slope">Strategy 2: Follow the slope</a></li>
+  </ul></li>
+  <li><a href="#sgd" id="toc-sgd" class="nav-link" data-scroll-target="#sgd">SGD</a>
+  <ul class="collapse">
+  <li><a href="#problem-1-with-sgd-dealing-with-ill-conditioned-loss-landscapes" id="toc-problem-1-with-sgd-dealing-with-ill-conditioned-loss-landscapes" class="nav-link" data-scroll-target="#problem-1-with-sgd-dealing-with-ill-conditioned-loss-landscapes">Problem #1 with SGD: Dealing with ill-conditioned loss landscapes</a></li>
+  <li><a href="#problem-2-with-sgd-local-minima-and-saddle-points" id="toc-problem-2-with-sgd-local-minima-and-saddle-points" class="nav-link" data-scroll-target="#problem-2-with-sgd-local-minima-and-saddle-points">Problem #2 with SGD: Local Minima and Saddle Points</a></li>
+  <li><a href="#problem-3-with-sgd-noisy-gradients" id="toc-problem-3-with-sgd-noisy-gradients" class="nav-link" data-scroll-target="#problem-3-with-sgd-noisy-gradients">Problem #3 with SGD: Noisy Gradients</a></li>
+  </ul></li>
+  <li><a href="#momentum" id="toc-momentum" class="nav-link" data-scroll-target="#momentum">Momentum</a></li>
+  <li><a href="#smarter-steps-with-adaptive-optimizer" id="toc-smarter-steps-with-adaptive-optimizer" class="nav-link" data-scroll-target="#smarter-steps-with-adaptive-optimizer">Smarter steps with adaptive optimizer</a></li>
+  <li><a href="#learning-rate-schedules" id="toc-learning-rate-schedules" class="nav-link" data-scroll-target="#learning-rate-schedules">Learning rate schedules</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/bhdai/blog/edit/main/posts/regularization_and_optimization/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bhdai/blog/blob/main/posts/regularization_and_optimization/index.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/bhdai/blog/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./images/cover.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="“An explorer seen from behind, standing on a high rocky ridge looking through binoculars. The figure overlooks a vast valley rendered as a topographical map with intricate, glowing contour lines. At the bottom of this valley, a radiant orb pulses with energy. Two paths descend the landscape: one is a chaotic, jagged red line, and the other is a smooth river of glowing blue light flowing directly to the orb,” generated by DALL-E 3"><img src="./images/cover.png" class="img-fluid figure-img" alt="“An explorer seen from behind, standing on a high rocky ridge looking through binoculars. The figure overlooks a vast valley rendered as a topographical map with intricate, glowing contour lines. At the bottom of this valley, a radiant orb pulses with energy. Two paths descend the landscape: one is a chaotic, jagged red line, and the other is a smooth river of glowing blue light flowing directly to the orb,” generated by DALL-E 3"></a></p>
+<figcaption>“An explorer seen from behind, standing on a high rocky ridge looking through binoculars. The figure overlooks a vast valley rendered as a topographical map with intricate, glowing contour lines. At the bottom of this valley, a radiant orb pulses with energy. Two paths descend the landscape: one is a chaotic, jagged red line, and the other is a smooth river of glowing blue light flowing directly to the orb,” generated by DALL-E 3</figcaption>
+</figure>
+</div>
+<section id="we-have-a-loss-function-now-what" class="level2">
+<h2 class="anchored" data-anchor-id="we-have-a-loss-function-now-what">We have a loss function, now what?</h2>
+<p>In the last blog post we started by framing our core problem <strong>Image Classification</strong>. This is a fundamental task in computer vision. Given an image, our goal is to assign it one label from a predefined set of categories, the model needs to output the correct label. And we talked about why this is so challenging, right? It’s not trivial for a computer. We have immense variability due to viewpoint changes, different illumination conditions, deformations (cats are particularly good at this!), occlusion where parts of the object are hidden, clutter in the background, and of course, massive intraclass variation, think of all the different breeds and appearances of cats. To tackle this, we introduced the data-driven approach. Instead of trying to explicitly code rules for every variation, we collect a large dataset of images and their labels. We then use machine learning to learn the patterns. We talk about a powerful, parametric approach the <strong>Linear Classifier</strong>. Here, the idea is to learn a set of parameters, or weights, denoted by <span class="math inline">\(W\)</span> (and a bias term <span class="math inline">\(b\)</span>). For an input image <span class="math inline">\(x\)</span>, which we typically flatten into a vector, our score function is <span class="math inline">\(f(x, W) = Wx + b\)</span>. This function computes scores for each class. We looked at this from a few different perspectives. The <strong>Algebraic Viewpoint</strong>: just a matrix multiplication and a bias addition. The <strong>Visual Viewpoint</strong>: where each row of W can be seen as a template for a class. The model is trying to learn what an “ideal” cat or dog template looks like. And the <strong>Geometric Viewpoint</strong>: where each row of W defines a hyperplane, and the classifier is essentially carving up the high-dimensional image space with these hyperplanes.</p>
+<p>Okay, so we have these scores from our linear classifier. The question is: How good are these scores? How good is our current set of parameters <span class="math inline">\(W\)</span>? For this, we introduced the concept of a <strong>loss function</strong>. A loss function, often denoted <span class="math inline">\(L_i\)</span> for a single example, quantify how unhappy we are with the prediction of that example. Given a dataset of N examples <span class="math inline">\({(x_i, y_i)}\)</span> where <span class="math inline">\(x_i\)</span> is the image and <span class="math inline">\(y_i\)</span> is its true integer label, we can compute the total loss. Typically the overall loss <span class="math inline">\(L\)</span> is the average of the individual loss <span class="math inline">\(L_i\)</span> over all the training example. This loss function is our guide. It tells us how well our current classifier is performing. A high loss means our classifier is doing poorly; a low loss means it’s doing well. So we have a way to score images and a way to measure how good those score are. The next natural question are: how do we find the parameters <span class="math inline">\(W\)</span> that minimize this loss? And how do we make sure our model doesn’t just memorize the training data but actually learn to generalize? And that precisely where we’re headed today with <strong>Regularization and Optimization</strong> We’ll start by looking at regularization.</p>
+<p>So far, here’s our loss function:</p>
+<p><span class="math display">\[
+L(W) = \frac{1}{N} \sum_{i = 1}^N L_i(f(x_i, W), y_i)
+\]</span></p>
+<p>Currently our loss function just has the <strong>data loss</strong>. This term, the average of <span class="math inline">\(L_i\)</span> over our <span class="math inline">\(N\)</span> training examples, measure how well our model’s prediction, <span class="math inline">\(f(x_i, W)\)</span>, match the true labels, <span class="math inline">\(y_i\)</span> on the training data. Our goal is to make this data loss small. However, if we only focus on minimizing the data loss, we can run into a problem called overfitting. Our model might become too good at fitting the training data, including its noise and then fail to generalize to new, unseen data.</p>
+</section>
+<section id="keeping-model-honest" class="level2">
+<h2 class="anchored" data-anchor-id="keeping-model-honest">Keeping model honest</h2>
+<p>This is where <strong>regularization</strong> comes in. We modify our loss function to include an additional term, often denoted as <span class="math inline">\(R(W)\)</span>, which is the regularization penalty. So, our full loss function now become the sum of the data loss and this regularization term, scaled by a hyperparameter <strong>lambda (<span class="math inline">\(\lambda\)</span>)</strong></p>
+<p><span class="math display">\[
+L(W) = \frac{1}{N} \sum_{i = 1}^N L_i(f(x_i, W), y_i) + \lambda R(W)
+\]</span></p>
+<p>The data loss part as before, pushes the model to fit the training data. The new <strong>regularization term</strong>, <span class="math inline">\(R(W)\)</span>, is designed to penalize model complexity. Its job is essentially to prevent the model from doing too well on the training data, or more precisely, fitting the training data in an overly complex way. Lambda, the regularization strength, control the trade-off between these two terms: fitting the data well versus keeping the model simple.</p>
+<p>This preference for simpler models, as we discussed, is nicely encapsulated by <strong>Occam’s Razor</strong>. The principle, attributed to William of Ockham, states that among multiple competing hypotheses, the simplest one is generally the best. Our regularization term <span class="math inline">\(R(W)\)</span> is our way of mathematically encoding a preference for certain types of “simpler” weight matrices <span class="math inline">\(W\)</span>.</p>
+</section>
+<section id="a-penalty-for-complexity" class="level2">
+<h2 class="anchored" data-anchor-id="a-penalty-for-complexity">A penalty for complexity</h2>
+<p>So what are some common form of this regularization term <span class="math inline">\(R(W)\)</span>? Here are a few classic examples:</p>
+<p><span class="math display">\[
+R(W) = \sum_{k} \sum_{l} W^{2}_{k,l}
+\]</span></p>
+<p><strong>L2 regularization</strong>, also known as weight decay or Ridge regression in other contexts. Here, <span class="math inline">\(R(W)\)</span> is the sum of the squares of all the individual weight elements <span class="math inline">\(W_{k,l}\)</span>. This penalty discourages very large weights. It prefers to distribute weights among many features rather than having a few features with very large weights. It leads to diffuse, small weight vector</p>
+<p><span class="math display">\[
+R(W) = \sum_{k} \sum_{l} |W_{k,l}|
+\]</span></p>
+<p><strong>L1 regularization</strong>, also known as Lasso. Here, R(W) is the sum of the absolute values of the weights. L1 regularization has an interesting property: it tends to produce sparse weight vectors, meaning many of the weights will become exactly zero. This can be useful for feature selection, as it effectively tells you which input features the model deems unimportant.</p>
+<p><span class="math display">\[
+R(W) = \sum_{k} \sum_{l} \beta W^{2}_{k,l} + |W_{k,l}|
+\]</span></p>
+<p><strong>Elastic Net regularization</strong> is simply a linear combination of L1 and L2 regularization. This tries to get the best of both worlds, offering a balance between the diffuse weights of L2 and the sparsity of L1. The <span class="math inline">\(\beta\)</span> here would be another hyperparameter controlling the mix.</p>
+<p>These are some of the most common, traditional forms of regularization that directly penalize the magnitudes of the weights. But the concept of regularization is broader than just L1 and L2 penalty on weights. There are many other techniques, particularly in deep learning, that have a regularizing effect, even if they don’t explicitly appear as an R(W) term added to the loss. For examples,</p>
+<ul>
+<li><strong>Dropout</strong>: This involves randomly setting some neuron activations to zero during training. It prevents co-adaptation of neurons and encourages more robust feature learning</li>
+<li><strong>Batch Normalization</strong>: This normalized the activations between mini-batch. While primarily introduced to help with optimization and training stability, it also has a slight regularizing effect.</li>
+<li>And there are others like <strong>Stochastic Depth</strong>(randomly drop entire layer during training) or <strong>fractional pooling</strong>, which introduce stochasticity or constrains during training to improve regularization.</li>
+</ul>
+<p>So, while we often start by thinking about L1 or L2, keep in mind that regularization is a general concept of adding something to your training process to prevent overfitting and improve performance on unseen data.</p>
+<p>Note that one of the reason that I think really interesting about why we regularize is to improve optimization by adding curvature. This is a more subtle point, especially relevant for L2 regularization. Sometimes, the loss landscape can be very flat in certain directions, making optimization difficult. Adding an L2 penalty (which is a quadratic bowl shape) can add curvature to the loss surface, potentially making it easier for optimization algorithms like gradient descent to find a good minimum.</p>
+</section>
+<section id="finding-the-bottom-of-the-valley" class="level2">
+<h2 class="anchored" data-anchor-id="finding-the-bottom-of-the-valley">Finding the bottom of the valley</h2>
+<p>So, we’ve defined what it means for a set of weights W to be “good”, it should result in a low values for the total loss <span class="math inline">\(L\)</span>. The big question that remain is: <strong>How do we find the best <span class="math inline">\(W\)</span></strong>? This is not a trivial task, especially <span class="math inline">\(W\)</span> is consist of millions or even billions, of parameters in modern neural networks. We’re searching in an incredibly high-dimensional space. And this leads us to our major topic for today: <strong>Optimization</strong></p>
+<p><a href="./images/valley.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img src="./images/valley.png" class="img-fluid"></a></p>
+<p>To build some intuition, let’s think about a simpler analogy. Imagine this beautiful mountain landscape. You can think of the terrain here as representing our loss function. The east-west and north-south directions could represent, say, two of our weights, W1 and W2 (though in reality, we have many more dimensions). And the altitude at any point (W1, W2) represents the value of our loss function L(W) for those particular weight settings. Our goal, then, is to find the lowest point in this valley – the point where the loss is minimized. So if we imagine ourselves, or this intrepid hiker, standing somewhere in the landscape, what’s our strategy for getting to the bottom of the valley? We’re trying to find the minimum. This is precisely what optimization algorithms are designed to do: to provide a systematic way to navigate this loss landscape and find a good set of parameters <span class="math inline">\(W\)</span>. Now, how might we go about this? What strategy could we employ to find this minimum? Let’s consider a few approaches, starting with a very simple one, perhaps naive, one.</p>
+<section id="strategy-1-random-search" class="level3">
+<h3 class="anchored" data-anchor-id="strategy-1-random-search">Strategy 1: Random search</h3>
+<p>This is generally a very bad idea for optimizing a complex models, but it’s a simple baseline to start with. The idea is straightforward</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># assume X_train is the data where each column is an example (e.g. 3073 x 50,000)</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># assume Y_train are the labels (e.g. 1D array of 50,000)</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># assume the function L evaluates the loss function</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>bestloss <span class="op">=</span> <span class="bu">float</span>(<span class="st">'inf'</span>)  <span class="co"># Python assigns the highest possible float value</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> num <span class="kw">in</span> <span class="bu">xrange</span>(<span class="dv">1000</span>):</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    W <span class="op">=</span> np.random.randn(<span class="dv">10</span>, <span class="dv">3073</span>) <span class="op">*</span> <span class="fl">0.0001</span>  <span class="co"># generate random parameters</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    loss <span class="op">=</span> L(X_train, Y_train, W)  <span class="co"># get the loss over the entire training set</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> loss <span class="op">&lt;</span> bestloss:  <span class="co"># keep track of the best solution</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        bestloss <span class="op">=</span> loss</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        bestW <span class="op">=</span> W</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'in attempt </span><span class="sc">%d</span><span class="st"> the loss was </span><span class="sc">%f</span><span class="st">, best </span><span class="sc">%f</span><span class="st">'</span> <span class="op">%</span> (num, loss, bestloss))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>in attempt 0 the loss was 9.401632, best 9.401632
+in attempt 1 the loss was 8.959668, best 8.959668
+in attempt 2 the loss was 9.044034, best 8.959668
+in attempt 3 the loss was 9.278948, best 8.959668
+in attempt 4 the loss was 8.857370, best 8.857370
+in attempt 5 the loss was 8.943151, best 8.857370
+in attempt 6 the loss was 8.605604, best 8.605604
+... (truncated: continues for 1000 lines)</code></pre>
+<p>As you can see from the example printout, with each attempt, we got a loss value. Sometimes we find a better <span class="math inline">\(W\)</span>, sometimes we don’t. We just keep trying random configurations and hope to stumble upon a good one. This is, as you might imagine, highly inefficient. The space of possible W matrices is astronomically vast. Just randomly sampling points in this space is like trying to find a specific grain of sand on all the beaches of the world by randomly picking up grains. But, let’s humor ourselves. Suppose we run this random search for a while and get our bestW. How well does it actually perform on unseen data?</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># assume X_test is [3073 x 10000A], y_test [10000 x 1]</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> bestW.dot(X_test) <span class="co"># 10 x 10000, the class scores for all test examples</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> np.argmax(scores, axis<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>np.mean(y_pred <span class="op">==</span> y_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>0.1555</code></pre>
+<p>And the result? We get 15.5% accuracy! Now, for a 10-class classification problem like CIFAR-10, random guessing would give you 10% accuracy. So, 15.5% is… well, it’s better than random! One might sarcastically say “not bad!” given the simplicity of the approach. However, if we compare this to the state-of-the-art (SOTA) for image classification on datasets like CIFAR-10, which can be well above 90%, even approaching 99.7% for sophisticated models, 15.5% is clearly terrible. It highlights that simply guessing random parameters is not a viable strategy for training effective machine learning models. So, random search is a non-starter for any serious application. We need a more intelligent way to navigate the loss landscape. We need a strategy that uses information about the landscape itself to guide the search. This brings us to our next, much more sensible, strategy. We want to “follow the slope.”</p>
+</section>
+<section id="strategy-2-follow-the-slope" class="level3">
+<h3 class="anchored" data-anchor-id="strategy-2-follow-the-slope">Strategy 2: Follow the slope</h3>
+<p>Going back to our mountain analogy, if you’re standing on a hillside and want to get to the bottom of the valley, what’s the most intuitive thing to do? You look around, feel for the direction where the ground slopes downwards most steeply, and you take a step in that direction. Right? You follow the path of steepest descent. This intuitive idea of “slope” has a precise mathematical counterpart.</p>
+<p>In 1-dimension, if we have a function <span class="math inline">\(f(x)\)</span>, the concept of slope is captured by derivative <span class="math inline">\(\frac{df}{dx}\)</span>. As you’ll recall from calculus, the derivative is defined as</p>
+<p><span class="math display">\[
+\frac{df(x)}{dx} = \lim_{h \to 0} \frac{f(x + h) - f(x)}{h}
+\]</span></p>
+<p>It tells us how much the function <span class="math inline">\(f(x)\)</span> changes for an infinitesimally small change in <span class="math inline">\(x\)</span>. A positive derivative means the function is increasing, and a negative derivative means it’s decreasing. Now our loss function <span class="math inline">\(L(W)\)</span> is not a function of a single variable; it’s a function of many variables (all the elements of our weight matrix <span class="math inline">\(W\)</span>). So, we’re in a multiple-dimension scenario. In this case, the equivalent of the derivative is the <strong>gradient</strong>. The gradient of <span class="math inline">\(L\)</span> with respect to <span class="math inline">\(W\)</span> often denoted as <span class="math inline">\(\Delta L(W)\)</span> or <span class="math inline">\(\Delta_W L\)</span>, is a <strong>vector of partial derivatives</strong>. Each elements of this gradient vector tells us the slope of the loss function along the direction of the corresponding weight. For example <span class="math inline">\(\frac{\Delta L}{\Delta W_{ij}}\)</span> tells us how the loss <span class="math inline">\(L\)</span> change if we make a tiny change to the weight <span class="math inline">\(W_{ij}\)</span>, keeping other weights constant.</p>
+<p>So, the gradient vector <span class="math inline">\(\Delta L(W)\)</span> points in the direction in which the loss function L(W) increases the fastest. How do we find the slope in any arbitrary direction? If we have some direction vector <span class="math inline">\(u\)</span>, the slope in that direction is given by the dot product of that direction vector <span class="math inline">\(u\)</span> with the gradient vector <span class="math inline">\(\Delta L(W)\)</span>. And most importantly for our goal of minimizing the loss: the direction of steepest descent – the direction in which the loss function decreases the fastest it’s simple but happens to be true is the negative gradient, i.e., <span class="math inline">\(-\Delta L(W)\)</span>. So, if we can compute this gradient vector, we have a clear instruction: to reduce the loss, take a small step in the direction opposite to the gradient. This is the fundamental idea behind one of the most important optimization algorithms in machine learning.</p>
+<p>This method is called the <strong>Numeric Gradient</strong>. And it has a couple of important properties: 1) It’s <strong>Slow</strong>! We need to loop over all dimensions (all parameters) and perform a full loss computation for each one. For models with millions of parameters, this is completely impractical for training. 2) It’s <strong>Approximate</strong>. Because we’re using a finite h instead of the true limit as h approaches zero, what we calculate is an approximation of the true gradient. The choice of h is also a bit tricky – too small and you hit numerical precision issues; too large and the approximation is poor. So, while the numeric gradient is conceptually simple and directly follows from the definition of a derivative, it’s not how we typically train our models due to its inefficiency. However, it’s an incredibly useful tool for debugging our more efficient gradient calculation methods, which we’ll get to. If you implement a more complex way to calculate the gradient (like backpropagation), you can compare its output to the numeric gradient on a small example to check if your implementation is correct. This is called a gradient check. But for actually doing the optimization, we need something much faster. The loss function <span class="math inline">\(L(W)\)</span> is, after all, just a mathematical function of <span class="math inline">\(W\)</span>. Can’t we use calculus to find an exact, analytical expression for the gradient?</p>
+<p>The key insight is that our <strong>loss function <span class="math inline">\(L\)</span> is just a function of <span class="math inline">\(W\)</span></strong></p>
+<p><span class="math display">\[
+\begin{align}
+L   &amp;= \frac{1}{N} \sum_{i=1}^{N} L_i + \sum_{k} W_{k}^2 \\
+L_i &amp;= \sum_{i \neq y_i} \max(0, s_j - s_{y_i} + 1) \text{ or } L_i = -\log(\frac{e^{s_{y_i}}}{\sum_{j}e^{s_j}}) \\
+s  &amp;= f(x,W) = Wx \\
+&amp;\text{ want } \Delta_W L
+\end{align}
+\]</span></p>
+<p>So you can see <span class="math inline">\(L\)</span> ultimately a mathematical function of <span class="math inline">\(W\)</span>, the input <span class="math inline">\(x\)</span> and the true label <span class="math inline">\(y_i\)</span> are fix constant from our dataset, the only thing we’re changing is <span class="math inline">\(W\)</span>. What we want is the gradient of this entire expression L with respect to <span class="math inline">\(W\)</span> denoted as <span class="math inline">\(\Delta_W L\)</span>. Instead of numerically approximating this gradient by adjusting each <span class="math inline">\(W_k\)</span>, we should be able to use the rules of calculus.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./images/calculus.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Newton and Leibniz"><img src="./images/calculus.png" class="img-fluid figure-img" alt="Newton and Leibniz"></a></p>
+<figcaption>Newton and Leibniz</figcaption>
+</figure>
+</div>
+<p>Given that we have these well-defined mathematical functions, we can <strong>use calculus to compute an analytic gradient</strong>. This means we can derive a direct mathematical formula for _W. This is where our friend Newton and Leibniz, the inventors of calculus, come into play. Their work allow us to find these gradient efficiently and exactly (up to machine precision), without any of this iteration perturbation. Computing the analytic gradient involves applying the chain rule repeatedly, because our loss function is a composition of several functions (linear score function, then the loss calculation like hinge or softmax, then averaging, then adding regularization). For complex, deep neural networks, this process of applying the chain rule systematically is known as backpropagation which we will talk about very soon in other post. For now, let’s appreciate that deriving an analytic formula for the gradient is the efficient and exact way to go. It’s much faster than the numerical gradient because we just evaluate one formula, rather than N+1 evaluations of the loss function. So now instead of numerically calculating <span class="math inline">\(dW\)</span> element by element, if we had derived the analytic gradient, <span class="math inline">\(dW\)</span> would be given by some function that depends on our input data and the current <span class="math inline">\(W\)</span>. We would plug our data and current <span class="math inline">\(W\)</span> into this derived formula, and it would directly give us the entire gradient matrix <span class="math inline">\(dW\)</span> in one go.</p>
+<p>So we have two ways to think about computing gradient:</p>
+<ul>
+<li><strong>Numerical gradient</strong>:
+<ul>
+<li>It’s <strong>approximate</strong> (due to the finite h).</li>
+<li>It’s very <strong>slow</strong> (requires N+1 evaluations of the loss function for N parameters).</li>
+<li>However, it’s generally <strong>easy to write</strong> the code for, as it directly implements the definition of a derivative.</li>
+</ul></li>
+<li><strong>Analytic gradient</strong>:
+<ul>
+<li>It’s <strong>exact</strong> (up to machine precision).</li>
+<li>It’s very <strong>fast</strong> (typically a single pass of computation once the formula is derived).</li>
+<li>However, deriving and implementing the formula, especially for complex models, can be <strong>error-prone</strong>. It’s easy to make a mistake in the calculus or in the code.</li>
+</ul></li>
+</ul>
+<p>So, what does this lead us to in practice? <strong>In practice: Always use the analytic gradient for training your models because of its speed and exactness.</strong> However, because it’s error-prone to implement, you should <strong>check your implementation with the numerical gradient</strong>. This crucial debugging step is called a gradient check. How does gradient check work? You implement your analytic gradient. Then for a small test case like a small <span class="math inline">\(W\)</span> and a few data point, you also compute the numerical gradient. You then compare the two results. If they are very close, you can be reasonably confident that your analytic gradient implementation is correct. If they differ significantly, you have a bug in your analytic gradient derivation or code.</p>
+</section>
+</section>
+<section id="sgd" class="level2">
+<h2 class="anchored" data-anchor-id="sgd">SGD</h2>
+<p>Okay, so now we have an efficient and exact way to compute the gradient <span class="math inline">\(\Delta_W L\)</span>, which tells us the direction of steepest ascent. To minimize the loss, we want to go in the opposite direction. This brings us to the core algorithm for optimization in deep learning: Gradient Descent. The core idea is remarkably simple, here is a simple implementation of “Vanilla Gradient Decent”.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="va">True</span>:</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  weights_grad <span class="op">=</span> evaluate_gradient(loss_fun, data, weights)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  weights <span class="op">+=</span> <span class="op">-</span> step_size <span class="op">*</span> weights_grad <span class="co"># perform parameter update</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>So basically we start with some initial guess for our weights, then we enter a loop that (conceptually) runs “True” or until some stopping criterion is met. Inside the loop, the first crucial step is <code>weights_grad = evaluate_gradient(loss_fun, data, weights)</code>. This is where we compute the analytic gradient of our loss function (loss_fun) with respect to the current weights, using our training data. This weights_grad is our <span class="math inline">\(\Delta_W L\)</span>. Next is parameter update, we take the weights_grad multiply it by - step_size the negative sign is because we want to move in the direction opposite to the gradient (the direction of steepest descent). The step_size (also known as the learning rate) is a small positive scalar hyperparameter. It controls how far we step in that negative gradient direction. If it’s too large, we might overshoot the minimum. If it’s too small, training will be very slow. We then add this scaled negative gradient to our current weights to get the updated weights. And we repeat. We re-evaluate the gradient at the new weights, take another step, and so on, iteratively moving “downhill” on the loss surface.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./images/gd.gif" class="lightbox" data-gallery="quarto-lightbox-gallery-4"><img src="./images/gd.gif" class="img-fluid quarto-figure quarto-figure-center figure-img"></a></p>
+</figure>
+</div>
+<p>This is Vanilla Gradient Descent. The “vanilla” part implies there are more sophisticated variants, which we’ll get to. One important detail in this vanilla version is that <code>evaluate_gradient</code> typically involves computing the gradient over the entire training dataset to get the true gradient of <span class="math inline">\(L\)</span>. This can be very computationally expensive if our dataset is large. This brings us to <strong>Stochastic Gradient Descent (SGD)</strong>, or more commonly in practice, <strong>Minibatch Gradient Descent</strong>.</p>
+<p><span class="math display">\[
+\begin{align}
+L(W) &amp;= \frac{1}{N} \sum_{i=1}^{N} L_i(x_i, y_i, W) + \lambda R(W)\\
+\Delta_W L &amp;= \frac{1}{N} \sum_{i = 1}^N \Delta_W L_i(x_i, y_i, W) + \lambda \Delta_W R(W)
+\end{align}
+\]</span></p>
+<p>The problem is that computing this full sum over all N examples for <span class="math inline">\(\Delta_W L_i\)</span> is expensive when <span class="math inline">\(N\)</span> is large. If you have millions of training examples, calculating the gradient across all of them just to make one tiny step with your weights is very inefficient. You’d be spending a lot of computation for a potentially very small update. The core idea of Stochastic Gradient Descent is to <strong>approximate this sum using a small random subset of the data called a minibatch</strong>. Instead of summing the gradients over all N examples, we sum them over just a small batch of, say, 32, 64, or 128 examples. Common minibatch sizes often range from 32 to 256, sometimes larger, depending on memory constraints and the specific problem. So, the gradient we compute on a minibatch is not the true gradient of the total loss L, but it’s an estimate or an approximation. Since the minibatch is sampled randomly, this estimate is unbiased on average, and it’s much, much faster to compute.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Vanilla Minibatch Gradient Descent</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="va">True</span>:</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  data_batch <span class="op">=</span> sample_training_data(data, <span class="dv">256</span>) <span class="co"># sample 256 examples</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  weights_grad <span class="op">=</span> evaluate_gradient(loss_fun, data_batch, weights)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  weights <span class="op">+=</span> <span class="op">-</span> step_size <span class="op">*</span> weights_grad <span class="co"># perform parameter update</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The key difference from Vanilla Gradient Descent is the first line inside the loop: <code>data_batch = sample_training_data(data, 256)</code>. Here, instead of using the full data, we randomly sample a data_batch (e.g., 256 examples). This approach is “stochastic” because each gradient estimate is noisy and depends on the specific random minibatch chosen. However, by taking many such noisy steps, we still tend to move towards the minimum of the loss function, often much faster in terms of wall-clock time than full batch gradient descent because each step is so much cheaper. The term “Stochastic Gradient Descent (SGD)” technically refers to the extreme case where the minibatch size is 1 – you update the weights after seeing just one example. In practice, when people say “SGD” in deep learning, they almost always mean minibatch gradient descent. Using minibatches not only speeds up training but can also sometimes help the optimization process escape poor local minima or saddle points due to the noise in the gradient estimates, leading to better generalization.</p>
+<p>So, SGD with minibatches is the workhorse for training almost all large-scale deep learning models. However, it’s not without its own set of challenges and nuances.</p>
+<section id="problem-1-with-sgd-dealing-with-ill-conditioned-loss-landscapes" class="level3">
+<h3 class="anchored" data-anchor-id="problem-1-with-sgd-dealing-with-ill-conditioned-loss-landscapes">Problem #1 with SGD: Dealing with ill-conditioned loss landscapes</h3>
+<p><a href="./images/sgd.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5"><img src="./images/sgd.png" class="img-fluid"></a></p>
+<p>Consider a scenario where our loss function landscape looks like this: a long, narrow valley, or a ravine. The ellipses here represent level sets of the loss function, and the smiley face is at the minimum we want to reach. The question is: <strong>What if the loss changes quickly in one direction and slowly in another?</strong> For example, along the w2 direction (vertically), the valley is very steep – the loss changes rapidly. But along the w1 direction (horizontally), the valley is very shallow and elongated – the loss changes slowly. If we start at the red dot and apply standard SGD, what will happen? What gradient descent does is it always points in the direction of steepest descent. In such a ravine, the steepest direction is mostly perpendicular to the valley floor, pointing across the steep walls. So, SGD will tend to take large steps that oscillate back and forth across the narrow valley (the w2 direction, where the gradient is large). Because of these large oscillations, if we use a single learning rate, it has to be small enough to prevent divergence in this steep direction. However, this small learning rate means that progress along the shallow direction of the valley (the w1 direction, where the gradient component is small) will be agonizingly slow. The result is very slow progress along the shallow dimension, and a lot of jitter or oscillation along the steep direction, as shown by the red zigzag path. We’re making very inefficient progress towards the true minimum. This kind of behavior is characteristic of loss functions that are ill-conditioned.</p>
+</section>
+<section id="problem-2-with-sgd-local-minima-and-saddle-points" class="level3">
+<h3 class="anchored" data-anchor-id="problem-2-with-sgd-local-minima-and-saddle-points">Problem #2 with SGD: Local Minima and Saddle Points</h3>
+<p>The loss functions for deep neural networks are highly non-convex. This means they can have many local minima – points where the loss is lower than all its immediate neighbors, but not necessarily the global minimum (the lowest possible loss overall). They can also have saddle points.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./images/saddlepoint.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6" title="Saddle point, image source: https://en.wikipedia.org/wiki/Saddle_point"><img src="./images/saddlepoint.png" class="img-fluid figure-img" alt="Saddle point, image source: https://en.wikipedia.org/wiki/Saddle_point"></a></p>
+<figcaption>Saddle point, image source: <a href="https://en.wikipedia.org/wiki/Saddle_point">https://en.wikipedia.org/wiki/Saddle_point</a></figcaption>
+</figure>
+</div>
+<p>At a local minimum, or at a saddle point, the gradient is zero (or very close to zero). If the gradient is zero, then weights_grad in our update <code>rule weights += - step_size * weights_grad</code> is zero. This means the weights stop updating. Gradient descent gets stuck! It thinks it has found the bottom of a valley, but it might just be a small dip, or a point that’s flat in some directions but goes up in others.</p>
+<p>Now, for a long time, people were very concerned about local minima being a major impediment to training deep networks. The fear was that SGD would get trapped in a poor local minimum and never find a good solution. However, more recent research, like <a href="https://arxiv.org/abs/1406.2572">the paper</a> by Dauphin et al.&nbsp;(2014) cited here, suggests that in very high-dimensional spaces (which is where our weight matrices W live), <strong>saddle points are actually much more common than local minima</strong>. For a point to be a local minimum, the loss function needs to curve upwards in all dimensions around that point. For it to be a local maximum, it needs to curve downwards in all dimensions. For it to be a saddle point, it needs to curve upwards in some dimensions and downwards in others. In high dimensions, it’s statistically much more likely to have a mix of curvatures than for all curvatures to go in the same direction. So, while getting stuck is a problem, it’s often saddle points, rather than bad local minima, that are the primary culprits for slowing down or halting SGD. At a saddle point, the gradient is zero, but it’s not a minimum.</p>
+<p>So, that’s the second major issue: points with zero or near-zero gradient (local minima and, more commonly, saddle points) can trap or significantly slow down SGD.</p>
+</section>
+<section id="problem-3-with-sgd-noisy-gradients" class="level3">
+<h3 class="anchored" data-anchor-id="problem-3-with-sgd-noisy-gradients">Problem #3 with SGD: Noisy Gradients</h3>
+<p>This problem is inherent in the “S” of SGD – the stochasticity. As we discussed, our loss <span class="math inline">\(L(W)\)</span> is an average over all <span class="math inline">\(N\)</span> training examples (plus regularization, which we’ll ignore for this point for simplicity). And it’s true gradient is:</p>
+<p><span class="math display">\[
+\Delta_W L = \frac{1}{N} \sum_{i = 1}^N \Delta_W L_i(x_i, y_i, W)
+\]</span></p>
+<p>However, with minibatch SGD, we don’t compute this full sum. We compute the gradient on a small minibatch. This minibatch gradient is an estimate of the true gradient. Because the minibatch is a random sample, this estimate will be noisy. It won’t point exactly in the direction of the true steepest descent. If you take many different minibatches at the same point <span class="math inline">\(W\)</span>, you’ll get slightly different gradient vectors.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./images/noisy-grad.gif" class="lightbox" data-gallery="quarto-lightbox-gallery-7"><img src="./images/noisy-grad.gif" class="img-fluid quarto-figure quarto-figure-center figure-img"></a></p>
+</figure>
+</div>
+<p>The noisy gradients mean that our steps won’t be as smooth as the idealized animation we saw earlier. They’ll be a bit erratic. While this noise can sometimes be helpful (e.g., for escaping sharp local minima or some saddle points), it also means that the convergence path can be jittery, and finding the exact minimum can be harder. The optimization path might dance around the minimum without settling perfectly.</p>
+<p>So, these three problems – ill-conditioned landscapes (ravines), local minima/saddle points, and noisy gradients – are key challenges that standard SGD faces. This has motivated the development of more advanced optimization algorithms that try to mitigate these issues. One of the first and most important enhancements is the idea of momentum.</p>
+</section>
+</section>
+<section id="momentum" class="level2">
+<h2 class="anchored" data-anchor-id="momentum">Momentum</h2>
+<p>The first major improvement we’ll discuss is adding Momentum to SGD. If SGD gets to a flat region where the gradient is zero, it stops. Momentum, like a ball rolling downhill, has inertia. It might be able to “roll through” small local minima or flat regions of saddle points because it has built up speed from previous gradients. In that zigzagging scenario, the gradient components across the ravine tend to cancel out on average over iterations due to the oscillation. However, the small gradient components along the valley consistently point in the same direction. Momentum helps to average out these oscillations and amplify the consistent movement along the valley floor. You can see the blue line (SGD+Momentum) makes much more direct progress towards the minimum compared to the black zigzagging SGD line. The noise in minibatch gradients causes SGD to jitter. Momentum helps to smooth out these noisy updates by taking a running average of the gradients. This leads to a more stable and often faster convergence towards the minimum</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./images/momentum.gif" class="lightbox" data-gallery="quarto-lightbox-gallery-8"><img src="./images/momentum.gif" class="img-fluid quarto-figure quarto-figure-center figure-img"></a></p>
+</figure>
+</div>
+<p>Now, for SGD + Momentum. The key idea is to continue moving in the general direction as the previous iterations. We introduce a “velocity” term, v, which accumulates a running mean of the gradients.</p>
+<p><span class="math display">\[
+\begin{align}
+v_{t+1} &amp;=  \rho v_t + \Delta f(x_t) \\
+x_{t+1} &amp;= x_t - \alpha v_{t+1}
+\end{align}
+\]</span></p>
+<ul>
+<li><span class="math inline">\(v_{t}\)</span> is the velocity vector from the previous step. It’s initialized to zero.</li>
+<li><span class="math inline">\(\rho\)</span> is the momentum coefficient (or friction term). It’s typically a value like 0.9 or 0.99. It determines how much of the previous velocity is retained. If ρ=0, we recover standard SGD (almost, as we’ll see the learning rate is applied differently).</li>
+<li>In the first equation, we update the velocity: we take the old velocity <span class="math inline">\(v_t\)</span>, scale it down by <span class="math inline">\(\rho\)</span>, and then add the current gradient <span class="math inline">\(\Delta f(x_t)\)</span>. So, the velocity v is essentially an exponentially decaying moving average of the past gradients.</li>
+<li>In the second equation, we update the parameters <span class="math inline">\(x\)</span> by taking a step in the direction of this new velocity <span class="math inline">\(v_t+1\)</span>, scaled by the learning rate <span class="math inline">\(\alpha\)</span>. Crucially, we are now stepping with the velocity, not directly with the current gradient.</li>
+</ul>
+<p>The intuition is that we build up “velocity” as a running mean of gradients. If gradients consistently point in the same direction, the velocity in that direction grows. If gradients oscillate, those components of the velocity tend to be dampened. The term <span class="math inline">\(\rho\)</span> acts like friction. If <span class="math inline">\(\rho\)</span> is close to 1 (e.g., 0.99), we have high momentum, and the velocity persists for a long time. If <span class="math inline">\(\rho\)</span> is smaller (e.g., 0.5), it’s like having more friction, and the velocity relies more on recent gradients. <a href="https://proceedings.mlr.press/v28/sutskever13.pdf">The paper</a> by Sutskever et al.&nbsp;(2013) is a classic reference highlighting the importance of momentum in deep learning</p>
+<p>Here’s how this might look in code:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>vx <span class="op">=</span> <span class="dv">0</span> <span class="co"># initialize velocity to zero</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="va">True</span>:</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  dx <span class="op">=</span> compute_gradient(x) <span class="co"># current gradient</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  vx <span class="op">=</span> rho <span class="op">*</span> vx <span class="op">+</span> dx       <span class="co"># update velocity</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  x <span class="op">-=</span> learning_rate <span class="op">+</span> vx  <span class="co"># update parameters</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Momentum is a very powerful and widely used technique. But it’s not the only improvement over vanilla SGD. Other methods try to adapt the learning rate on a per-parameter basis, which can be particularly helpful for those ill-conditioned ravine-like loss surfaces.</p>
+</section>
+<section id="smarter-steps-with-adaptive-optimizer" class="level2">
+<h2 class="anchored" data-anchor-id="smarter-steps-with-adaptive-optimizer">Smarter steps with adaptive optimizer</h2>
+<p>Okay, so SGD with Momentum helps to accelerate in consistent directions and dampen oscillations. But what about that problem of different curvatures in different dimensions – the ravines? Momentum helps, but can we do even better? This leads us to optimizers that try to adapt the learning rate on a per-parameter basis. One popular example is <strong>RMSProp</strong>. Recall SGD+Momentum: we compute a velocity <code>vx</code> and update <code>x</code> using <code>learning_rate * vx</code>. Now, for RMSProp, developed by Tieleman and Hinton:</p>
+<div class="sourceCode" id="annotated-cell-8"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><a class="code-annotation-anchor" data-target-cell="annotated-cell-8" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-8-1" class="code-annotation-target"><a href="#annotated-cell-8-1" aria-hidden="true" tabindex="-1"></a>grad_square <span class="op">=</span> <span class="dv">0</span></span>
+<span id="annotated-cell-8-2"><a href="#annotated-cell-8-2" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="va">True</span>:</span>
+<span id="annotated-cell-8-3"><a href="#annotated-cell-8-3" aria-hidden="true" tabindex="-1"></a>  dx <span class="op">=</span> compute_gradient(x)</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-8" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-8-4" class="code-annotation-target"><a href="#annotated-cell-8-4" aria-hidden="true" tabindex="-1"></a>  grad_square <span class="op">=</span> decay_rate <span class="op">*</span> grad_square <span class="op">+</span> (<span class="dv">1</span> <span class="op">-</span> decay_rate) <span class="op">*</span> dx <span class="op">*</span> dx</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-8" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-8-5" class="code-annotation-target"><a href="#annotated-cell-8-5" aria-hidden="true" tabindex="-1"></a>  x <span class="op">-=</span> learning_rate <span class="op">*</span> dx <span class="op">/</span> (np.sqrt(grad_squared) <span class="op">+</span> <span class="fl">1e-7</span>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-8" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-8" data-code-lines="1" data-code-annotation="1">We maintain a variable <code>grad_squared</code>. This variable will keep track of an exponentially decaying average of the squared gradients for each parameter. It’s initialized to zero.</span>
+</dd>
+<dt data-target-cell="annotated-cell-8" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-8" data-code-lines="4" data-code-annotation="2">This is an exponentially weighted moving average. <code>decay_rate</code> is a hyperparameter, typically something like 0.9 or 0.99. We’re taking the previous <code>grad_squared</code>, decaying it, and adding the newly computed <code>dx * dx</code> (element-wise square of the current gradient), scaled by <code>1 - decay_rate</code>. So, <code>grad_squared</code> accumulates information about the typical magnitude of recent gradients for each parameter.</span>
+</dd>
+<dt data-target-cell="annotated-cell-8" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-8" data-code-lines="5" data-code-annotation="3">this is the parameter update rule, we take our square root of our accumulated <code>grad_squared</code> this gives us something like the Root Mean Square of recent gradients, add a small epsilon (like 1e-7) for numerical stability to prevent division by zero if grad_squared is tiny, and then we divide the current gradient <code>dx</code> by this term.</span>
+</dd>
+</dl>
+<p>The effect of this division by <code>np.sqrt(grad_squared)</code> is crucial. If a particular parameter has consistently had large gradients in the past (meaning its corresponding element in <code>grad_squared</code> is large), then <code>np.sqrt(grad_squared)</code> will be large, and the effective step size for that parameter <code>learning_rate / (np.sqrt(grad_squared) + epsilon)</code> will be smaller. Conversely, if a parameter has consistently had small gradients (so grad_squared for it is small), then <code>np.sqrt(grad_squared)</code> will be small, and its effective step size will be larger. This effectively gives us <strong>per-parameter learning rates</strong> or <strong>adaptive learning rates.</strong> The learning rate is adapted for each parameter based on the history of its gradient magnitudes.</p>
+<p><strong>What happens with RMSProp?</strong> Specifically, how does this help with that ravine problem? What happens is that progress along “steep” directions is damped, and progress along “flat” directions is accelerated. Think back to our ravie. In the steep direction (e.g., <code>w2</code>), the gradients dx are large. This means <code>dx * dx</code> will be large, and <code>grad_squared</code> will accumulate to a large value for that dimension. Consequently, when we divide <code>dx</code> by <code>np.sqrt(grad_squared)</code>, we significantly reduce the step size in that steep direction. This helps to prevent the oscillations. In the flat, shallow direction (e.g., <code>w1</code>), the gradients <code>dx</code> are small. <code>dx * dx</code> will be small, and <code>grad_squared</code> will be small for that dimension. When we divide <code>dx</code> by a small <code>np.sqrt(grad_squared)</code>, the effective step size for that direction is relatively larger (or at least not as suppressed). This helps to make faster progress along the shallow valley. So, RMSProp automatically adjusts the learning rate for each parameter, making bigger steps in directions where gradients have been small and smaller steps in directions where gradients have been large.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./images/RMSProp.gif" class="lightbox" data-gallery="quarto-lightbox-gallery-9" title="blue line: RMSProp, red line: SGD+Momentum, black line: SGD"><img src="./images/RMSProp.gif" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="blue line: RMSProp, red line: SGD+Momentum, black line: SGD"></a></p>
+</figure>
+</div>
+<figcaption>blue line: RMSProp, red line: SGD+Momentum, black line: SGD</figcaption>
+</figure>
+</div>
+<p>RMSProp is a very effective optimizer and was a popular choice for quite some time. It directly addresses the issue of different learning rates being needed for different parameter dimensions. Now, what if we could combine the benefits of momentum with the adaptive learning rates of RMSProp? That leads us to <strong>Adam</strong>.</p>
+<p>Here’s a look at the core of the Adam optimizer, presented as “Adam (almost)” because it’s missing one small but important detail we’ll get to. This was introduced by Kingma and Ba in their 2015 ICLR paper.</p>
+<div class="sourceCode" id="annotated-cell-9"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-9-1"><a href="#annotated-cell-9-1" aria-hidden="true" tabindex="-1"></a>first_moment <span class="op">=</span> <span class="dv">0</span></span>
+<span id="annotated-cell-9-2"><a href="#annotated-cell-9-2" aria-hidden="true" tabindex="-1"></a>second_moment <span class="op">=</span> <span class="dv">0</span></span>
+<span id="annotated-cell-9-3"><a href="#annotated-cell-9-3" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="va">True</span>:</span>
+<span id="annotated-cell-9-4"><a href="#annotated-cell-9-4" aria-hidden="true" tabindex="-1"></a>  dx <span class="op">=</span> compute_gradient(x)</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-9" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-9-5" class="code-annotation-target"><a href="#annotated-cell-9-5" aria-hidden="true" tabindex="-1"></a>  first_moment <span class="op">=</span> beta1 <span class="op">*</span> first_moment <span class="op">+</span> (<span class="dv">1</span> <span class="op">-</span> beta1) <span class="op">*</span> dx</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-9" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-9-6" class="code-annotation-target"><a href="#annotated-cell-9-6" aria-hidden="true" tabindex="-1"></a>  second_moment <span class="op">=</span> beta2 <span class="op">*</span> second_moment <span class="op">+</span> (<span class="dv">1</span> <span class="op">-</span> beta2) <span class="op">*</span> dx <span class="op">*</span> dx</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-9" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-9-7" class="code-annotation-target"><a href="#annotated-cell-9-7" aria-hidden="true" tabindex="-1"></a>  x <span class="op">-=</span> learning_rate <span class="op">*</span> first_moment <span class="op">/</span> (np.sqrt(second_moment) <span class="op">+</span> <span class="fl">1e-7</span>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-9" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-9" data-code-lines="5" data-code-annotation="1">This is an exponentially decaying moving average of the gradient itself. <code>beta1</code> is a decay rate (e.g., 0.9). This looks very much like the velocity update in SGD+Momentum! It’s capturing the “momentum” aspect which is an estimate of the mean of the gradients.</span>
+</dd>
+<dt data-target-cell="annotated-cell-9" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-9" data-code-lines="6" data-code-annotation="2">This is an exponentially decaying moving average of the squared gradients. <code>beta2</code> is another decay rate (e.g., 0.999). This looks exactly like the <code>grad_squared</code> update in RMSProp! It’s capturing information about the variance (or uncentered second moment) of the gradients.</span>
+</dd>
+<dt data-target-cell="annotated-cell-9" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-9" data-code-lines="7" data-code-annotation="3">Here, we’re using the <code>first_moment</code> (our momentum term) in the numerator, and we’re dividing by the square root of the <code>second_moment</code> (our RMSProp-like adaptive scaling term) in the denominator.</span>
+</dd>
+</dl>
+<p>It’s <strong>sort of like RMSProp with momentum</strong>. It’s trying to get the best of both worlds: the acceleration benefits of momentum and the per-parameter adaptive learning rates. Remember, <code>first_moment</code> and <code>second_moment</code> are initialized to zero. What’s the implication of this?</p>
+<p>At the very first timestep (and for the first few timesteps), because <code>first_moment</code> and <code>second_moment</code> start at zero and the decay rates <code>beta1</code> and <code>beta2</code> are typically close to 1 (e.g., 0.9, 0.999), these moving average estimates will be biased towards zero. They haven’t had enough gradient information to “warm up” to their true values. This can cause the initial steps to be undesirably small. This is where the “almost” part is resolved. The full form of Adam includes a bias correction step to address this initialization bias.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>first_moment <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>second_moment <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, num_iterations): <span class="co"># t is the timestep</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  dx <span class="op">=</span> compute_gradient(x)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  first_moment <span class="op">=</span> beta1 <span class="op">*</span> first_moment <span class="op">+</span> (<span class="dv">1</span> <span class="op">-</span> beta1) <span class="op">*</span> dx</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  second_moment <span class="op">=</span> beta2 <span class="op">*</span> second_moment <span class="op">+</span> (<span class="dv">1</span> <span class="op">-</span> beta2) <span class="op">*</span> dx <span class="op">*</span> dx</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Bias correction</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  first_unbias <span class="op">=</span> first_moment <span class="op">/</span> (<span class="dv">1</span> <span class="op">-</span> beta1<span class="op">**</span>t)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  second_unbias <span class="op">=</span> second_moment <span class="op">/</span> (<span class="dv">1</span> <span class="op">-</span> beta2<span class="op">**</span>t)</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  x <span class="op">-=</span> learning_rate <span class="op">*</span> first_unbias <span class="op">/</span> (np.sqrt(second_unbias) <span class="op">+</span> <span class="fl">1e-7</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Here <code>t</code> is the current iteration number (timestep). At the beginning with small <code>t</code>, <code>beta1**t</code> and <code>beta2**t</code> are close to <code>beta1</code> and <code>beta2</code>. So, <code>(1 - beta1**t)</code> and <code>(1 - beta2**t)</code> are small numbers, which effectively scales up the <code>first_moment</code> and <code>second_moment</code> estimates, counteracting their initial bias towards zero. As <code>t</code> gets large, <code>beta1**t</code> and <code>beta2**t</code> approach zero (since <code>beta1</code>, <code>beta2</code> &lt; 1), so <code>(1 - beta1**t)</code> and <code>(1 - beta2**t)</code> approach 1, and the bias correction has less and less effect. The parameter update then uses these bias-corrected <code>first_unbias</code> and <code>second_unbias</code> estimates. This bias correction is for the fact that the first and second moment estimates start at zero and would otherwise be biased, especially during the early stages of training.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./images/adam.gif" class="lightbox" data-gallery="quarto-lightbox-gallery-10" title="blue line: RMSProp, red line: SGD+Momentum, black line: SGD, purple: Adam"><img src="./images/adam.gif" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="blue line: RMSProp, red line: SGD+Momentum, black line: SGD, purple: Adam"></a></p>
+</figure>
+</div>
+<figcaption>blue line: RMSProp, red line: SGD+Momentum, black line: SGD, purple: Adam</figcaption>
+</figure>
+</div>
+<p>The Adam optimizer, with its combination of momentum-like behavior and RMSProp-like adaptive scaling, plus this bias correction, has proven to be very effective and robust across a wide range of deep learning tasks and architectures. The original paper suggests default values for the hyperparameters:</p>
+<ul>
+<li><code>beta1</code> = 0.9 (for the first moment/momentum)</li>
+<li><code>beta2</code> = 0.999 (for the second moment/RMSProp-like scaling)</li>
+<li><code>learning_rate</code> typically in the range of 1e-3 (0.001) or 5e-4 (0.0005).</li>
+<li>The epsilon for numerical stability is often 1e-7 or 1e-8.</li>
+</ul>
+<p>And indeed, Adam with these default settings (<code>beta1</code>=0.9, <code>beta2</code>=0.999, and a <code>learning_rate</code> like 1e-3) is often a great starting point for many models! It’s frequently the first optimizer people try, and it often works quite well out of the box without extensive hyperparameter tuning, though tuning the learning rate is still important. Adam is a fantastic general-purpose optimizer. However, like all things, it’s not perfect, and some subtleties have emerged, particularly regarding how it interacts with weight decay (L2 regularization).</p>
+<p>This leads us to <strong>AdamW</strong>: an Adam Variant with Weight Decay. The question to consider is: <strong>How does regularization interact with the optimizer? (e.g., L2)</strong></p>
+<p>Remember that our full loss function is typically <span class="math inline">\(L_{data} + \lambda R(W)\)</span>. If <span class="math inline">\(R(W)\)</span> is L2 regularization, then its gradient is <span class="math inline">\(2\lambda W.\)</span> This gradient of the regularization term gets added to the gradient of the data loss term to form the total <code>dx = compute_gradient(x)</code>. So, how does this interaction play out with an adaptive optimizer like Adam? The answer, perhaps unsurprisingly, is: <strong>It depends!</strong> Specifically, it depends on how the L2 regularization (weight decay) is implemented with respect to the adaptive learning rate mechanism. In Standard Adam (and many other adaptive gradient methods like RMSProp or AdaGrad), the L2 regularization term <span class="math inline">\(\lambda W\)</span> is typically added to the gradient of the data loss before the moment calculations. So, <code>dx = gradient_of_data_loss + gradient_of_L2_regularization</code>. This combined <code>dx</code> is then used during the moment calculations (for <code>first_moment</code> and <code>second_moment</code>). What this means is that the L2 regularization gradient gets scaled by the adaptive learning rates (the <code>1/sqrt(second_moment)</code> term). If <code>second_moment</code> is large for a particular weight (meaning its gradients have been large), then the effective weight decay for that parameter is also reduced. This coupling means that the strength of the weight decay is not uniform and can be different for different parameters, and can change over time in a way that might not be optimal. Larger gradients lead to smaller effective weight decay.</p>
+<p>AdamW introduced by Loshchilov and Hutter, 2017, in <a href="https://arxiv.org/abs/1711.05101">“Decoupled Weight Decay Regularization”</a> proposes a different approach. Instead of adding the L2 regularization gradient into <code>dx</code> before the moment calculations, AdamW performs weight decay after the moment updates, directly on the weights themselves. So, the <code>first_moment</code> and <code>second_moment</code> are computed using only the gradient of the data loss. Then, the weight decay is applied as a separate step, effectively by subtracting <code>learning_rate * weight_decay_coefficient * weights</code> from the weights after the Adam step that uses <code>first_unbias</code> and <code>second_unbias</code>. So, AdamW is now often preferred over standard Adam when L2 regularization is used, as it implements weight decay in a way that is often more effective and closer to its original intention. Many deep learning libraries now offer AdamW as a distinct optimizer.</p>
+</section>
+<section id="learning-rate-schedules" class="level2">
+<h2 class="anchored" data-anchor-id="learning-rate-schedules">Learning rate schedules</h2>
+<p>Now, let’s turn our attention to a hyperparameter that is critical for all of them: the <strong>learning rate</strong>, often referred to as step_size. In the vanilla gradient descent update, <code>weights += - step_size * weights_grad</code>, the learning rate determines how big of a step we take in the negative gradient direction. All the optimizers we’ve discussed – SGD, SGD+Momentum, RMSProp, Adam, AdamW all have the learning rate as a crucial hyperparameter. Choosing the right learning rate is often one of the most important parts of getting good performance from a deep learning model.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./images/lr.png" class="lightbox" data-gallery="quarto-lightbox-gallery-11" title="How learning rate effect our training?"><img src="./images/lr.png" class="img-fluid figure-img" alt="How learning rate effect our training?"></a></p>
+<figcaption>How learning rate effect our training?</figcaption>
+</figure>
+</div>
+<p>So, the question is: <strong>Which one of these learning rates is best to use?</strong> Is there a single magic value? The answer is: <strong>In reality, all of these could be good learning rates… at different stages of training</strong>. This is a key insight. A single, fixed learning rate throughout the entire training process might not be optimal. Early in training, when you’re far from a good solution, a relatively larger learning rate can help you make rapid progress across the loss landscape. However, as you get closer to a minimum, that same large learning rate might cause you to overshoot and bounce around the minimum, preventing you from settling into the very bottom of the valley. In this later stage, a smaller learning rate is often beneficial to fine-tune the weights and converge more precisely. This idea that the optimal learning rate might change during training leads directly to the concept of <strong>learning rate schedules</strong>, also known as learning rate decay. We don’t just pick one learning rate and stick with it; we dynamically adjust it as training progresses.</p>
+<p>One common strategy is <strong>Step Decay</strong>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./images/lr-decay.png" class="lightbox" data-gallery="quarto-lightbox-gallery-12" title="training loss epoch, notice the distinct drops in loss at certain epochs"><img src="./images/lr-decay.png" class="img-fluid figure-img" alt="training loss epoch, notice the distinct drops in loss at certain epochs"></a></p>
+<figcaption>training loss epoch, notice the distinct drops in loss at certain epochs</figcaption>
+</figure>
+</div>
+<p>The strategy here is to reduce the learning rate at a few fixed points during training. For example, a common schedule for training ResNets on ImageNet is to start with a certain learning rate, and then multiply it by 0.1 after, say, 30 epochs, then again by 0.1 after 60 epochs, and perhaps one more time after 90 epochs. You can see that after the learning rate is reduced (indicated by the arrows), the loss often plateaus for a bit and then finds a new, lower level. This happens because with a smaller learning rate, the optimizer can more finely navigate the bottom of the loss valley it has reached</p>
+<p>Step decay is quite effective, but it requires choosing when to drop the learning rate and by how much. Are there smoother ways to decay the learning rate? Yes! Another very popular schedule is <strong>Cosine Decay</strong>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./images/cosine-decay.png" class="lightbox" data-gallery="quarto-lightbox-gallery-13" title="Cosine Decay (or cosine annealing)"><img src="./images/cosine-decay.png" class="img-fluid figure-img" alt="Cosine Decay (or cosine annealing)"></a></p>
+<figcaption>Cosine Decay (or cosine annealing)</figcaption>
+</figure>
+</div>
+<p>The formula is:</p>
+<p><span class="math display">\[
+\alpha_t = \frac{1}{2} \alpha_0 \left(1 + \cos\left(\frac{t}{T} \pi\right)\right)
+\]</span></p>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">\(\alpha_0\)</span> is initial learning rate</li>
+<li><span class="math inline">\(\alpha_t\)</span> is the learning rate at epoch <span class="math inline">\(t\)</span></li>
+<li><span class="math inline">\(T\)</span> is the total number of epochs you plan to train for</li>
+</ul>
+<p>The plot shows how this learning rate evolves over epochs. It starts at <span class="math inline">\(\alpha_0\)</span> and smoothly decreases, following a cosine curve, until it reaches near zero at the end of training (epoch <span class="math inline">\(T\)</span>). This smooth decay is often found to work very well in practice and is less sensitive to the exact choice of drop points compared to step decay. Many recent state-of-the-art models use cosine annealing, sometimes with warm restarts which we’re not covering in detail here but involves periodically resetting the learning rate and re-annealing, as in the Loshchilov and Hutter paper. And on the right is an example of what the training loss might look like when using a cosine decay schedule. You see a generally smooth decrease in loss over a larger number of epochs, without the sharp drops associated with step decay. It just gradually refines the solution as the learning rate smoothly anneals.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./images/linear-inverse.png" class="lightbox" data-gallery="quarto-lightbox-gallery-14" title="left: Linear Decay, right: Inverse Square Root Decay"><img src="./images/linear-inverse.png" class="img-fluid figure-img" alt="left: Linear Decay, right: Inverse Square Root Decay"></a></p>
+<figcaption>left: Linear Decay, right: Inverse Square Root Decay</figcaption>
+</figure>
+</div>
+<p>Another simple schedule is <strong>Linear Decay</strong>, the formula is:</p>
+<p><span class="math display">\[
+\alpha_t = \alpha_0 (1 - \frac{t}{T})
+\]</span></p>
+<p>The learning rate decreases linearly from <span class="math inline">\(\alpha_0\)</span> down to 0 over <span class="math inline">\(T\)</span> epochs. This is also a common choice, used in famous models like BERT, for example. The plot shows this straight-line decrease.</p>
+<p>And one more example: <strong>Inverse Square Root Decay</strong>. The formula is:</p>
+<p><span class="math display">\[
+\alpha_t = \frac{\alpha_0}{\sqrt{t}}
+\]</span></p>
+<p>The learning rate decreases proportionally to the inverse square root of the epoch number <span class="math inline">\(t\)</span>. This schedule makes the learning rate drop relatively quickly at the beginning and then more slowly later on. This was famously used in the original <a href="https://arxiv.org/abs/1706.03762">“Attention is All You Need”</a> Transformer paper.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./images/linear-warmup.png" class="lightbox" data-gallery="quarto-lightbox-gallery-15" title="Linear Warmup"><img src="./images/linear-warmup.png" class="img-fluid figure-img" alt="Linear Warmup"></a></p>
+<figcaption>Linear Warmup</figcaption>
+</figure>
+</div>
+<p>There’s one more important trick related to learning rates, especially when using large initial learning rates or large batch sizes: <strong>Linear Warmup</strong>. The idea is that high initial learning rates can sometimes make the loss explode right at the beginning of training, especially if the initial weights are far from good and produce very large gradients. The model can become unstable. To prevent this, a common practice is to linearly increase the learning rate from 0 (or a very small value) up to your target initial learning rate <span class="math inline">\(\alpha_0\)</span> over the first few thousand iterations (e.g., the first ~5,000 iterations or the first epoch). The plot shows this: the learning rate starts at 0, ramps up linearly to a peak (this is our <span class="math inline">\(\alpha_0\)</span>), and then a decay schedule like cosine or step takes over. This “warmup” phase allows the model to stabilize a bit with small updates before the more aggressive learning rate kicks in. It’s a very common and effective technique, particularly in training large models like Transformers. There’s also an interesting <strong>empirical rule of thumb</strong> often cited (e.g., from Goyal et al.’s paper <a href="https://www.semanticscholar.org/paper/Accurate%2C-Large-Minibatch-SGD%3A-Training-ImageNet-in-Goyal-Doll%C3%A1r/0d57ba12a6d958e178d83be4c84513f7e42b24e5">“Accurate, Large Minibatch SGD”</a>): If you increase the batch size by N, you should also scale the initial learning rate by N (or <span class="math inline">\(\sqrt{N}\)</span> in some cases), often in conjunction with a warmup. The intuition is that larger batches give more stable gradient estimates, so you can afford to take larger steps.</p>
+<p>So, managing the learning rate is not just about picking a single value, but often about defining a schedule that includes an initial phase (like warmup) and a decay phase. This is a critical part of the “art” of training deep neural networks.</p>
+<p>So, in practice:</p>
+<ul>
+<li><strong>Adam(W) is a good default choice in many cases</strong>. It often works reasonably well even with a constant learning rate (though a schedule is still generally better) and requires less manual tuning of the learning rate compared to SGD with momentum. AdamW is preferred if you’re using L2 regularization.</li>
+<li><strong>SGD+Momentum can outperform Adam but may require more tuning of the learning rate and its schedule</strong>. There’s a bit of an ongoing debate and empirical evidence suggesting that with careful tuning, SGD+Momentum can sometimes find solutions that generalize better than those found by Adam, especially for certain types of vision models. However, “careful tuning” is the operative phrase.</li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script type="text/javascript">
+// Enhance theme switching experience
+document.addEventListener('DOMContentLoaded', function() {
+  // Add smooth transitions to all elements when theme changes
+  const style = document.createElement('style');
+  style.textContent = `
+* {
+transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
+}
+
+.navbar, .card, .table, .btn {
+transition: all 0.3s ease !important;
+}
+`;
+  document.head.appendChild(style);
+
+  // Enhance code copy functionality
+  const codeBlocks = document.querySelectorAll('pre code');
+  codeBlocks.forEach(function(codeBlock) {
+    codeBlock.parentElement.style.position = 'relative';
+  });
+
+  // Add fade-in animation for post listings
+  const posts = document.querySelectorAll('.post-listing .card');
+  posts.forEach(function(post, index) {
+    post.style.opacity = '0';
+    post.style.transform = 'translateY(20px)';
+    setTimeout(() => {
+      post.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+      post.style.opacity = '1';
+      post.style.transform = 'translateY(0)';
+    }, index * 100);
+  });
+
+  // Smooth scroll for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    });
+  });
+
+  // Enhanced table styling
+  const tables = document.querySelectorAll('table');
+  tables.forEach(function(table) {
+    if (!table.classList.contains('table')) {
+      table.classList.add('table', 'table-striped');
+    }
+
+    // Wrap tables in responsive container
+    if (!table.parentElement.classList.contains('table-responsive')) {
+      const wrapper = document.createElement('div');
+      wrapper.classList.add('table-responsive');
+      table.parentNode.insertBefore(wrapper, table);
+      wrapper.appendChild(table);
+    }
+  });
+
+  // Replace keyboard shortcuts on non-Mac platforms
+  const kPlatformMac = typeof navigator !== 'undefined' ? /Mac/.test(navigator.platform) : false;
+  if (!kPlatformMac) {
+    var kbds = document.querySelectorAll("kbd");
+    kbds.forEach(function(kbd) {
+      kbd.innerHTML = kbd.innerHTML.replace(/⌘/g, '⌃');
+    });
+  }
+
+  // Add reading progress indicator
+  function addReadingProgress() {
+    const article = document.querySelector('main article, main .content, .post-content');
+    if (article) {
+      const progressBar = document.createElement('div');
+      progressBar.style.cssText = `
+position: fixed;
+top: 0;
+left: 0;
+width: 0%;
+height: 3px;
+background: var(--bs-primary);
+z-index: 1000;
+transition: width 0.3s ease;
+`;
+      document.body.appendChild(progressBar);
+
+      window.addEventListener('scroll', function() {
+        const scrolled = window.scrollY;
+        const height = article.offsetHeight - window.innerHeight;
+        const progress = Math.min(scrolled / height * 100, 100);
+        progressBar.style.width = progress + '%';
+      });
+    }
+  }
+
+  // Only add reading progress on individual blog posts
+  if (document.querySelector('.post-title') || document.querySelector('article')) {
+    addReadingProgress();
+  }
+});
+
+// Theme preference detection and saving
+(function() {
+  // Save theme preference to localStorage
+  const themeToggle = document.querySelector('[data-bs-toggle="color-scheme"]');
+  if (themeToggle) {
+    themeToggle.addEventListener('click', function() {
+      setTimeout(() => {
+        const currentTheme = document.documentElement.getAttribute('data-bs-theme');
+        localStorage.setItem('quarto-color-scheme', currentTheme);
+      }, 100);
+    });
+  }
+
+  // Load saved theme preference
+  const savedTheme = localStorage.getItem('quarto-color-scheme');
+  if (savedTheme) {
+    document.documentElement.setAttribute('data-bs-theme', savedTheme);
+  }
+})();
+</script>
+
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/bhdai\.github\.io\/blog\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<input type="hidden" id="giscus-base-theme" value="light">
+<input type="hidden" id="giscus-alt-theme" value="dark">
+<script>
+  function loadGiscus() {
+    // Function to get the theme based on body class
+    const getTheme = () => {
+      let baseTheme = document.getElementById('giscus-base-theme').value;
+      let altTheme = document.getElementById('giscus-alt-theme').value;
+      if (authorPrefersDark) {
+          [baseTheme, altTheme] = [altTheme, baseTheme];
+      }
+      return document.body.classList.contains('quarto-dark') ? altTheme : baseTheme;
+    };
+    const script = document.createElement("script");
+    script.src = "https://giscus.app/client.js";
+    script.async = true;
+    script.dataset.repo = "bhdai/blog";
+    script.dataset.repoId = "R_kgDOMP9wjw";
+    script.dataset.category = "Blog";
+    script.dataset.categoryId = "DIC_kwDOMP9wj84Cs7wf";
+    script.dataset.mapping = "pathname";
+    script.dataset.reactionsEnabled = "1";
+    script.dataset.emitMetadata = "0";
+    script.dataset.inputPosition = "bottom";
+    script.dataset.theme = getTheme();
+    script.dataset.lang = "en";
+    script.crossOrigin = "anonymous";
+    // Append the script to the desired div instead of at the end of the body
+    document.getElementById("quarto-content").appendChild(script);
+  }
+  loadGiscus();
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+ Copyright 2025, Bui Huu Dai
+  </li>  
+</ul>
+    </div>   
+    <div class="nav-footer-center">
+
+<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/bhdai/blog/edit/main/posts/regularization_and_optimization/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bhdai/blog/blob/main/posts/regularization_and_optimization/index.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/bhdai/blog/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="cookie-consent-footer"><a href="#" id="open_preferences_center">Cookie Preferences</a></div></div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
+
+
+
+
+</body></html>
