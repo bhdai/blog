@@ -133,9 +133,9 @@ $$
 \frac{df(x)}{dx} = \lim_{h \to 0} \frac{f(x + h) - f(x)}{h}
 $$
 
-It tells us how much the function $f(x)$ changes for an infinitesimally small change in $x$. A positive derivative means the function is increasing, and a negative derivative means it's decreasing. Now our loss function $L(W)$ is not a function of a single variable; it's a function of many variables (all the elements of our weight matrix $W$). So, we're in a multiple-dimension scenario. In this case, the equivalent of the derivative is the **gradient**. The gradient of $L$ with respect to $W$ often denoted as $\Delta L(W)$ or $\Delta_W L$, is a **vector of partial derivatives**. Each elements of this gradient vector tells us the slope of the loss function along the direction of the corresponding weight. For example $\frac{\Delta L}{\Delta W_{ij}}$ tells us how the loss $L$ change if we make a tiny change to the weight $W_{ij}$, keeping other weights constant.
+It tells us how much the function $f(x)$ changes for an infinitesimally small change in $x$. A positive derivative means the function is increasing, and a negative derivative means it's decreasing. Now our loss function $L(W)$ is not a function of a single variable; it's a function of many variables (all the elements of our weight matrix $W$). So, we're in a multiple-dimension scenario. In this case, the equivalent of the derivative is the **gradient**. The gradient of $L$ with respect to $W$ often denoted as $\nabla L(W)$ or $\nabla_W L$, is a **vector of partial derivatives**. Each elements of this gradient vector tells us the slope of the loss function along the direction of the corresponding weight. For example $\frac{\nabla L}{\nabla W_{ij}}$ tells us how the loss $L$ change if we make a tiny change to the weight $W_{ij}$, keeping other weights constant.
 
-So, the gradient vector $\Delta L(W)$ points in the direction in which the loss function L(W) increases the fastest. How do we find the slope in any arbitrary direction? If we have some direction vector $u$, the slope in that direction is given by the dot product of that direction vector $u$ with the gradient vector $\Delta L(W)$. And most importantly for our goal of minimizing the loss: the direction of steepest descent – the direction in which the loss function decreases the fastest it's simple but happens to be true is the negative gradient, i.e., $-\Delta L(W)$. So, if we can compute this gradient vector, we have a clear instruction: to reduce the loss, take a small step in the direction opposite to the gradient. This is the fundamental idea behind one of the most important optimization algorithms in machine learning.
+So, the gradient vector $\nabla L(W)$ points in the direction in which the loss function L(W) increases the fastest. How do we find the slope in any arbitrary direction? If we have some direction vector $u$, the slope in that direction is given by the dot product of that direction vector $u$ with the gradient vector $\nabla L(W)$. And most importantly for our goal of minimizing the loss: the direction of steepest descent – the direction in which the loss function decreases the fastest it's simple but happens to be true is the negative gradient, i.e., $-\nabla L(W)$. So, if we can compute this gradient vector, we have a clear instruction: to reduce the loss, take a small step in the direction opposite to the gradient. This is the fundamental idea behind one of the most important optimization algorithms in machine learning.
 
 This method is called the **Numeric Gradient**. And it has a couple of important properties: 1) It's **Slow**! We need to loop over all dimensions (all parameters) and perform a full loss computation for each one. For models with millions of parameters, this is completely impractical for training. 2) It's **Approximate**. Because we're using a finite h instead of the true limit as h approaches zero, what we calculate is an approximation of the true gradient. The choice of h is also a bit tricky – too small and you hit numerical precision issues; too large and the approximation is poor. So, while the numeric gradient is conceptually simple and directly follows from the definition of a derivative, it's not how we typically train our models due to its inefficiency. However, it's an incredibly useful tool for debugging our more efficient gradient calculation methods, which we'll get to. If you implement a more complex way to calculate the gradient (like backpropagation), you can compare its output to the numeric gradient on a small example to check if your implementation is correct. This is called a gradient check. But for actually doing the optimization, we need something much faster. The loss function $L(W)$ is, after all, just a mathematical function of $W$. Can't we use calculus to find an exact, analytical expression for the gradient?
 
@@ -146,15 +146,15 @@ $$
 L   &= \frac{1}{N} \sum_{i=1}^{N} L_i + \sum_{k} W_{k}^2 \\
 L_i &= \sum_{i \neq y_i} \max(0, s_j - s_{y_i} + 1) \text{ or } L_i = -\log(\frac{e^{s_{y_i}}}{\sum_{j}e^{s_j}}) \\
 s  &= f(x,W) = Wx \\
- &\text{ want } \Delta_W L
+ &\text{ want } \nabla_W L
 \end{align}
 $$
 
-So you can see $L$ ultimately a mathematical function of $W$, the input $x$ and the true label $y_i$ are fix constant from our dataset, the only thing we're changing is $W$. What we want is the gradient of this entire expression L with respect to $W$ denoted as $\Delta_W L$. Instead of numerically approximating this gradient by adjusting each $W_k$, we should be able to use the rules of calculus.
+So you can see $L$ ultimately a mathematical function of $W$, the input $x$ and the true label $y_i$ are fix constant from our dataset, the only thing we're changing is $W$. What we want is the gradient of this entire expression L with respect to $W$ denoted as $\nabla_W L$. Instead of numerically approximating this gradient by adjusting each $W_k$, we should be able to use the rules of calculus.
 
 ![Newton and Leibniz](./images/calculus.png)
 
-Given that we have these well-defined mathematical functions, we can **use calculus to compute an analytic gradient**. This means we can derive a direct mathematical formula for \Delta_W. This is where our friend Newton and Leibniz, the inventors of calculus, come into play. Their work allow us to find these gradient efficiently and exactly (up to machine precision), without any of this iteration perturbation. Computing the analytic gradient involves applying the chain rule repeatedly, because our loss function is a composition of several functions (linear score function, then the loss calculation like hinge or softmax, then averaging, then adding regularization). For complex, deep neural networks, this process of applying the chain rule systematically is known as backpropagation which we will talk about very soon in other post. For now, let's appreciate that deriving an analytic formula for the gradient is the efficient and exact way to go. It's much faster than the numerical gradient because we just evaluate one formula, rather than N+1 evaluations of the loss function. So now instead of numerically calculating $dW$ element by element, if we had derived the analytic gradient, $dW$ would be given by some function that depends on our input data and the current $W$. We would plug our data and current $W$ into this derived formula, and it would directly give us the entire gradient matrix $dW$ in one go.
+Given that we have these well-defined mathematical functions, we can **use calculus to compute an analytic gradient**. This means we can derive a direct mathematical formula for $\nabla_W$. This is where our friend Newton and Leibniz, the inventors of calculus, come into play. Their work allow us to find these gradient efficiently and exactly (up to machine precision), without any of this iteration perturbation. Computing the analytic gradient involves applying the chain rule repeatedly, because our loss function is a composition of several functions (linear score function, then the loss calculation like hinge or softmax, then averaging, then adding regularization). For complex, deep neural networks, this process of applying the chain rule systematically is known as backpropagation which we will talk about very soon in other post. For now, let's appreciate that deriving an analytic formula for the gradient is the efficient and exact way to go. It's much faster than the numerical gradient because we just evaluate one formula, rather than N+1 evaluations of the loss function. So now instead of numerically calculating $dW$ element by element, if we had derived the analytic gradient, $dW$ would be given by some function that depends on our input data and the current $W$. We would plug our data and current $W$ into this derived formula, and it would directly give us the entire gradient matrix $dW$ in one go.
 
 So we have two ways to think about computing gradient:
 
@@ -172,7 +172,7 @@ So, what does this lead us to in practice? **In practice: Always use the analyti
 
 ## SGD
 
-Okay, so now we have an efficient and exact way to compute the gradient $\Delta_W L$, which tells us the direction of steepest ascent. To minimize the loss, we want to go in the opposite direction. This brings us to the core algorithm for optimization in deep learning: Gradient Descent. The core idea is remarkably simple, here is a simple implementation of "Vanilla Gradient Decent".
+Okay, so now we have an efficient and exact way to compute the gradient $\nabla_W L$, which tells us the direction of steepest ascent. To minimize the loss, we want to go in the opposite direction. This brings us to the core algorithm for optimization in deep learning: Gradient Descent. The core idea is remarkably simple, here is a simple implementation of "Vanilla Gradient Decent".
 
 ```python
 while True:
@@ -180,7 +180,7 @@ while True:
   weights += - step_size * weights_grad # perform parameter update
 ```
 
-So basically we start with some initial guess for our weights, then we enter a loop that (conceptually) runs "True" or until some stopping criterion is met. Inside the loop, the first crucial step is `weights_grad = evaluate_gradient(loss_fun, data, weights)`. This is where we compute the analytic gradient of our loss function (loss_fun) with respect to the current weights, using our training data. This weights_grad is our $\Delta_W L$. Next is parameter update, we take the weights_grad multiply it by - step_size the negative sign is because we want to move in the direction opposite to the gradient (the direction of steepest descent). The step_size (also known as the learning rate) is a small positive scalar hyperparameter. It controls how far we step in that negative gradient direction. If it's too large, we might overshoot the minimum. If it's too small, training will be very slow. We then add this scaled negative gradient to our current weights to get the updated weights. And we repeat. We re-evaluate the gradient at the new weights, take another step, and so on, iteratively moving "downhill" on the loss surface.
+So basically we start with some initial guess for our weights, then we enter a loop that (conceptually) runs "True" or until some stopping criterion is met. Inside the loop, the first crucial step is `weights_grad = evaluate_gradient(loss_fun, data, weights)`. This is where we compute the analytic gradient of our loss function (loss_fun) with respect to the current weights, using our training data. This weights_grad is our $\nabla_W L$. Next is parameter update, we take the weights_grad multiply it by - step_size the negative sign is because we want to move in the direction opposite to the gradient (the direction of steepest descent). The step_size (also known as the learning rate) is a small positive scalar hyperparameter. It controls how far we step in that negative gradient direction. If it's too large, we might overshoot the minimum. If it's too small, training will be very slow. We then add this scaled negative gradient to our current weights to get the updated weights. And we repeat. We re-evaluate the gradient at the new weights, take another step, and so on, iteratively moving "downhill" on the loss surface.
 
 ![](./images/gd.gif){fig-align="center"}
 
@@ -189,11 +189,11 @@ This is Vanilla Gradient Descent. The "vanilla" part implies there are more soph
 $$
 \begin{align}
 L(W) &= \frac{1}{N} \sum_{i=1}^{N} L_i(x_i, y_i, W) + \lambda R(W)\\
-\Delta_W L &= \frac{1}{N} \sum_{i = 1}^N \Delta_W L_i(x_i, y_i, W) + \lambda \Delta_W R(W)
+\nabla_W L &= \frac{1}{N} \sum_{i = 1}^N \nabla_W L_i(x_i, y_i, W) + \lambda \nabla_W R(W)
 \end{align}
 $$
 
-The problem is that computing this full sum over all N examples for $\Delta_W L_i$ is expensive when $N$ is large. If you have millions of training examples, calculating the gradient across all of them just to make one tiny step with your weights is very inefficient. You'd be spending a lot of computation for a potentially very small update. The core idea of Stochastic Gradient Descent is to **approximate this sum using a small random subset of the data called a minibatch**. Instead of summing the gradients over all N examples, we sum them over just a small batch of, say, 32, 64, or 128 examples. Common minibatch sizes often range from 32 to 256, sometimes larger, depending on memory constraints and the specific problem. So, the gradient we compute on a minibatch is not the true gradient of the total loss L, but it's an estimate or an approximation. Since the minibatch is sampled randomly, this estimate is unbiased on average, and it's much, much faster to compute.
+The problem is that computing this full sum over all N examples for $\nabla_W L_i$ is expensive when $N$ is large. If you have millions of training examples, calculating the gradient across all of them just to make one tiny step with your weights is very inefficient. You'd be spending a lot of computation for a potentially very small update. The core idea of Stochastic Gradient Descent is to **approximate this sum using a small random subset of the data called a minibatch**. Instead of summing the gradients over all N examples, we sum them over just a small batch of, say, 32, 64, or 128 examples. Common minibatch sizes often range from 32 to 256, sometimes larger, depending on memory constraints and the specific problem. So, the gradient we compute on a minibatch is not the true gradient of the total loss L, but it's an estimate or an approximation. Since the minibatch is sampled randomly, this estimate is unbiased on average, and it's much, much faster to compute.
 
 ```python
 # Vanilla Minibatch Gradient Descent
@@ -230,7 +230,7 @@ So, that's the second major issue: points with zero or near-zero gradient (local
 This problem is inherent in the "S" of SGD – the stochasticity. As we discussed, our loss $L(W)$ is an average over all $N$ training examples (plus regularization, which we'll ignore for this point for simplicity). And it's true gradient is:
 
 $$
-\Delta_W L = \frac{1}{N} \sum_{i = 1}^N \Delta_W L_i(x_i, y_i, W)
+\nabla_W L = \frac{1}{N} \sum_{i = 1}^N \nabla_W L_i(x_i, y_i, W)
 $$
 
 However, with minibatch SGD, we don't compute this full sum. We compute the gradient on a small minibatch. This minibatch gradient is an estimate of the true gradient. Because the minibatch is a random sample, this estimate will be noisy. It won't point exactly in the direction of the true steepest descent. If you take many different minibatches at the same point $W$, you'll get slightly different gradient vectors.
@@ -251,14 +251,14 @@ Now, for SGD + Momentum. The key idea is to continue moving in the general direc
 
 $$
 \begin{align}
-v_{t+1} &=  \rho v_t + \Delta f(x_t) \\
+v_{t+1} &=  \rho v_t + \nabla f(x_t) \\
 x_{t+1} &= x_t - \alpha v_{t+1}
 \end{align}
 $$
 
 - $v_{t}$ is the velocity vector from the previous step. It's initialized to zero.
 - $\rho$ is the momentum coefficient (or friction term). It's typically a value like 0.9 or 0.99. It determines how much of the previous velocity is retained. If ρ=0, we recover standard SGD (almost, as we'll see the learning rate is applied differently).
-- In the first equation, we update the velocity: we take the old velocity $v_t$, scale it down by $\rho$, and then add the current gradient $\Delta f(x_t)$. So, the velocity v is essentially an exponentially decaying moving average of the past gradients.
+- In the first equation, we update the velocity: we take the old velocity $v_t$, scale it down by $\rho$, and then add the current gradient $\nabla f(x_t)$. So, the velocity v is essentially an exponentially decaying moving average of the past gradients.
 - In the second equation, we update the parameters $x$ by taking a step in the direction of this new velocity $v_t+1$, scaled by the learning rate $\alpha$. Crucially, we are now stepping with the velocity, not directly with the current gradient.
 
 The intuition is that we build up "velocity" as a running mean of gradients. If gradients consistently point in the same direction, the velocity in that direction grows. If gradients oscillate, those components of the velocity tend to be dampened. The term $\rho$ acts like friction. If $\rho$ is close to 1 (e.g., 0.99), we have high momentum, and the velocity persists for a long time. If $\rho$ is smaller (e.g., 0.5), it's like having more friction, and the velocity relies more on recent gradients. [The paper](https://proceedings.mlr.press/v28/sutskever13.pdf) by Sutskever et al. (2013) is a classic reference highlighting the importance of momentum in deep learning
