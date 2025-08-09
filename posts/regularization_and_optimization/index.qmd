@@ -2,7 +2,7 @@
 title: "Regularization and Optimization"
 description: "Regularization and optimization are the two absolute critical concepts in deep learning that allow our model to learn effectively and generalize well to new data"
 author: "Bui Huu Dai"
-data: "2025-08-05"
+date: "2025-08-05"
 image: "./images/cover.png"
 categories: ["Deep Learning", "Optimization"]
 toc: true
