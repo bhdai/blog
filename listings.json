@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/neural-network-and-backprobagation/index.html",
       "/posts/regularization_and_optimization/index.html",
       "/posts/linear_classification/index.html",
       "/posts/history-of-computer-vision-and-deep-learning/index.html",

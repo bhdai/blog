@@ -1,0 +1,1493 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Bui Huu Dai">
+<meta name="dcterms.date" content="2025-08-08">
+
+<title>Neural network and backpropagation – Bui Huu Dai</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../Github_bird.png" rel="icon" type="image/png">
+<script src="../../site_libs/cookie-consent/cookie-consent.js"></script>
+<link href="../../site_libs/cookie-consent/cookie-consent.css" rel="stylesheet">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-2fef5ea3f8957b3e4ecc936fc74692ca.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-8e47eaf163dee9e5ea02780d02199294.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-bca7bfc09c99158c9822bef989cf6fc8.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-8e47eaf163dee9e5ea02780d02199294.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-contrib/videojs/video.min.js"></script>
+<link href="../../site_libs/quarto-contrib/videojs/video-js.css" rel="stylesheet">
+<script src="../../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-6JR4N915S6"></script>
+
+<script type="text/plain" cookie-consent="tracking">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-6JR4N915S6', { 'anonymize_ip': true});
+</script>
+
+<script type="text/javascript" charset="UTF-8">
+document.addEventListener('DOMContentLoaded', function () {
+cookieconsent.run({
+  "notice_banner_type":"simple",
+  "consent_type":"implied",
+  "palette":"light",
+  "language":"en",
+  "page_load_consent_levels":["strictly-necessary","functionality","tracking","targeting"],
+  "notice_banner_reject_button_hide":false,
+  "preferences_center_close_button_hide":false,
+  "website_name":""
+  ,
+"language":"en"
+  });
+});
+</script> 
+  
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="Neural network and backpropagation – Bui Huu Dai">
+<meta property="og:description" content="Dai’s blog.">
+<meta property="og:image" content="https://bhdai.github.io/blog/posts/neural-network-and-backprobagation/images/cover.png">
+<meta property="og:site_name" content="Bui Huu Dai">
+<meta property="og:image:height" content="971">
+<meta property="og:image:width" content="1726">
+<meta name="twitter:title" content="Neural network and backpropagation – Bui Huu Dai">
+<meta name="twitter:description" content="Dai’s blog.">
+<meta name="twitter:image" content="https://bhdai.github.io/blog/posts/neural-network-and-backprobagation/images/cover.png">
+<meta name="twitter:image-height" content="971">
+<meta name="twitter:image-width" content="1726">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="floating nav-fixed slimcontent quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const queryPrefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    const darkModeDefault = queryPrefersDark.matches;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    queryPrefersDark.addEventListener("change", e => {
+      if(window.localStorage.getItem("quarto-color-scheme") !== null)
+        return;
+      const alternate = e.matches
+      toggleColorMode(alternate);
+      localAlternateSentinel = e.matches ? 'alternate' : 'default'; // this is used alongside local storage!
+      toggleGiscusIfUsed(alternate, darkModeDefault);
+    });
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Bui Huu Dai</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/bhdai"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://x.com/daibui1234"> <i class="bi bi-twitter-x" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml"> <i class="bi bi-rss" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Neural network and backpropagation</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">Deep Learning</div>
+                <div class="quarto-category">Backpropagation</div>
+                <div class="quarto-category">Neural Networks</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Bui Huu Dai </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">August 8, 2025</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#deep-learning-today" id="toc-deep-learning-today" class="nav-link active" data-scroll-target="#deep-learning-today">Deep learning today</a></li>
+  <li><a href="#what-is-neural-network" id="toc-what-is-neural-network" class="nav-link" data-scroll-target="#what-is-neural-network">What is neural network?</a></li>
+  <li><a href="#neural-network-architectures" id="toc-neural-network-architectures" class="nav-link" data-scroll-target="#neural-network-architectures">Neural network architectures</a></li>
+  <li><a href="#activation-functions" id="toc-activation-functions" class="nav-link" data-scroll-target="#activation-functions">Activation functions</a></li>
+  <li><a href="#a-note-on-network-size-and-regularization" id="toc-a-note-on-network-size-and-regularization" class="nav-link" data-scroll-target="#a-note-on-network-size-and-regularization">A note on network size and regularization</a></li>
+  <li><a href="#how-to-compute-gradients" id="toc-how-to-compute-gradients" class="nav-link" data-scroll-target="#how-to-compute-gradients">How to compute gradients?</a></li>
+  <li><a href="#backpropagation" id="toc-backpropagation" class="nav-link" data-scroll-target="#backpropagation">Backpropagation</a></li>
+  <li><a href="#backpropagation-in-practice" id="toc-backpropagation-in-practice" class="nav-link" data-scroll-target="#backpropagation-in-practice">Backpropagation in practice</a></li>
+  <li><a href="#backpropagation-with-vectors-and-matrices" id="toc-backpropagation-with-vectors-and-matrices" class="nav-link" data-scroll-target="#backpropagation-with-vectors-and-matrices">Backpropagation with vectors and matrices</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/bhdai/blog/edit/main/posts/neural-network-and-backprobagation/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bhdai/blog/blob/main/posts/neural-network-and-backprobagation/index.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/bhdai/blog/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block page-columns page-full" id="quarto-document-content">
+
+
+
+
+
+
+<section id="deep-learning-today" class="level2">
+<h2 class="anchored" data-anchor-id="deep-learning-today">Deep learning today</h2>
+<p>“Deep learning” this is the term you hear everywhere now, and it’s really transformed not just computer vision, but many areas of artificial intelligence. And the progress, especially in the last few years, has been absolutely outstanding. Let’s just take a moment to appreciate some of the incredible capabilities that deep learning models have unlocked, particularly in the realm of image generation and understanding.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./images/dalle2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Images generated by DALL-E 2 on Sam Altman tweet and https://openai.com/dall-e-2/"><img src="./images/dalle2.png" class="img-fluid figure-img" alt="Images generated by DALL-E 2 on Sam Altman tweet and https://openai.com/dall-e-2/"></a></p>
+<figcaption>Images generated by DALL-E 2 on <a href="https://x.com/sama/status/1511724264629678084">Sam Altman tweet</a> and <a href="https://openai.com/dall-e-2/">https://openai.com/dall-e-2/</a></figcaption>
+</figure>
+</div>
+<p>These images are generated by <strong>DALL-E 2</strong>. These are not photographs; they are synthesized by an AI from text prompts. The level of detail, the coherence of the scenes, and the creativity are just remarkable. These models are clearly understanding complex relationships between concepts and visual elements. In 2022 Ramesh et al.&nbsp;released <a href="https://arxiv.org/abs/2204.06125">“Hierarchical Text-Conditional Image Generation with CLIP Latents”</a> give us a glimpse into how some of these text-to-image models work. So basically it involves an image encoder, a text encoder, a prior model that learns to associate these representations, and then a decoder to generate the image, the CLIP objective, which learns joint embeddings of images and text, plays a crucial role here.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./images/dalle3.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Images from “Improving image generation with better captions” paper (2023)"><img src="./images/dalle3.png" class="img-fluid figure-img" alt="Images from “Improving image generation with better captions” paper (2023)"></a></p>
+<figcaption>Images from <a href="https://cdn.openai.com/papers/dall-e-3.pdf">“Improving image generation with better captions”</a> paper (2023)</figcaption>
+</figure>
+</div>
+<p>More recently, we’ve seen <strong>DALL-E 3</strong>. These models are getting exceptionally good at interpreting nuanced textual descriptions. Notice the image on the right, the model not only generates the individual elements but also composes them into a coherent scene with multiple interacting characters, and it even captures the specified “graphic novel” style. You can see how it even annotates which parts of the image correspond to which parts of the prompt.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./images/gpt.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Thinking with images (image from https://openai.com/index/introducing-o3-and-o4-mini/)"><img src="./images/gpt.png" class="img-fluid figure-img" alt="Thinking with images (image from https://openai.com/index/introducing-o3-and-o4-mini/)"></a></p>
+<figcaption>Thinking with images (image from <a href="https://openai.com/index/introducing-o3-and-o4-mini/">https://openai.com/index/introducing-o3-and-o4-mini/</a>)</figcaption>
+</figure>
+</div>
+<p>This isn’t just about image generation. Now with o3 and o4 mini, these model can integrate images directly into their chain of thought which they call “Visual reasoning in action”, they can reason, think about the image. This shows a deep level of visual reasoning.</p>
+<blockquote class="blockquote">
+<p>Thinking with images allows you to interact with ChatGPT more easily. You can ask questions by taking a photo without worrying about the positioning of objects, whether the text is upside down or there are multiple physics problems in one photo. Even if objects are not obvious at first glance, visual reasoning allows the model to zoom in to see more clearly.</p>
+</blockquote>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./images/sam.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="Segment Anything Model (SAM)"><img src="./images/sam.png" class="img-fluid figure-img" alt="Segment Anything Model (SAM)"></a></p>
+<figcaption>Segment Anything Model (SAM)</figcaption>
+</figure>
+</div>
+<p>We also have models like the Segment Anything Model (SAM). SAM is remarkable because it can generate segmentation masks for any object in an image, just from a prompt or a click. Look at the density of masks it can produce, it can segment hundreds, even thousands of objects and parts of objects within a single image. This has huge implications for image editing, robotics, and a wide range of computer vision tasks.</p>
+<div class="quarto-video"><video id="video_shortcode_videojs_video1" class="video-js vjs-default-skin vjs-fluid" controls="" preload="auto" data-setup="{}" title=""><source src="https://cdn.openai.com/tmp/s/title_0.mp4"></video></div>
+<p>And then we move into video. This is an example from <strong>Sora</strong>, a recent model from OpenAI that generates video from text. The quality, coherence over time, and realism are truly groundbreaking. Sora can do things like <strong>animating images</strong> that were themselves generated by models like DALL-E. It can also do <strong>video-to-video editing</strong>, where you provide an input video and a text prompt, and it modifies the video accordingly. The model understands the content of the video and can plausibly alter its style or elements based on text.</p>
+<div class="grid">
+<div class="g-col-4 text-center">
+<div class="quarto-video"><video id="video_shortcode_videojs_video2" class="video-js vjs-default-skin vjs-fluid" controls="" preload="auto" data-setup="{}" title=""><source src="https://cdn.openai.com/tmp/s/scaling_0.mp4"></video></div>
+<p><em>Base compute</em></p>
+</div>
+<div class="g-col-4 text-center">
+<div class="quarto-video"><video id="video_shortcode_videojs_video3" class="video-js vjs-default-skin vjs-fluid" controls="" preload="auto" data-setup="{}" title=""><source src="https://cdn.openai.com/tmp/s/scaling_1.mp4"></video></div>
+<p><em>4x compute</em></p>
+</div>
+<div class="g-col-4 text-center">
+<div class="quarto-video"><video id="video_shortcode_videojs_video4" class="video-js vjs-default-skin vjs-fluid" controls="" preload="auto" data-setup="{}" title=""><source src="https://cdn.openai.com/tmp/s/scaling_2.mp4"></video></div>
+<p><em>32x compute</em></p>
+</div>
+</div>
+<p>And a key theme, as with many of these large generative models, is the impact of <strong>more compute</strong>. These video show the output of Sora for the same prompt, but with increasing amounts of compute used for generation. You can clearly see how the quality, detail, and realism improve significantly as more computational resources are applied. This scaling hypothesis that bigger models and more data, trained with more compute, lead to better performance has been a driving force in deep learning.</p>
+<p>So, these examples are just a taste of what deep learning is achieving. It’s creating tools that can understand, generate, and manipulate visual information in ways that were science fiction just a decade ago. The common thread underlying all these incredible advancements is the use of neural networks, often very deep ones, trained on massive datasets. And that’s what we’re here to understand today: what are these neural networks, and how do we train them?</p>
+</section>
+<section id="what-is-neural-network" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-neural-network">What is neural network?</h2>
+<p>We’re going to build these up step-by-step. And perhaps surprisingly, we’ll start with something very familiar. Think about our <strong>original linear classifier</strong>. Before, when we talked about linear score functions, we had this simple equation: <span class="math inline">\(f(x) = Wx\)</span>. Here <span class="math inline">\(x\)</span> is our input vector, say an image flattened into a D-dimensional vector so <span class="math inline">\(x\)</span> is in <span class="math inline">\(\mathbb{R}^D\)</span>. And <span class="math inline">\(W\)</span> is our weight matrix, of size C x D, where C is the number of classes. This matrix <span class="math inline">\(W\)</span> projects our D-dimensional input into a C-dimensional space of class scores. This is the simplest possible “network” if you like - a single linear layer. Now, how do we make this more powerful? How do we build a neural network <strong>with, say, 2 layers</strong>? We take our original linear score function, <span class="math inline">\(Wx\)</span>, and we are going to insert something in the middle. Now our new equation look like this:</p>
+<p><span class="math display">\[
+f(x) = W_2  \max(0, W_1x)
+\]</span></p>
+<p>We’re still starting with our input <span class="math inline">\(x\)</span>. We first multiply it by a weight matrix, let’s call it <span class="math inline">\(W_1\)</span>. So we compute <span class="math inline">\(W_1x\)</span>. If x is <span class="math inline">\(\mathbb{R}^D\)</span>, then <span class="math inline">\(W_1\)</span> will be a matrix of size H x D. H here represents the number of neurons or hidden units in this first layer. So, <span class="math inline">\(W_1x\)</span> gives us an H-dimensional vector. Then we apply a <strong>non-linear function</strong>. Here we’re using <span class="math inline">\(max(0, ...)\)</span> which we will talk about this for a moment. The output of this non-linearity is now an H dimensional vector, we then multiply this vector by a second weight matrix, <span class="math inline">\(W_2\)</span>. This <span class="math inline">\(W_2\)</span> matrix will have dimensions C x H, where C is still our number of output classes. So, <span class="math inline">\(W_2\)</span> takes the H-dimensional output of the first layer and maps it down to our C class scores. In practice we will usually add a learnable bias at each layer as well. So, more accurately, the operations would look like <span class="math inline">\(W_1x + b_1\)</span> and <span class="math inline">\(W_2h + b_2\)</span> (where h is the output of the first layer). We often absorb the bias into the weight matrix by augmenting <span class="math inline">\(x\)</span> with a constant 1, as we’ve discussed before, or handle it as a separate bias vector. For now, we’ll keep the notation a bit cleaner by omitting explicit biases, but remember they’re typically there.</p>
+<p><a href="./images/non-linear.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5"><img src="./images/non-linear.png" class="img-fluid"></a></p>
+<p>Consider this example, We have some data points in a 2D space. The red points form a cluster in the center, and the blue points surround them. Can we separate these red and blue points with a linear classifier? No, you can’t draw a single straight line in this x, y space that perfectly separates the red from the blue. A linear classifier, by definition, can only learn linear decision boundaries. But what if we could transform our input space? This is where the idea of feature transformations comes in, and it’s closely related to what neural networks do. Imagine we apply a function <span class="math inline">\(f(x, y)\)</span> that maps our original Cartesian coordinates (x, y) to polar coordinates (<span class="math inline">\(r(x,y)\)</span>, <span class="math inline">\(\theta(x,y)\)</span>). So, <span class="math inline">\(r\)</span> is the radius from the origin, and <span class="math inline">\(\theta\)</span> is the angle. Now in this new <span class="math inline">\((r, \theta)\)</span> space, shown on the right. The red points, which were close to the origin, now have small <span class="math inline">\(r\)</span> values. The blue points, which were further out, now have larger <span class="math inline">\(r\)</span> values. In this transformed space, the red and blue points are linearly separable! We can now draw a simple horizontal line (a constant <span class="math inline">\(r\)</span> value) that separates them.</p>
+<p>This is the core idea. The non-linearities in a neural network allow the network to learn these kinds of powerful feature transformations. The first layer <span class="math inline">\(W_1x\)</span> followed by the <span class="math inline">\(\max(0, ...)\)</span> non-linearity effectively computes a new representation of the input. And then the next layer <span class="math inline">\(W_2\)</span> operates on this transformed representation. By stacking these layers with non-linearities, the network can learn increasingly complex and abstract features that make the original problem (like classification) easier, often making it linearly separable in some high-dimensional learned feature space.</p>
+</section>
+<section id="neural-network-architectures" class="level2">
+<h2 class="anchored" data-anchor-id="neural-network-architectures">Neural network architectures</h2>
+<p>You’ll hear these kinds of networks, <span class="math inline">\(f = W_2  \max(0, W_1x)\)</span>, referred to by a few names. While “Neural Network” is a very broad term, the specific architecture we’re discussing here is often more accurately called a <strong>“fully-connected network”</strong>. This is because, as we’ll see when we visualize them, every neuron (or unit) in one layer is connected to every neuron in the subsequent layer. Another term you might encounter, especially in older literature, is <strong>“multi-layer perceptron” or MLP</strong>. For our purposes, when we talk about a basic neural network with these stacked layers of matrix multiplies and non-linearities, we’re generally talking about a fully-connected network. And remember, we usually add learnable biases at each layer.</p>
+<p>Now, there’s nothing stopping us from making these networks deeper. We can extend this to 3 layers, or indeed many more. Our 2-layer network was <span class="math inline">\(f = W_2  \max(0, W_1x)\)</span>. A 3-layer neural network simply inserts another layer of weights and non-linearity:</p>
+<p><span class="math display">\[
+\begin{align}
+f &amp;= W_3  \max(0, W_2  \max(0, W_1x)) \\
+x &amp;\in \mathbb{R}^D, W_1 \in \mathbb{R}^{H_1 \times D}, W_2 \in \mathbb{R}^{H_2 \times H_1}, W_3 \in \mathbb{R}^{C \times H_2}
+\end{align}
+\]</span></p>
+<p>A quick note on terminology: when we say an “N-layer neural network,” we typically mean a network with N layers of weights, or N-1 hidden layers plus an output layer. So, our 2-layer Neural Network here has one hidden layer (the W_1 transformation produces its activations), and our 3-layer Neural Network has two hidden layers (activations produced after <span class="math inline">\(W_1\)</span> and after <span class="math inline">\(W_2\)</span>). The input is sometimes called the input layer, but it doesn’t usually involve learnable weights or non-linearities in the same way.</p>
+<p><a href="./images/twolayer.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6"><img src="./images/twolayer.png" class="img-fluid"></a></p>
+<p>We can visualize this as a form of <strong>hierarchical computation</strong>. So what’s the advantage of this hidden layer h? Think back to our linear classifier, <span class="math inline">\(f = Wx\)</span>. Each row of <span class="math inline">\(W\)</span> could be interpreted as a “template” for one of the classes. For CIFAR-10, we’d learn 10 templates. Now, with a 2-layer neural network, the first weight matrix W_1 (e.g., 100x3072) can be thought of as learning many more templates – in this example, 100 templates. These aren’t necessarily templates for the final classes directly. Instead, they are like <strong>intermediate features or visual primitives</strong>. The hidden layer <span class="math inline">\(h\)</span> then represents the extent to which each of these 100 learned “templates” or features is present in the input image. Then, the second weight matrix <span class="math inline">\(W_2\)</span> (10x100) learns how to combine these 100 intermediate features to produce the final scores for the 10 classes. So, instead of learning just 10 direct templates, we learn, say, 100 more foundational templates, and these templates can be <strong>shared and re-weighted</strong> by W_2 to form the decision for each class. This gives the network much more flexibility and expressive power. It can learn a richer set of features and then learn complex combinations of those features.</p>
+</section>
+<section id="activation-functions" class="level2">
+<h2 class="anchored" data-anchor-id="activation-functions">Activation functions</h2>
+<p>Now, a key question arises from this construction, <strong>why do we want non-linearity</strong>? Let’s consider the function we just built: <span class="math inline">\(f = W_2  \max(0, W_1x)\)</span>. What if we didn’t have that <span class="math inline">\(\max(0, ...)\)</span> non-linearity? What if our function was just <span class="math inline">\(f = W_2  W_1  x\)</span>? Well, if <span class="math inline">\(W_1\)</span> is a matrix and <span class="math inline">\(W_2\)</span> is a matrix, then their product, <span class="math inline">\(W_2  W_1\)</span>, is just another matrix. Let’s call it <span class="math inline">\(W_{prime}\)</span>. So, <span class="math inline">\(f = W_{prime}  x\)</span>. This is just a linear classifier again! Stacking multiple linear transformations without any non-linearity in between doesn’t actually increase the expressive power of our model beyond a single linear transformation. It collapses back down to a linear function. The non-linearity is what allows us to learn much more complex functions. So, what are some common choices for these activation functions?</p>
+<p><a href="./images/activation.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7"><img src="./images/activation.png" class="img-fluid"></a></p>
+<p>The one we’ve been using, <span class="math inline">\(\max(0, x)\)</span>, is called <strong>ReLU (Rectified Linear Unit)</strong>, and you can see its plot in the top left, highlighted in red. For any negative input, it outputs zero. For any positive input, it outputs the input itself. It’s simple, computationally efficient, and works remarkably well in practice. In fact, <strong>ReLU is a good default choice for most problems</strong> and is very widely used. But there are many other activation functions people have explored like <strong>Leaky ReLU</strong> This can sometimes help with issues where ReLU units “die” or <strong>Sigmoid</strong> This function squashes its input into the range (0, 1). It was historically very popular, especially in the early days of neural networks, because its output can be interpreted as a probability or a firing rate of a neuron. However, it suffers from vanishing gradients for very large positive or negative inputs, which can slow down learning in deep networks. <strong>Tanh</strong> this function squashes its input into the range (-1, 1). It’s zero-centered, which can sometimes be advantageous over sigmoid. Like sigmoid, it also suffers from vanishing gradients at the extremes. And a lot of ReLU variations like <strong>ELU</strong>, <strong>GELU</strong>, <strong>SiLU</strong>, or what ever it is just ending with <strong>LU</strong>. But you shouldn’t expect much from those activation functions, you might get a slightly better result when using this activation function over one another depend on the problem you’re trying to solve, but trust me just stick with ReLU and it will work pretty much with most of the problems you might come up with.</p>
+</section>
+<section id="a-note-on-network-size-and-regularization" class="level2">
+<h2 class="anchored" data-anchor-id="a-note-on-network-size-and-regularization">A note on network size and regularization</h2>
+<p>Okay, so we have these building blocks: layers composed of a linear transformation followed by a non-linear activation function. Now, let’s think about how we arrange these layers to form different neural network architectures.</p>
+<p><a href="./images/neural_network.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8"><img src="./images/neural_network.png" class="img-fluid"></a></p>
+<p>You’ll often see neural networks visualized like this, with nodes and connections. We have a “3-layer Neural Net” or a “2-hidden-layer Neural Net”. The circles on the far left represent the input layer – these are just our raw input features, say the pixel values of an image. The next set of circles in the middle is the hidden layer. Each unit here computes a weighted sum of the inputs, adds a bias, and then passes it through an activation function (like ReLU). And finally, the circles on the right form the output layer, which produces our final class scores, or perhaps a regression value. The output of the first hidden layer becomes the input to the second hidden layer, which then feeds into the output layer. The key thing to notice in these diagrams are the lines connecting the nodes. These layers are typically <strong>Fully-connected layers</strong>. This means that every neuron in the input layer is connected to every neuron in the first hidden layer. And every neuron in the first hidden layer is connected to every neuron in the second hidden layer, and so on, up to the output layer. Each of these connections has an associated weight.</p>
+<p>So, when we say an N-layer Neural Net, we generally mean there are N layers of weights and N layers of activations being computed or N-1 hidden layers plus an output layer. The input itself isn’t usually counted as a layer in this sense, as it doesn’t perform a computation with learnable weights. Let’s look at an example feed-forward computation for a neural network, to make this more concrete.</p>
+<div class="sourceCode" id="annotated-cell-1"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><a class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-1-1" class="code-annotation-target"><a href="#annotated-cell-1-1" aria-hidden="true" tabindex="-1"></a>f <span class="op">=</span> <span class="kw">lambda</span> x: <span class="fl">1.0</span><span class="op">/</span>(<span class="fl">1.0</span> <span class="op">+</span> np.exp(<span class="op">-</span>x))</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-1-2" class="code-annotation-target"><a href="#annotated-cell-1-2" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.random.randn(<span class="dv">3</span>, <span class="dv">1</span>)</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-1-3" class="code-annotation-target"><a href="#annotated-cell-1-3" aria-hidden="true" tabindex="-1"></a>h1 <span class="op">=</span> f(np.dot(W1, x) <span class="op">+</span> b1)</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="4" onclick="event.preventDefault();">4</a><span id="annotated-cell-1-4" class="code-annotation-target"><a href="#annotated-cell-1-4" aria-hidden="true" tabindex="-1"></a>h2 <span class="op">=</span> f(np.dot(W2, h1) <span class="op">+</span> b2)</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="5" onclick="event.preventDefault();">5</a><span id="annotated-cell-1-5" class="code-annotation-target"><a href="#annotated-cell-1-5" aria-hidden="true" tabindex="-1"></a>out <span class="op">=</span> np.dot(W3, h2) <span class="op">+</span> b3</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-1" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-1" data-code-lines="1" data-code-annotation="1">we define our activation function f.&nbsp;In this example, they’re using a sigmoid</span>
+</dd>
+<dt data-target-cell="annotated-cell-1" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-1" data-code-lines="2" data-code-annotation="2">we have some input x, which is a 3x1 vector.</span>
+</dd>
+<dt data-target-cell="annotated-cell-1" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-1" data-code-lines="3" data-code-annotation="3">get the activations of the first hidden layer, <code>h1</code>. <code>W_1</code>would be a 4x3 weight matrix, and <code>b1</code> would be a 4x1 bias vector then we performs the matrix multiplication and add the bias <code>b1</code>. Finally we apply the activation function <code>f</code> element-wise to the result. So <code>h1</code> will be a 4x1 vector.</span>
+</dd>
+<dt data-target-cell="annotated-cell-1" data-target-annotation="4">4</dt>
+<dd>
+<span data-code-cell="annotated-cell-1" data-code-lines="4" data-code-annotation="4">similarly, for the second hidden layer activations, h2</span>
+</dd>
+<dt data-target-cell="annotated-cell-1" data-target-annotation="5">5</dt>
+<dd>
+<span data-code-cell="annotated-cell-1" data-code-lines="5" data-code-annotation="5">finally for the output neuron, <code>out</code>, <code>W3</code> would be a 1x4 matrix b3 a 1x1 bias. Notice that for the output layer, an activation function isn’t always applied, or a different one might be used depending on the task for example softmax for multi-class classification, sigmoid for binary classification, or no activation for regression.</span>
+</dd>
+</dl>
+<p>This step-by-step process, from input to output, is called the forward pass. Now, it might seem like these networks are incredibly complex, but you might be surprised to learn that a full implementation of training a 2-layer Neural Network needs only about 20 lines of Python code using NumPy. This is, of course, a simplified example, but it captures all the essential components</p>
+<div class="sourceCode" id="annotated-cell-2"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-2-1"><a href="#annotated-cell-2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="annotated-cell-2-2"><a href="#annotated-cell-2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> numpy.random <span class="im">import</span> rand</span>
+<span id="annotated-cell-2-3"><a href="#annotated-cell-2-3" aria-hidden="true" tabindex="-1"></a></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-2-4" class="code-annotation-target"><a href="#annotated-cell-2-4" aria-hidden="true" tabindex="-1"></a>N, D_in, H, D_out <span class="op">=</span> <span class="dv">64</span>, <span class="dv">1000</span>, <span class="dv">100</span>, <span class="dv">10</span></span>
+<span id="annotated-cell-2-5"><a href="#annotated-cell-2-5" aria-hidden="true" tabindex="-1"></a>x, y <span class="op">=</span> randn(N, D_in), randn(N, D_out)</span>
+<span id="annotated-cell-2-6"><a href="#annotated-cell-2-6" aria-hidden="true" tabindex="-1"></a>w1, w2 <span class="op">=</span> randn(D_in, H), randn(H, D_out)</span>
+<span id="annotated-cell-2-7"><a href="#annotated-cell-2-7" aria-hidden="true" tabindex="-1"></a></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-2-8" class="code-annotation-target"><a href="#annotated-cell-2-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">2000</span>):</span>
+<span id="annotated-cell-2-9"><a href="#annotated-cell-2-9" aria-hidden="true" tabindex="-1"></a>  h <span class="op">=</span> <span class="dv">1</span> <span class="op">/</span> (<span class="dv">1</span> <span class="op">+</span> np.exp(<span class="op">-</span>x.dot(w1)))</span>
+<span id="annotated-cell-2-10"><a href="#annotated-cell-2-10" aria-hidden="true" tabindex="-1"></a>  y_pred <span class="op">=</span> h.dot(w2)</span>
+<span id="annotated-cell-2-11"><a href="#annotated-cell-2-11" aria-hidden="true" tabindex="-1"></a>  loss <span class="op">=</span> np.square(y_pred <span class="op">-</span> y).<span class="bu">sum</span>()</span>
+<span id="annotated-cell-2-12"><a href="#annotated-cell-2-12" aria-hidden="true" tabindex="-1"></a>  <span class="bu">print</span>(t, loss)</span>
+<span id="annotated-cell-2-13"><a href="#annotated-cell-2-13" aria-hidden="true" tabindex="-1"></a></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-2-14" class="code-annotation-target"><a href="#annotated-cell-2-14" aria-hidden="true" tabindex="-1"></a>  grad_y_pred <span class="op">=</span> <span class="fl">2.0</span> <span class="op">*</span> (y_pred <span class="op">-</span> y)</span>
+<span id="annotated-cell-2-15"><a href="#annotated-cell-2-15" aria-hidden="true" tabindex="-1"></a>  grad_w2 <span class="op">=</span> h.T.dot(grad_y_pred)</span>
+<span id="annotated-cell-2-16"><a href="#annotated-cell-2-16" aria-hidden="true" tabindex="-1"></a>  grad_h <span class="op">=</span> grad_y_pred.dot(w2.T)</span>
+<span id="annotated-cell-2-17"><a href="#annotated-cell-2-17" aria-hidden="true" tabindex="-1"></a>  grad_w1 <span class="op">=</span> x.T.dot(grad_h <span class="op">*</span> h <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> h))</span>
+<span id="annotated-cell-2-18"><a href="#annotated-cell-2-18" aria-hidden="true" tabindex="-1"></a></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="4" onclick="event.preventDefault();">4</a><span id="annotated-cell-2-19" class="code-annotation-target"><a href="#annotated-cell-2-19" aria-hidden="true" tabindex="-1"></a>  w1 <span class="op">-=</span> <span class="fl">1e-4</span> <span class="op">*</span> grad_w1</span>
+<span id="annotated-cell-2-20"><a href="#annotated-cell-2-20" aria-hidden="true" tabindex="-1"></a>  w2 <span class="op">-=</span> <span class="fl">1e-4</span> <span class="op">*</span> grad_w2</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-2" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-2" data-code-lines="4,5,6" data-code-annotation="1">we define the network, set up our hyperparameters. We then create some random input data X and target labels y, we initialize our weight matrices <code>w1</code> and <code>w2</code></span>
+</dd>
+<dt data-target-cell="annotated-cell-2" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-2" data-code-lines="8,9,10,11,12" data-code-annotation="2">next we perform forward pass</span>
+</dd>
+<dt data-target-cell="annotated-cell-2" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-2" data-code-lines="14,15,16,17" data-code-annotation="3">after the forward pass, we need to calculate the analytical gradients. This is the core of how we’ll update our weights. We’re essentially applying the chain rule to work backward from the loss and find how <code>w1</code> and <code>w2</code> affect that loss. We’ll dive much deeper into this process, called backpropagation, very soon.</span>
+</dd>
+<dt data-target-cell="annotated-cell-2" data-target-annotation="4">4</dt>
+<dd>
+<span data-code-cell="annotated-cell-2" data-code-lines="19,20" data-code-annotation="4">And the final step in our training loop is to perform the gradient descent update. We simply take our current weights and subtract the gradient (multiplied by a small learning rate, here 1e-4) to move in the direction that reduces the loss.</span>
+</dd>
+</dl>
+<p>And that’s it! In about 20 lines, we have a complete training procedure for a 2-layer neural network. Now, an obvious question that arises when designing these networks is how do we go about <strong>setting the number of layers and their sizes?</strong> This is a fundamental question in neural network design, and it relates to the “capacity” of the model</p>
+<p><a href="./images/model-capacity.png" class="lightbox" data-gallery="quarto-lightbox-gallery-9"><img src="./images/model-capacity.png" class="img-fluid"></a></p>
+<p>The diagrams in the first row illustrate the decision boundary learned by a two layer neural network with a varying number of neurons in its single hidden layer, trying to classify some 2D points. With only <strong>3 hidden neurons</strong>, the network can learn a relatively simple decision boundary. When we increase to <strong>6 hidden neurons</strong>, the network has more capacity. It can learn a more complex, wigglier decision boundary, fitting the data a bit better. And with <strong>20 hidden neurons</strong>, it can learn an even more intricate boundary, potentially capturing finer details of the data distribution. The general principle here is that <strong>more neurons = more capacity</strong>. A network with more neurons (and more layers, which we’ll get to) can approximate more complex functions. It has more parameters, more knobs to turn, so it can fit more complicated patterns in the data. Now, if more neurons give more capacity, you might be tempted to think: “Great! I’ll just make my network huge, and it will fit the training data perfectly!”. But there’s a catch, and that’s overfitting. A network with too much capacity might learn the training data perfectly, including all its noise but fail to generalize to new and unseen data.</p>
+<p>So how do we control this? One might think “Okay, I’ll just make my network smaller to prevent overfitting.” However, the general wisdom in the deep learning community now is: <strong>Do not use the size of the neural network as your primary regularizer. Use stronger regularization instead</strong>. What does this mean? It’s generally better to use a larger network that has the potential to learn the true underlying function well, and then control overfitting using explicit regularization techniques like L2 regularization, dropout, or data augmentation. Look at these plots at the bottom. They show the decision boundary for a network of a fixed, reasonably large size, but with different strengths of L2 regularization, controlled by <span class="math inline">\(\lambda\)</span>. The idea is that it’s often better to make your network “big enough” (in terms of layers and neurons) to have sufficient capacity to represent the complexity of the true underlying function, and then use regularization techniques to prevent it from merely memorizing the training data. Trying to find the “perfect” small size for your network is often harder and less effective than using a larger network with good regularization.</p>
+</section>
+<section id="how-to-compute-gradients" class="level2">
+<h2 class="anchored" data-anchor-id="how-to-compute-gradients">How to compute gradients?</h2>
+<p>Okay, so now we have our neural network, which is essentially a more complex, nonlinear score function. For a 2-layer network, our scores s are given by <span class="math inline">\(f(x; W_1, W_2) = W_2  \max(0, W_1x)\)</span>. This function takes our input x and our learnable parameters <span class="math inline">\(W_1\)</span> and <span class="math inline">\(W_2\)</span> and produces class scores. Once we have these scores, the rest of the framework we developed for linear classifiers still applies. We need a loss function to tell us how good these scores are. For example, we can use the Hinge Loss (or SVM loss) on these predictions:</p>
+<p><span class="math display">\[
+L_i = \sum_{j \neq y_i} \max(0, s_j - s_{y_i} + 1)
+\]</span></p>
+<p>This is exactly the same hinge loss we saw before. It penalizes the network if the score <span class="math inline">\(s_j\)</span> for an incorrect class <span class="math inline">\(j\)</span> is not sufficiently lower than the score <span class="math inline">\(s_{y_i}\)</span> for the correct class <span class="math inline">\(y_i\)</span> (by a margin of 1). We could just as easily use the Softmax loss (cross-entropy loss) here. The choice of loss function depends on the specific problem and desired properties, just like with linear models. Next, we also typically include a regularization term to prevent overfitting. A common choice is L2 regularization: <span class="math inline">\(R(W) = \sum_k W_k^2\)</span>. This penalizes large values in our weight matrices.</p>
+<p>And finally, the total loss <span class="math inline">\(L\)</span> is the average of the data loss <span class="math inline">\(L_i\)</span> over all N training examples, plus our regularization terms.</p>
+<p><span class="math display">\[
+L = \frac{1}{N}  \sum_{i=1}^N L_i + \lambda R(W_1) + \lambda R(W_2)
+\]</span></p>
+<p>Notice that now we have regularization terms for each of our weight matrices, <span class="math inline">\(W_1\)</span> and <span class="math inline">\(W_2\)</span> and if we had more layers, we’d regularize all their weights as well. The <span class="math inline">\(\lambda\)</span> hyperparameter controls the strength of this regularization. So the overall structure is very familiar, 1) define a score function. 2) define a loss function. 3) add regularization. Our goal is still the same find the weight <span class="math inline">\(W_1\)</span>, <span class="math inline">\(W_2\)</span> that minimize this total loss <span class="math inline">\(L\)</span>. But now, our score function f is more complex. It’s a nested composition of functions with matrix multiplies and non-linearities. This brings us to the next big challenge: <strong>How to compute gradients?</strong></p>
+<p>To use gradient descent, we need to compute the partial derivatives of the total loss <span class="math inline">\(L\)</span> with respect to each of our parameters. That is, we need <span class="math inline">\(\frac{\partial L}{\partial W_1}, \frac{\partial L}{\partial W_2}\)</span>, if we can compute these gradients then we can update <span class="math inline">\(W_1\)</span> and <span class="math inline">\(W_2\)</span> using our standard gradient descent rule: <span class="math inline">\(W_1 = W_1 - learning\_rate  \frac{\partial L}{\partial W_1}\)</span>, and similarly for <span class="math inline">\(W_2\)</span>. So how do we get these gradients? One idea which turns out to be a <strong>bad idea</strong> is to try and <strong>derive <span class="math inline">\(\frac{\partial L}{\partial W}\)</span> on paper</strong>, analytically, and for the entire complex function. Think back to our linear classifier with SVM loss. Even for that relatively simple case, where <span class="math inline">\(s = f(x;W) = Wx\)</span>, and <span class="math inline">\(L_i = \sum \max(0, s_j - s_{y_i} + 1)\)</span>, deriving the full gradient <span class="math inline">\(\frac{\partial L}{\partial W}\)</span> was already a bit involved. We had to expand it all out, as shown here, and then take derivatives.</p>
+<p><span class="math display">\[
+\begin{align}
+L_i &amp;= \sum_{j \neq y_i} \max(0, s_j - s_{y_i} + 1) \\
+    &amp;= \sum_{j \neq y_i} \max(0, W_{j,:} \cdot x + W_{y_i, :} \cdot x + 1) \\
+L &amp;= \frac{1}{N} \sum_{i=1}^N L_i + \lambda \sum_k W_k^2 \\
+&amp;= \frac{1}{N} \sum_{i=1}^N \sum_{j \neq y_i} \max(0, W_{j,:} \cdot x + W_{y_i, :} \cdot x + 1) + \lambda \sum_k W_k^2 \\
+\nabla_W L &amp;= \nabla_W \left(\frac{1}{N} \sum_{i=1}^N \sum_{j \neq y_i} \max(0, W_{j,:} \cdot x + W_{y_i, :} \cdot x + 1) + \lambda \sum_k W_k^2 \right)
+\end{align}
+\]</span></p>
+<p>Now imagine doing this for our 2-layer neural network, where <span class="math inline">\(s\)</span> itself is <span class="math inline">\(W_2 * \max(0, W_1 x)\)</span>. The expression for <span class="math inline">\(L\)</span> in terms of the raw inputs <span class="math inline">\(x\)</span> and weights <span class="math inline">\(W_1\)</span>, <span class="math inline">\(W_2\)</span> would become much, much more complicated. It would be very <strong>tedious</strong>. It involves a lot of matrix calculus, and you’d need a lot of paper (or whiteboard space!). It’s very easy to make mistakes. What if we want to <strong>change our loss function</strong>? Say we initially derived everything for Hinge loss, and now we want to try Softmax loss. We’d have to <strong>re-derive everything from scratch</strong>! That’s not flexible at all. This approach is simply <strong>not feasible for very complex models</strong>. Modern deep neural networks can have tens, hundreds, or even thousands of layers, with various types of operations. Deriving the full analytical gradient for such a beast by hand is practically impossible and incredibly error-prone. So, we need a more systematic, more modular, and more scalable way to compute these gradients. And that leads us to a better idea: <strong>Computational graphs + Backpropagation</strong>.</p>
+<p>The core idea here is to break down our complex function from input <span class="math inline">\(x\)</span> and weights <span class="math inline">\(W\)</span> all the way to the final loss <span class="math inline">\(L\)</span> into a sequence of simpler, elementary operations. We can represent this sequence as a computational graph</p>
+<p><a href="./images/computational-graph.png" class="lightbox" data-gallery="quarto-lightbox-gallery-10"><img src="./images/computational-graph.png" class="img-fluid"></a></p>
+<p>Let’s look at the example, which is for our familiar linear classifier with hinge loss and regularization.</p>
+<ol type="1">
+<li>We start with our inputs <span class="math inline">\(x\)</span> and our weights <span class="math inline">\(W\)</span>.</li>
+<li>The first operation is computing the scores: <span class="math inline">\(s = Wx\)</span>. This is represented by a node. It takes <span class="math inline">\(W\)</span> and <span class="math inline">\(x\)</span> as inputs and produces scores <span class="math inline">\(S\)</span>.</li>
+<li>These scores <span class="math inline">\(S\)</span> then feed into the hinge loss function <span class="math inline">\(L_i = \sum \max(0, s_j - s_{y_i} + 1)\)</span>. This is another node in our graph.</li>
+<li>Separately, our weights <span class="math inline">\(W\)</span> also feed into a regularization function <span class="math inline">\(R(W)\)</span>.</li>
+<li>Finally, the output of the hinge loss (<span class="math inline">\(L_i\)</span>, which would then be averaged over the batch) and the output of the regularization term <span class="math inline">\(R(W)\)</span> are added together (the + node) to give us our final total loss <span class="math inline">\(L\)</span>.</li>
+</ol>
+<p>So, we’ve decomposed our complex loss calculation into a directed acyclic graph of basic operations. Each node in this graph takes some inputs and produces an output. The beauty of this approach is that if we know how to compute the local gradient for each elementary operation for example how does the output of the <span class="math inline">\(Wx\)</span> node change if <span class="math inline">\(W\)</span> changes a little?, we can then use the <strong>chain rule</strong> from calculus to systematically “backpropagate” the gradient of the final loss <span class="math inline">\(L\)</span> all the way back to our input parameters <span class="math inline">\(W\)</span>. This “backpropagation” algorithm is the workhorse that allows us to efficiently compute gradients for arbitrarily complex neural networks. It’s modular because we only need to know the local derivative for each type of node (matrix multiply, addition, ReLU, sigmoid, loss function, etc.). And it’s systematic, meaning we can implement it once, and it will work for any network architecture we can express as a computational graph. This approach is essential for handling the complexity of modern deep learning models.</p>
+<p>Think about <strong>Convolutional Network</strong> like <a href="https://proceedings.neurips.cc/paper_files/paper/2012/file/c399862d3b9d6b76c8436e924a68c45b-Paper.pdf">AlexNet</a>, which was a groundbreaking architecture for image recognition. Trying to write down the full analytical derivative of the loss with respect to all those different sets of weights in AlexNet would be an absolute nightmare. It’s just too complex. And it gets even crazier. Consider something like a <a href="https://arxiv.org/abs/1410.5401">Neural Turing Machine</a>. This is a type of neural network architecture that’s augmented with an external memory component that it can learn to read from and write to. The idea is to give the network capabilities closer to a traditional computer program. The computational graph for a Neural Turing Machine, especially if you unroll its operations over time becomes incredibly deep and complex. Each “time step” of the machine’s operation adds another layer to this graph. Again, attempting to derive gradients by hand for such a system is completely out of the question. So, for all these sophisticated architectures – from convolutional networks to these very deep and recurrent models – we absolutely need a robust, general, and efficient method for computing gradients. And that method is backpropagation, operating on these computational graphs.</p>
+</section>
+<section id="backpropagation" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="backpropagation">Backpropagation</h2>
+<p>So the solution <strong>backpropagation</strong>. This is the algorithm that will allow us to compute these gradients efficiently and systematically. It’s essentially a practical application of the chain rule from calculus on a computational graph. Let’s illustrate backpropagation with a simple example. Consider the function <span class="math inline">\(f(x, y, z) = (x + y) * z\)</span>. Our goal will be to compute the partial derivatives of <span class="math inline">\(f\)</span> with respect to <span class="math inline">\(x\)</span>, <span class="math inline">\(y\)</span>, and <span class="math inline">\(z\)</span>, that is, <span class="math inline">\(\frac{\partial f}{\partial x}\)</span>, <span class="math inline">\(\frac{\partial f}{\partial y}\)</span>, and <span class="math inline">\(\frac{\partial f}{\partial z}\)</span>. First, let’s represent this function as a computational graph</p>
+<p><a href="./images/backpropagation.png" class="lightbox" data-gallery="quarto-lightbox-gallery-11"><img src="./images/backpropagation.png" class="img-fluid"></a></p>
+<p>We have inputs <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>. These are fed into an addition node. Let’s call the output of this addition <span class="math inline">\(q\)</span>. So, <span class="math inline">\(q = x + y\)</span>. Then, this intermediate value q and our third input <span class="math inline">\(z\)</span> are fed into a multiplication node. The output of this multiplication node is our final function value <span class="math inline">\(f\)</span>. So, <span class="math inline">\(f = q z\)</span>. This graph breaks the computation down into two simple steps: an addition and a multiplication. Now, let’s assign some concrete values to our inputs to trace the computation. Let’s say, for example, <span class="math inline">\(x = -2\)</span>, <span class="math inline">\(y = 5\)</span>, and <span class="math inline">\(z = -4\)</span>, so <span class="math inline">\(q = 3\)</span> and <span class="math inline">\(f = -12\)</span>. This is the forward pass: we compute the values of all nodes in the graph from inputs to output.</p>
+<p>Now, for backpropagation, we need the local gradients for each node in our graph. That is, for each operation, we need to know how its output changes with respect to its inputs. Consider the first operation: <span class="math inline">\(q = x + y\)</span>, <span class="math inline">\(\frac{\partial q}{\partial x} = 1\)</span> so if <span class="math inline">\(x\)</span> changes by a small amount, <span class="math inline">\(q\)</span> changes by that same amount, similarly <span class="math inline">\(\frac{\partial q}{\partial y} = 1\)</span>. These are the local gradients for the addition gate. Next, consider the second operation: <span class="math inline">\(f = q z\)</span>. <span class="math inline">\(\frac{\partial f}{\partial q} = z\)</span> so if <span class="math inline">\(q\)</span> changes by a small amount <span class="math inline">\(dq\)</span>, <span class="math inline">\(f\)</span> changes by <span class="math inline">\(z \cdot dq\)</span>. And <span class="math inline">\(\frac{\partial f}{\partial z} = q\)</span>, if z changes by a small amount <span class="math inline">\(dz\)</span>, <span class="math inline">\(f\)</span> changes by <span class="math inline">\(q \cdot dz\)</span>. So, we have the local derivatives for each individual operation. Ultimately, what we want are the gradients of the final output <span class="math inline">\(f\)</span> with respect to the initial inputs <span class="math inline">\(x\)</span>, <span class="math inline">\(y\)</span>, and <span class="math inline">\(z\)</span>: <span class="math inline">\(\frac{\partial f}{\partial x}\)</span>, <span class="math inline">\(\frac{\partial f}{\partial y}\)</span> and <span class="math inline">\(\frac{\partial f}{\partial z}\)</span>.</p>
+<p>Okay, we’re ready to start the backward pass. We work from the output <span class="math inline">\(f\)</span> back towards the inputs <span class="math inline">\(x, y, z\)</span>. The very first gradient we consider is the gradient of the final output <span class="math inline">\(f\)</span> with respect to itself, <span class="math inline">\(\frac{\partial f}{\partial f}\)</span>. This is always 1, by definition. This ‘1’ is often called the initial “upstream gradient”, it’s the gradient that starts the whole backward flow. You can see it annotated on the graph in read next to <span class="math inline">\(f\)</span>.</p>
+<p>Now let’s move back one step, we want to find <span class="math inline">\(\frac{\partial f}{\partial z}\)</span>. <span class="math inline">\(z\)</span> is an input to the multiplication gate <span class="math inline">\(f = qz\)</span> The local gradient of <span class="math inline">\(f\)</span> with respect to <span class="math inline">\(z\)</span> is <span class="math inline">\(q\)</span>. From our forward pass, we know <span class="math inline">\(q = 3\)</span>. So, <span class="math inline">\(\frac{\partial f}{\partial z} = 3\)</span>. The upstream gradient <span class="math inline">\(\frac{\partial f}{\partial f}\)</span> (which is 1) is multiplied by the local gradient <span class="math inline">\(\frac{\partial f}{\partial z}\)</span> (which is q). So, <span class="math inline">\(1 q = q = 3\)</span>. This value 3 is now the gradient of the final output <span class="math inline">\(f\)</span> with respect to the node <span class="math inline">\(z\)</span>.</p>
+<p>Next, we want <span class="math inline">\(\frac{\partial f}{\partial q}\)</span>. <span class="math inline">\(q\)</span> is the other input to the multiplication gate <span class="math inline">\(f = qz\)</span>. The local gradient of <span class="math inline">\(f\)</span> with respect to <span class="math inline">\(q\)</span> is <span class="math inline">\(z\)</span>. From our forward pass, <span class="math inline">\(z = -4\)</span>. So, <span class="math inline">\(\frac{\partial f}{\partial q} = -4\)</span>. Again the upstream gradient <span class="math inline">\(\frac{\partial f}{\partial f}\)</span> (which is 1) multiplied by the local gradient <span class="math inline">\(\frac{\partial f}{\partial q}\)</span> (which is z). So, <span class="math inline">\(1 \cdot z = z = -4\)</span>. This <span class="math inline">\(-4\)</span> is the gradient of the final output <span class="math inline">\(f\)</span> with respect to the intermediate node <span class="math inline">\(q\)</span>. This value will be crucial as we continue propagating backward, because <span class="math inline">\(q\)</span> itself depends on <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>.</p>
+<p>Now we need to go further back to get <span class="math inline">\(\frac{\partial f}{\partial y}\)</span>. <span class="math inline">\(y\)</span> is an input to the addition gate <span class="math inline">\(q = x + y\)</span>. The node <span class="math inline">\(y\)</span> influences <span class="math inline">\(f\)</span> through <span class="math inline">\(q\)</span>. This is where the chain rule comes into play. The chain rule tells us:</p>
+<p><span class="math display">\[
+\frac{\partial f}{\partial y}= \frac{\partial f}{\partial q} \frac{\partial q}{\partial y}
+\]</span></p>
+<p><span class="math inline">\(\frac{\partial f}{\partial q}\)</span> is the gradient of the final output <span class="math inline">\(f\)</span> with respect to <span class="math inline">\(q\)</span>. We just calculated this as <span class="math inline">\(-4\)</span>. This is often called the upstream gradient coming into the <span class="math inline">\(q\)</span> node from later parts of the graph. <span class="math inline">\(\frac{\partial q}{\partial y}\)</span> is the local gradient of the <span class="math inline">\(q\)</span> node with respect to its input <span class="math inline">\(y\)</span>. From <span class="math inline">\(q = x + y\)</span>, we know <span class="math inline">\(\frac{\partial q}{\partial y} = 1\)</span>. So, <span class="math inline">\(\frac{\partial f}{\partial y} = -4 \cdot 1 = -4\)</span>. This <span class="math inline">\(-4\)</span> is now the gradient of the final output <span class="math inline">\(f\)</span> with respect to the input <span class="math inline">\(y\)</span>.</p>
+<p>Finally, let’s get <span class="math inline">\(\frac{\partial f}{\partial x}\)</span> Similar to <span class="math inline">\(y, x\)</span> is an input to the addition gate <span class="math inline">\(q = x + y\)</span>, and it influences <span class="math inline">\(f\)</span> through <span class="math inline">\(q\)</span>, we apply the chain rule here <span class="math inline">\(\frac{\partial f}{\partial x} = \frac{\partial f}{\partial q} \frac{\partial q}{\partial x}\)</span>. So, <span class="math inline">\(\frac{\partial f}{\partial x} = -4 \cdot 1 = -4\)</span>. This <span class="math inline">\(-4\)</span> is the gradient of the final output <span class="math inline">\(f\)</span> with respect to the input <span class="math inline">\(x\)</span>.</p>
+<p>So, to summarize, we’ve found:</p>
+<p><span class="math display">\[
+\begin{align}
+\frac{\partial f}{\partial f} &amp;= 1 \\
+\frac{\partial f}{\partial z} &amp;= q = 3 \\
+\frac{\partial f}{\partial q} &amp;= z = -4 \\
+\frac{\partial f}{\partial y} &amp;= \frac{\partial f}{\partial q}  \frac{\partial q}{\partial y}  = -4 \cdot 1 = -4 \\
+\frac{\partial f}{\partial x} &amp;= \frac{\partial f}{\partial q} \frac{\partial q}{\partial x}  = -4 \cdot 1 = -4
+\end{align}
+\]</span></p>
+<p>Let’s generalize this idea of backpropagation through a single computational gate.</p>
+<p><a href="./images/local-gradient.png" class="lightbox" data-gallery="quarto-lightbox-gallery-12"><img src="./images/local-gradient.png" class="img-fluid"></a></p>
+<p>Imagine we have some generic function, or “gate,” <span class="math inline">\(f\)</span>. This gate takes some inputs, let’s say <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>, and it produces an output <span class="math inline">\(z\)</span>. This <span class="math inline">\(f\)</span> could be an addition, a multiplication, a ReLU, a sigmoid, any elementary operation. For this gate to be part of a backpropagation process, we need to know its <strong>local gradients</strong>. These are the partial derivatives of the gate’s output <span class="math inline">\(z\)</span> with respect to each of its inputs, <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> So, we need to be able to compute <span class="math inline">\(\frac{\partial z}{\partial x}\)</span> and <span class="math inline">\(\frac{\partial z}{\partial y}\)</span> . These gradients tell us how a small change in x (or y) directly affects z, assuming all other inputs to this specific gate are held constant. Now, during the backward pass, this gate <span class="math inline">\(f\)</span> will receive an <strong>upstream gradient</strong>. This upstream gradient is the derivative of the final loss function <span class="math inline">\(L\)</span> which is at the very end of our entire computational graph with respect to the output of this gate, <span class="math inline">\(z\)</span>. So, we receive <span class="math inline">\(\frac{\partial L}{\partial z}\)</span>. This <span class="math inline">\(\frac{\partial L}{\partial z}\)</span> tells us how much the final loss <span class="math inline">\(L\)</span> changes if the output <span class="math inline">\(z\)</span> of this particular gate changes by a small amount. This gradient has been propagated backward from later parts of the graph. Our goal, when backpropagating through this gate, is to compute the <strong>Downstream gradients</strong>. These are the derivatives of the final loss <span class="math inline">\(L\)</span> with respect to the inputs of this gate, <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>. So, we want to calculate <span class="math inline">\(\frac{\partial L}{\partial x}\)</span> and <span class="math inline">\(\frac{\partial L}{\partial y}\)</span>. How do we do this? We use the chain rule. To find <span class="math inline">\(\frac{\partial L}{\partial x}\)</span>, we multiply the upstream gradient <span class="math inline">\(\frac{\partial L}{\partial z}\)</span> by the local gradient <span class="math inline">\(\frac{\partial z}{\partial x}\)</span>:</p>
+<p><span class="math display">\[
+\frac{\partial L}{\partial x}= \frac{\partial L}{\partial z} * \frac{\partial z}{\partial x}
+\]</span></p>
+<p>This tells us how much the final loss <span class="math inline">\(L\)</span> changes if the input <span class="math inline">\(x\)</span> to this gate changes by a small amount. And similarly for the input <span class="math inline">\(y\)</span>. So, for any gate in our computational graph, if we know its local gradient and the upstream gradient coming into its output we can compute the downstream gradient which will then become the upstream gradients for the gate that produced <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>. This process is then repeated for every gate in the graph, working backwards from the final loss. Each gate receives an upstream gradient from its successor(s) in the forward pass. It uses this, along with its own local gradients, to compute downstream gradients. These downstream gradients are then passed further back to its predecessor(s). This recursive application of the chain rule is what allows us to efficiently compute the gradient of the overall loss function with respect to all parameters and inputs in the network. This pattern of upstream gradient times local gradient gives downstream gradient is the fundamental computation performed at each node during backpropagation.</p>
+<p>Okay, let’s look at another example This time, the function is</p>
+<p><span class="math display">\[
+f(w, x) = \frac{1}{1 + e^{-(w_0x_0 + w_1x_1 + w_2)}}
+\]</span></p>
+<p>This should look familiar! It’s the sigmoid function applied to a linear combination of inputs <span class="math inline">\(w_0x_0 + w_1x_1 + w_2\)</span>. This is exactly what one neuron in a neural network might compute if it’s using a sigmoid activation. Our goal will be to find the gradients of this f with respect to <span class="math inline">\(w_0, x_0, w_1, x_1\)</span>, and <span class="math inline">\(w_2\)</span>. And if we work it out like the previous example we would have this graph</p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<p>Sigmoid function: <span class="math inline">\(\sigma(x) = \frac{1}{1 + e^{-x}}\)</span></p>
+</div></div><p><a href="./images/sigmoid.png" class="lightbox" data-gallery="quarto-lightbox-gallery-13"><img src="./images/sigmoid.png" class="img-fluid"></a></p>
+<p>Now, let’s take a step back and look at a section of this graph. The sequence of operations we performed <em>multiply</em> by <em>-1</em> then <em>exp</em> then add 1, then take reciprocal <em>(1/x)</em> – this entire chain, highlighted in the blue box, is actually the computation of the <strong>Sigmoid function</strong>. The input to this entire sigmoid block was the value 1.00 and the output of the sigmoid block was 0.73. An important point here is that the computational graph representation may not be unique. We can choose to break down functions into very fine-grained elementary operations, as we did, or we can group common sequences of operations into a single “macro” gate. The key is to choose a representation where the local gradients at each node can be easily expressed. So, instead of backpropagating through each of those four individual steps, we could have treated the entire sigmoid function as a single gate. To do that, we’d need the sigmoid local gradient. The derivative of the sigmoid function with respect to its input <span class="math inline">\(x\)</span> is a well-known result:</p>
+<p><span class="math display">\[
+\frac{d \sigma(x)}{d x} = \frac{e^{-x}}{\left(1 + e^{-x}\right)^2} = \left( \frac{1 + e^{-x} - 1}{1 + e^{-x}}\right) \left(\frac{1}{1 + e^{-x}}\right) = \left(1 - \sigma(x)\right) \sigma(x)
+\]</span></p>
+<p>This is a very convenient form because it expresses the derivative in terms of the function’s own output value. So, if we treat the sigmoid as a single gate. The input to this sigmoid gate was <span class="math inline">\(x\_in = 1.00\)</span>. The output was <span class="math inline">\(\sigma(x\_in) = 0.73\)</span>. The <strong>upstream gradient</strong> coming into the output of the sigmoid gate was 1.00. The <strong>local gradient</strong> of the sigmoid function, evaluated at its input <span class="math inline">\(x\_in=1.00\)</span>, is <span class="math inline">\(\sigma(1.00) (1 - \sigma(1.00))\)</span>. Since <span class="math inline">\(\sigma(1.00)\)</span> is approximately <span class="math inline">\(0.73\)</span>, the local gradient is <span class="math inline">\(0.73 \cdot (1 - 0.73) = 0.73 \cdot 0.27 \approx 0.1971\)</span>. Then we calculate the downstream gradient which is <span class="math inline">\(upstream\_gradient \cdot (1-\sigma(1)) \sigma(1)\)</span> and this evaluates to approximately 0.2. And if you look back at our step-by-step backpropagation, the gradient we computed at the input of the multiply by -1 gate which was the start of our sigmoid block was indeed 0.20! This demonstrates the modularity of backpropagation. We can define common operations like sigmoid, ReLU, tanh, etc., as single “black-box” gates. As long as we know how to compute their output during the forward pass and their local gradient during the backward pass, we can easily plug them into any computational graph. Modern deep learning frameworks are built around this idea of a library of predefined layers or operations, each knowing its forward and backward computation. This ability to abstract away complex operations into single gates with well-defined local gradients is incredibly powerful and makes implementing backpropagation for complex architectures much more manageable.</p>
+</section>
+<section id="backpropagation-in-practice" class="level2">
+<h2 class="anchored" data-anchor-id="backpropagation-in-practice">Backpropagation in practice</h2>
+<p>Now, let’s look for some general patterns in how these gradients flow through different types of gates. Understanding these can give you a good intuition for how backpropagation works.</p>
+<p><a href="./images/gates.png" class="lightbox" data-gallery="quarto-lightbox-gallery-14"><img src="./images/gates.png" class="img-fluid"></a></p>
+<p>First, let’s consider the <strong>add gate</strong>: <span class="math inline">\(z = x + y\)</span>. The add gate acts as a gradient distributor. It takes the upstream gradient and simply passes it along (distributes it) to both of its inputs unchanged, because the local gradients are 1.</p>
+<p>Next, the <strong>mul gate</strong> (multiplication gate): <span class="math inline">\(z = x y\)</span>. The mul gate acts as a <strong>swap multiplier</strong>. The gradient <span class="math inline">\(\frac{dL}{dx}\)</span> is the upstream gradient times the other input <span class="math inline">\(y\)</span>. And <span class="math inline">\(\frac{dL}{dy}\)</span> is the upstream gradient times the other input <span class="math inline">\(x\)</span>. It’s like the inputs get swapped when they multiply the upstream gradient.</p>
+<p>What about a <strong>copy gate</strong>? A copy gate is when a single input <span class="math inline">\(x\)</span> is used in multiple places further down the graph. During backpropagation, this means gradients from multiple paths will flow back to x. A copy gate (or a “fan-out” point) acts as a <strong>gradient adder</strong>. It sums up all the incoming upstream gradients. This is a direct consequence of the multivariate chain rule when a variable influences the loss through multiple paths.</p>
+<p>Finally, consider a <strong>max gate</strong>: <span class="math inline">\(z = \max(x, y)\)</span>. The max gate acts as a <strong>gradient router</strong>. It takes the upstream gradient and routes it entirely to the input that won (had the maximum value) during the forward pass. The gradient for the input that lost is zero. This makes sense if <span class="math inline">\(x\)</span> wasn’t the max, then small changes in x (as long as it stays not the max) won’t affect the output <span class="math inline">\(z\)</span> at all.</p>
+<p>These patterns of distributor for add, swap multiplier for mul, adder for copy, and router for max are very useful to keep in mind when thinking about how gradients propagate through a network. ReLU, for example, <span class="math inline">\(\max(0, x)\)</span>, is a special case of the max gate. If <span class="math inline">\(x &gt; 0\)</span>, the gradient passes through. If <span class="math inline">\(x &lt;= 0\)</span>, the gradient becomes zero.</p>
+<p>So, we have this conceptual understanding of backpropagation using computational graphs. How do we actually implement this? One way is to write “Flat” code. This means we explicitly write out the sequence of operations for the forward pass and then, in reverse order, write out the corresponding operations for the backward pass. Let’s look at our sigmoid example again</p>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row quarto-layout-valign-center">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><a href="./images/sigmoid2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-15"><img src="./images/sigmoid2.png" class="img-fluid"></a></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> f(w0, x0, w1, x1, w2):</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  s0 <span class="op">=</span> w0 <span class="op">*</span> x0  <span class="co"># Forward pass</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  s1 <span class="op">=</span> w1 <span class="op">*</span> x1</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  s2 <span class="op">=</span> s0 <span class="op">+</span> s1</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  s3 <span class="op">=</span> s2 <span class="op">+</span> w2</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  L <span class="op">=</span> sigmoid(s3)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  grad_L <span class="op">=</span> <span class="fl">1.0</span> <span class="co"># Backward pass</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  grad_s3 <span class="op">=</span> grad_L <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> L) <span class="op">*</span> L</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  grad_w2 <span class="op">=</span> grad_s3</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  grad_s2 <span class="op">=</span> grad_s3</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  grad_s0 <span class="op">=</span> grad_s2</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  grad_s1 <span class="op">=</span> grad_s2</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  grad_w1 <span class="op">=</span> grad_s1 <span class="op">*</span> x1</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  grad_x1 <span class="op">=</span> grad_s1 <span class="op">*</span> w1</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  grad_w0 <span class="op">=</span> grad_s0 <span class="op">*</span> x0</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  grad_x0 <span class="op">=</span> grad_s0 <span class="op">*</span> w0</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+<p>During this forward pass, we would typically store all the intermediate values <code>s0, s1, s2, s3</code> and the final output <code>L</code>, because we’ll need them for the backward pass. Now, for the Backward pass to compute the gradients we work backward from the last operation in the forward pass. And that’s it! We’ve computed all the gradients we needed. Notice how the backward pass code mirrors the forward pass code but in reverse order. Each line in the forward pass that computes some variable v will have a corresponding set of lines in the backward pass that compute grad_v (the gradient of the final loss with respect to v) and then use grad_v to compute gradients for the inputs to that operation. This “flat” style of implementation is straightforward for simple functions. However, for very deep or complex networks, writing out all these steps explicitly can become tedious and error-prone. We’d prefer a more modular approach.</p>
+<p>A much better approach for practical deep learning systems is a <strong>modularized implementation</strong> using a well-defined <strong>forward / backward API</strong> for each type of gate or operation. The idea is that each elementary operation (like multiplication, addition, sigmoid, ReLU, convolution, etc.) is implemented as an object or a set of functions that knows two things: 1) how to compute its output given its inputs (the <strong>forward</strong> pass). 2) how to compute the gradients with respect to its inputs, given the gradient with respect to its output (the <strong>backward</strong> pass). Here’s an example of what this might look like, using syntax similar to what you’d find in PyTorch’s <code>autograd.Function</code>.</p>
+<div class="sourceCode" id="annotated-cell-3"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-3-1"><a href="#annotated-cell-3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Multiply(torch.autograd.Function):</span>
+<span id="annotated-cell-3-2"><a href="#annotated-cell-3-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">@staticmethod</span></span>
+<span id="annotated-cell-3-3"><a href="#annotated-cell-3-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> forward(ctx, x, y):</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-3-4" class="code-annotation-target"><a href="#annotated-cell-3-4" aria-hidden="true" tabindex="-1"></a>    ctx.save_for_backward(x, y)</span>
+<span id="annotated-cell-3-5"><a href="#annotated-cell-3-5" aria-hidden="true" tabindex="-1"></a>    z <span class="op">=</span> x <span class="op">*</span> y</span>
+<span id="annotated-cell-3-6"><a href="#annotated-cell-3-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> z</span>
+<span id="annotated-cell-3-7"><a href="#annotated-cell-3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-3-8"><a href="#annotated-cell-3-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">@staticmethod</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-3-9" class="code-annotation-target"><a href="#annotated-cell-3-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> backward(ctx, grad_z):</span>
+<span id="annotated-cell-3-10"><a href="#annotated-cell-3-10" aria-hidden="true" tabindex="-1"></a>    x, y <span class="op">=</span> ctx.saved_tensors</span>
+<span id="annotated-cell-3-11"><a href="#annotated-cell-3-11" aria-hidden="true" tabindex="-1"></a>    grad_x <span class="op">=</span> y <span class="op">*</span> grad_z</span>
+<span id="annotated-cell-3-12"><a href="#annotated-cell-3-12" aria-hidden="true" tabindex="-1"></a>    grad_y <span class="op">=</span> x <span class="op">*</span> grad_z</span>
+<span id="annotated-cell-3-13"><a href="#annotated-cell-3-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> grad_x, grad_y</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-3" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-3" data-code-lines="4" data-code-annotation="1">We need to cache some values for use in backward</span>
+</dd>
+<dt data-target-cell="annotated-cell-3" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-3" data-code-lines="9" data-code-annotation="2"><code>grad_z</code> is upstream gradient</span>
+</dd>
+</dl>
+<p>This is the pattern. Every operation (or “layer” in a deep learning framework) will have a <code>forward</code> method that computes its output and stashes away anything needed for the backward pass, and a <code>backward</code> method that takes the upstream gradient and uses the stashed values and local derivatives to compute and return the downstream gradients.</p>
+</section>
+<section id="backpropagation-with-vectors-and-matrices" class="level2">
+<h2 class="anchored" data-anchor-id="backpropagation-with-vectors-and-matrices">Backpropagation with vectors and matrices</h2>
+<p>So far, we’ve mostly been talking about scalar inputs and outputs for these gates. But in neural networks, we usually deal with vectors, matrices and tensors. All the examples we’ve worked through like <span class="math inline">\(f(x,y,z) = (x+y)z\)</span> and the sigmoid example <span class="math inline">\(f(w,x) = \sigma(w_0x_0 + w_1x_1 + w_2)\)</span> involved scalar inputs and scalar intermediate values. But in real neural networks, our inputs x are often vectors (e.g., an image flattened into a vector), our weights W are matrices, and the outputs of layers are vectors or higher-dimensional tensors. So, the question is <strong>what about vector-valued functions? How does backpropagation work then</strong>? To answer this, let’s quickly recap vector derivatives.</p>
+<p><strong>Scalar to Scalar</strong>, if we have a scalar input <span class="math inline">\(x \in \mathbb{R}\)</span> and a scalar <span class="math inline">\(y \in \mathbb{R}\)</span>, then we have the <strong>regular derivative</strong> <span class="math inline">\(\frac{dy}{dx}\)</span>. This tells us: if x changes by a small amount, how much will y change? The derivative itself is also a scalar <span class="math inline">\(\frac{dy}{dx} \in \mathbb{R}\)</span>.</p>
+<p><strong>Vector to Scalar</strong>, now what if our input <span class="math inline">\(x \in \mathbb{R}^N\)</span> (a vector) and <span class="math inline">\(y \in \mathbb{R}\)</span> (a scalar). The derivative is now the <strong>Gradient</strong> <span class="math inline">\(\frac{\partial y}{\partial x} \in \mathbb{R}\)</span> where n-th component is <span class="math inline">\(\left(\frac{\partial y}{\partial x}\right)_n = \frac{\partial y}{\partial x_n}\)</span>. This gradient answers the question for each element of <span class="math inline">\(x\)</span>, if it changes by a small amount, then how much will <span class="math inline">\(y\)</span> change? Our loss function <span class="math inline">\(L\)</span> is a scalar, and our weights <span class="math inline">\(W\)</span> (and inputs x to various layers) are often vectors or matrices. So, when we compute <span class="math inline">\(\frac{\partial L}{\partial W}\)</span>, we are computing a gradient.</p>
+<p><strong>Vector to Vector</strong>, what if both our input <span class="math inline">\(x \in \mathbb{R}^N\)</span> (a vector) and our output <span class="math inline">\(y \in \mathbb{R}^M\)</span> (a vector). The derivative is now the <strong>Jacobian</strong> matrix <span class="math inline">\(\frac{\partial y}{\partial x} \in \mathbb{R}^{N \times M}\)</span>. This is an <span class="math inline">\(M \times N\)</span> matrix, where the element at row <span class="math inline">\(m\)</span>, column <span class="math inline">\(n\)</span> is <span class="math inline">\(\left(\frac{\partial y}{\partial x}\right)_{n,m} = \frac{\partial y_m}{\partial x_n}\)</span>. This Jacobian answers the question for each element of <span class="math inline">\(x\)</span>, if it changes by a small amount, then how much will each element of y change? Many layers in a neural network can be thought of as vector-to-vector functions (e.g., a fully connected layer maps an input vector to an output vector of activations). The chain rule still applies, but now it involves matrix-vector multiplications or Jacobian-vector products. Let’s see how this plays out.</p>
+<p><a href="./images/backprop-vector.png" class="lightbox" data-gallery="quarto-lightbox-gallery-16"><img src="./images/backprop-vector.png" class="img-fluid"></a></p>
+<p>We still have our gate <span class="math inline">\(f\)</span> which takes inputs, say <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>, and produces an output <span class="math inline">\(z.\)</span> Crucially, the final Loss <span class="math inline">\(L\)</span> is still a scalar! We are always trying to minimize a single scalar value representing how bad our network’s predictions are. During the backward pass, this gate will receive an <strong>Upstream gradient</strong>. This is the gradient of the scalar Loss L with respect to the vector output z of this gate. So, it’s <span class="math inline">\(\frac{\partial L}{\partial z}\)</span>. Since <span class="math inline">\(L\)</span> is a scalar and <span class="math inline">\(z\)</span> is a D_z-dimensional vector, this upstream gradient <span class="math inline">\(\frac{\partial L}{\partial z}\)</span> will also be a D_z-dimensional vector. It tells us: “For each element of <span class="math inline">\(z\)</span>, how much does that element influence the final Loss <span class="math inline">\(L\)</span>?”. Now, the “local gradients” for this gate <span class="math inline">\(f\)</span> describe how its output z changes with respect to its inputs <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>. <span class="math inline">\(\frac{\partial z}{\partial x}\)</span>: Since <span class="math inline">\(z\)</span> is D_z-dim and <span class="math inline">\(x\)</span> is D_x-dim, this is the Jacobian matrix of <span class="math inline">\(z\)</span> with respect to <span class="math inline">\(x\)</span> and same with <span class="math inline">\(y\)</span>. The shapes of these Jacobians:</p>
+<ul>
+<li><span class="math inline">\(\frac{\partial z}{\partial x}\)</span> will be a D_x x D_z matrix (derivative of each component of <span class="math inline">\(z\)</span> w.r.t. each component of <span class="math inline">\(x\)</span>).</li>
+<li><span class="math inline">\(\frac{\partial z}{\partial y}\)</span> will be a D_y x D_z matrix.</li>
+</ul>
+<p>The <strong>Downstream gradients</strong> we want to compute are <span class="math inline">\(\frac{\partial L}{\partial x}\)</span> (a D_x-dim vector) and <span class="math inline">\(\frac{\partial L}{\partial y}\)</span> (a D_y-dim vector). Using the chain rule:</p>
+<p><span class="math display">\[
+\begin{align}
+\frac{\partial L}{\partial x} &amp;= \frac{\partial z}{\partial x} \frac{\partial L}{\partial z}  \\
+\frac{\partial L}{\partial y} &amp;= \frac{\partial z}{\partial y} \frac{\partial L}{\partial z}
+\end{align}
+\]</span></p>
+<p>An important principle to remember: Gradients of variables with respect to the loss have the same dimensions as the original variable.</p>
+<ul>
+<li><span class="math inline">\(x\)</span> is a D_x-dimensional vector. Its gradient <span class="math inline">\(\frac{\partial L}{\partial x}\)</span> is also a D_x-dimensional vector.</li>
+<li><span class="math inline">\(y\)</span> is a D_y-dimensional vector. Its gradient <span class="math inline">\(\frac{\partial L}{\partial y}\)</span> is also a D_y-dimensional vector.</li>
+<li><span class="math inline">\(z\)</span> is a D_z-dimensional vector. Its upstream gradient <span class="math inline">\(\frac{\partial L}{\partial z}\)</span> is also a D_z-dimensional vector</li>
+</ul>
+<p>This makes intuitive sense: for every element in a variable (like a weight matrix or an activation vector), we need a corresponding gradient value that tells us how changing that specific element affects the final scalar loss. This consistency of shapes is critical for implementing backpropagation correctly in code</p>
+<p>Let’s walk through a concrete example of backprop with vectors, using an element-wise ReLU function, <span class="math inline">\(f(x) = \max(0,x)\)</span></p>
+<p><a href="./images/backprop-vector-example.png" class="lightbox" data-gallery="quarto-lightbox-gallery-17"><img src="./images/backprop-vector-example.png" class="img-fluid"></a></p>
+<p>We have a 4D input vector x as shown in the image, and the function max(0,x) is applied element-wise, and the output vector z. Now, for the backward pass, let’s assume we’ve received the upstream gradient <span class="math inline">\(\frac{\partial L}{\partial z}\)</span> This <span class="math inline">\(\frac{\partial L}{\partial z}\)</span> is also a 4D vector. Let’s say it’s <span class="math inline">\(\left[4, -1, 5, 9\right]^T\)</span>. This tells us, for example, that if the first element of <span class="math inline">\(z\)</span> changes by a small amount, the loss <span class="math inline">\(L\)</span> changes by 4 times that amount. To compute the downstream gradient <span class="math inline">\(\frac{\partial L}{\partial x}\)</span>, we need the Jacobian matrix <span class="math inline">\(\frac{\partial z}{\partial x}\)</span>. Since <span class="math inline">\(z_i = \max(0, x_i)\)</span>, the output <span class="math inline">\(z_i\)</span> only depends on the corresponding input <span class="math inline">\(x_i\)</span>. It does not depend on <span class="math inline">\(x_j\)</span> for <span class="math inline">\(j \neq i\)</span>. This means the Jacobian matrix will be <strong>diagonal</strong>.</p>
+<ul>
+<li>If <span class="math inline">\(x_i &gt; 0\)</span>, then <span class="math inline">\(z_i = x_i\)</span>, so <span class="math inline">\(\frac{\partial z_i}{\partial x_i} = 1\)</span>.</li>
+<li>If <span class="math inline">\(x_i \leq 0\)</span>, then <span class="math inline">\(z_i = 0\)</span>, so <span class="math inline">\(\frac{\partial z_i}{\partial x_i} = 0\)</span>.</li>
+</ul>
+<p>So, the Jacobian <span class="math inline">\(\frac{\partial z}{\partial x}\)</span> is a 4x4 diagonal matrix. Now, we compute <span class="math inline">\(\frac{\partial L}{\partial x}\)</span> = <span class="math inline">\(\frac{\partial z}{\partial x}\)</span> <span class="math inline">\(\frac{\partial L}{\partial z}\)</span>. This is a matrix-vector multiplication</p>
+<p>Notice something important here. For element-wise operations like ReLU, the Jacobian is sparse, and specifically, it’s diagonal. The off-diagonal entries are always zero. Because of this, we Never explicitly form the full Jacobian matrix in practice for these types of operations. That would be very inefficient, especially for high-dimensional vectors. Storing a large D x D diagonal matrix is wasteful if only D elements are non-zero. Instead, we use implicit multiplication. We know that multiplying by a diagonal matrix is equivalent to an element-wise product with the diagonal elements</p>
+<p><span class="math display">\[
+\left(\frac{\partial L}{\partial x}\right)_i =
+\begin{cases}
+\left(\frac{\partial L}{\partial z}\right)_i &amp; \text{ if } x_i &gt; 0 \\
+0 &amp; \text{otherwise}
+\end{cases}
+\]</span></p>
+<p>This is far more efficient than forming the full Jacobian and doing a matrix-vector multiply. Most deep learning frameworks will implement backpropagation through element-wise operations like this, using element-wise masking or multiplication. So, while the concept of Jacobians is important for understanding the general case, for many common operations, we can exploit their structure to make the backward pass much more efficient.</p>
+<p>Now, what about when our variables are not just vectors, but matrices or even higher-dimensional tensors? So let’s extend this to <strong>backprop with matrices (or tensors)</strong>. The good news is that the core principles remain exactly the same. We still have our gate f, Our inputs x and y can now be matrices (or higher-order tensors). Let’s say x is D_x x M_x and y is D_y x M_y. The output z is also a matrix, say D_z x M_z. The Loss L is still a scalar! This is always true. And remember, <span class="math inline">\(\frac{\partial L}{\partial x}\)</span> will always have the same shape as x. So <span class="math inline">\(\frac{\partial L}{\partial x}\)</span> will be a D_x x M_x matrix of gradients.</p>
+<p><a href="./images/backprop-tensor.png" class="lightbox" data-gallery="quarto-lightbox-gallery-18"><img src="./images/backprop-tensor.png" class="img-fluid"></a></p>
+<p>The local gradients are still conceptually Jacobian matrices, but now they relate elements of input matrices to elements of the output matrix. The chain rule, downstream = local * upstream, still holds. However, explicitly forming these Jacobians when <span class="math inline">\(x\)</span>, <span class="math inline">\(y\)</span>, and <span class="math inline">\(z\)</span> are matrices would involve thinking about derivatives of matrices with respect to matrices, which can lead to 4th-order tensors and becomes very cumbersome to write down and implement directly. Instead, what usually happens in practice is that we consider the matrix operations themselves (like matrix multiplication, element-wise operations on matrices, etc.) and derive the gradient expressions for those specific operations directly, often by thinking about how a small change in an input matrix element affects an element in the output matrix, and then summing up contributions to the scalar loss. The result is usually an expression for the gradient matrix <span class="math inline">\(\frac{\partial L}{\partial X}\)</span> that has the same shape as <span class="math inline">\(X\)</span> and can be computed efficiently. The dimensions of these abstract Jacobians would be:</p>
+<ul>
+<li><span class="math inline">\(\frac{\partial z}{\partial x}\)</span> relating a (D_x x M_x) input to a (D_z x M_z) output.</li>
+<li><span class="math inline">\(\frac{\partial z}{\partial y}\)</span> relating a (D_y x M_y) input to a (D_z x M_z) output.</li>
+</ul>
+<p>These would be very high-dimensional objects if we thought of them explicitly. The key takeaway is that even though the underlying math involves Jacobians of matrix-valued functions, for common operations like matrix multiplication, element-wise functions, convolutions, etc., we have pre-derived, efficient formulas for computing the gradient <span class="math inline">\(\frac{\partial L}{\partial X}\)</span> given <span class="math inline">\(\frac{\partial L}{\partial Z}\)</span> and the original inputs, and these formulas maintain the correct shapes.</p>
+<p>Let’s look at a very common example: matrix multiplication.</p>
+<p><a href="./images/matrices-example.png" class="lightbox" data-gallery="quarto-lightbox-gallery-19"><img src="./images/matrices-example.png" class="img-fluid"></a></p>
+<p>We have an input matrix <span class="math inline">\(x\)</span> of size N x D, and a weight matrix <span class="math inline">\(w\)</span> of size D x M. The output <span class="math inline">\(y\)</span> is their product: <span class="math inline">\(y = x w\)</span>. This output <span class="math inline">\(y\)</span> will be an N x M matrix. The formula for an element <span class="math inline">\(y_{n,m}\)</span> of the output is <span class="math inline">\(y_{n,m} = \sum_d (x_{n,d} w_{d,m})\)</span>. This is the standard definition of matrix multiplication – the dot product of the n-th row of <span class="math inline">\(x\)</span> with the m-th column of <span class="math inline">\(w.\)</span> We are given the upstream gradient <span class="math inline">\(\frac{\partial L}{\partial y}\)</span>, which is an N x M matrix, having the same shape as <span class="math inline">\(y\)</span>. Our goal is to find <span class="math inline">\(\frac{\partial L}{\partial x}\)</span> (an N x D matrix) and <span class="math inline">\(\frac{\partial L}{\partial w}\)</span> (a D x M matrix). Now, if we were to think about the Jacobians explicitly, the Jacobian <span class="math inline">\(\frac{\partial y}{\partial x}\)</span> would relate an (N x D) input to an (N x M) output, the Jacobian <span class="math inline">\(\frac{\partial y}{\partial z}\)</span> would relate a (D x M) input to an (N x M) output. These would be 4D tensors! For example, if N=64 (batch size), D=M=4096 (common hidden layer sizes), then NxD is roughly 250,000, and NxM is also roughly 250,000. So the Jacobian <span class="math inline">\(\frac{\partial y}{\partial x}\)</span> would have (N<em>D) </em> (N*M) elements, which is about (2.5e5)^2 = 6.25e10 elements. If each is a 4-byte float, that’s 250 GB of memory just for one Jacobian! Clearly, we <strong>must work with them implicitly</strong>! We cannot afford to form these giant Jacobian tensors. So, let’s reason about it element by element. What parts of <span class="math inline">\(y\)</span> are affected by one element of <span class="math inline">\(x\)</span>? Let’s consider <span class="math inline">\(x_{n,d}\)</span>. The element <span class="math inline">\(x_{n,d}\)</span> affects the whole n-th row of y (e.g., <span class="math inline">\(y_{n,:}\)</span>), this is because <span class="math inline">\(x_{n,d}\)</span> participates in the calculation of <span class="math inline">\(y_{n,m}\)</span> for all values of <span class="math inline">\(m\)</span>. So, to find <span class="math inline">\(\frac{\partial y}{\partial x_{n,d}}\)</span>, we need to sum up the influence of <span class="math inline">\(x_{n,d}\)</span> on each <span class="math inline">\(y_{n,m}\)</span> and then how each <span class="math inline">\(y_{n,m}\)</span> influences <span class="math inline">\(L\)</span>. Using the chain rule:</p>
+<p><span class="math display">\[
+\frac{\partial y}{\partial x_{n,d}} = \sum_m{ \frac{\partial L}{\partial y_{n,m}} \frac{\partial y_{n,m}}{\partial x_{n,d}}}
+\]</span></p>
+<p>Now, let’s look at the local derivative <span class="math inline">\(\frac{\partial y_{n,m}}{\partial x_{n,d}}\)</span>. From <span class="math inline">\(y_{n,m} = \sum_k{ x_{n,k}  w_{k,m}}\)</span>, if we vary <span class="math inline">\(x_{n,d}\)</span>, how does <span class="math inline">\(y_{n,m}\)</span> change? Well, <span class="math inline">\(x_{n,d}\)</span> is multiplied by <span class="math inline">\(w_{d,m}\)</span> to contribute to <span class="math inline">\(y_{n,m}\)</span>. So</p>
+<p><span class="math display">\[
+\begin{align}
+\frac{\partial y_{n,m}}{\partial x_{n,d}} &amp;= w_{d,m} \\
+\frac{\partial L}{\partial x_{n,d}} &amp;= \sum_m \frac{\partial L}{\partial y_{n,m}} w_{d,m}
+\end{align}
+\]</span></p>
+<p>And that sum is exactly the formula for the (n,d)-th element of the matrix product <span class="math inline">\(\frac{\partial L}{\partial y} w^T\)</span>. So, in matrix form:</p>
+<p><span class="math display">\[
+\frac{\partial L}{\partial x} = \frac{\partial L}{\partial y}  * w^T
+\]</span></p>
+<p>Let’s check shapes</p>
+<p><span class="math display">\[
+\overbrace{\frac{\partial L}{\partial x}}^{N \times D}
+= \underbrace{\frac{\partial L}{\partial y}}_{N\times M}\;
+  \overbrace{w^{\!T}}^{M\times D}
+\]</span></p>
+<p>By similar logic for <span class="math inline">\(\frac{\partial L}{\partial w}\)</span> , we can derive:</p>
+<p><span class="math display">\[
+\overbrace{\frac{\partial L}{\partial w}}^{ D \times M } =
+\underbrace{x^T}_{D \times N}
+\overbrace{\frac{\partial L}{\partial y}}^{N \times M}
+\]</span></p>
+<p>And there’s a nice mnemonic: they are the only way to make the shapes match up! If you remember the input and output shapes, and that you need to use <span class="math inline">\(\frac{\partial L}{\partial y}\)</span> and the other input matrix (or its transpose), you can often re-derive these just by making the dimensions work out for matrix multiplication. So, for a matrix multiply gate, given the upstream gradient <span class="math inline">\(\frac{\partial L}{\partial y}\)</span> , we can directly compute the downstream gradients <span class="math inline">\(\frac{\partial L}{\partial x}\)</span> and <span class="math inline">\(\frac{\partial L}{\partial w}\)</span> using these matrix multiplication formulas, without ever forming the explicit giant Jacobian. This is how it’s done in practice.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script type="text/javascript">
+// Enhance theme switching experience
+document.addEventListener('DOMContentLoaded', function() {
+  // Add smooth transitions to all elements when theme changes
+  const style = document.createElement('style');
+  style.textContent = `
+* {
+transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
+}
+
+.navbar, .card, .table, .btn {
+transition: all 0.3s ease !important;
+}
+`;
+  document.head.appendChild(style);
+
+  // Enhance code copy functionality
+  const codeBlocks = document.querySelectorAll('pre code');
+  codeBlocks.forEach(function(codeBlock) {
+    codeBlock.parentElement.style.position = 'relative';
+  });
+
+  // Add fade-in animation for post listings
+  const posts = document.querySelectorAll('.post-listing .card');
+  posts.forEach(function(post, index) {
+    post.style.opacity = '0';
+    post.style.transform = 'translateY(20px)';
+    setTimeout(() => {
+      post.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+      post.style.opacity = '1';
+      post.style.transform = 'translateY(0)';
+    }, index * 100);
+  });
+
+  // Smooth scroll for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    });
+  });
+
+  // Enhanced table styling
+  const tables = document.querySelectorAll('table');
+  tables.forEach(function(table) {
+    if (!table.classList.contains('table')) {
+      table.classList.add('table', 'table-striped');
+    }
+
+    // Wrap tables in responsive container
+    if (!table.parentElement.classList.contains('table-responsive')) {
+      const wrapper = document.createElement('div');
+      wrapper.classList.add('table-responsive');
+      table.parentNode.insertBefore(wrapper, table);
+      wrapper.appendChild(table);
+    }
+  });
+
+  // Replace keyboard shortcuts on non-Mac platforms
+  const kPlatformMac = typeof navigator !== 'undefined' ? /Mac/.test(navigator.platform) : false;
+  if (!kPlatformMac) {
+    var kbds = document.querySelectorAll("kbd");
+    kbds.forEach(function(kbd) {
+      kbd.innerHTML = kbd.innerHTML.replace(/⌘/g, '⌃');
+    });
+  }
+
+  // Add reading progress indicator
+  function addReadingProgress() {
+    const article = document.querySelector('main article, main .content, .post-content');
+    if (article) {
+      const progressBar = document.createElement('div');
+      progressBar.style.cssText = `
+position: fixed;
+top: 0;
+left: 0;
+width: 0%;
+height: 3px;
+background: var(--bs-primary);
+z-index: 1000;
+transition: width 0.3s ease;
+`;
+      document.body.appendChild(progressBar);
+
+      window.addEventListener('scroll', function() {
+        const scrolled = window.scrollY;
+        const height = article.offsetHeight - window.innerHeight;
+        const progress = Math.min(scrolled / height * 100, 100);
+        progressBar.style.width = progress + '%';
+      });
+    }
+  }
+
+  // Only add reading progress on individual blog posts
+  if (document.querySelector('.post-title') || document.querySelector('article')) {
+    addReadingProgress();
+  }
+});
+
+// Theme preference detection and saving
+(function() {
+  // Save theme preference to localStorage
+  const themeToggle = document.querySelector('[data-bs-toggle="color-scheme"]');
+  if (themeToggle) {
+    themeToggle.addEventListener('click', function() {
+      setTimeout(() => {
+        const currentTheme = document.documentElement.getAttribute('data-bs-theme');
+        localStorage.setItem('quarto-color-scheme', currentTheme);
+      }, 100);
+    });
+  }
+
+  // Load saved theme preference
+  const savedTheme = localStorage.getItem('quarto-color-scheme');
+  if (savedTheme) {
+    document.documentElement.setAttribute('data-bs-theme', savedTheme);
+  }
+})();
+</script>
+
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/bhdai\.github\.io\/blog\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<input type="hidden" id="giscus-base-theme" value="light">
+<input type="hidden" id="giscus-alt-theme" value="dark">
+<script>
+  function loadGiscus() {
+    // Function to get the theme based on body class
+    const getTheme = () => {
+      let baseTheme = document.getElementById('giscus-base-theme').value;
+      let altTheme = document.getElementById('giscus-alt-theme').value;
+      if (authorPrefersDark) {
+          [baseTheme, altTheme] = [altTheme, baseTheme];
+      }
+      return document.body.classList.contains('quarto-dark') ? altTheme : baseTheme;
+    };
+    const script = document.createElement("script");
+    script.src = "https://giscus.app/client.js";
+    script.async = true;
+    script.dataset.repo = "bhdai/blog";
+    script.dataset.repoId = "R_kgDOMP9wjw";
+    script.dataset.category = "Blog";
+    script.dataset.categoryId = "DIC_kwDOMP9wj84Cs7wf";
+    script.dataset.mapping = "pathname";
+    script.dataset.reactionsEnabled = "1";
+    script.dataset.emitMetadata = "0";
+    script.dataset.inputPosition = "bottom";
+    script.dataset.theme = getTheme();
+    script.dataset.lang = "en";
+    script.crossOrigin = "anonymous";
+    // Append the script to the desired div instead of at the end of the body
+    document.getElementById("quarto-content").appendChild(script);
+  }
+  loadGiscus();
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+ Copyright 2025, Bui Huu Dai
+  </li>  
+</ul>
+    </div>   
+    <div class="nav-footer-center">
+
+<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/bhdai/blog/edit/main/posts/neural-network-and-backprobagation/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bhdai/blog/blob/main/posts/neural-network-and-backprobagation/index.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/bhdai/blog/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="cookie-consent-footer"><a href="#" id="open_preferences_center">Cookie Preferences</a></div></div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+<script>videojs(video_shortcode_videojs_video1);</script>
+<script>videojs(video_shortcode_videojs_video2);</script>
+<script>videojs(video_shortcode_videojs_video3);</script>
+<script>videojs(video_shortcode_videojs_video4);</script>
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
+
+
+
+
+</body></html>
