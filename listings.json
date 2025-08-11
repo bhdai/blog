@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/cnn-architectures/index.html",
       "/posts/neural-network-and-backprobagation/index.html",
       "/posts/regularization_and_optimization/index.html",
       "/posts/linear_classification/index.html",

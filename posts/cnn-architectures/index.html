@@ -1,0 +1,1570 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Bui Huu Dai">
+<meta name="dcterms.date" content="2025-08-10">
+<meta name="description" content="How do we build CNNs? This isn’t just about stacking layers arbitrarily. It involves a nuanced understanding of the various types of layers in CNNs: convolution, pooling, fully connected, and others. Once we’ve designed an architecture, the training process is, of course, where the learning occurs. It’s where the network adapts its parameters to minimize the loss function on the training data.">
+
+<title>CNN architectures – Bui Huu Dai</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../Github_bird.png" rel="icon" type="image/png">
+<script src="../../site_libs/cookie-consent/cookie-consent.js"></script>
+<link href="../../site_libs/cookie-consent/cookie-consent.css" rel="stylesheet">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-2fef5ea3f8957b3e4ecc936fc74692ca.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-8e47eaf163dee9e5ea02780d02199294.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-bca7bfc09c99158c9822bef989cf6fc8.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-8e47eaf163dee9e5ea02780d02199294.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-6JR4N915S6"></script>
+
+<script type="text/plain" cookie-consent="tracking">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-6JR4N915S6', { 'anonymize_ip': true});
+</script>
+
+<script type="text/javascript" charset="UTF-8">
+document.addEventListener('DOMContentLoaded', function () {
+cookieconsent.run({
+  "notice_banner_type":"simple",
+  "consent_type":"implied",
+  "palette":"light",
+  "language":"en",
+  "page_load_consent_levels":["strictly-necessary","functionality","tracking","targeting"],
+  "notice_banner_reject_button_hide":false,
+  "preferences_center_close_button_hide":false,
+  "website_name":""
+  ,
+"language":"en"
+  });
+});
+</script> 
+  
+<script type="module" src="../../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+<link href="../../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="CNN architectures – Bui Huu Dai">
+<meta property="og:description" content="How do we build CNNs? This isn’t just about stacking layers arbitrarily. It involves a nuanced understanding of the various types of layers in CNNs: convolution, pooling, fully connected, and others. Once we’ve designed an architecture, the training process is, of course, where the learning occurs. It’s where the network adapts its parameters to minimize the loss function on the training data.">
+<meta property="og:image" content="https://bhdai.github.io/blog/posts/cnn-architectures/images/cover.png">
+<meta property="og:site_name" content="Bui Huu Dai">
+<meta property="og:image:height" content="1024">
+<meta property="og:image:width" content="1536">
+<meta name="twitter:title" content="CNN architectures – Bui Huu Dai">
+<meta name="twitter:description" content="How do we build CNNs? This isn’t just about stacking layers arbitrarily. It involves a nuanced understanding of the various types of layers in CNNs: convolution, pooling, fully connected, and others. Once we’ve designed an architecture, the training process is, of course, where the learning occurs. It’s where the network adapts its parameters to minimize the loss function on the training data.">
+<meta name="twitter:image" content="https://bhdai.github.io/blog/posts/cnn-architectures/images/cover.png">
+<meta name="twitter:image-height" content="1024">
+<meta name="twitter:image-width" content="1536">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="floating nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const queryPrefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    const darkModeDefault = queryPrefersDark.matches;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    queryPrefersDark.addEventListener("change", e => {
+      if(window.localStorage.getItem("quarto-color-scheme") !== null)
+        return;
+      const alternate = e.matches
+      toggleColorMode(alternate);
+      localAlternateSentinel = e.matches ? 'alternate' : 'default'; // this is used alongside local storage!
+      toggleGiscusIfUsed(alternate, darkModeDefault);
+    });
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Bui Huu Dai</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/bhdai"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://x.com/daibui1234"> <i class="bi bi-twitter-x" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml"> <i class="bi bi-rss" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">CNN architectures</h1>
+                  <div>
+        <div class="description">
+          How do we build CNNs? This isn’t just about stacking layers arbitrarily. It involves a nuanced understanding of the various types of layers in CNNs: convolution, pooling, fully connected, and others. Once we’ve designed an architecture, the training process is, of course, where the learning occurs. It’s where the network adapts its parameters to minimize the loss function on the training data.
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">Deep Learning</div>
+                <div class="quarto-category">CNN</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Bui Huu Dai </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">August 10, 2025</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#fundamental-cnn-layers" id="toc-fundamental-cnn-layers" class="nav-link active" data-scroll-target="#fundamental-cnn-layers">Fundamental CNN layers</a>
+  <ul class="collapse">
+  <li><a href="#convolution-layer" id="toc-convolution-layer" class="nav-link" data-scroll-target="#convolution-layer">Convolution layer</a></li>
+  <li><a href="#what-do-conv-filters-learn" id="toc-what-do-conv-filters-learn" class="nav-link" data-scroll-target="#what-do-conv-filters-learn">What do Conv filters learn?</a></li>
+  <li><a href="#spatial-dimension" id="toc-spatial-dimension" class="nav-link" data-scroll-target="#spatial-dimension">Spatial dimension</a></li>
+  <li><a href="#receptive-fields" id="toc-receptive-fields" class="nav-link" data-scroll-target="#receptive-fields">Receptive fields</a></li>
+  <li><a href="#pooling-layers" id="toc-pooling-layers" class="nav-link" data-scroll-target="#pooling-layers">Pooling layers</a></li>
+  </ul></li>
+  <li><a href="#normalize-layers" id="toc-normalize-layers" class="nav-link" data-scroll-target="#normalize-layers">Normalize layers</a></li>
+  <li><a href="#dropout" id="toc-dropout" class="nav-link" data-scroll-target="#dropout">Dropout</a></li>
+  <li><a href="#activation-functions" id="toc-activation-functions" class="nav-link" data-scroll-target="#activation-functions">Activation functions</a></li>
+  <li><a href="#cnn-architectures" id="toc-cnn-architectures" class="nav-link" data-scroll-target="#cnn-architectures">CNN architectures</a>
+  <ul class="collapse">
+  <li><a href="#vgg" id="toc-vgg" class="nav-link" data-scroll-target="#vgg">VGG</a></li>
+  <li><a href="#resnet" id="toc-resnet" class="nav-link" data-scroll-target="#resnet">Resnet</a></li>
+  </ul></li>
+  <li><a href="#weight-initialize" id="toc-weight-initialize" class="nav-link" data-scroll-target="#weight-initialize">Weight initialize</a></li>
+  <li><a href="#data-preparation" id="toc-data-preparation" class="nav-link" data-scroll-target="#data-preparation">Data preparation</a>
+  <ul class="collapse">
+  <li><a href="#data-preprocessing" id="toc-data-preprocessing" class="nav-link" data-scroll-target="#data-preprocessing">Data preprocessing</a></li>
+  <li><a href="#data-augmentation" id="toc-data-augmentation" class="nav-link" data-scroll-target="#data-augmentation">Data augmentation</a></li>
+  </ul></li>
+  <li><a href="#transfer-learning" id="toc-transfer-learning" class="nav-link" data-scroll-target="#transfer-learning">Transfer learning</a></li>
+  <li><a href="#hyperparameter-selection" id="toc-hyperparameter-selection" class="nav-link" data-scroll-target="#hyperparameter-selection">Hyperparameter selection</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/bhdai/blog/edit/main/posts/cnn-architectures/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bhdai/blog/blob/main/posts/cnn-architectures/index.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/bhdai/blog/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./images/cover.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="“A small child is sitting on the ground in a brightly lit playground, surrounded by colorful toy blocks, legos. The child is focused on building a tall structure. The child’s expression is one of deep thought and gentle confusion, holding up several blocks. unsure which one to place next.” Generated by DALL-E 3"><img src="./images/cover.png" class="img-fluid figure-img" alt="“A small child is sitting on the ground in a brightly lit playground, surrounded by colorful toy blocks, legos. The child is focused on building a tall structure. The child’s expression is one of deep thought and gentle confusion, holding up several blocks. unsure which one to place next.” Generated by DALL-E 3"></a></p>
+<figcaption>“A small child is sitting on the ground in a brightly lit playground, surrounded by colorful toy blocks, legos. The child is focused on building a tall structure. The child’s expression is one of deep thought and gentle confusion, holding up several blocks. unsure which one to place next.” Generated by DALL-E 3</figcaption>
+</figure>
+</div>
+<section id="fundamental-cnn-layers" class="level2">
+<h2 class="anchored" data-anchor-id="fundamental-cnn-layers">Fundamental CNN layers</h2>
+<p>Remember from our previous blog post where we talk about <strong>fully connected layer</strong>. If we have, for example, a 32x32x3 image, the first thing we do is stretch or flatten it into a 3072x1 vector. This flattened vector then becomes the input to our layer. The layer computes <span class="math inline">\(Wx\)</span>, where <span class="math inline">\(W\)</span> is a weight matrix. If we want 10 output activations (say, for 10 classes), then <span class="math inline">\(W\)</span> would be a 10x3072 matrix. Each row of <span class="math inline">\(W\)</span> can be thought of as a template. The output of this matrix multiplication is a 10x1 vector of activations. Looking a bit closer at how each of those 10 output activations is computed, each individual number in that output vector is the result of taking a dot product between one row of the weight matrix <span class="math inline">\(W\)</span> and the entire input vector <span class="math inline">\(x\)</span>. So, if the input <span class="math inline">\(x\)</span> is 3072-dimensional, each output activation is a 3072-dimensional dot product. This means every output neuron is connected to every input neuron, hence “fully connected.”</p>
+<section id="convolution-layer" class="level3">
+<h3 class="anchored" data-anchor-id="convolution-layer">Convolution layer</h3>
+<p>Now, let’s contrast this with the <strong>Convolution Layer</strong>. A fundamental difference is that the convolution layer aims to preserve the spatial structure of the input image. So, if we have a 32x32x3 image, we don’t flatten it. We treat it as a 3D volume of numbers: 32 in height, 32 in width, and 3 in depth (representing, for example, the red, green, and blue color channels).</p>
+<p><a href="./images/convolution-layer.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img src="./images/convolution-layer.png" class="img-fluid"></a></p>
+<p>The core operation in a convolution layer involves a filter, also sometimes called a kernel. This filter is also a small volume of numbers. For example, we might have a 5x5x3 filter. The “3” here refers to the depth of the filter. The operation is <strong>to convolve the filter with the image</strong>. Conceptually, this means we “slide over the image spatially, computing dot products.” We’ll make this much more precise in a moment, but the key idea is that the filter interacts with local regions of the input image. A very important point here is that filters always extend the full depth of the input volume. So, if our input image is 32x32x<strong>3</strong>, then our filter, say a 5x5 filter, must also have a depth of <strong>3</strong>. It will be a 5x5x3 filter. This is critical. The filter isn’t just looking at a 2D patch of one channel, it’s looking at a 3D slice through the entire depth of the input volume at that spatial location. This allows the filter to learn patterns that involve combinations of information across all input channels simultaneously.</p>
+<p>The input to a convolution layer is typically a batch of images with dimensions N x C<sub>in</sub> x H x W, where N is the batch size, C<sub>in</sub> is the number of input channels and H and W are the height and width of the input feature maps. The convolution layer itself is defined by a set of filters. If we want C<sub>out</sub> output channels (i.e., we want to produce C<sub>out</sub> activation maps), we will have C<sub>out</sub> filters. Each filter will have dimensions C<sub>in</sub> x K<sub>h</sub> x K<sub>w</sub>, where K<sub>h</sub> and K<sub>w</sub> are the height and width of the kernel (e.g., 5x5). Note that the depth of each filter, C<sub>in</sub>, must match the number of input channels of the volume it’s being convolved with. So, the collection of filters can be thought of as a tensor of shape C<sub>out</sub> x C<sub>in</sub> x K<sub>h</sub> x K<sub>w</sub>. There will also be a C<sub>out</sub>-dimensional bias vector, one bias term for each of the C<sub>out</sub> filters. The output of the convolution layer will then be a batch of output volumes with dimensions <strong>N x C<sub>out</sub> x H’ x W’</strong>. Here, C<sub>out</sub> is the number of output channels (equal to the number of filters), and H’ and W’ are the new height and width of the feature maps. The exact values of H’ and W’ will depend on the input H and W, the kernel size K<sub>h</sub> and K<sub>w</sub>, and also on other hyperparameters like stride and padding, which we will discuss shortly. This framework describes the fundamental operation of a convolution layer. It takes an input volume, applies a set of learned filters to it locally across space, and produces an output volume where each “slice” in depth corresponds to the response of one of those filters</p>
+<p><a href="./images/convnet.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3"><img src="./images/convnet.png" class="img-fluid"></a></p>
+<p>Okay, so now that we understand the mechanics of a single convolution layer, let’s see how they fit into a larger network. Essentially, a ConvNet is a neural network that incorporates Conv layers as its primary building blocks. , especially in the earlier stages responsible for feature extraction. So, we might start with an input volume, say a 32x32x3 image. We pass this through a first <strong>CONV layer</strong>. For example, this layer might use 6 filters, each of size 5x5x3. Assuming stride 1 and no padding, this would produce an output volume of size 28x28x6. The depth of 6 corresponds to the 6 filters used. This output volume then becomes the input to the next CONV layer. So, the 28x28x6 volume is fed into a second CONV layer. This layer might, for example, use 10 filters, each of size 5x5x6. Notice that the depth of these filters (6) must match the depth of the input volume (6). If these filters are also 5x5, then again assuming stride 1 and no padding, the output of this second CONV layer would be a volume of size 24x24x10. The depth of 10 corresponds to the 10 filters used in this layer. And this process can continue, stacking more CONV layers to learn increasingly complex and abstract features.</p>
+<p>A very important point, which we haven’t explicitly shown in the diagrams until now but is absolutely crucial, is that ConvNets, like other neural networks, need non-linearities. So, a ConvNet is a neural network with Conv layers, with activation functions! Typically, an activation function, most commonly <strong>ReLU</strong>, is applied element-wise to the output of each CONV layer after the bias has been added. So, the flow would be: Input → CONV (filters + bias) → ReLU → Output Volume. This output volume then feeds into the next CONV → ReLU sequence, and so on. Without these non-linearities, stacking multiple CONV layers would be equivalent to a single, more complex CONV layer, and the network wouldn’t be able to learn the rich hierarchical features we desire.</p>
+</section>
+<section id="what-do-conv-filters-learn" class="level3">
+<h3 class="anchored" data-anchor-id="what-do-conv-filters-learn">What do Conv filters learn?</h3>
+<p>So, a natural question arises: <strong>What do these Conv filters actually learn?</strong> Let’s think back to our simpler models. With a Linear Classifier, we saw that it learned essentially one template per class. These templates were global, representing an average look for each category. When we moved to a Multi-Layer Perceptron (MLP), specifically a 2-layer neural network, the first layer (W1) learned a bank of whole-image templates. These were still operating on the flattened image, but the network could learn multiple templates that could then be combined by the second layer. These templates were more diverse than the single template per class of a linear classifier.</p>
+<p><a href="./images/edges.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4"><img src="./images/edges.png" class="img-fluid"></a></p>
+<p>Now, with ConvNets, the first-layer conv filters learn local image templates. Because the filters are small and slide across the image, they learn to detect small, localized patterns. Empirically, it’s often observed that these first-layer filters learn to detect things like <strong>oriented edges, or opposing colors</strong> (e.g., a filter that activates strongly when it sees a green region next to a red region, or a horizontal edge. The example shown here on the left is from the first layer of AlexNet, which had 64 filters, each of size 3x11x11 (operating on RGB input). You can see the variety of edge detectors and color blob detectors that have been learned. What about <strong>deeper conv layers?</strong> Visualizing what filters learn in deeper layers is harder, because they are no longer operating directly on image pixels but on the activation maps produced by previous layers. However, various visualization techniques suggest that deeper conv layers tend to learn larger, more complex structures. They combine the simpler features detected by earlier layers to represent more abstract concepts, for example, parts of objects like eyes, or even more complex textures or object parts, sometimes even letter-like shapes if trained on relevant data. The visualization here on the right, from <a href="https://arxiv.org/abs/1412.6806">Springenberg et al.&nbsp;(2015)</a>, attempts to show patterns that maximally activate neurons in a 6th layer conv layer of an ImageNet model. You can see more intricate and larger receptive field patterns</p>
+</section>
+<section id="spatial-dimension" class="level3">
+<h3 class="anchored" data-anchor-id="spatial-dimension">Spatial dimension</h3>
+<p>Let’s now focus on the Spatial Dimensions of the convolution operation. This is about understanding how the height and width of the activation map are determined by the input size and the filter size, as well as other hyperparameters. In general, if the input has a spatial dimension (width or height) of W (or H), and the filter has a spatial dimension of K (or K<sub>h</sub>, K<sub>w</sub>), and we are using a stride of 1 and no padding, then the output dimension will be W - K + 1. Now, this formula W - K + 1 reveals a <strong>Problem: Feature maps shrink with each layer!</strong> If we have a deep network with many convolution layers, and each layer reduces the spatial dimensions (e.g., from 32 to 28, then from 28 to 24, and so on), the feature maps can become very small quite quickly. This might be undesirable if we want to maintain spatial resolution for a while, or if we want to build very deep networks without the features vanishing spatially. This shrinking effect is something we often want to control. So, what’s the solution?</p>
+<p>The Solution to this shrinking problem is to add padding around the input before sliding the filter. Usually, this padding consists of zeros. If we use P pixels of padding on each side, the effective input size becomes W + 2P. Then, applying a filter of size K, the output size becomes (W + 2P) - K + 1. So, our new formula for the output size is <strong>W - K + 1 + 2P</strong>. A very common setting for padding is to choose <strong>P = (K - 1) / 2</strong>. This is typically used when the filter size K is odd. If you plug this P into the output size formula W - K + 1 + 2P, you get W - K + 1 + 2 * (K - 1) / 2, which simplifies to W - K + 1 + K - 1, which equals W. This means that with this choice of padding, the <strong>output feature map has the same spatial size as the input feature map</strong>. This is often called “same” padding or “half” padding, and it’s very useful for building deep networks because it prevents the spatial dimensions from shrinking at each layer.</p>
+</section>
+<section id="receptive-fields" class="level3">
+<h3 class="anchored" data-anchor-id="receptive-fields">Receptive fields</h3>
+<p>Now, let’s talk about another important concept related to stacking convolution layers: <strong>Receptive Fields</strong>. The receptive field of a neuron in a convolutional network is the region in the input space (e.g., the original image) that a particular neuron “sees” or is affected by. For a single convolution layer with a kernel size K, each element in the output feature map depends on a K x K receptive field in the input to that layer.</p>
+<p><a href="./images/receptive-fields.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5"><img src="./images/receptive-fields.png" class="img-fluid"></a></p>
+<p>When we stack multiple convolution layers, the receptive field size grows. Each successive convolution adds K - 1 to the receptive field size (assuming stride 1). Consider the diagram: The purple output neuron in the third layer “sees” a 3x3 region in the orange layer (its direct input). Each of those orange neurons, in turn, sees a 3x3 region in the blue layer. So, the purple neuron’s receptive field in the blue layer is larger. More generally, <strong>with L layers, each using a KxK filter (and stride 1), the receptive field size in the original input is 1 + L * (K - 1).</strong> It’s important to be careful here: we distinguish between the receptive field in the input (meaning the original image) versus the receptive field in the previous layer. This growth of the receptive field is desirable because it allows neurons in deeper layers to capture information from larger and larger regions of the input image, enabling them to learn more global and abstract features. However, there’s a Problem: If we only use small KxK filters (like 3x3) and stride 1 convolutions, then <strong>for large images, we would need many, many layers for each output neuron to “see” the whole image</strong>, or at least a significant portion of it. For example, if K=3, each layer adds 2 to the receptive field size. To get a receptive field of, say, 100, you’d need roughly 50 layers. This can lead to very deep and computationally expensive networks if this is the only mechanism for increasing receptive fields. So, how do we address this problem of needing many layers for large receptive fields? One common solution is to <strong>downsample inside the network</strong>. If we reduce the spatial dimensions of the feature maps at certain points in the network, then subsequent convolution filters, even if they are spatially small (like 3x3), will cover a larger effective area of the original input image.</p>
+<p>One way to downsample within the network and thus increase the effective receptive field size more quickly is by using <strong>Strided Convolution</strong>. In general, if the input has dimension W, the filter has dimension K, we’re using Padding P, and a Stride S, then the output dimension is given by the formula: <strong>(W - K + 2P) / S + 1</strong>. It’s important that (W - K + 2P) is divisible by S for this to work out cleanly without fractional pixels, or you need to decide on a rounding convention (floor or ceil). Most libraries will use a floor operation implicitly if it’s not perfectly divisible. So, strided convolutions give us a way to perform the convolution operation and downsample the feature map simultaneously. This is a very common technique used in many CNN architectures to reduce computational cost and increase receptive field sizes efficiently.</p>
+<p>Okay, let’s provide a Convolution Summary to bring all these definitions and formulas together.</p>
+<p>Input: A volume of size C<sub>in</sub> x H x W. Hyperparameters that define the convolution layer:</p>
+<ul>
+<li>Kernel size: K<sub>H</sub> x K<sub>W</sub> (often K<sub>H</sub> = K<sub>W</sub> = K, e.g., 3x3, 5x5).</li>
+<li>Number of filters: C<sub>out</sub> (this determines the depth of the output volume).</li>
+<li>Padding: P (number of zeros added to each side of the input spatial dimensions).</li>
+<li>Stride: S (how many pixels the filter slides at each step).</li>
+</ul>
+<p>The Weight matrix (or tensor) can be thought of as having dimensions C<sub>out</sub> x C<sub>in</sub> x K<sub>H</sub> x K<sub>W</sub>. This represents C<sub>out</sub> filters, each of size C<sub>in</sub> x K<sub>H</sub> x K<sub>W</sub>.</p>
+<p>The Bias vector has dimension C<sub>out</sub> (one bias per output filter/channel).</p>
+<p>The Output size will be C<sub>out</sub> x H’ x W’, where:</p>
+<ul>
+<li>H’ = (H - K<sub>H</sub> + 2P) / S + 1</li>
+<li>W’ = (W - K<sub>W</sub> + 2P) / S + 1</li>
+</ul>
+<p>Some common settings for these hyperparameters include:</p>
+<ul>
+<li>K<sub>H</sub> = K<sub>W</sub>: Using small, square filters is very common (e.g., 3x3, 5x5, sometimes 1x1).</li>
+<li>P = (K - 1) / 2: This results in “Same” padding, where the output spatial dimensions match the input (assuming S=1).</li>
+<li>C<sub>in</sub>, C<sub>out</sub>: Often chosen as powers of 2 (e.g., 32, 64, 128, 256, 512) and typically increase as we go deeper into the network.</li>
+<li>K=3, P=1, S=1: A very common 3x3 convolution that preserves spatial resolution.</li>
+<li>K=5, P=2, S=1: A 5x5 convolution that preserves spatial resolution.</li>
+<li>K=1, P=0, S=1: This is a 1x1 convolution, which we’ll discuss separately as it has interesting properties.</li>
+<li>K=3, P=1, S=2: A 3x3 convolution that downsamples the input by a factor of 2 (approximately, depending on exact input size and rounding). This is often used to reduce spatial dimensions.</li>
+</ul>
+</section>
+<section id="pooling-layers" class="level3">
+<h3 class="anchored" data-anchor-id="pooling-layers">Pooling layers</h3>
+<p>Alright, let’s move on to <strong>Pooling Layers</strong>. These provide another effective way to downsample feature maps, often used in conjunction with convolution layers. The primary purpose of a pooling layer is to reduce the spatial dimensions of the input volume. Importantly, pooling is applied independently to each depth slice of the input. So, given an input C x H x W, the pooling operation will downsample each 1 x H x W plane separately. The number of channels C remains unchanged by the pooling operation itself.</p>
+<p><a href="./images/pooling.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6"><img src="./images/pooling.png" class="img-fluid"></a></p>
+<p>The Hyperparameters for a pooling layer are:</p>
+<ul>
+<li><strong>Kernel Size</strong>: This defines the spatial extent of the pooling window (e.g., 2x2).</li>
+<li><strong>Stride</strong>: This dictates how much the pooling window slides at each step (e.g., a stride of 2 is common with a 2x2 kernel for non-overlapping pooling).</li>
+<li><strong>Pooling function</strong>: This specifies the operation to perform within each pooling window. Common choices are max pooling or average pooling.</li>
+</ul>
+<p>A key property of pooling, especially max pooling, is that it gives some invariance to small spatial shifts in the input. If the exact location of a feature moves slightly within a pooling window, the output of max pooling might remain the same if the maximum value is still captured. Also, critically, pooling layers typically have no learnable parameters. The operation (max or average) is fixed.</p>
+<p>Here’s a Pooling Summary:</p>
+<p>Input: A volume C x H x W.</p>
+<p>Hyperparameters:</p>
+<ul>
+<li>Kernel size: K (e.g., 2 for a 2x2 pooling window).</li>
+<li>Stride: S (e.g., 2).</li>
+<li>Pooling function: Commonly ‘max’ or ‘avg’.</li>
+</ul>
+<p>Output size: C x H’ x W’, where the formulas for H’ and W’ are the same as for convolution:</p>
+<ul>
+<li>H’ = (H - K) / S + 1 (assuming P=0, as padding is less common with pooling, though possible)</li>
+<li>W’ = (W - K) / S + 1</li>
+</ul>
+<p>And a crucial point: No learnable parameters. A very common setting is max pooling with K=2 and S=2. This effectively gives 2x downsampling of the spatial dimensions, halving the height and width of the feature map.</p>
+</section>
+</section>
+<section id="normalize-layers" class="level2">
+<h2 class="anchored" data-anchor-id="normalize-layers">Normalize layers</h2>
+<p>So, taking a broader view, we can identify the primary components of nearly all CNNs, We have our Convolution Layers, Pooling Layers, and typically, at the terminus of the network, one or more Fully-Connected Layers that perform the final classification. Interspersed throughout are the activation functions that introduce non-linearity. We also have regularization techniques like dropout, which we’ll discuss shortly. But now, I want to focus on a component that has become absolutely central to modern deep learning: <strong>Normalization Layers</strong>. Their introduction has been one of the key factors enabling the training of the very deep and high-performing networks we see today. They address some fundamental issues related to the optimization dynamics of deep models.</p>
+<p>To develop our intuition, let’s begin with a specific example: Layer Normalization, or LayerNorm. The high-level idea behind it, and indeed behind most normalization layers, is a two-step process. First, you take the activations at some point in the network and you normalize them, typically to have a zero mean and unit variance. This step helps to mitigate the problem of “internal covariate shift,” where the distribution of each layer’s inputs changes during training as the parameters of the previous layers change. This can stabilize and accelerate the training process. However, rigidly enforcing a zero-mean, unit-variance distribution might be suboptimal. Perhaps the network would benefit from activations with a different mean or variance. Therefore, the second step is to introduce two new learnable parameters that allow the network to scale and shift the normalized data. This gives the network the expressive power to, if necessary, learn to reverse the normalization or, more generally, learn the optimal affine transformation for its activations</p>
+<p>Consider a mini-batch of N inputs, where each input x is a D-dimensional vector.</p>
+<p><span class="math display">\[
+\begin{align}
+\mu, \sigma &amp;: N \times 1 \\
+\gamma, \beta &amp;: 1 \times D \\
+y = &amp;\frac{\gamma (x - \mu)}{\sigma} + \beta
+\end{align}
+\]</span></p>
+<p>For Layer Normalization, the key is how the statistics are computed. The mean, <span class="math inline">\(\mu\)</span>, and standard deviation, <span class="math inline">\(\sigma\)</span>, are calculated per batch element. As you can see, their dimension is N x 1. This means that for each individual training example, we compute its mean and standard deviation across all of its D features. Once the data is normalized, we apply the learned parameters: a scaling factor <span class="math inline">\(\gamma\)</span> and a shifting factor <span class="math inline">\(\beta\)</span>. Both of these are D-dimensional vectors, meaning we learn a unique scale and shift for each feature dimension. These parameters are shared across all examples in the batch and are updated via backpropagation. The final output y is thus the normalized input, scaled by <span class="math inline">\(\gamma\)</span> and shifted by <span class="math inline">\(\beta\)</span>.</p>
+<p><a href="./images/group-norm.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7"><img src="./images/group-norm.png" class="img-fluid"></a></p>
+<p>Now, LayerNorm is just one member of a family of normalization techniques. This visualization from the <a href="https://arxiv.org/abs/1803.08494">Group Normalization paper</a> provides an excellent conceptual map of the different approaches. The blue region highlights the set of neurons over which the mean and standard deviation are calculated to normalize a single value. The most common variant in CNNs is Batch Normalization. Here, we normalize across the batch dimension (N) and the spatial dimensions (H, W), but we do so independently for each feature channel (C). Layer Normalization, which we just discussed, normalizes across all channel and spatial dimensions for a single example in the batch. It’s agnostic to the batch size, which can be advantageous. Instance Normalization is even more granular, normalizing over only the spatial dimensions for each channel and each batch example independently. This is often used in style transfer. And Group Normalization strikes a balance, normalizing over spatial dimensions and pre-defined groups of channels. The choice between these depends on the specific architecture, task, and practical considerations like batch size</p>
+</section>
+<section id="dropout" class="level2">
+<h2 class="anchored" data-anchor-id="dropout">Dropout</h2>
+<p>Now, let’s focus specifically on Dropout. While incredibly influential and effective, especially in fully-connected layers, its use has become somewhat more nuanced with the rise of techniques like Batch Normalization, which itself provides a slight regularizing effect. Nevertheless, understanding Dropout is fundamental. So, what is the mechanism of Dropout? The idea, proposed by Srivastava and his colleagues in 2014 <a href="https://jmlr.org/papers/v15/srivastava14a.html">“Dropout: A simple way to prevent neural networks from overfitting”</a>, is conceptually quite simple. During the training phase, for each forward pass through the network, we randomly set the activations of some neurons to zero. The probability of dropping a neuron, or conversely, the probability p of keeping a neuron, is a hyperparameter that we choose. A common value is 0.5, meaning half of the neurons in a given layer are randomly deactivated for each training example that passes through. The key here is that a different set of neurons is dropped for each forward pass. This means that for every mini-batch, the network is effectively a different, “thinned” version of the full architecture.</p>
+<p>This raises a very natural question: How can randomly removing parts of your model possibly be a good idea? It seems counterintuitive, almost destructive. But there are a couple of powerful interpretations for why it works so well. The first interpretation is that it prevents the co-adaptation of features. In a standard network, it’s possible for a set of neurons to become highly dependent on one another. For instance, in classifying a cat, one neuron might become a very specific “has a tail” detector, and another neuron downstream might learn to only activate strongly when that specific tail-detector is active. This is a fragile dependency. Dropout breaks these dependencies. Since any neuron can be randomly dropped at any time, a given neuron cannot rely on the presence of any single one of its inputs. It is forced to learn more robust features that are redundant and useful in a variety of different contexts. It has to learn to use evidence from many input neurons, making the learned representation less brittle and more generalizable.</p>
+<p>There is another, perhaps more powerful, interpretation. Dropout can be viewed as an efficient way to train a massive ensemble of neural networks. Every time we apply a different dropout mask, that is, a different pattern of dropped neurons, we are effectively training a unique, thinned sub-network. All of these distinct sub-networks, however, share the same underlying parameters. The scale of this ensemble is simply staggering. For a single fully-connected layer with 4096 units, there are 2<sup>4096</sup> possible dropout masks. This number is astronomically larger than the number of atoms in the universe. So, during training, we are sampling from this enormous set of models and taking a gradient step for each one. This provides an extremely potent form of model averaging, which is a well-established technique for improving performance and reducing overfitting.</p>
+<p>This stochastic behavior during training introduces a critical consideration: <strong>What do we do at test time?</strong> At test time, we want a single, deterministic prediction. We want to leverage the full capacity of the network we’ve trained. So we do not drop any neurons, all the neurons are active. However this create a mismatch. During training the expected output of any given neuron was scaled down because it was only active with the probability of p.&nbsp;If we simply use the full network at test time, the magnitude of the activation will be systematically larger than the network experience during training, To correct for this, we must scale the activation at test time. Specifically, we multiply the output of each layer to which dropout was applied during training by the keep probability p.&nbsp;This ensure that the expected output of any neuron at test time matches the expected output during training, learning to well-calibrated prediction.</p>
+<p>Here’s the “vanilla implementation” of dropout:</p>
+<div class="sourceCode" id="annotated-cell-1"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-1-1"><a href="#annotated-cell-1-1" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> <span class="fl">0.5</span></span>
+<span id="annotated-cell-1-2"><a href="#annotated-cell-1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> train_step(X):</span>
+<span id="annotated-cell-1-3"><a href="#annotated-cell-1-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># forward pass for example 3-layer network</span></span>
+<span id="annotated-cell-1-4"><a href="#annotated-cell-1-4" aria-hidden="true" tabindex="-1"></a>  H1 <span class="op">=</span> np.maximum(<span class="dv">0</span>, np.dot(W1, X) <span class="op">+</span> b1)</span>
+<span id="annotated-cell-1-5"><a href="#annotated-cell-1-5" aria-hidden="true" tabindex="-1"></a>  U1 <span class="op">=</span> np.random.rand(<span class="op">*</span>H1.shape) <span class="op">&lt;</span> p <span class="co"># first drop mask</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-1-6" class="code-annotation-target"><a href="#annotated-cell-1-6" aria-hidden="true" tabindex="-1"></a>  H1 <span class="op">*=</span> U1 <span class="co"># drop!</span></span>
+<span id="annotated-cell-1-7"><a href="#annotated-cell-1-7" aria-hidden="true" tabindex="-1"></a>  H2 <span class="op">=</span> np.maximum(<span class="dv">0</span>, np.dot(W2, H1) <span class="op">+</span> b2)</span>
+<span id="annotated-cell-1-8"><a href="#annotated-cell-1-8" aria-hidden="true" tabindex="-1"></a>  U2 <span class="op">=</span> np.random.rand(<span class="op">*</span>H2.shape) <span class="op">&lt;</span> p <span class="co"># second drop mask</span></span>
+<span id="annotated-cell-1-9"><a href="#annotated-cell-1-9" aria-hidden="true" tabindex="-1"></a>  H2 <span class="op">*=</span> U2 <span class="co"># drop!</span></span>
+<span id="annotated-cell-1-10"><a href="#annotated-cell-1-10" aria-hidden="true" tabindex="-1"></a>  out <span class="op">=</span> np.dot(W3, H2) <span class="op">+</span> b3</span>
+<span id="annotated-cell-1-11"><a href="#annotated-cell-1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-1-12"><a href="#annotated-cell-1-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># backward pass: compute gradients... (not show)</span></span>
+<span id="annotated-cell-1-13"><a href="#annotated-cell-1-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># parameter update... (not show)</span></span>
+<span id="annotated-cell-1-14"><a href="#annotated-cell-1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-1-15"><a href="#annotated-cell-1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-1-16"><a href="#annotated-cell-1-16" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> predict(X):</span>
+<span id="annotated-cell-1-17"><a href="#annotated-cell-1-17" aria-hidden="true" tabindex="-1"></a>  <span class="co"># ensembled forward pass</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-1-18" class="code-annotation-target"><a href="#annotated-cell-1-18" aria-hidden="true" tabindex="-1"></a>  H1 <span class="op">=</span> np.maximum(<span class="dv">0</span>, np.dot(W1, X) <span class="op">+</span> b1) <span class="op">*</span> p <span class="co"># scale the activations</span></span>
+<span id="annotated-cell-1-19"><a href="#annotated-cell-1-19" aria-hidden="true" tabindex="-1"></a>  H2 <span class="op">=</span> np.maximum(<span class="dv">0</span>, np.dot(W2, H1) <span class="op">+</span> b2) <span class="op">*</span> p <span class="co"># scale the activations</span></span>
+<span id="annotated-cell-1-20"><a href="#annotated-cell-1-20" aria-hidden="true" tabindex="-1"></a>  out <span class="op">=</span> np.dot(W3, H2) <span class="op">+</span> b3</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-1" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-1" data-code-lines="6" data-code-annotation="1">We have to distinct mode of operation. During the training step we first compute the activation, then generate a random mask and apply it, effectively setting some neuron to zero, this is the ‘drop in training time’ phase.</span>
+</dd>
+<dt data-target-cell="annotated-cell-1" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-1" data-code-lines="18" data-code-annotation="2">Then at test time, we perform the standard forward pass, but after each layer computation, we scale the result by a keep probability p, this is the ‘scale at test time’ phase .</span>
+</dd>
+</dl>
+<p>I should not that this is a “not recommended” implementation. A more common approach today is known as inverted dropout. In inverted dropout, the scaling is performed during training step by dividing the activation by p rather than at the test time. This has the practical advantage that the test time forward pass remain unchanged. Which simplify deployment. The net effect is the same, but the implement detail is important to be aware of.</p>
+</section>
+<section id="activation-functions" class="level2">
+<h2 class="anchored" data-anchor-id="activation-functions">Activation functions</h2>
+<p>We’ve talked about the operations that involve learnable parameters, like convolution and fully-connected layers. The activation function is the piece that follows these linear operations, and its role is profound. What is that role? The fundamental goal of an activation function is to introduce non-linearities into our model. This is not a minor detail; it is the very reason deep networks are powerful. If you were to stack any number of linear layers without any non-linearities in between, the entire network would collapse into a single, equivalent linear transformation. You would have a very deep, very computationally expensive linear classifier, which is no more expressive than the simple linear models It’s the non-linearity that allows the network to approximate arbitrarily complex functions and learn the hierarchical features that are the hallmark of deep learning.</p>
+<p>Here’s a little toy example of a double ReLU function you can play around with to gain a better understanding of why non-linearity is necessary. This uses just 2 ReLU functions, imagine hundreds of these! You could approximate any function by increasing the number of ReLUs and tuning their hyperparameters. The double ReLU function is defined as:</p>
+<p><span class="math display">\[f(x) = a_1 \cdot \max(0, x - b_1) + a_2 \cdot \max(0, x - b_2)\]</span></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Design choice for scaling factor placement
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Note that I placed a<sub>i</sub> outside of the max function (rather than inside), which allows for negative slopes. For this educational demo, this provides more intuitive control and creates more visually interesting non-linear combinations.</p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb1" data-startfrom="195" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 194;"><span id="cb1-195"><a href="#cb1-195" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> {viewof a1<span class="op">,</span> viewof b1<span class="op">,</span> viewof a2<span class="op">,</span> viewof b2<span class="op">,</span> viewof showComponents<span class="op">,</span> chart} <span class="im">from</span> <span class="st">"https://observablehq.com/d/d00db79bf2aca3bf"</span></span>
+<span id="cb1-196"><a href="#cb1-196" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-197"><a href="#cb1-197" aria-hidden="true" tabindex="-1"></a><span class="co">// Display the controls and chart</span></span>
+<span id="cb1-198"><a href="#cb1-198" aria-hidden="true" tabindex="-1"></a>viewof a1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-2" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+<div class="sourceCode cell-code hidden" id="cb2" data-startfrom="199" data-source-offset="-178"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 198;"><span id="cb2-199"><a href="#cb2-199" aria-hidden="true" tabindex="-1"></a>viewof b1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-3" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+<div class="sourceCode cell-code hidden" id="cb3" data-startfrom="200" data-source-offset="-188"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 199;"><span id="cb3-200"><a href="#cb3-200" aria-hidden="true" tabindex="-1"></a>viewof a2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-4" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+<div class="sourceCode cell-code hidden" id="cb4" data-startfrom="201" data-source-offset="-198"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 200;"><span id="cb4-201"><a href="#cb4-201" aria-hidden="true" tabindex="-1"></a>viewof b2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-5" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+<div class="sourceCode cell-code hidden" id="cb5" data-startfrom="202" data-source-offset="-208"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 201;"><span id="cb5-202"><a href="#cb5-202" aria-hidden="true" tabindex="-1"></a>viewof showComponents</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-6" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+<div class="sourceCode cell-code hidden" id="cb6" data-startfrom="203" data-source-offset="-230"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 202;"><span id="cb6-203"><a href="#cb6-203" aria-hidden="true" tabindex="-1"></a>chart</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-7" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+</div>
+<p>Let’s begin with a historically significant activation function: the <strong>Sigmoid</strong>.</p>
+<p><span class="math display">\[
+\sigma(x) = \frac{1}{1 + e^{-x}}
+\]</span></p>
+<p>It has a very appealing property: it squashes any real-valued input into the range [0, 1]. This made it popular in the early days of neural networks because it provided a nice biological analogy to the “firing rate” of a neuron, which can be thought of as varying between a state of no activity (0) and maximum saturation (1).</p>
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb7" data-startfrom="216" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 215;"><span id="cb7-216"><a href="#cb7-216" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> {sigmoidChart} <span class="im">from</span> <span class="st">"https://observablehq.com/d/d00db79bf2aca3bf"</span></span>
+<span id="cb7-217"><a href="#cb7-217" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-218"><a href="#cb7-218" aria-hidden="true" tabindex="-1"></a>sigmoidChart</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-2" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+</div>
+<p>However, it harbors a key problem, one that severely hampered the training of deep networks. When you stack many layers of sigmoid neurons, you can encounter an issue with gradients. Let me pose this question to you: looking at the shape of the function, in which regions does the sigmoid have a very small gradient? As the input x become very large, either negative or positive, the sigmoid function saturates. Its output approaches either 1 or 0, and the curve becomes flat. In these flat regions, the local gradient is virtually zero. During backpropagation, the gradients from downstream layers are multiplied by these local gradients. If a neuron is in a saturated state, its local gradient will effectively “kill” or “vanish” the gradient signal passing through it. In a deep network with many sigmoid layers, this effect compounds, leading to the infamous vanishing gradient problem, where gradients in the early layers of the network become so small that the weights are barely updated, and learning grinds to a halt.</p>
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb8" data-startfrom="225" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 224;"><span id="cb8-225"><a href="#cb8-225" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> {reluChart} <span class="im">from</span> <span class="st">"https://observablehq.com/d/d00db79bf2aca3bf"</span></span>
+<span id="cb8-226"><a href="#cb8-226" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-227"><a href="#cb8-227" aria-hidden="true" tabindex="-1"></a>reluChart</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-3-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-3-2" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+</div>
+<p>This problem necessitated the search for better activation functions, which led to the widespread adoption of <strong>the Rectified Linear Unit</strong>, or <strong>ReLU</strong>. Its definition is elegantly simple: <span class="math inline">\(f(x) = \max(0, x)\)</span>. It simply thresholds the input at zero. This function, introduced in the context of deep learning in the <a href="https://proceedings.neurips.cc/paper_files/paper/2012/file/c399862d3b9d6b76c8436e924a68c45b-Paper.pdf">AlexNet paper</a>, was a major breakthrough. It has several compelling advantages. First, and most importantly, it does not saturate in the positive region. For any positive input, the gradient is simply 1, allowing the gradient signal to flow unhindered during backpropagation, thus alleviating the vanishing gradient problem. Second, it is computationally trivial, it’s just a simple comparison to zero, it’s a very cheap operation just basically check the sign bit whether it on or off, which makes both the forward and backward passes very fast. The empirical result of these properties is dramatic: networks using ReLU often converge much faster than those using sigmoid or tanh. The AlexNet authors reported a 6x speedup in convergence on ImageNet. However, ReLU is not without its own set of issues. One issue is that its output is not zero-centered. This can introduce some undesirable dynamics during gradient descent, although this is often mitigated by techniques like Batch Normalization. A more significant annoyance is the <strong>Dead ReLU</strong> problem. Look at the negative region, for any input x &lt; 0, the output is 0, and importantly, the gradient is also 0. If a neuron, due to a large gradient update or poor initialization, gets pushed into a regime where its input is consistently negative, it will always output zero. The gradient flowing through it will also always be zero. Consequently, the weights feeding into that neuron will never again receive a gradient update. The neuron is effectively “dead” for the remainder of training, having become an inert part of the network.</p>
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb9" data-startfrom="234" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 233;"><span id="cb9-234"><a href="#cb9-234" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> {reluGeluChart} <span class="im">from</span> <span class="st">"https://observablehq.com/d/d00db79bf2aca3bf"</span></span>
+<span id="cb9-235"><a href="#cb9-235" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-236"><a href="#cb9-236" aria-hidden="true" tabindex="-1"></a>reluGeluChart</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-4-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-4-2" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+</div>
+<p>The quest to find an activation that combines the benefits of ReLU while mitigating its drawbacks is an active area of research. One prominent successor is the <strong>Gaussian Error Linear Unit</strong>, or <strong>GELU</strong>.</p>
+<p><span class="math display">\[
+f(x) = x \cdot \Phi(x)
+\]</span></p>
+<p>where <span class="math inline">\(\Phi(x)\)</span> is the cumulative distribution function of the standard Gaussian distribution. This means that GELU weights inputs based on their value, allowing for a smoother transition compared to other activation functions.</p>
+<p>GELU can be thought of as a smoother, probabilistic version of ReLU. As you can see from the plot, it closely tracks ReLU for positive values but smoothly curves below zero. It doesn’t have the hard zero-gradient “kink” that ReLU does. This smoothness around zero is empirically beneficial and can facilitate more stable training. Critically, it does not have a zero gradient for negative inputs, which helps avoid the Dead ReLU problem. However, this comes at a cost: it is more computationally expensive than the simple ReLU. And while it’s less prone to killing gradients, for large negative values, the gradient does still approach zero. GELU has become the standard in many state-of-the-art models, particularly in the domain of Transformers.</p>
+<p>And there are a lot activation functions out there like Leaky ReLU introduces a small, fixed slope for negative inputs to prevent neurons from dying. ELU uses an exponential function for negative inputs to push the mean activation closer to zero. And we’ve just discussed GELU. Another interesting one is SiLU, or Swish, which is x times the sigmoid of x, creating a non-monotonic function that dips slightly below zero before rising. The main takeaway here is not to memorize every single one, but to recognize that while ReLU remains a very strong and common default choice, the selection of an activation function is a design decision with trade-offs between performance, computational cost, and training stability.</p>
+<p>Now thinking about a standard CNN architecture… where are these activation functions actually used? They are generally placed immediately after the linear operators in the network. So, you would have a convolution layer, followed by an activation function. Or a fully-connected layer, followed by an activation function. Their role is to take the output of these linear transformations and inject the critical non-linearity before the data is passed to the next layer.</p>
+</section>
+<section id="cnn-architectures" class="level2">
+<h2 class="anchored" data-anchor-id="cnn-architectures">CNN architectures</h2>
+<p>The next natural step is to see how these pieces are assembled into full-scale, effective CNN architectures. And to understand the evolution of these architectures, there is no better lens than the ImageNet Large Scale Visual Recognition Challenge, or ILSVRC.</p>
+<p><a href="./images/ILSVRC.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8"><img src="./images/ILSVRC.png" class="img-fluid"></a></p>
+<p>What you see here are the winning top-5 error rates on the ImageNet challenge from 2010 through 2017. In the pre-deep learning era of 2010 and 2011, the methods were based on shallow feature engineering, and the error rates were quite high, around 28% and 26%. Then, in 2012, something remarkable happened. AlexNet, an 8-layer convolutional neural network, entered the competition and dramatically reduced the error rate to 16.4%. This was the watershed moment that convinced the computer vision community of the power of deep learning. Following this, we see a clear and consistent trend: year after year, the error rates fall, while the network depths steadily increase. We go from 8 layers, to 19, to 22, and then in 2015, a truly massive leap to 152 layers with ResNet, which for the first time achieved an error rate lower than the estimated human performance on this task. This chart is, in essence, a story of the community learning how to successfully build and train progressively deeper neural networks. The revolution, as I mentioned, began in 2012 with AlexNet. This 8-layer network, building on many of the components we’ve discussed like ReLU and Dropout, demonstrated definitively that deep, learned features could vastly outperform hand-engineered ones. It set the stage for all the architectural development that followed. Today, we’re going to pick up the story in 2014. After AlexNet’s success, the immediate research question was, “If 8 layers are good, are more layers better?” The winning entries from 2014, VGGNet and GoogLeNet, answered this with a resounding yes. They pushed network depth from 8 layers to 19 and 22 layers, respectively, and were rewarded with another significant drop in error, from over 11% in the previous year down to the 7% range. Let’s start by taking a closer look at the VGG architecture.</p>
+<section id="vgg" class="level3">
+<h3 class="anchored" data-anchor-id="vgg">VGG</h3>
+<p><a href="https://arxiv.org/abs/1409.1556">VGGNet</a>, from Simonyan and Zisserman at Oxford. The core philosophy behind VGG was to explore the effect of depth using an architecture that was remarkably simple. Their central idea was this: “Small filters, Deeper networks.”</p>
+<p><a href="./images/vgg.png" class="lightbox" data-gallery="quarto-lightbox-gallery-9"><img src="./images/vgg.png" class="img-fluid"></a></p>
+<p>If you look at the comparison with AlexNet on the left, you’ll see AlexNet used a mix of filter sizes, a large 11x11 filter in the first layer, followed by 5x5 filters. VGGNet, in contrast, made a radical design choice: it exclusively uses very small 3x3 convolutional filters throughout the entire network. This uniformity allowed them to stack these layers very deep, creating the 16 model shown here. The structure is a repeating motif: a block of two or three 3x3 convolutions, followed by a 2x2 max-pooling layer to reduce the spatial dimensions. By sticking to this simple rule, they went from 8 layers to 16, and with this added depth, they achieved a substantial improvement, reducing the top-5 error from 11.7% to 7.3%. This brings us to a critical design question. Why did they make this choice? Why use only these small 3x3 filters? Why not use a 5x5 or a 7x7 filter, which would have a larger receptive field and seemingly be able to capture larger spatial patterns in a single step? Let’s take a moment to consider the implications of this design.</p>
+<p>Alright, let’s analyze this question quantitatively. What is the effective receptive field of stacking three consecutive 3x3 convolution layers, assuming a stride of 1? There are two profound advantages. First, and arguably most important, the stacked approach is deeper and incorporates more non-linearities. Between each of the 3x3 convolutions, we place an activation function, like a ReLU. So, in the stacked version, we apply three non-linearities over that 7x7 receptive field. A single 7x7 convolution layer would only have one non-linearity. This increased non-linearity allows the model to learn more complex and discriminative features, which is a key benefit of depth. The second advantage is a significant reduction in the number of parameters. Let’s assume the number of channels per layer is C. A single 7x7 conv layer would have 7 * 7 * C * C = 49 * C<sup>2</sup> parameters. A stack of three 3x3 conv layers has 3 * (3 * 3 * C * C) = 27 * C<sup>2</sup> parameters. This is a substantial reduction, making the network more efficient and less prone to overfitting. So, the VGG design gives us more expressive power with fewer parameters, a clear win-win.</p>
+<p>The VGGNet philosophy, that deeper is better, especially when done efficiently set the stage for what came next. This trend of increasing depth continued, but in 2015, we saw a jump that was qualitatively different from what came before. Kaiming He and his colleagues introduced the Residual Network, or ResNet, which had a staggering 152 layers. This wasn’t just a simple extrapolation; it was a fundamental architectural innovation that enabled training at depths previously thought impossible. This truly marks the “Revolution of Depth.”</p>
+</section>
+<section id="resnet" class="level3">
+<h3 class="anchored" data-anchor-id="resnet">Resnet</h3>
+<p>This architecture was born from a very simple and direct research question: What happens when we just continue stacking deeper and deeper layers on a “plain” convolutional network, like a VGG-style architecture? One might naively assume that performance should just continue to improve, or at worst, plateau. The reality, as we will see, is surprisingly different, and it revealed a fundamental optimization problem that ResNet was designed to solve.</p>
+<p>Kaiming He and his colleagues took a plain network architecture, similar in style to VGG, and trained two versions: a “shallower” 20-layer model and a much deeper 56-layer model. Here are the results</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="./images/resnet-experiment.png" class="lightbox" data-gallery="quarto-lightbox-gallery-10" title="On the left, we see the test error, and on the right, the training error. The blue line represents the 20-layer model, and the red line represents the 56-layer model."><img src="./images/resnet-experiment.png" class="img-fluid figure-img" alt="On the left, we see the test error, and on the right, the training error. The blue line represents the 20-layer model, and the red line represents the 56-layer model."></a></p>
+<figcaption>On the left, we see the test error, and on the right, the training error. The blue line represents the 20-layer model, and the red line represents the 56-layer model.</figcaption>
+</figure>
+</div>
+<p>What we observe is something quite unexpected. The deeper 56-layer model performs worse than the 20-layer model. But what’s truly puzzling is that it performs worse not only on the test set, but also on the training set. The training error for the 56-layer model is higher than for the 20-layer model. This is a crucial observation. The fact that the deeper model has a higher training error means that this is not a problem of overfitting. If it were overfitting, we would expect the deeper model to achieve a very low training error by memorizing the training data, but then perform poorly on the test set. Here, the deeper model is failing to even fit the training data as well as its shallower counterpart. This phenomenon is known as the degradation problem.</p>
+<p>This points to a fundamental difficulty. It is a fact that a deeper model, having more parameters, has strictly greater representational power than a shallower model. It can represent any function the shallower model can, plus many more. So, why does it perform worse? The hypothesis put forth by the ResNet authors is that this is not a representation problem, but an optimization problem. While the deeper model can theoretically represent better solutions, it is paradoxically much harder for our optimization algorithms, like stochastic gradient descent, to actually find those good parameter settings. The optimization landscape becomes much more complex and difficult to navigate.</p>
+<p>Let’s formalize this with a thought experiment. Consider a well-trained shallow model. Now, imagine we construct a deeper model. What should this deeper model learn to be, at the absolute minimum, at least as good as the shallow model? Well, there’s a simple solution by construction. The deeper model could simply copy the learned layers from the shallow model for its initial layers, and then set all the additional layers to simply be identity mappings. An identity mapping is a function that just passes its input through unchanged. If the extra layers do nothing, the deeper model will produce exactly the same output as the shallow model, and thus have the same error. Since we know a solution exists that is at least this good, the fact that SGD fails to find it implies that learning the identity mapping with a stack of non-linear layers is surprisingly difficult. This insight is the absolute core of ResNet.</p>
+<p><a href="./images/resnet-solution.png" class="lightbox" data-gallery="quarto-lightbox-gallery-11"><img src="./images/resnet-solution.png" class="img-fluid"></a></p>
+<p>The conventional approach, what the paper calls “plain” layers, is to have a stack of layers try to learn some desired underlying mapping, H(x). For example, H(x) might be the ideal features for the next stage of the network. The ResNet solution is to reframe the problem. Instead of asking the layers to learn H(x) directly, let’s change what they are learning. We introduce what’s called a “shortcut” or “skip” connection, which takes the input to the block, x, and adds it to the output of the block. The stack of layers is now only asked to learn a residual function, F(x). The final output of the block is H(x) = F(x) + x. Now, consider our identity mapping problem. How can this block learn to be an identity mapping, so that H(x) = x? It’s trivial. The network just needs to learn to set the output of the residual path, F(x), to zero. It can accomplish this by simply driving the weights of the convolutional layers in the block towards zero. This is a much easier optimization target for SGD than trying to learn an identity mapping through a complex stack of non-linear transformations. So, to be explicit, we are changing the objective of the building block. Instead of learning H(x) directly, we use the layers to fit the residual F(x) = H(x) - x. We are hypothesizing that it is easier to optimize the residual mapping than to optimize the original, unreferenced mapping. The skip connection performs the identity mapping, and the stacked layers learn the “correction” or “residual” that needs to be applied. This formulation proved to be the key that unlocked the training of extremely deep neural networks.</p>
+<div class="columns">
+<div class="column" style="width:60%;">
+<p>The full ResNet architecture is essentially just a stack of these residual blocks. As you can see on the right, the network is composed of repeating modules. Each of these modules, or residual blocks, contains two 3x3 convolutional layers, which echoes the design philosophy of VGG that we just discussed. The crucial difference, of course, is the identity skip connection that bypasses these two layers and is added to their output before the final ReLU activation. The entire network, from start to finish, is constructed by composing these fundamental building blocks one after another.</p>
+<p>Now, a critical detail in any deep CNN is how to handle the changes in spatial resolution and channel depth. A network can’t maintain the same spatial dimensions throughout, as that would be computationally intractable and would fail to build a hierarchy of features. ResNet addresses this in a very systematic way. Periodically, at the beginning of a new “stage” of the network, it does two things simultaneously: it doubles the number of filters, and it downsamples the feature map spatially. This downsampling is achieved not by a pooling layer, but by setting the stride of the first 3x3 convolution in that block to 2. This, of course, creates a dimensionality mismatch for the addition: the identity x has half the spatial resolution and half the channel depth of the output of the convolutional path F(x). To resolve this, when downsampling occurs, the skip connection is also modified. It typically consists of a 1x1 convolution with a stride of 2, which serves to downsample x and project it to the new, higher channel dimension, so that the element-wise addition can be performed. This is a very clean and effective way to manage the tensor dimensions as we go deeper into the network. Finally, there’s one more piece. Before the main stack of residual blocks, the network begins with an initial convolutional layer, sometimes called the “stem.” In the case of ResNet, this is a large 7x7 convolution with a stride of 2, followed by a max-pooling layer. The purpose of this stem is to aggressively reduce the spatial dimensions and quickly extract low-level features like edges and blobs from the input image before it enters the more complex residual stages.</p>
+</div><div class="column" style="width:40%;">
+<p><a href="./images/resnet.png" class="lightbox" data-gallery="quarto-lightbox-gallery-12"><img src="./images/resnet.png" class="img-fluid"></a></p>
+</div>
+</div>
+<p>The elegance of this modular design is its scalability. By simply deciding how many residual blocks to stack in each stage of the network, the authors could easily construct a family of architectures of varying depths. The paper presented models of 18, 34, 50, 101, and the flagship 152-layer network for the ImageNet challenge. This systematic and principled approach to increasing depth was a key contribution. And the results were nothing short of revolutionary. The ability to train these very deep network using residual connections led to a new state-of-the-art. Their 152-layer model won the ILSVRC 2015 classification competition with a top-5 error of just 3.57%, which was a remarkable improvement and the first time a model surpassed the reported human-level performance benchmark on this dataset. The impact of ResNet extended far beyond image classification. The features learned by this architecture were so powerful and general that ResNet-based models swept nearly all major classification and detection competitions in 2015. For several years following its publication, the ResNet architecture became the de facto standard backbone for a vast array of computer vision tasks.</p>
+</section>
+</section>
+<section id="weight-initialize" class="level2">
+<h2 class="anchored" data-anchor-id="weight-initialize">Weight initialize</h2>
+<p>We’ve discussed the layers, the activations, and the architectural patterns. Now, we must address the crucial, and often overlooked, topic of <strong>Weight Initialization</strong>. How we set the initial values of the network’s parameters is not a trivial detail, it can be the difference between a network that trains successfully and one whose gradients either vanish or explode. How should we initialize the weights in our neural network layers? It seems like a minor detail, but as we’ll see, it has profound implications for the trainability of deep models. Let’s explore this with a concrete example.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>dims <span class="op">=</span> [<span class="dv">4096</span>] <span class="op">*</span> <span class="dv">7</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>hs <span class="op">=</span> []</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.random.randn(<span class="dv">16</span>, dims[<span class="dv">0</span>])</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> Din, Dout <span class="kw">in</span> <span class="bu">zip</span>(dims[:<span class="op">-</span><span class="dv">1</span>], dims[<span class="dv">1</span>:]):</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  W <span class="op">=</span> <span class="fl">0.01</span> <span class="op">*</span> np.random.randn(Din, Dout) <span class="co"># small weight init</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  x <span class="op">=</span> np.maximum(<span class="dv">0</span>, np.dot(x, W)) <span class="co"># ReLU activation</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  hs.append(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><a href="./images/small-weight-init.png" class="lightbox" data-gallery="quarto-lightbox-gallery-13"><img src="./images/small-weight-init.png" class="img-fluid"></a></p>
+<p>Here we have a simple Python snippet that simulates the forward pass through a 6-layer deep network. Each hidden layer has 4096 neurons, and we’re using a ReLU activation function. We’ll start with a naive initialization strategy: initializing the weights from a standard normal distribution, and then scaling them down by a small constant factor, in this case, 0.01. This seems plausible; we want the initial weights to be small to avoid starting in a highly non-linear, saturated regime. But let’s look at what happens. we see histograms of the activations in each of the six layers after a single forward pass with random input data. In the first layer, the activations have a reasonable distribution. But by the second layer, the mean and standard deviation have shrunk considerably. By the third, even more so. As we propagate through the network, the activations progressively collapse towards zero. By the time we reach the final layers, nearly all the activations are zero. What is the consequence of this for learning? If all activations are zero, what will the gradients be during the backward pass? They will also be zero. This is a form of the vanishing gradient problem induced not by the activation function itself, but by poor weight initialization. The signal dies as it propagates forward, and the gradient dies as it propagates backward. The network will not learn.</p>
+<p>Okay, so maybe our initial scaling factor was too small. Let’s try making the weights a bit larger. We’ll change the scaling factor from 0.01 to 0.05. A modest increase.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>dims <span class="op">=</span> [<span class="dv">4096</span>] <span class="op">*</span> <span class="dv">7</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>hs <span class="op">=</span> []</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.random.randn(<span class="dv">16</span>, dims[<span class="dv">0</span>])</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> Din, Dout <span class="kw">in</span> <span class="bu">zip</span>(dims[:<span class="op">-</span><span class="dv">1</span>], dims[<span class="dv">1</span>:]):</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  W <span class="op">=</span> <span class="fl">0.05</span> <span class="op">*</span> np.random.randn(Din, Dout) <span class="co"># large weight init</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  x <span class="op">=</span> np.maximum(<span class="dv">0</span>, np.dot(x, W)) <span class="co"># ReLU activation</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  hs.append(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><a href="./images/large-weight-init.png" class="lightbox" data-gallery="quarto-lightbox-gallery-14"><img src="./images/large-weight-init.png" class="img-fluid"></a></p>
+<p>The result is just as catastrophic, but in the opposite direction. Now, looking at the activation statistics, we see the mean and standard deviation exploding as we move through the network. The activations are pushed far into the positive regime of the ReLU. While this doesn’t cause saturation in the same way as a sigmoid, this rapid growth in magnitude leads to extremely large gradients during the backward pass. This is the exploding gradient problem. It can cause the weight updates to be so large that the optimization process becomes unstable, with the loss oscillating wildly or diverging to infinity.</p>
+<p>So, we’re in a bit of a Goldilocks situation. We need an initialization that is not too small and not too large. The key insight is that the correct scaling factor depends on the size of the layer. Specifically, it depends on the number of input neurons to the layer, which we often call the “fan-in.” The variance of the output of a linear layer is proportional to the variance of the input times the number of input connections times the variance of the weights. To keep the variance of the activations constant as we pass through the network, we need to scale our weight initialization to counteract the effect of the fan-in. A principled way to do this, specifically for networks using ReLU activations, was proposed in the same year as ResNet by Kaiming He and colleagues. Their solution, often called “Kaiming initialization” or “MSRA initialization,” is to scale the weights by the square root of 2 divided by the fan-in (Din).</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>dims <span class="op">=</span> [<span class="dv">4096</span>] <span class="op">*</span> <span class="dv">7</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>hs <span class="op">=</span> []</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.random.randn(<span class="dv">16</span>, dims[<span class="dv">0</span>])</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> Din, Dout <span class="kw">in</span> <span class="bu">zip</span>(dims[:<span class="op">-</span><span class="dv">1</span>], dims[<span class="dv">1</span>:]):</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  W <span class="op">=</span> np.random.randn(Din, Dout) <span class="op">*</span> np.sqrt(<span class="dv">2</span> <span class="op">/</span> Din)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  x <span class="op">=</span> np.maximum(<span class="dv">0</span>, np.dot(x, W))</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  hs.append(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><a href="./images/just-right-weight-init.png" class="lightbox" data-gallery="quarto-lightbox-gallery-15"><img src="./images/just-right-weight-init.png" class="img-fluid"></a></p>
+<p>When we use Kaiming initialization, the result is remarkable. Looking at the histograms, we see that the distribution of activations remains stable across all six layers. The mean and standard deviation are preserved as the signal propagates through the deep network. This is precisely what we want. It ensures that all layers have a healthy flow of information and receive meaningful gradients, which is essential for successful training. This type of principled initialization has become standard practice and is a critical component for training deep architectures from scratch.</p>
+</section>
+<section id="data-preparation" class="level2">
+<h2 class="anchored" data-anchor-id="data-preparation">Data preparation</h2>
+<section id="data-preprocessing" class="level3">
+<h3 class="anchored" data-anchor-id="data-preprocessing">Data preprocessing</h3>
+<p>We’ve built our network, but now we need to train it. We will now focus on the practical methodologies for how to train CNNs, starting with data preprocessing. For image data, the standard preprocessing step is normalization. Here is the TLDR. The universal practice in modern deep learning is to center and scale the data for each channel independently. This means we first compute the mean and standard deviation of the pixel values across the entire training dataset, but we do this separately for the Red, Green, and Blue channels. This gives us three mean values and three standard deviation values. Then, for every image we feed into the network (both at training and test time), we subtract the corresponding per-channel mean from each pixel and divide by the per-channel standard deviation. This process ensures that the input data for each channel has approximately zero mean and unit variance. This is crucial for stable training, as it puts the data into a well-behaved numerical range, which helps with gradient flow and prevents the first layer from having to learn to adapt to arbitrarily scaled inputs. Note that this requires a pre-computation step on your training set before you begin the main training loop.</p>
+</section>
+<section id="data-augmentation" class="level3">
+<h3 class="anchored" data-anchor-id="data-augmentation">Data augmentation</h3>
+<p>We will now discuss Data Augmentation. This is an extremely powerful and widely used technique for improving the generalization performance of your model, effectively a form of regularization. Before we look at specific data augmentation techniques, I want to highlight a common pattern that underlies many forms of regularization in deep learning. The general pattern is this: during the training phase, we introduce some form of stochasticity or randomness into the process. The model’s output y is a function not only of the weights W and the input x, but also of some random variable z.</p>
+<p><span class="math display">\[
+y = f_W(x, z)
+\]</span></p>
+<p>Then, at test time, we want a deterministic prediction. The strategy here is to marginalize out, or average over, this randomness. We want to compute the expectation of the model’s output over the distribution of the random variable z. In practice, this often involves an approximation, such as sampling or using an analytical trick.</p>
+<p><span class="math display">\[
+y = f(x) = E_z\left[f(x, z)\right] = \int p(z)f(x, z)dz
+\]</span></p>
+<p>We’ve already seen a perfect example of this pattern: Dropout. During training, the randomness comes from the binary mask that randomly drops activations. At testing, we average out this randomness. The scaling of activations by the keep probability p that we discussed is a clever analytical way to compute the exact expected output of the ensemble of all possible sub-networks. So, training involves random dropping, and testing involves averaging. Data augmentation fits this regularization pattern perfectly. The core idea is to artificially enlarge the training dataset by applying random, label-preserving transformations to the input images. During training, for each image we load, we apply a random transformation—a slight rotation, a crop, a color shift—and then we feed this transformed image to the CNN to compute the loss. This forces the network to learn features that are invariant to these transformations. The source of randomness, z, is the choice of transformation.</p>
+<p><a href="./images/data-augmentation.png" class="lightbox" data-gallery="quarto-lightbox-gallery-16"><img src="./images/data-augmentation.png" class="img-fluid"></a></p>
+<p>Let’s look at some common examples. The simplest and one of the most effective is the horizontal flip. For most object categories in natural images, like this cat, the semantic label is invariant to a horizontal flip. A cat is still a cat when mirrored. So, during training, we can randomly flip each image horizontally with a 50% probability. This effectively doubles the size of our training set and teaches the model that left-right orientation is not a distinguishing feature for this class.</p>
+<p>A more sophisticated and extremely powerful technique involves random crops and scales. The procedure described here is from the original ResNet paper. During training, you first randomly pick a scale L from a given range. You resize the image so its shorter side is L, and then you sample a random 224x224 patch from this resized image. This teaches the model to be robust to both variations in object scale and position within the frame. Then, at test time, we follow the pattern of averaging out the randomness. We perform what is called test-time augmentation (TTA). Instead of a single random crop, we create a deterministic, fixed set of crops. For example, we might resize the image to 5 different scales, and for each scale, we take 10 crops: one from the center, one from each of the four corners, and then the horizontal flips of all five. We run all 50 of these crops through the network and average their final predictions to get a single, robust prediction for the image.</p>
+<p>Another very common technique is Color Jitter. The exact same object can appear very different under varying lighting conditions. To make our model robust to this, we can randomly perturb the color properties of the image during training. Simple approaches involve randomly adjusting the contrast and brightness of the image. More complex methods can involve perturbations in the PCA space of the RGB values, as was done in the AlexNet paper.</p>
+<p>We can also think of regularization techniques that operate directly on the image space, analogous to Dropout. Techniques like Cutout, or Random Erasing, involve setting random rectangular regions of the input image to zero (or some other constant value). This forces the network to look at the entire object and not become overly reliant on one specific, salient feature. For example, to recognize this cat, it can’t just rely on seeing the eye; it has to learn to use information from the ears, the fur texture, and the overall shape, because any one of those features might be occluded by the random patch. This works very well, especially for smaller datasets like CIFAR where overfitting is a major concern.</p>
+</section>
+</section>
+<section id="transfer-learning" class="level2">
+<h2 class="anchored" data-anchor-id="transfer-learning">Transfer learning</h2>
+<p>This is arguably one of the most important concepts in the practical application of deep learning today: <strong>Transfer Learning</strong>. This brings us to a very pragmatic question. Training these large models, like the ResNets we just discussed, on a dataset like ImageNet requires immense computational resources and vast amounts of labeled data. So, what do you do in a more common scenario? What if you don’t have a lot of data? Can you still leverage the power of these deep CNNs for your specific problem? The answer is a definitive yes, and the mechanism for doing so is Transfer Learning. The fundamental intuition behind transfer learning in computer vision is that the features learned by a network trained on a large, diverse dataset are often useful for other, related tasks.</p>
+<p><a href="./images/transfer-learning.png" class="lightbox" data-gallery="quarto-lightbox-gallery-17"><img src="./images/transfer-learning.png" class="img-fluid"></a></p>
+<p>If we visualize the learned filters from the very first convolutional layer of AlexNet, we see that they are not random noise. The network has learned to detect fundamental visual primitives like oriented edges, color blobs, and other Gabor-like patterns. These low-level features are not specific to the 1000 classes of ImageNet; they are generic building blocks for visual understanding. They are likely to be useful for almost any computer vision task. This principle holds true even as we go deeper into the network. If we take the feature vector from one of the last layers of a pre-trained network—in this case, the 4096-dimensional vector before the final classifier—and we look for nearest neighbors in this feature space, we see something remarkable. The feature space is semantically organized. A test image of a flower is closest to other images of flowers. An elephant is closest to other elephants. An aircraft carrier is closest to other aircraft carriers. This demonstrates that the network has learned a rich, high-level representation of the visual world that captures semantic similarity. The core idea of transfer learning is to leverage this pre-existing knowledge.</p>
+<p>So, here is the standard workflow for transfer learning. Step one is performed once by the broader research community. A very large model, like a ResNet, is trained on a massive, diverse dataset like ImageNet, which contains millions of images across a thousand categories. This is a computationally intensive process that can take weeks on many GPUs. The result is a set of “pre-trained” weights. Now, let’s say you have a new task, for which you only have a small dataset. Perhaps you want to classify between 10 different types of flowers, and you only have a few hundred examples. The strategy is as follows: you take the pre-trained network, and you freeze the weights of all the convolutional layers. You treat this part of the network as a fixed feature extractor. Then, you remove the original final fully-connected layer (which was trained to classify 1000 ImageNet classes) and replace it with a new, randomly initialized fully-connected layer that has the correct number of outputs for your new task (e.g., 10 outputs for 10 flower classes). You then train only this new final layer on your small dataset. Since you are only training a small number of parameters, this is much less prone to overfitting.</p>
+<p>Now, consider a different scenario. What if you have a bigger dataset for your new task? Perhaps you have tens of thousands of images. In this case, you have enough data to do more than just train the final layer. The strategy here is to initialize the entire network with the pre-trained weights, replace the final layer as before, and then finetune the entire model. This means you allow backpropagation to update all the weights in the network, but you typically do so with a much smaller learning rate than you would use for training from scratch. This allows the pre-trained features to be gently adapted and specialized for your new task, often leading to better performance than simply freezing the feature extractor.</p>
+<p>So, what is the key takeaway for any applied deep learning you do in the future? If you have a dataset of interest, and it’s smaller than the massive, web-scale datasets, you should almost always leverage transfer learning. You should find a model pre-trained on a large, similar dataset (ImageNet is the default for natural images) and then transfer that knowledge to your specific task using the strategies we’ve discussed. You don’t need to train these large models yourself. Deep learning frameworks like <a href="https://github.com/pytorch/vision">PyTorch</a> and platforms like <a href="https://github.com/huggingface/pytorch-image-models">Hugging Face</a> provide a “Model Zoo” of pre-trained models that you can download and use with just a few lines of code. This is an incredibly powerful paradigm that has democratized access to high-performing computer vision models.</p>
+</section>
+<section id="hyperparameter-selection" class="level2">
+<h2 class="anchored" data-anchor-id="hyperparameter-selection">Hyperparameter selection</h2>
+<p>We’ve built the model, we have the data, but there are still many “knobs” to turn, learning rates, weight decay, dropout probabilities, architectural choices. This brings us to the crucial, and often challenging, task of Hyperparameter Selection. This is often more of an art guided by scientific principles than a rigid science itself. I’m going to provide you with a practical, step-by-step workflow for approaching this problem. Here is a sequence of steps that will serve you well.</p>
+<p><strong>Step 1</strong>: First, some initial sanity checks. Check your initial loss. Before you even start training, do a single forward pass and make sure the loss is what you’d expect. For a softmax classifier on a C-class problem, the initial loss should be around log(C). If it’s not, something is likely wrong with your initialization or loss function implementation.</p>
+<p><strong>Step 2</strong>: Overfit a small sample. Take a tiny subset of your data, maybe just a few mini-batches, and try to train your network to 100% accuracy on that small set. The goal here is to prove that your model and your optimization setup are capable of learning something. If you can’t even overfit a tiny slice of data, you have a bug somewhere.</p>
+<p><strong>Step 3</strong>: Find a learning rate that makes the loss go down. Once you can overfit a small sample, take your full dataset, turn on a small amount of regularization (weight decay), and experiment with a wide range of learning rates—from 1e-1 down to 1e-5. All you’re looking for here is a learning rate that causes the loss to drop reliably within the first hundred or so iterations. This gives you a reasonable starting point.</p>
+<p>Once you have a viable learning rate, you can move on to a more systematic search.</p>
+<p><strong>Step 4</strong>: Perform a coarse search over a grid of hyperparameters. Now you’ll be tuning not just the learning rate, but also regularization strength, perhaps dropout probability, and other architectural choices. Sample these values, and for each combination, train for just a few epochs—maybe 1 to 5. You’re just trying to identify promising regions in the hyperparameter space.</p>
+<p><strong>Step 5</strong>: Refine the grid. Take the best-performing hyperparameter settings from your coarse search and perform a more focused search in that narrower region, and this time, train the models for a longer duration.</p>
+<p><strong>Step 6</strong>: which is crucial throughout this whole process, is to look at the loss and accuracy curves. These plots are your primary diagnostic tool for understanding what’s happening during training.</p>
+<p>Let’s look at some examples.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>Here you see the training accuracy in blue and the validation accuracy in orange. Both curves are steadily increasing, and there’s a relatively small gap between them. This is the ideal scenario. It tells you that your model is still learning and has not yet plateaued. The prescription here is simple: you just need to train for longer.</p>
+</div><div class="column" style="width:50%;">
+<p><a href="./images/accuracy-curve1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-18"><img src="./images/accuracy-curve1.png" class="img-fluid"></a></p>
+</div>
+</div>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>Now, consider this case. What is happening here? The training accuracy continues to climb, but the validation accuracy, after an initial increase, starts to decrease. This is the classic signature of overfitting. The large and growing gap between the training and validation accuracy means your model is learning to memorize the training set, but this knowledge is not generalizing to unseen data. The solution here is to increase regularization. This could mean adding more weight decay, increasing the dropout rate, or using more aggressive data augmentation. Alternatively, if possible, getting more training data is often the most effective remedy for overfitting.</p>
+</div><div class="column" style="width:50%;">
+<p><a href="./images/accuracy-curve2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-19"><img src="./images/accuracy-curve2.png" class="img-fluid"></a></p>
+</div>
+</div>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>And finally, what about this scenario? Here, the training and validation accuracy are very close to each other, but both have flattened out at a suboptimal level. There’s no gap, which means the model is not overfitting. This is a sign of underfitting. Your model does not have enough capacity to capture the complexity of the data. The potential solutions are to train longer (though it looks like it’s already converged), or more likely, you need to use a bigger, more powerful model—for instance, moving from a ResNet-18 to a ResNet-34.</p>
+</div><div class="column" style="width:50%;">
+<p><a href="./images/accuracy-curve3.png" class="lightbox" data-gallery="quarto-lightbox-gallery-20"><img src="./images/accuracy-curve3.png" class="img-fluid"></a></p>
+</div>
+</div>
+<p><strong>Step 7</strong>: This process is inherently iterative. You follow these steps, you look at your loss curves, you diagnose the problem, and that diagnosis informs the next action. Often, after refining your grid and training longer (Step 5), you’ll look at the curves (Step 6), and they will tell you that you’re now overfitting. That’s a GOTO Step 5: you go back, refine your regularization parameters, and train again. It’s a cycle of experimentation and analysis.</p>
+<p>When you’re performing these hyperparameter searches, how should you sample the values? The traditional approach is Grid Search, where you define a fixed grid of values for each parameter. However, a paper by Bergstra and Bengio showed that Random Search is almost always more efficient.</p>
+<p><a href="./images/random-search.png" class="lightbox" data-gallery="quarto-lightbox-gallery-21"><img src="./images/random-search.png" class="img-fluid"></a></p>
+<p>The reason is that not all hyperparameters are equally important. As shown in these diagrams, some parameters have a much larger impact on performance than others. With a grid layout, you are testing each “unimportant” parameter value multiple times, which is wasteful. With a random layout, you are effectively testing a unique value for each hyperparameter in every trial. This allows you to explore the hyperparameter space much more effectively for the same computational budget, making it more likely you’ll find a good combination.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script type="text/javascript">
+// Enhance theme switching experience
+document.addEventListener('DOMContentLoaded', function() {
+  // Add smooth transitions to all elements when theme changes
+  const style = document.createElement('style');
+  style.textContent = `
+* {
+transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
+}
+
+.navbar, .card, .table, .btn {
+transition: all 0.3s ease !important;
+}
+`;
+  document.head.appendChild(style);
+
+  // Enhance code copy functionality
+  const codeBlocks = document.querySelectorAll('pre code');
+  codeBlocks.forEach(function(codeBlock) {
+    codeBlock.parentElement.style.position = 'relative';
+  });
+
+  // Add fade-in animation for post listings
+  const posts = document.querySelectorAll('.post-listing .card');
+  posts.forEach(function(post, index) {
+    post.style.opacity = '0';
+    post.style.transform = 'translateY(20px)';
+    setTimeout(() => {
+      post.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+      post.style.opacity = '1';
+      post.style.transform = 'translateY(0)';
+    }, index * 100);
+  });
+
+  // Smooth scroll for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    });
+  });
+
+  // Enhanced table styling
+  const tables = document.querySelectorAll('table');
+  tables.forEach(function(table) {
+    if (!table.classList.contains('table')) {
+      table.classList.add('table', 'table-striped');
+    }
+
+    // Wrap tables in responsive container
+    if (!table.parentElement.classList.contains('table-responsive')) {
+      const wrapper = document.createElement('div');
+      wrapper.classList.add('table-responsive');
+      table.parentNode.insertBefore(wrapper, table);
+      wrapper.appendChild(table);
+    }
+  });
+
+  // Replace keyboard shortcuts on non-Mac platforms
+  const kPlatformMac = typeof navigator !== 'undefined' ? /Mac/.test(navigator.platform) : false;
+  if (!kPlatformMac) {
+    var kbds = document.querySelectorAll("kbd");
+    kbds.forEach(function(kbd) {
+      kbd.innerHTML = kbd.innerHTML.replace(/⌘/g, '⌃');
+    });
+  }
+
+  // Add reading progress indicator
+  function addReadingProgress() {
+    const article = document.querySelector('main article, main .content, .post-content');
+    if (article) {
+      const progressBar = document.createElement('div');
+      progressBar.style.cssText = `
+position: fixed;
+top: 0;
+left: 0;
+width: 0%;
+height: 3px;
+background: var(--bs-primary);
+z-index: 1000;
+transition: width 0.3s ease;
+`;
+      document.body.appendChild(progressBar);
+
+      window.addEventListener('scroll', function() {
+        const scrolled = window.scrollY;
+        const height = article.offsetHeight - window.innerHeight;
+        const progress = Math.min(scrolled / height * 100, 100);
+        progressBar.style.width = progress + '%';
+      });
+    }
+  }
+
+  // Only add reading progress on individual blog posts
+  if (document.querySelector('.post-title') || document.querySelector('article')) {
+    addReadingProgress();
+  }
+});
+
+// Theme preference detection and saving
+(function() {
+  // Save theme preference to localStorage
+  const themeToggle = document.querySelector('[data-bs-toggle="color-scheme"]');
+  if (themeToggle) {
+    themeToggle.addEventListener('click', function() {
+      setTimeout(() => {
+        const currentTheme = document.documentElement.getAttribute('data-bs-theme');
+        localStorage.setItem('quarto-color-scheme', currentTheme);
+      }, 100);
+    });
+  }
+
+  // Load saved theme preference
+  const savedTheme = localStorage.getItem('quarto-color-scheme');
+  if (savedTheme) {
+    document.documentElement.setAttribute('data-bs-theme', savedTheme);
+  }
+})();
+</script>
+
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6ImltcG9ydCB7dmlld29mIGExLCB2aWV3b2YgYjEsIHZpZXdvZiBhMiwgdmlld29mIGIyLCB2aWV3b2Ygc2hvd0NvbXBvbmVudHMsIGNoYXJ0fSBmcm9tIFwiaHR0cHM6Ly9vYnNlcnZhYmxlaHEuY29tL2QvZDAwZGI3OWJmMmFjYTNiZlwiXG5cbi8vIERpc3BsYXkgdGhlIGNvbnRyb2xzIGFuZCBjaGFydFxudmlld29mIGExXG52aWV3b2YgYjFcbnZpZXdvZiBhMlxudmlld29mIGIyXG52aWV3b2Ygc2hvd0NvbXBvbmVudHNcbmNoYXJ0XG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTIiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJpbXBvcnQge3NpZ21vaWRDaGFydH0gZnJvbSBcImh0dHBzOi8vb2JzZXJ2YWJsZWhxLmNvbS9kL2QwMGRiNzliZjJhY2EzYmZcIlxuXG5zaWdtb2lkQ2hhcnRcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMyIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6ImltcG9ydCB7cmVsdUNoYXJ0fSBmcm9tIFwiaHR0cHM6Ly9vYnNlcnZhYmxlaHEuY29tL2QvZDAwZGI3OWJmMmFjYTNiZlwiXG5cbnJlbHVDaGFydFxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC00IiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoiaW1wb3J0IHtyZWx1R2VsdUNoYXJ0fSBmcm9tIFwiaHR0cHM6Ly9vYnNlcnZhYmxlaHEuY29tL2QvZDAwZGI3OWJmMmFjYTNiZlwiXG5cbnJlbHVHZWx1Q2hhcnRcbiJ9XX0=
+</script>
+<script type="module">
+if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+window._ojs.paths.runtimeToDoc = "../../posts/cnn-architectures";
+window._ojs.paths.runtimeToRoot = "../..";
+window._ojs.paths.docToRoot = "../..";
+window._ojs.selfContained = false;
+window._ojs.runtime.interpretFromScriptTags();
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/bhdai\.github\.io\/blog\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<input type="hidden" id="giscus-base-theme" value="light">
+<input type="hidden" id="giscus-alt-theme" value="dark">
+<script>
+  function loadGiscus() {
+    // Function to get the theme based on body class
+    const getTheme = () => {
+      let baseTheme = document.getElementById('giscus-base-theme').value;
+      let altTheme = document.getElementById('giscus-alt-theme').value;
+      if (authorPrefersDark) {
+          [baseTheme, altTheme] = [altTheme, baseTheme];
+      }
+      return document.body.classList.contains('quarto-dark') ? altTheme : baseTheme;
+    };
+    const script = document.createElement("script");
+    script.src = "https://giscus.app/client.js";
+    script.async = true;
+    script.dataset.repo = "bhdai/blog";
+    script.dataset.repoId = "R_kgDOMP9wjw";
+    script.dataset.category = "Blog";
+    script.dataset.categoryId = "DIC_kwDOMP9wj84Cs7wf";
+    script.dataset.mapping = "pathname";
+    script.dataset.reactionsEnabled = "1";
+    script.dataset.emitMetadata = "0";
+    script.dataset.inputPosition = "bottom";
+    script.dataset.theme = getTheme();
+    script.dataset.lang = "en";
+    script.crossOrigin = "anonymous";
+    // Append the script to the desired div instead of at the end of the body
+    document.getElementById("quarto-content").appendChild(script);
+  }
+  loadGiscus();
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+ Copyright 2025, Bui Huu Dai
+  </li>  
+</ul>
+    </div>   
+    <div class="nav-footer-center">
+
+<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/bhdai/blog/edit/main/posts/cnn-architectures/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bhdai/blog/blob/main/posts/cnn-architectures/index.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/bhdai/blog/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="cookie-consent-footer"><a href="#" id="open_preferences_center">Cookie Preferences</a></div></div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
+
+
+
+
+</body></html>
