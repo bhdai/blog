@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.33">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Bui Huu Dai">
+<meta name="dcterms.date" content="2025-08-14">
+<meta name="description" content="we’re going to talk about Attention and Transformers. This is a really exciting and important topic. These are ideas that have truly come to dominate not just computer vision, but really all of modern deep learning over the last several years. So this will be a really foundational for understanding the state of the art.">
+
+<title>Attentions and Transformers – Bui Huu Dai</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../Github_bird.png" rel="icon" type="image/png">
+<script src="../../site_libs/cookie-consent/cookie-consent.js"></script>
+<link href="../../site_libs/cookie-consent/cookie-consent.css" rel="stylesheet">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-ea385d0e468b0dd5ea5bf0780b1290d9.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-bc185b5c5bdbcb35c2eb49d8a876ef70.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-ea385d0e468b0dd5ea5bf0780b1290d9.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-8e47eaf163dee9e5ea02780d02199294.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-bca7bfc09c99158c9822bef989cf6fc8.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-8e47eaf163dee9e5ea02780d02199294.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-6JR4N915S6"></script>
+
+<script type="text/plain" cookie-consent="tracking">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-6JR4N915S6', { 'anonymize_ip': true});
+</script>
+
+<script type="text/javascript" charset="UTF-8">
+document.addEventListener('DOMContentLoaded', function () {
+cookieconsent.run({
+  "notice_banner_type":"simple",
+  "consent_type":"implied",
+  "palette":"light",
+  "language":"en",
+  "page_load_consent_levels":["strictly-necessary","functionality","tracking","targeting"],
+  "notice_banner_reject_button_hide":false,
+  "preferences_center_close_button_hide":false,
+  "website_name":""
+  ,
+"language":"en"
+  });
+});
+</script> 
+  
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="Attentions and Transformers – Bui Huu Dai">
+<meta property="og:description" content="we’re going to talk about Attention and Transformers. This is a really exciting and important topic. These are ideas that have truly come to dominate not just computer vision, but really all of modern deep learning over the last several years. So this will be a really foundational for understanding the state of the art.">
+<meta property="og:image" content="https://bhdai.github.io/blog/posts/attention-and-transformers/images/cover.jpg">
+<meta property="og:site_name" content="Bui Huu Dai">
+<meta name="twitter:title" content="Attentions and Transformers – Bui Huu Dai">
+<meta name="twitter:description" content="we’re going to talk about Attention and Transformers. This is a really exciting and important topic. These are ideas that have truly come to dominate not just computer vision, but really all of modern deep learning over the last several years. So this will be a really foundational for understanding the state of the art.">
+<meta name="twitter:image" content="https://bhdai.github.io/blog/posts/attention-and-transformers/images/cover.jpg">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="floating nav-fixed slimcontent quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const queryPrefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    const darkModeDefault = queryPrefersDark.matches;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    queryPrefersDark.addEventListener("change", e => {
+      if(window.localStorage.getItem("quarto-color-scheme") !== null)
+        return;
+      const alternate = e.matches
+      toggleColorMode(alternate);
+      localAlternateSentinel = e.matches ? 'alternate' : 'default'; // this is used alongside local storage!
+      toggleGiscusIfUsed(alternate, darkModeDefault);
+    });
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Bui Huu Dai</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/bhdai"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://x.com/daibui1234"> <i class="bi bi-twitter-x" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml"> <i class="bi bi-rss" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Attentions and Transformers</h1>
+                  <div>
+        <div class="description">
+          we’re going to talk about Attention and Transformers. This is a really exciting and important topic. These are ideas that have truly come to dominate not just computer vision, but really all of modern deep learning over the last several years. So this will be a really foundational for understanding the state of the art.
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">Deep Learning</div>
+                <div class="quarto-category">Transformer</div>
+                <div class="quarto-category">Attention</div>
+                <div class="quarto-category">RNN</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Bui Huu Dai </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">August 14, 2025</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#recurrent-neural-networks-and-the-bottleneck" id="toc-recurrent-neural-networks-and-the-bottleneck" class="nav-link active" data-scroll-target="#recurrent-neural-networks-and-the-bottleneck">Recurrent neural networks and the bottleneck</a></li>
+  <li><a href="#the-attention-mechanism" id="toc-the-attention-mechanism" class="nav-link" data-scroll-target="#the-attention-mechanism">The attention mechanism</a></li>
+  <li><a href="#scaled-dot-product-attention" id="toc-scaled-dot-product-attention" class="nav-link" data-scroll-target="#scaled-dot-product-attention">Scaled dot-product attention</a></li>
+  <li><a href="#self-attention" id="toc-self-attention" class="nav-link" data-scroll-target="#self-attention">Self-Attention</a></li>
+  <li><a href="#multi-head-self-attention" id="toc-multi-head-self-attention" class="nav-link" data-scroll-target="#multi-head-self-attention">Multi-head Self-Attention</a></li>
+  <li><a href="#the-transformer" id="toc-the-transformer" class="nav-link" data-scroll-target="#the-transformer">The Transformer</a>
+  <ul class="collapse">
+  <li><a href="#transformer-block" id="toc-transformer-block" class="nav-link" data-scroll-target="#transformer-block">Transformer block</a></li>
+  <li><a href="#transformer-for-language-and-vision" id="toc-transformer-for-language-and-vision" class="nav-link" data-scroll-target="#transformer-for-language-and-vision">Transformer for language and vision</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/bhdai/blog/edit/main/posts/attention-and-transformers/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bhdai/blog/blob/main/posts/attention-and-transformers/index.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/bhdai/blog/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block page-columns page-full" id="quarto-document-content">
+
+
+
+
+
+
+<section id="recurrent-neural-networks-and-the-bottleneck" class="level2">
+<h2 class="anchored" data-anchor-id="recurrent-neural-networks-and-the-bottleneck">Recurrent neural networks and the bottleneck</h2>
+<p>For the first time we step a way from static image and introduce this idea of Recurrent neural network, or RNN. These are really powerful and flexible class because they’re design to operate on sequential data.</p>
+<p><a href="./images/rnn.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img src="./images/rnn.png" class="img-fluid"></a></p>
+<p>We see all these different architectures patterns: one-to-many for tasks like image captioning, many-to-one for something like video classification, and many-to-many for things like machine translation. The core idea is this recurrent connection - the hidden state that gets passed from one time step to the next, which gives the model a kind of memory. But these sequential processing and the way gradient flow time also introduces some pretty significant challenge especially dealing with very long sequences.</p>
+<p>So, today, we’re going to build on that and introduce two new, very important concepts that address these challenges head-on: <strong>Attention</strong> and <strong>Transformers</strong>. First we’ll talk about attention, you can think of this as a new kind of building block, a new primitive operation for our neural network. At a high level, it’s a mechanism that operates on a set of vectors. It allow the model to dynamically focus on the most relevant part of the inputs when it’s producing an output. And that brings us to the Transformer. A transformer is a full-brown neural network architecture that uses this attention mechanism everywhere. It’s a very powerful design that completely get rid of sequential recurrence of RNNs and instead relies entirely on attention to model dependencies inputs and output.</p>
+<p>Now, it’s really hard to overstate the impact that Transformers have had. They are everywhere today. They are the fundamental architecture behind the large language models you’ve heard about, like GPT and BERT, and more and more, they’re being applied to computer vision, often outperforming the convolutional networks that we’ve spent so much time on. But, before we can really understand the Transformer, I think it’s critical to understand where it came from. It didn’t just appear out of thin air. It actually developed as an offshoot of the RNN-based sequence-to-sequence models. The attention mechanism was first introduced to fix a fundamental bottleneck in those models. So, to properly motivate and understand why Transformers work the way they do, we need to go back to that starting point. So let’s start there</p>
+<p>Alright, so to really understand where attention came from, let’s first dive deep into the problem it was designed to solve. And that problem arises in what are called sequence-to-sequence models built with RNNs</p>
+<p><a href="./images/sts-rnn.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img src="./images/sts-rnn.png" class="img-fluid"></a></p>
+<p>So let’s set up the problem. The task is “sequence-to-sequence.” We have an input sequence of vectors, <em>x<sub>1</sub></em> through <em>x<sub>T</sub></em>, and we want to produce an output sequence, <em>y<sub>1</sub></em> through <em>y<sub>T’</sub></em>, where the lengths <em>T</em> and <em>T’</em> can be different. A great, motivating example for our whole discussion today is machine translation. Let’s say we want to translate a sentence from English to Italian. Our input sequence might be the words “we see the sky.” The standard way to tackle this with RNNs is with an architecture called an Encoder-Decoder.</p>
+<p><span class="math display">\[
+h_t = f_w(x_t, h_{t-1})
+\]</span></p>
+<p>The first part of this model is the <strong>Encoder</strong>. Its job is to read, or “encode,” the entire input sequence. So we take our first input word “we,” pass it into an RNN cell, and it produces a hidden state <em>h1</em>. Then, at the next time step, we take the next word “see” and the previous hidden state <em>h1</em> to produce the new hidden state <em>h2.</em> And we just repeat this process for the entire input sequence, one word at a time, until we’ve processed the last word, “sky,” and produced our final hidden state <em>h4.</em> This is exactly the RNN behavior. So, once we’ve read the entire input sequence, what happens? Well, the whole idea here is that the final hidden state of the encoder, <em>h<sub>T</sub></em> (or <em>h<sub>4</sub></em> in this case), has to somehow summarize the meaning of the entire input sentence. We take this final hidden state and we call it the <strong>context vector</strong>, which we will label <em>c.</em> This single vector <em>c</em> is the only piece of information that gets passed from the encoder to the next part of the model. It’s supposed to be a fixed-size summary of the entirely input. We also use this context vector to define the initial hidden state <em>s<sub>0</sub>,</em> for the decoder</p>
+<p><span class="math display">\[
+s_t = g_U(y_{t-1}, s_{t-1}, c)
+\]</span></p>
+<p>This brings us to the second half of the model, the <strong>Decoder</strong>. The decoder is another RNN, and its job is to take that context vector <em>c</em> and generate the output sequence, word by word. So how does it start? It’s initialized with hidden state <em>s<sub>0</sub></em> that we got from context vector. To kick of the generation process, we feed a special [START] token as its first input, which we call <em>y<sub>0</sub>.</em> The decoder RNN then process its state <em>s<sub>0</sub></em> and the input <em>y<sub>0</sub>,</em> and it produces two things: an output <em>y<sub>1</sub>,</em> which is the first word of our translated sentence, “vediamo,” and a new hidden state, <em>s<sub>1</sub>.</em> Notice that the context vector <em>c</em> is used as an input at every step of the decoder, constantly reminding it of the original sentence. Okay, so what happens at the next time step? This is where it gets interesting. The model operates in what’s called an “auto-regressive” fashion. That means the output from the previous step becomes the input for the current step. So, we take the word we just generated, “vediamo” (<em>y<sub>1</sub></em>), and feed that back into the decoder as the input for the next time step. The decoder then takes its previous state <em>s<sub>1</sub></em> and this new input <em>y<sub>1</sub></em> to produce the next state <em>s<sub>2</sub></em> and the next output word, <em>y<sub>2</sub>,</em> which in this case is “il.” And this process just continues. We feed “il” back in as input, the decoder produces “cielo.” We feed “cielo” back in as input, and eventually, the decoder will produce a special [STOP] token, which tells us that the sentence is complete and we can stop the generation process.</p>
+<p>So just summarizing the whole flow: the encoder reads the input sequence and squashes it all down into one context vector. The decoder then text that context vector and unrolls it, generating input sequence one word at a time, feeding its own prediction back in as input.</p>
+<p>Alright, so this architecture seems pretty reasonable, right? It was state-of-the-art for several years. But there’s a really fundamental problem with this design. And the problem is <strong>the input sequence bottlenecks through a fixed-size context vector <em>c</em></strong>. Think about it. The entire meaning of the input sequence, all the word, their order, their grammatical relationships all of it has to be compressed and stuffed into this single vector. For a short sentence like “we see the sky,” maybe that’s plausible. But now, as a thought exercise, what if you’re translating a whole paragraph? What if your input sequence length <em>T</em> is 1000? You’re asking the model to summarize a thousand words of nuanced information into a single vector of maybe 512 or 1024 numbers. That is an immense information bottleneck. The model is almost certainly going to forget information, particularly from the beginning of the sequence. It puts a tremendous amount of pressure on the model to represent everything perfectly in this one vector.</p>
+</section>
+<section id="the-attention-mechanism" class="level2">
+<h2 class="anchored" data-anchor-id="the-attention-mechanism">The attention mechanism</h2>
+<p>So, what’s the solution? Well, what if we could remove this bottleneck entirely? The core idea, and this is really the key conceptual leap, is to allow the decoder to <strong>look back the whole input sequence at each time step of the output generation</strong>. Instead of relying on a single summary, at every time step where it’s trying to produce an output word, the decoder can have direct access to every single hidden state from encoder. This way it can dynamically decide which part of the input are most relevant to the specific word it’s about to generate. This is the central idea behind attention.</p>
+<p><a href="./images/rnn-attention.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3"><img src="./images/rnn-attention.png" class="img-fluid"></a></p>
+<p>This is the Sequence to Sequence model with RNNs and Attention. This was first proposed in a paper <a href="https://arxiv.org/abs/1409.0473">“Neural Machine Translation by Jointly Learning to Align and Translate”</a> by Bahdanau et al.&nbsp;in 2015, and it was a landmark result for machine translation. The encoder part of the model is exactly the same as before. We run an RNN over the input sequence, “we see the sky,” and we compute a hidden state <em>h<sub>1</sub>,</em> <em>h<sub>2</sub>,</em> <em>h<sub>3</sub>,</em> <em>h<sub>4</sub></em> for each input token. But here’s the crucial difference: we are no longer going to discard <em>h<sub>1</sub>,</em> <em>h<sub>2</sub>,</em> and <em>h<sub>3</sub>.</em> We’re going to keep all of them. These encoder hidden states will be the values we “attend” to. We still use the final hidden state <em>h<sub>4</sub></em> to initialize the decoder’s first hidden state, <em>s<sub>0</sub>,</em> just to give it a starting point. So now we’re at the first step of the decoder. Our goal is to generate the first output word. To do this, we first need to figure out which of the input words are most relevant. We do this by computing a set of <strong>scale alignment scores</strong>. You’ll also see these called attention score. Let’s call them <em>e<sub>ti</sub>,</em> which represent the score between the t-th decoder step and the i-th encoder hidden state. How do we compute this? We take our current state of our decoder and we compare it to each of the encoder hidden state, <em>h<sub>1</sub></em> through <em>h<sub>4</sub>.</em> This comparison is done by a simple neural network, <em>f<sub>att</sub>.</em></p>
+<p><span class="math display">\[
+e_{t,i} = f_{att}(s_{t-1}, h_i)
+\]</span></p>
+<p>In practice, this is often just a simple linear layer, sometimes with a <em>tanh</em> activation function. It’s a trainable function that takes two vector, a decoder state and an encoder state and splits out a single scalar number that present how well they match or align. Now we have these raw alignment scores <em>e.</em> But they’re just arbitrary real numbers. What we want is a distribution. We want to know what proportion of our attention should go to each input word. So, the next step is to normalize these alignment scores to get <strong>attention weights</strong>, which we’ll call <em>a</em>. And the natural way to turn a set of arbitrary scores into a distribution is to use a <strong>softmax</strong> function. We apply a softmax over all the alignment scores for this time step. The resulting attention weights, <em>a<sub>11</sub></em> through <em>a<sub>14</sub>,</em> now have some nice properties: they are all between 0 and 1, and they all sum to 1. So they form a proper probability distribution over the input sequence.</p>
+<p>Alright, so now we have these weights that tell us how much to focus on each input word. What do we do with them? The next step is to compute our <strong>context vector</strong> <em>c<sub>t</sub></em>, as a <strong>weighted sum</strong> of the encoder hidden states. So for our first time step, <em>c<sub>1</sub></em> will be <span class="math inline">\(a_{11} \cdot h_1 + a_{12} \cdot h_2 + a_{13} \cdot h_3 + a_{14} \cdot h_4\)</span>. This is the most critical part of the whole mechanism. Instead of one static context vector for the whole decoding process, we are now computing a new, dynamic context vector at every single time step. This context vector, <em>c<sub>t</sub>,</em> is tailored specifically for generating the t-th output word. It’s created by pooling information from the encoder states, weighted by how relevant they are for the current decoder state.</p>
+<p>Now that we have this dynamically computed context vector <em>c<sub>1</sub>,</em> the rest of the decoder step proceeds much like before. We feed this new context vector <em>c<sub>1</sub></em> into our decoder RNN unit, along with the previous output <em>y<sub>0</sub></em> (the [START] token). The RNN then updates its hidden state from <em>s<sub>0</sub></em> to <em>s<sub>1</sub></em> and predicts the first output word, <em>y<sub>1</sub>,</em> which is “vediamo.” And the important thing to realize is that this whole process will repeat for the next step. To generate <em>y<sub>2</sub>,</em> we will first use the new decoder state <em>s<sub>1</sub></em> to re-calculate a whole new set of attention weights <em>a<sub>2i</sub>,</em> which gives us a new context vector <em>c<sub>2</sub>,</em> and so on. The context is no longer fixed, it’s recomputed for every single output token.</p>
+<p>So let’s just pause for a second and build some intuition for what’s happening here. The context vector <em>c<sub>t</sub></em> now effectively <strong>attends to the relevant part of the input sequence</strong>. For our example, when we’re trying to generate the word “vediamo,” which corresponds to “we see,” it’s very likely that a well-trained model would learn to produce high attention weights <em>a<sub>11</sub></em> and <em>a<sub>12</sub></em> (for the inputs “we” and “see”) and low attention weights <em>a<sub>13</sub></em> and <em>a<sub>14</sub></em> (for “the” and “sky”). This means that the context vector <em>c<sub>1</sub></em> would be composed mostly of the information from <em>h<sub>1</sub></em> and <em>h<sub>2</sub>.</em> It allows the model to focus its “attention” precisely where it’s needed. This completely resolves the bottleneck problem we identified earlier. Now a question you might have is: Where is the supervision for the attention weights come from? Do we need to separate the dataset to tell the model which input words a align with which output word? And the answer, which is really quite beautiful, is <strong>no</strong>. There is <strong>no direct supervision on the attention weights</strong>. The entire attention mechanism—the <em>f<sub>att</sub></em> linear layer, the softmax, the weighted sum is a fully differentiable computation. We can just plug it into our network, and we can backpropagate the final loss (from predicting the correct output word) all the way back through everything, including the attention mechanism. The model learns to produce sensible attention weights entirely on its own, through end to end training, simply because doing so helps it minimize the overall loss function. It’s a learned, latent alignment that emerge as a side effect of trying to solve the main task.</p>
+<p>This new architecture is better in two critical ways. First, and most importantly, the input sequence is <strong>no longer bottlenecked through a single vector</strong>. We’ve completely remove that constraint. The decoder has direct access to the full sequence of encoder hidden state at every step. And second, following from that, <strong>at each timestep of the decoder, the context vector “looks at” different parts of the input sequence</strong>. As you can see in this simplified diagram, we compute a different context vector <em>c<sub>1</sub>,</em> <em>c<sub>2</sub>,</em> <em>c<sub>3</sub></em> for each and every output step. This allows the model to create a soft, dynamic alignment between the source and target sequences, which is a much more powerful and flexible way to handle the relationship between them, especially for long and complex inputs. This idea of using attention to overcome the limitations of sequential processing was incredibly powerful. And it naturally leads to the next question: if attention is so good at relating different parts of a sequence, do we even need the recurrent part of the RNN at all? And that’s exactly the question that the Transformer paper set out to answer.</p>
+<p><a href="./images/attention.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4"><img src="./images/attention.png" class="img-fluid"></a></p>
+<p>So here’s a famous visualization from that original <a href="https://arxiv.org/abs/1409.0473">Bahdanau attention paper</a>. What they did was train an English-to-French translation model and then plotted the attention weights, <em>a<sub>ti</sub>,</em> for a given sentence. What you’re looking at here is a matrix. The brightness of the pixel at position (<em>i</em>, <em>j</em>) tells you the strength of the attention weight. So, a bright pixel means that when the model was generating output word <em>j,</em> it was paying a lot of attention to input word <em>i.</em> Let’s look at the specific example here. The input sentence in English is: “The agreement on the European Economic Area was signed in August 1992.” And the model correctly translates this to the French output: “L’accord sur la zone économique européenne a été signé en août 1992.” Now, if you look at the structure of this attention map, you can see some really interesting patterns. For large parts of the sentence, the attention is strongly diagonal. You can see that when the model generates “L’accord,” it’s paying strong attention to “The agreement.” When it generates “sur la,” it’s looking at “on the.” Down at the end, when it generates “signé en août 1992,” it’s looking at “signed in August 1992.” This makes perfect sense because, for these parts of the sentence, the word order between English and French is pretty much the same. This diagonal alignment is a great sanity check; it shows us that the model has learned a very sensible, monotonic alignment between the two languages. But here’s where it gets really cool. Look at the part of the sentence that translates “European Economic Area.” In French, the word order is flipped: “zone économique européenne.” And look what the model does! The attention map is no longer diagonal here. When it generates the word “économique,” you can see a bright spot where it’s attending to the English word “Economic.” But then, when it generates the next word, “européenne,” it correctly looks back to the word “European” in the input. This is really powerful. It shows that the model isn’t just doing a simple, one-to-one mapping. The attention mechanism has allowed it to learn these non-trivial, non-monotonic alignments between the source and target languages. It figures out these complex word re-orderings all on its own, just through backpropagation.</p>
+</section>
+<section id="scaled-dot-product-attention" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="scaled-dot-product-attention">Scaled dot-product attention</h2>
+<p>Let’s try to formalize this a bit using some new terminology. In this setup, we can think of having two sets of vectors. First, we have <strong>Query vectors</strong>. In our RNN example, these were the decoder hidden states (<em>s<sub>0</sub></em>, <em>s<sub>1</sub>,</em> etc.). At each step, the decoder state is forming a query that essentially asks, “Given my current context, what information from the input is most relevant for me to generate the next word?” Second, we have <strong>data vectors</strong>, which are the encoder RNN states (<em>h<sub>1</sub></em>, <em>h<sub>2</sub>,</em> etc.). These are the vectors that hold the information we want to retrieve. The query is posed against this set of data vectors. And the result of this operation is a set of output vectors, which in our case were the context vectors (<em>c<sub>1</sub></em>, <em>c<sub>2</sub>,</em> etc.). So the core operation is this: <strong>Each query attends to all data vectors and give one output vector</strong>. That output vector is a summary of the data vectors, weighted by how relevant they are to that specific query. This Query-Data-Output framework is the general abstraction of the attention mechanism, and it’s the key idea that will let us move beyond RNNs entirely</p>
+<p>So, let’s define the input for this layer. The first input is a single <strong>Query vector</strong>, which we’ll call <em>q</em>. This vector have some dimensionality, let’s say <em>D<sub>Q</sub></em>. . In our running RNN example, the query vector at the first time step was the initial decoder state, <em>s<sub>0</sub>.</em> This is the vector that is “asking the question.”</p>
+<p>The second input to our Attention Layer is a set of <strong>Data vectors</strong>, which we will represent as a matrix <em>X</em>. This matrix has <em>N<sub>X</sub></em> rows, where <em>N<sub>X</sub></em> is the number of data vectors, and <em>D<sub>X</sub></em> columns, for the dimensionality of each vector. In our RNN example, the data vectors were the set of <em>N<sub>X</sub></em> = 4 encoder hidden states, <em>h<sub>1</sub></em> through <em>h<sub>4</sub>.</em> These are the vectors containing the information that the query wants to selectively read from.</p>
+<p>Okay, so those are the inputs: one query <em>q</em> and a set of data vectors <em>X.</em> Now let’s define the computation that happens inside the layer. The first step is to compute <strong>similarities</strong>. We take the query vector <em>q</em> and compare it to every one of the <em>N<sub>X</sub></em> data vectors <em>X<sub>i</sub>.</em> This gives us <em>N<sub>X</sub></em> similarity scores, <em>e<sub>i</sub>,</em> which we can collect into a vector <em>e.</em> Just like before, this similarity is calculated by some function <em>f<sub>att</sub>,</em> which is typically a simple learned linear layer.</p>
+<p>Step two: Once we have these raw similarity scores <em>e,</em> we need to normalize them into a distribution. So, we compute the <strong>attention weights</strong>, <em>a,</em> by simply applying a softmax function to the entire vector of similarity scores. The result, <em>a,</em> is a vector of length <em>N<sub>X</sub></em> where all the elements sum to 1. These weights tell us how much importance to assign to each of the data vectors.</p>
+<p>The final step is to compute the single <strong>Output vector</strong>, which we’ll call <em>y.</em> This is done by taking a weighted sum of the data vectors <em>X<sub>i</sub>,</em> using our just-computed attention weights <em>a<sub>i</sub></em> as the coefficients. So, <span class="math inline">\(y = \sum_i a_i \cdot X_i\)</span>. The dimensionality of this output vector <em>y</em> will be <em>D<sub>X</sub>,</em> the same as the data vectors, because it’s just a linear combination of them. In our RNN example, this output vector was the context vector <em>c<sub>1</sub>.</em> And that’s it! We have now defined a complete, self-contained Attention Layer. It’s a differentiable module that takes one query vector <em>q</em> and a set of data vectors <em>X</em> as input, and produces a single output vector <em>y</em> that is a summary of <em>X</em> from the perspective of <em>q.</em></p>
+<p>Now, let’s start refining this layer to get to the specific formulation that’s used in the Transformer model. We’ll make a few small but important changes. The first change is how we compute the similarity. In our general definition, we just said we use some function <em>f<sub>att</sub>,</em> which is typically a small neural network. It turns out that in practice, we can do something much simpler and more efficient. We can just use the <strong>dot product</strong> between the query vector <em>q</em> and each data vector <em>X<sub>i</sub>.</em> So the new similarity calculation is simply <span class="math inline">\(e_i = q \cdot X_i\)</span>. This is computationally very fast, and it works well. For this to be possible, of course, the dimensionality of the query <em>D<sub>Q</sub></em> and the data vectors <em>D<sub>X</sub></em> must be the same.</p>
+<p>Okay, so that’s a nice simplification. But it turns out that if you just use a plain dot product, you can run into problems during training, especially when the dimension of these vectors is large. So this brings us to our second change: we don’t just use the dot product, we use a <strong>scaled dot product</strong>. We compute the dot product just as before, but then we scale it down by dividing by the square root of the dimension of the data vectors, <span class="math inline">\(\sqrt{ D_X }\)</span>. So the similarity is <span class="math inline">\(e_i = (q \cdot X_i) / \sqrt{ D_X }\)</span>. This might seem like a weird, magical detail, but it’s actually incredibly important for stabilizing the training process. So, let’s do a quick thought experiment to understand why this scaling is so critical. If we have very large similarity values, these will cause the softmax function to saturate, which in turn leads to vanishing gradients, making the model very hard to train. So, why would the dot product values become large? Well, let’s think about the dot product <span class="math inline">\(q \cdot X_i\)</span>. Suppose the components of <em>q</em> and <em>X<sub>i</sub></em> are independent random variables with zero mean and unit variance. Then the variance of their product is also 1. The dot product is a sum of <em>D<sub>X</sub></em> of these products. So, the variance of the dot product itself will be <em>D<sub>X</sub>.</em> This means that as the dimensionality of our vectors <em>D<sub>X</sub></em> grows, the magnitude of our dot products will also grow. And if the inputs to a softmax function are very large in magnitude, the softmax output will be pushed to be very hard, one value will be very close to 1, and all the others will be very close to 0. When the softmax is in this saturated state, its gradients are extremely small, close to zero. And if the gradients are zero, no learning can happen. So, by dividing by <span class="math inline">\(\sqrt{ D_X }\)</span>, we are effectively normalizing the variance of the dot product back to 1. This keeps the inputs to the softmax in a reasonable range, prevents saturation, and allows gradients to flow properly during training. It’s a crucial trick for making these models work.</p>
+<p>Alright, so we’ve refined our similarity calculation. The next generalization is to handle not just one query vector at a time, but a whole set of them. So instead of a single query vector <em>q,</em> our input will now be a matrix <em>Q</em> of shape [<em>N<sub>Q</sub></em> x <em>D<sub>X</sub></em>], containing <em>N<sub>Q</sub></em> different query vectors. And the beauty of using dot products is that this entire computation can now be expressed as a single, highly efficient matrix multiplication. To get all the similarity scores <em>E,</em> we just compute <span class="math inline">\(Q \cdot X^T / \sqrt{D_X}\)</span>. The softmax is applied to each row of this similarity matrix. And the final output <em>Y</em> is just the attention weight matrix <em>A</em> times the data matrix <em>X.</em> So now our Attention Layer takes a set of <em>N<sub>Q</sub></em> queries and a set of <em>N<sub>X</sub></em> data vectors, and it produces a set of <em>N<sub>Q</sub></em> output vectors. Each output vector <em>Y<sub>i</sub></em> is a weighted sum of the data vectors, where the weights are determined by the i-th query.</p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<p>Inputs:</p>
+<ul>
+<li>Query vector: <em>Q</em> [<em>N<sub>Q</sub></em> x <em>D<sub>Q</sub></em>]</li>
+<li>Data vectors: <em>X</em> [<em>N<sub>X</sub></em> x <em>D<sub>X</sub></em>]</li>
+<li>Key matrix: <em>W<sub>K</sub></em> [<em>D<sub>X</sub></em> x <em>D<sub>Q</sub></em>]</li>
+<li>Value matrix: <em>W<sub>V</sub></em> [<em>D<sub>X</sub></em> x <em>D<sub>V</sub></em>]</li>
+</ul>
+<p>Computation:</p>
+<ul>
+<li>Keys: <span class="math inline">\(K = XW_K\)</span> [<em>N<sub>X</sub></em> x <em>D<sub>Q</sub></em>]</li>
+<li>Values: <span class="math inline">\(V = XW_V\)</span> [<em>N<sub>X</sub></em> x <em>D<sub>V</sub></em>]</li>
+<li>Similarities: <span class="math inline">\(E = QK^T / \sqrt{𝐷_𝑄}\)</span> [<em>N<sub>Q</sub></em> x <em>N<sub>X</sub></em>], <span class="math inline">\(E_{ij} = Q_iK_j / \sqrt{𝐷_𝑄}\)</span></li>
+<li>Attention weights: A = softmax(E, dim=1) [<em>N<sub>Q</sub></em> x <em>N<sub>X</sub></em>]</li>
+<li>Output vector: <span class="math inline">\(Y = AV\)</span> [<em>N<sub>Q</sub></em> x <em>D<sub>V</sub></em>], <span class="math inline">\(Y_i = \sum_j A_{ij} V_j\)</span></li>
+</ul>
+</div></div><p>Okay, one final change, and this will bring us to the complete formulation of what is called Scaled Dot-Product Attention, which is the core building block of the Transformer. We’re going to introduce a distinction between Keys and Values. The motivation here is that for each item in our input set, the vector we use to compute similarity (the “key”) might not be the same as the vector we use to compute the output (the “value”). This gives the model more flexibility. So what we do is we take our original data vectors X and we project them through two different learned linear layers, two weight matrices W_K and W_V, to produce a Key matrix K and a Value matrix V. Now, the computation proceeds like this:</p>
+<ol type="1">
+<li>The Queries <em>Q</em> are compared against the Keys <em>K</em> to compute the similarity scores.</li>
+<li>We use these scores to get our attention weights <em>A.</em></li>
+<li>And finally, we use these attention weights <em>A</em> to take a weighted sum of the Values <em>V.</em></li>
+</ol>
+</section>
+<section id="self-attention" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="self-attention">Self-Attention</h2>
+<p>So, this entire operation that we’ve just visualized taking one set of vectors <em>Q</em> and another set <em>X</em> to produce an output <em>Y</em> has a name. This is called a <strong>Cross-Attention</strong> Layer. It’s called “cross-attention” because the queries are coming from one source, and the keys and values are coming from a different (or “cross”) source. Each query produces one output, and that output is a mixture of information from the data vectors, with the mixing proportions determined by the query’s similarity to the keys. This is precisely the type of attention we used in the sequence-to-sequence RNN model. The decoder states were the queries, and the encoder states were the source for the keys and values. Now, this naturally leads to a very interesting question: what happens if the queries, keys, and values all come from the same set of vectors?</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>This brings us to our next topic. What if the two sets of vectors were actually the same? What if a sequence wanted to attend to itself? This brings us to what is arguably the most important component of the Transformer: the <strong>Self-Attention Layer</strong>. So let’s define this. In a Self-Attention Layer, we only have one set of input vectors, <em>X.</em> There’s no separate set of queries. Instead, the Queries, Keys, and Values are all derived from this same input set <em>X.</em> This is the central idea. For each input vector <em>X<sub>i</sub></em> in our sequence, we are going to generate a query <em>Q<sub>i</sub>,</em> a key <em>K<sub>i</sub>,</em> and a value <em>V<sub>i</sub></em> by projecting <em>X<sub>i</sub></em> through three separate, learnable weight matrices: <em>W<sub>Q</sub>,</em> <em>W<sub>K</sub>,</em> and <em>W<sub>V</sub>.</em> Because the queries and the keys/values now come from the same source, the shapes get a little simpler. The number of queries <em>N<sub>Q</sub></em> is now the same as the number of keys/values <em>N<sub>X</sub>,</em> so all our matrices like <em>E</em> and <em>A</em> will be square: [N x N]. And in practice, we almost always set the dimensions of the queries, keys, and values to be the same, so <em>D<sub>Q</sub></em> = <em>D<sub>K</sub></em> = <em>D<sub>V</sub>.</em> The core concept here is that each input produces one output, and that output is a mixture of information from all inputs in the sequence. It’s a mechanism for each token in a sentence to look at all the other tokens in that same sentence and build a new, more context-aware representation of itself.</p>
+</div><div class="column" style="width:50%;">
+<p><a href="./images/self-attention.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5"><img src="./images/self-attention.png" class="img-fluid"></a></p>
+</div>
+</div>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<p>Inputs:</p>
+<ul>
+<li>Data vectors: <em>X</em> [<em>N</em> x <em>D<sub>in</sub></em>]</li>
+<li>Key matrix: <em>W<sub>K</sub></em> [<em>D<sub>in</sub></em> x <em>D<sub>out</sub></em>]</li>
+<li>Value matrix: <em>W<sub>V</sub></em> [<em>D<sub>in</sub></em> x <em>D<sub>out</sub></em>]</li>
+<li>Query matrix: <em>W<sub>Q</sub></em> [<em>D<sub>in</sub></em> x <em>D<sub>out</sub></em>]</li>
+</ul>
+<p>Computation:</p>
+<ul>
+<li>Query: <span class="math inline">\(Q = XW_Q\)</span> [<em>N</em> x <em>D<sub>out</sub></em>]</li>
+<li>Keys: <span class="math inline">\(K = XW_K\)</span> [<em>N</em> x <em>D<sub>out</sub></em>]</li>
+<li>Values: <span class="math inline">\(V = XW_V\)</span> [<em>N</em> x <em>D<sub>out</sub></em>]</li>
+<li>Similarities: <span class="math inline">\(E = QK^T / \sqrt{𝐷_𝑄}\)</span> [<em>N</em> x <em>N</em>], <span class="math inline">\(E_{ij} = Q_iK_j / \sqrt{𝐷_𝑄}\)</span></li>
+<li>Attention weights: A = softmax(E, dim=1) [<em>N</em> x <em>N</em>]</li>
+<li>Output vector: <span class="math inline">\(Y = AV\)</span> [<em>N</em> x <em>D<sub>out</sub></em>], <span class="math inline">\(Y_i = \sum_j A_{ij} V_j\)</span></li>
+</ul>
+</div></div><p>Now, just as a quick practical note. We said we generate Q, K, and V by passing our input X through three separate weight matrices. As an implementation optimization, these three linear projections are often fused into one larger operation. Instead of three separate matrix multiplies, you can concatenate the three weight matrices W_Q, W_K, and W_V into one big matrix. You then do a single, large matrix multiplication of X with this fused matrix. The result is a wider matrix that you can then just slice or split back into your Q, K, and V matrices. Why do this? Well, it turns out that modern hardware like GPUs are much more efficient at performing one large matrix multiplication than three smaller ones. It reduces overhead and better utilizes the parallel processing capabilities of the hardware. So while conceptually they are three separate operations, in code you will almost always see this fused implementation for performance reasons.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>Let’s consider <strong>permuting the inputs</strong>. On the right, our original input order was <em>X<sub>1</sub>,</em> <em>X<sub>2</sub>,</em> <em>X<sub>3</sub>.</em> Now, what happens if we feed the exact same vectors into the layer, but we just shuffle their order? Let’s say the new input order is <em>X<sub>3</sub>,</em> <em>X<sub>1</sub>,</em> <em>X<sub>2</sub>.</em> What’s going to happen to the output? Well, let’s trace the computation. The first step is to compute the queries, keys, and values. Since each <em>Q<sub>i</sub>,</em> <em>K<sub>i</sub>,</em> <em>V<sub>i</sub></em> triplet is generated only from the corresponding input <em>X<sub>i</sub>,</em> if we permute the inputs <em>X,</em> then the resulting sets of <em>Q,</em> <em>K,</em> and <em>V</em> vectors will contain the exact same vectors as before, just in that new permuted order. The set of queries is {<em>Q<sub>1</sub></em>, <em>Q<sub>2</sub>,</em> <em>Q<sub>3</sub></em>}, and it will still be that same set, just shuffled. Okay, what about the next step, computing similarities? The similarity matrix <em>E</em> is computed by taking the dot product of every query with every key. For example, <span class="math inline">\(E_{1,1} = Q_1 \cdot K_1\)</span>. If we shuffle the inputs, the dot product between <em>Q<sub>1</sub></em> and <em>K<sub>1</sub></em> will be exactly the same, it will just appear in a different position in the new, shuffled similarity matrix. The set of all pairwise similarities is identical; it’s just that the rows and columns of the matrix have been permuted. Next, the attention weights. The attention weights <em>A</em> are computed by applying a softmax to the rows of the similarity matrix <em>E.</em></p>
+</div><div class="column" style="width:50%;">
+<p><a href="./images/permuting.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6"><img src="./images/permuting.png" class="img-fluid"></a></p>
+</div>
+</div>
+<p>Since the values in <em>E</em> are just shuffled, the resulting attention weights <em>A</em> will also just be a permuted version of the original attention matrix. And finally, the outputs. Each output <em>Y<sub>i</sub></em> is a weighted sum of the value vectors. Since the value vectors <em>V</em> are the same set (just shuffled) and the attention weights <em>A</em> are also correspondingly shuffled, the final set of output vectors <em>Y</em> will be the exact same set of vectors we got before, just permuted in the same way as the original inputs.</p>
+<p>So, what have we just demonstrated? We’ve shown that Self-Attention is <strong>permutation equivariant</strong>. This is a very important formal property. What it means is that if you have a function <span class="math inline">\(F\)</span> (our self-attention layer) and you apply it to a permuted input <span class="math inline">\(\sigma(X)\)</span>, the result is the same as applying the function to the original input <span class="math inline">\(F(X)\)</span> and then permuting the output in the same way <span class="math inline">\(\sigma(F(X))\)</span>. The critical takeaway here is that this means Self-Attention naturally <strong>works on sets of vectors</strong>. It doesn’t have any built-in notion of order or position. It treats the input as an unordered bag of vectors, interacts them all with each other, and produces an output bag of vectors. Now, this property is both a strength and a major weakness. It’s a strength because it’s a very general and flexible operator. But for many of the tasks we care about, like processing language, the order of the sequence is absolutely critical. “The dog bit the man” means something very different from “The man bit the dog.” So we have a problem: <strong>Self-Attention does not know the order of the sequence</strong>. If we just feed in word embeddings, it has no idea which word came first.</p>
+<p>So how do we fix this? We need to explicitly give the model information about the position of each element in the sequence. We do this by adding a <strong>positional encoding</strong> to each input vector. This positional encoding is just another vector. The key idea is that this vector is not learned; it’s a <strong>fixed function of the index</strong>* of the token. So, for the first input <em>X<sub>1</sub>,</em> we add a specific vector <em>E(1).</em> For the second input <em>X<sub>2</sub>,</em> we add a different specific vector <em>E(2),</em> and so on. By adding these unique positional markers to each input, we’ve broken the permutation equivariance. The input X1 + E(1) is now fundamentally different from X2 + E(2), even if X1 and X2 were identical. This gives the model the information it needs to understand and leverage the sequential order of the input. And we’ll talk more about how these encodings are actually constructed later.</p>
+<p>Okay, so this brings us to the next important variant of self-attention, which is critical for the decoder part of a Transformer. But now let’s think about another scenario. What happens when we want to use self-attention for a task where the model is generating a sequence, one element at a time, and it’s not supposed to know what’s coming next? This brings us to a crucial variant of this layer. This is the <strong>Masked Self-Attention Layer</strong>. The guiding principle here is simple: <strong>Don’t let vectors “look ahead” in the sequence</strong>.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>Let’s think about why this is so important. Imagine you’re training a language model. The task is, given the first three words of a sentence, to predict the fourth word. If we used a standard self-attention layer, the representation for the third word would be computed by attending to all the words in the sentence, including the fourth word we’re trying to predict! The model would be cheating; it would have access to the answer. It would learn a trivial solution of just copying the answer, and it would be completely useless at test time when it actually has to generate a new word without knowing the future.</p>
+<p>So, we need to enforce causality. We need to ensure that when we compute the output for position <em>i,</em> the model can only attend to inputs from positions 1 through <em>i,</em> and nothing further. How do we do this mechanically? The trick is very clever. It happens right after we compute the similarity matrix <em>E,</em> but before the softmax. We override the similarity scores for any connection that looks forward in time by setting them to negative infinity. Let’s look at the diagram. When we’re computing the output for position 2 (using <em>Q<sub>2</sub></em>), we want it to be able to look at position 1 and position 2, but not position 3. So, we would set the similarity score <em>E<sub>2,3</sub></em> to negative infinity. When we compute the output for position <em>1,</em> it should only be allowed to look at position 1. So we would set <em>E<sub>1,2</sub></em> and <em>E<sub>1,3</sub></em> to negative infinity.</p>
+</div><div class="column" style="width:50%;">
+<p><a href="./images/marked-self-attention.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7"><img src="./images/marked-self-attention.png" class="img-fluid"></a></p>
+</div>
+</div>
+<p>Now, why negative infinity? Think about the softmax function: <em>e<sup>x</sup>.</em> What is e raised to the power of negative infinity? It’s zero. So, after we apply the softmax, all of these masked positions will have an attention weight of exactly zero. You can see this in the attention matrix A. The connections we wanted to forbid now have a weight of zero. This means that when we compute the final output vectors as a weighted sum of the value vectors, the model is physically incapable of pulling information from those future positions. We have effectively “masked out” the future. And as we’ve been discussing, this is absolutely critical for auto-regressive tasks like <strong>language modeling</strong>, where the goal is to predict the next word. If our input is “Attention is very,” and we’re trying to predict the next words (“cool,” “important,” etc.), the masked self-attention mechanism ensures that when we compute the output vector for “is,” it only uses information from “Attention” and “is.” When we compute the output for “very,” it only uses information from “Attention,” “is,” and “very.” This preserves the causal, step-by-step nature of generation that we need for these kinds of tasks. This masking is what allows a Transformer’s decoder to generate a sequence one token at a time, just like the RNN decoder did, but without the sequential bottleneck of an RNN.</p>
+</section>
+<section id="multi-head-self-attention" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="multi-head-self-attention">Multi-head Self-Attention</h2>
+<p>So far, we’ve talked about self-attention as a mechanism where a sequence interacts with itself. We saw that a single self-attention layer learns to compute one specific kind of relationship between the tokens in a sequence, based on the dot-product similarity of their query-key pairs. But this raises a question. What if there are multiple different kinds of relationships we want to capture? For example, in a sentence, one token might relate to another syntactically (e.g., subject to verb), while also relating to a different token semantically (e.g., being a synonym). A single set of <em>W<sub>Q</sub>,</em> <em>W<sub>K</sub>,</em> and <em>W<sub>V</sub></em> matrices might struggle to learn all these different types of relationships at once. This is the motivation for our next idea. This is the <strong>Multi-headed Self-Attention Layer</strong>. The core idea is deceptively simple, instead of having one self-attention mechanism, we’re going to run <em>H</em> copies of self-attention in parallel.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>We start with our same input vectors, <em>X<sub>1</sub>,</em> <em>X<sub>2</sub>,</em> <em>X<sub>3</sub>.</em> But now, we’re going to have, in this example, <em>H</em>=3 independent self-attention layers. Each of these layers is called an “attention head.” And the critical part is that each head has <strong>its own, completely independent set of weights</strong>. So, head 1 has its own <em>W<sub>Q1</sub>,</em> <em>W<sub>K1</sub>,</em> <em>W<sub>V1</sub>.</em> Head 2 has its own <em>W<sub>Q2</sub>,</em> <em>W<sub>K2</sub>,</em> <em>W<sub>V2</sub>,</em> and so on. Because they have different weights, each head is free to learn a different kind of relationship. You can think of this as being very analogous to a convolutional layer in a CNN. A single convolution layer doesn’t have just one filter; it has many filters, and each filter learns to detect a different kind of visual feature (an edge, a color blob, a texture). Here, each attention head can learn to specialize in detecting a different kind of relationship within the sequence.</p>
+<p>Okay, so we run our input <em>X</em> through these <em>H</em> parallel heads. What do we get? Well for each input token <em>X<sub>i</sub></em>, we now have <em>H</em> different output vector. As the diagram show, for input <em>X<sub>1</sub></em>, we now have an input from head 1 (<em>Y<sub>1,1</sub></em>), and output from head 2 (<em>Y<sub>1,2</sub></em>), and an output from head 3 (<em>Y<sub>1,3</sub></em>). So the next logical step is to gather these up. We can think of this as stacking or concatenating the independent outputs for each input position</p>
+</div><div class="column" style="width:50%;">
+<p><a href="./images/multiheaded.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8"><img src="./images/multiheaded.png" class="img-fluid"></a></p>
+</div>
+</div>
+<p>But we can’t just leave these outputs concatenated. We started with one vector per position, and we want to end up with one vector per position so we can feed it into the next layer of the network. So, the final step of the multi-head attention layer is an <strong>output projection</strong>. We take the concatenated outputs from all the heads and we pass them through one more learned linear layer, which has a weight matrix <em>W<sub>O</sub>.</em> This final projection fuses the information learned by all the different heads back into a single output vector, <em>O<sub>i</sub>,</em> for each position. This projection layer learns the best way to combine the different specialized representations from each head.</p>
+<p>Conceptually, we’re running <em>H</em> full self-attention layers in parallel. But that sounds computationally expensive. Let’s say our main model has an input dimension of <em>D.</em> Instead of each of the <em>H</em> heads working with vectors of dimension <em>D,</em> we first split that dimension up. Each head will work with smaller vectors of dimension <em>D<sub>H</sub>,</em> which we call the “head dimension.” Typically, we set <em>D<sub>H</sub></em> = <em>D</em> / <em>H.</em> So, we project our input <em>X</em> (dimension <em>D</em>) down into smaller <em>Q,</em> <em>K,</em> and <em>V</em> vectors (dimension <em>D<sub>H</sub></em>) for each head. Then we perform the scaled dot-product attention in parallel for all heads. Finally, we concatenate the <em>H</em> output vectors of size <em>D<sub>H</sub></em> back together, which gives us a vector of size <em>H</em> * <em>D<sub>H</sub></em> = <em>D.</em> Then we apply that final output projection <em>W<sub>O</sub>.</em></p>
+<p>And in practice, all of this can be implemented incredibly efficiently. We don’t actually run H separate for-loops. Instead, we can reshape our Q, K, and V matrices to have an explicit “heads” dimension, and then we compute all H heads in a single pass using batched matrix multiply operations, which are highly optimized on GPUs. So the takeaway here is that multi-head attention isn’t just an optional add-on; it is the standard. It allows the model to simultaneously attend to information from different representation subspaces at different positions. This mechanism is used everywhere in practice and is fundamental to the power of the Transformer architecture.</p>
+<p>Fundamentally, self-attention boils down to just <strong>four</strong> main learnable matrix multiplications. The first one is the <strong>QKV Projection</strong>. As we discussed, this is where we take our input <em>X</em> and project it into the queries, keys, and values for all heads. In practice, this is done with a single large matrix multiply from [<em>N</em> x <em>D</em>] to [<em>N</em> x <em>3HD<sub>H</sub></em>], which we then split and reshape to get our <em>Q,</em> <em>K,</em> and <em>V</em> tensors. So that’s our first learnable multiplication.</p>
+<p><span class="math display">\[
+[N \times D] [D \times 3HD_H] \Rightarrow [N \times 3HD_H]
+\]</span></p>
+<p>The second big computation is the <strong>QK Similarity</strong>. This is where we multiply the <em>Q</em> and <em>K</em> tensors to get our similarity matrix <em>E.</em> This is the core of the attention mechanism, where every token is compared against every other token.</p>
+<p><span class="math display">\[
+[H \times N \times D_H] [H \times D_H \times N] \Rightarrow [H \times N \times N]
+\]</span></p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<p>Inputs:</p>
+<ul>
+<li>Data vectors: <em>X</em> [<em>N</em> x <em>D</em>]</li>
+<li>Key matrix: <em>W<sub>K</sub></em> [<em>D</em> x <em>HD<sub>H</sub></em>]</li>
+<li>Value matrix: <em>W<sub>V</sub></em> [<em>D</em> x <em>HD<sub>H</sub></em>]</li>
+<li>Query matrix: <em>W<sub>Q</sub></em> [<em>D</em> x <em>HD<sub>H</sub></em>]</li>
+<li>Ouput matrix: <em>W<sub>O</sub></em> [<em>HD<sub>H</sub></em> x <em>D</em>]</li>
+</ul>
+<p>Computation:</p>
+<ul>
+<li>Query: <span class="math inline">\(Q = XW_Q\)</span> [<em>H</em> x <em>N</em> x <em>D<sub>H</sub></em>]</li>
+<li>Keys: <span class="math inline">\(K = XW_K\)</span> [<em>H</em> x <em>N</em> x <em>D<sub>H</sub></em>]</li>
+<li>Values: <span class="math inline">\(V = XW_V\)</span> [<em>H</em> x <em>N</em> x <em>D<sub>H</sub></em>]</li>
+<li>Similarities: <span class="math inline">\(E = QK^T / \sqrt{𝐷_𝑄}\)</span> [<em>H</em> x<em>N</em> x <em>N</em>]</li>
+<li>Attention weights: A = softmax(E, dim=2) [<em>H</em> x <em>N</em> x <em>N</em>]</li>
+<li>Head outputs: <span class="math inline">\(Y = AV\)</span> [<em>H</em> x <em>N</em> x <em>D<sub>H</sub></em>]</li>
+<li>Outputs: <span class="math inline">\(O = YW_o\)</span> [N X D]</li>
+</ul>
+</div></div><p>The third major multiplication is the <strong>V-Weighting</strong>. After we compute the attention weights <em>A</em> via softmax, we multiply that attention matrix by the <em>V</em> tensor to produce the head outputs <em>Y.</em> This is where we actually aggregate the information from the value vectors based on our computed attention scores. And the fourth and final learnable matrix multiplication is the Output Projection. We take the concatenated head outputs and pass them through our final weight matrix W_O to produce the final output O of the layer.</p>
+<p><span class="math display">\[
+[H \times N \times N] [H \times N \times D_H] \Rightarrow [H \times N \times D_H]
+\]</span></p>
+<p>And the fourth and final learnable matrix multiplication is the <strong>Output Projection</strong>. We take the concatenated head outputs and pass them through our final weight matrix <em>W<sub>O</sub></em> to produce the final output <em>O</em> of the layer.</p>
+<p><span class="math display">\[
+[N \times HD_H] [HD_H \times D] \Rightarrow [N \times D]
+\]</span></p>
+<p>So there you have it. The entire, complex-looking multi-head self-attention layer is really just these four core matrix multiply stages, glued together with some reshapes and a softmax.</p>
+<p>Now, analyzing the computation this way allows us to ask some very important practical questions. For example: <strong>How does the amount of compute scale as the number of vectors N (our sequence length) increases?</strong> Let’s look at the four steps. The QKV projection and the Output projection are linear in <em>N.</em> If you double the sequence length, you double the work for those. But look at steps 2 and 3. The QK Similarity step involves multiplying a [… x <em>N</em> x <em>D<sub>H</sub></em>] matrix by a [… x <em>D<sub>H</sub></em> x <em>N</em>] matrix, which results in a giant [… x <em>N</em> x <em>N</em>] attention matrix. The V-Weighting step multiplies that [… x <em>N</em> x <em>N</em>] matrix by the [… x <em>N</em> x <em>D<sub>H</sub></em>] value matrix. Both of these operations are dominated by that <em>N</em> x <em>N</em> interaction. This means that the computational cost of self-attention is <em>O(N<sup>2</sup>),</em> quadratic in the sequence length. If you double the length of your input sequence, you quadruple the amount of computation. This is the single biggest architectural bottleneck of the Transformer. RNNs, by comparison, are linear, <em>O(N),</em> in their computational cost.</p>
+<p>Now let’s ask a related but different question: <strong>How does the memory usage of this layer scale with N? Where is the biggest tensor we have to store in memory to do the computation and backpropagation?</strong> Again, the answer comes from looking at that intermediate attention matrix <em>A.</em> This is an [<em>H</em> x <em>N</em> x <em>N</em>] tensor. To compute the gradients during backpropagation, we need to have stored this matrix in GPU memory. And its size is also <em>O(N<sup>2</sup>).</em> This quadratic memory cost is an even bigger problem in practice than the compute cost. Let’s put some numbers on it. Suppose you’re working with a long sequence, say <em>N=100,000</em> tokens. Maybe it’s a long document, or a high-resolution image treated as a sequence of patches. And let’s say you have <em>H=64</em> heads. That <em>H x N x N</em> attention matrix would require 1.192 Terabytes of memory. That’s not a typo. Your standard high-end GPU might have 40 or 80 gigabytes of memory. You can’t even come close to fitting this matrix. This quadratic memory scaling is what has historically limited Transformers to relatively short sequence lengths, often just 512 or a few thousand tokens.</p>
+<p>Now, I have to mention that this is a very active area of research, and there have been some incredible breakthroughs recently. An algorithm called <a href="https://arxiv.org/abs/2205.14135">FlashAttention</a>, which came out in 2022, is a great example. The key insight of FlashAttention is that you don’t actually need to write out the full <em>N x N</em> attention matrix to memory. By being very clever about the order of operations and how data is moved between the different levels of GPU memory (SRAM and HBM), it’s possible to compute the exact same output without ever instantiating that giant matrix. It computes the output in small blocks, fusing the softmax and the V-weighting steps together. This reduces the memory requirement from <em>O(N<sup>2</sup>)</em> down to <em>O(N).</em> This single algorithmic improvement has been transformative, allowing Transformers to be trained on much, much longer sequences than were possible before. It’s a beautiful example of how deep algorithmic understanding of hardware can unlock new capabilities for our models.</p>
+<p><a href="./images/three-ways.png" class="lightbox" data-gallery="quarto-lightbox-gallery-9"><img src="./images/three-ways.png" class="img-fluid"></a></p>
+<p>So if you look at this table, you see this fascinating set of trade-offs between these three fundamental operations. RNNs are slow but have an efficient <em>O(N)</em> scaling. Convolutions are fast but struggle with long-range dependencies. Self-attention is fast and directly models long-range dependencies, but has this expensive <em>O(N<sup>2</sup>)</em> scaling. And it was precisely by analyzing these trade-offs that the authors of the original Transformer paper made their big claim. They recognized the massive parallelization benefit of self-attention and saw that the long-range modeling was superior to convolutions. And they made a bet that they could build an entire architecture using only this self-attention mechanism, completely getting rid of recurrence and convolution. And this led to the landmark 2017 paper, famously titled: <a href="https://arxiv.org/abs/1706.03762">“Attention is All You Need.”</a>. And with that, we are finally ready to put all of these pieces together and look at the full Transformer architecture.</p>
+</section>
+<section id="the-transformer" class="level2">
+<h2 class="anchored" data-anchor-id="the-transformer">The Transformer</h2>
+<p>The core building block of the entire Transformer architecture is what’s called a <strong>Transformer Block</strong>. So let’s build one of these blocks up, step by step.</p>
+<section id="transformer-block" class="level3">
+<h3 class="anchored" data-anchor-id="transformer-block">Transformer block</h3>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>The input to a Transformer block is a set of vectors <em>x.</em> Let’s say we have <em>N=4</em> input vectors. Remember, because of what we learned about permutation equivariance, these also need to have positional encodings added to them, but we’ll leave that detail aside for the moment and just focus on the architecture of the block itself. Okay, so the very first thing we do inside a Transformer block is the operation we just spent all this time on. We pass the entire set of vectors through a (multi-headed) Self-Attention layer. This is the communication part of the block. This is where every vector x_i gets to look at every other vector x_j in the input set and produce a new, updated representation of itself that incorporates context from the entire sequence. Now, if you remember back to our CNN architecture, what was one of the most important innovations that allowed us to build really deep networks? It was <strong>residual connections</strong>.</p>
+</div><div class="column" style="width:50%;">
+<p><a href="./images/transformer-block.png" class="lightbox" data-gallery="quarto-lightbox-gallery-10"><img src="./images/transformer-block.png" class="img-fluid"></a></p>
+</div>
+</div>
+<p>And the Transformer architecture uses them everywhere. So, after the self-attention layer, we add a residual connection. We take the original input vectors x and add them to the output of the self-attention layer. This “add” operation is done element-wise for each corresponding vector in the sequence. Just like in ResNets, this helps with gradient flow and makes it possible to train very deep stacks of these Transformer blocks. The next component in the block is <strong>Layer Normalization</strong>. We used Batch Normalization to stabilize training. Layer Normalization is another type of normalization that serves a similar purpose. But there’s a key difference. Batch Norm normalizes across the batch dimension for each feature. Layer Norm, on the other hand, normalizes across the feature dimension for each individual data point in the batch. So for each vector coming out of our residual connection, we compute the mean and standard deviation of its elements and use them to normalize that vector. This was found to work much better than Batch Norm for sequence models like the Transformer. So, we apply a Layer Normalization step after the residual connection.</p>
+<p>Okay, so we’ve had the communication part of the block (self-attention). Now we need the computation part. After the first Layer Norm, we pass each vector in the sequence <strong>independently</strong> through a small Multi-Layer Perceptron, or <strong>MLP</strong>. This is also sometimes called a Feed-Forward Network or FFN in the Transformer literature. It’s typically a simple two-layer MLP. You have a linear layer that expands the dimension (e.g., from <em>D</em> to <em>4D</em>), followed by a ReLU activation, and then another linear layer that projects it back down from <em>4D</em> to <em>D.</em> The important thing here is that while the self-attention layer mixes information across the sequence, this MLP operates on each position separately. It’s a per-position computation that adds more expressive power and allows the model to do more complex processing on the features at each location.</p>
+<p>And what do you think comes after the MLP? You guessed it. Another <strong>residual connection</strong>. We take the input to the MLP block which was the output of the first layer norm and we add it to the output of the MLP. Again, this is crucial for building deep models. And finally, to finish off our Transformer block, we apply one more <strong>Layer Normalization</strong> step after that second residual connection. This produces the final output vectors <em>y<sub>1</sub></em> through <em>y<sub>4</sub></em> of our block.</p>
+<p>So, this block takes a set of vectors <em>x</em> as input and produces a set of vectors <em>y</em> as output, with the same number of vectors. And it does this using two main computational motifs. First, there’s the <strong>interaction step</strong>. The only place in this entire block where information is mixed between different vectors in the sequence is inside that multi-head self-attention layer. That is the sole communication hub. Second, there’s the <strong>per-position processing</strong>. The LayerNorm and the MLP components all work on each vector independently. They process each position in the sequence in parallel, without any interaction between them. And as we’ve discussed, the whole thing is <strong>highly scalable and parallelizable</strong>. If you count them up, the vast majority of the floating point operations in this block are contained in just six matrix multiplications: the four from the multi-head self-attention layer (the QKV projection, the QK similarity, the V-weighting, and the output projection), and the two from the two-layer MLP. And as we know, matrix multiplications are something that modern hardware is incredibly good at.</p>
+<p>So, what is a Transformer? It is really just a stack of these identical Transformer blocks. You take the output from the first block and feed it directly as the input to the second block, and so on. And what’s really remarkable is that this fundamental block architecture has not changed much since it was introduced in 2017. All of the massive models you hear about today are, at their core, just stacks of this exact same block. What has changed is that they have gotten a lot, a lot bigger. Let’s look at the scaling trend just to appreciate the numbers. The <strong>original Transformer</strong> from the “Attention is All You Need” paper, often called the “base” model, had 12 of these blocks stacked up. The model dimension <em>D</em> was 1024, it used 16 heads, and it was trained on sequences of length <em>N=512.</em> This model had about 213 million parameters. Which, at the time, was a very large model. But then things started to escalate quickly. Just two years later, in 2019, OpenAI released <a href="https://www.semanticscholar.org/paper/Language-Models-are-Unsupervised-Multitask-Learners-Radford-Wu/9405cc0d6169988371b2755e573cc28650d14dfe">GPT-2</a>. This was essentially just a larger version of the decoder part of the original Transformer. It had 48 blocks, a larger dimension of 1600, more heads, and could handle longer sequences of 1024 tokens. And this scaled the parameter count up to 1.5 billion. This was one of the first models that really captured public attention with its impressive text generation abilities. And the scaling just continued. The next year, OpenAI released <a href="https://arxiv.org/abs/2005.14165">GPT-3</a>. Now we’re talking about 96 blocks, a massive model dimension of over 12,000, and 96 attention heads. This model clocked in at 175 billion parameters. And of course, the models we see today have continued this trend, pushing into the trillions of parameters. The key takeaway here is that this basic Transformer block has proven to be an incredibly scalable architecture. It seems that just by making these models bigger, more layers, larger dimensions, more heads and training them on more and more data, their capabilities continue to improve. This scaling law has been one of the most powerful and driving forces in all of AI over the last several years.</p>
+</section>
+<section id="transformer-for-language-and-vision" class="level3">
+<h3 class="anchored" data-anchor-id="transformer-for-language-and-vision">Transformer for language and vision</h3>
+<p>Now let’s get concrete and see how we would use this architecture to build a Large Language Model, or LLM, like GPT. The first thing we need to do is get our input into the right format.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>Our Transformer blocks operate on sets of vectors, but our input is text-a sequence of words or tokens. So, the very first layer of the model needs to convert these words into vectors. We do this with a learnable embedding matrix. If our vocabulary has <em>V</em> unique tokens and our model’s hidden dimension is <em>D,</em> then this is simply a lookup table of shape [V x D]. For each word in our input sequence, like “Attention,” “is,” “all,” “you,” we look up its corresponding D-dimensional vector in this table. These embedding vectors are initialized randomly and are learned just like all the other weights in the network through backpropagation. This gives us our initial set of input vectors to feed into the first Transformer block. And of course, we would also add our positional encodings to these vectors at this stage.</p>
+<p>Now, we feed this set of vectors through our stack of Transformer blocks. But there’s a critical detail we need to remember for language modeling. The task is to predict the next word in the sequence. This means the model must be causal; it cannot be allowed to look ahead. So, as we discussed earlier, we must use masked attention inside each of the self-attention layers in our Transformer blocks. This ensures that when the model is computing the output for token <em>i,</em> it can only attend to tokens 1 through <em>i</em> and is explicitly prevented from seeing any future tokens. Every self-attention layer in a model like GPT is a masked multi-head self-attention layer.</p>
+<p>What we get out is a final set of contextualized output vectors, one for each input position.</p>
+</div><div class="column" style="width:50%;">
+<p><a href="./images/llm.png" class="lightbox" data-gallery="quarto-lightbox-gallery-11"><img src="./images/llm.png" class="img-fluid"></a></p>
+</div><p>Now we need to make a prediction. For each output vector, we want to predict what the next word in the sequence should be. To do this, we need to go from our D-dimensional representation space back to the vocabulary space. So, at the very end of the model, we add a final <strong>projection matrix</strong>. This is a linear layer with weights of shape [<em>D</em> x <em>V</em>]. It takes each D-dimensional output vector from the last Transformer block and projects it into a V-dimensional vector. We can interpret this V-dimensional vector as a set of raw scores, or logits, for every single word in our vocabulary. The final step is to turn these scores into probabilities and compute a loss. For each position <em>i,</em> we take the V-dimensional logit vector and pass it through a softmax function. This gives us a probability distribution over the entire vocabulary, representing the model’s prediction for the word at position <em>i+1.</em> We can then compare this predicted distribution to the actual next word in the training data using a standard <strong>cross-entropy loss</strong>. We compute this loss for every position in the sequence and average them together. That final loss signal is then backpropagated all the way through the entire stack of Transformer blocks and the embedding matrix to update all the weights.</p><p>Okay, so this has been all about language. So, the natural next question is, can we use these same ideas for images? For a while, it seemed like CNNs were the undisputed kings of vision, and Transformers were for language. But then, in 2021, a paper <a href="https://arxiv.org/abs/2010.11929">“An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale”</a> came out of Google that completely changed that landscape. And that brings us to the <strong>Vision Transformer</strong>, or <strong>ViT</strong>.</p><p><a href="./images/vit.png" class="lightbox" data-gallery="quarto-lightbox-gallery-12"><img src="./images/vit.png" class="img-fluid"></a></p><p>The core question the ViT paper asked was: can we apply a standard Transformer directly to an image for a task like image classification? The challenge is that a Transformer expects a sequence of vectors as input. But an image isn’t a sequence; it’s a 2D grid of pixels. For a standard 224x224 image, if you treated every single pixel as a token, you’d have over 50,000 tokens. And given the <em>O(N<sup>2</sup>)</em> scaling of self-attention, that would be computationally infeasible. So we need a different way to turn an image into a sequence.</p><p>The solution they proposed was remarkably simple and effective. Instead of treating pixels as tokens, they decided to break the image into a grid of <strong>non-overlapping patches</strong>. For example, you can take a 224x224 image and break it down into a grid of 16x16 patches. For a 224x224 image and 16x16 patches, this gives us a 14x14 grid, for a total of 196 patches. Each patch is 16x16x3 pixels. The next step is to turn each of these patches into a vector. So we take each patch, <strong>flatten</strong> its pixels into one long vector (16 * 16 * 3 = 768), and then apply a <strong>linear transformation</strong> to project it into our desired model dimension, <em>D.</em> This gives us what the Transformer wants: a sequence of <em>N</em> vectors, where <em>N</em> is the number of patches. Now let me pause here and ask a question. This whole operation of breaking an image into patches, flattening each patch, and then applying a linear projection… does that sound familiar? Is there another way we could describe this exact same operation using concepts we already know? This whole “patchify and project” operation is mathematically equivalent to taking the original image and running it through a single <strong>convolutional layer</strong>. Specifically, it’s a convolution with a kernel size of 16x16 and a stride of 16. The stride of 16 ensures that the filter is applied to non-overlapping patches. The kernel size of 16 ensures it sees the whole patch. The number of input channels is 3 (for RGB), and the number of output channels would be <em>D,</em> our model dimension. So, you can think of the ViT’s input processing as just a very large-stride convolution. It’s a nice way to connect this new architecture back to concepts we’re already very familiar with.</p><p>So now we have our sequence of N patch embedding vectors. What do we do with them? We just feed them directly into a standard Transformer encoder, which is just a stack of our Transformer blocks that we’ve already defined. These D-dimensional vectors for each patch are the input <em>x</em> to our stack of Transformer blocks. But wait, we’ve forgotten a crucial detail. Self-attention is permutation equivariant. It doesn’t know where each patch came from. The patch from the top-left corner is treated the same as the patch from the bottom-right. So, just like with language, we need to add positional encodings. In ViT, these are learnable vectors that are added to the patch embeddings. There’s a unique <strong>positional encoding</strong> for each possible patch position (e.g., for each spot on the 14x14 grid), which tells the model the original 2D position of each patch.</p><p>Now, what kind of attention should we use? Should it be masked? For image classification, the answer is no. We want to classify the entire image. So, every patch should be able to freely communicate with and attend to every other patch in the image. We want global context. So we <strong>don’t use any masking</strong> inside the self-attention layers. Alright, so we pass our sequence of patch embeddings (with positional encodings added) through a deep stack of standard, unmasked Transformer blocks. The Transformer then does its thing, mixing information between all the patches. What we get out at the end is a set of N output vectors, one for each patch.</p><p>So now we have these N output vectors, but our goal is image classification, which requires a single prediction for the entire image. How do we get from a set of vectors to a single class score? The standard approach in ViT is to simply average pool all of the N output vectors from the final Transformer block. This gives you a single D-dimensional vector that represents the entire image. You then take this single vector and pass it through a final linear layer (a classification head) to predict the class scores. And that’s the Vision Transformer. It’s a surprisingly direct application of the Transformer architecture to images, with the key innovation being this “patchification” frontend. And it turned out to work remarkably well, often outperforming state-of-the-art CNNs, especially when trained on very large datasets.</p><section id="tweaking-transformers" class="level3">
+<h3 class="anchored" data-anchor-id="tweaking-transformers">Tweaking Transformers</h3>
+<p>So this brings us to the topic of <strong>Tweaking Transformers</strong>. As I’ve said a couple of times, the high-level architecture of the Transformer block has been remarkably stable since it was first introduced in 2017. The old block diagram is pretty much what people are still using today. But, like with any influential piece of engineering, people have tinkered with it over the years. And a few small changes have become very common because they’ve been found to improve performance or, more importantly, training stability. And when you’re spending millions of dollars to train a single model, stability is incredibly important.</p>
+<p><a href="./images/tweaking.png" class="lightbox" data-gallery="quarto-lightbox-gallery-13"><img src="./images/tweaking.png" class="img-fluid"></a></p>
+<p>So let’s look at the original architecture from the “Attention is All You Need” paper, which is what’s shown here on the left. This is what’s known as a “Post-Norm” Transformer. And it has a kind of weird property if you look closely at the residual connections. The <strong>Layer normalization</strong> step happens outside the residual connection. It happens after you add the output of the self-attention block back to the input. Now, let’s do a little thought experiment. What’s the point of a residual connection? It’s to make it easy for a block to learn an identity function, so that we can stack many layers without performance degrading. So, what if our self-attention block learns to output all zeros? In a standard ResNet, the output of the block would be <em>x</em> + 0 = <em>x.</em> But here, the output is LayerNorm(<em>x</em> + 0), which is just LayerNorm(<em>x</em>). It’s not <em>x.</em> So, this architecture can’t actually learn a true identity function. The signal is always getting re-normalized. This can lead to some instabilities, especially at the beginning of training, as the gradients flowing back through the network can be a bit chaotic.</p>
+<p>So, what’s the solution? It’s a simple fix that has become almost standard practice. You just move the layer normalization. Instead of putting it after the addition, you move the layer normalization before the Self-Attention and MLP blocks. So now it’s inside the residual branch. This is called a <strong>Pre-Norm Transformer</strong>. If the self-attention block outputs all zeros, the output of the entire sub-block is <em>x</em> + SelfAttention(LayerNorm(<em>x</em>)). If the self-attention part is zero, the output is x. It can now learn a perfect identity function. Empirically, this small change has been shown to make training significantly <strong>more stable</strong>, which is a huge win for these massive-scale models.</p>
+<p>Alright, so that’s the first big tweak: move from Post-Norm to Pre-Norm. The next common tweak is to the normalization layer itself. People found that you can simplify Layer Normalization a bit and get even better results. This brings us to <strong>RMSNorm,</strong> which stands for Root-Mean-Square Normalization. If you recall, standard LayerNorm first subtracts the mean to center the data, and then divides by the standard deviation to scale it. RMSNorm gets rid of the centering step. It <strong>only scales</strong> the vector by its root-mean-square, as you can see in the formula. It still has a learnable gain parameter <span class="math inline">\(\gamma\)</span>, but it doesn’t have the learnable shift <span class="math inline">\(\beta\)</span>.</p>
+<p><span class="math display">\[
+\begin{align}
+y_i &amp;= \frac{x_i}{RMS(x)} \gamma_i \\
+RMS(x) &amp;= \sqrt{\varepsilon + \frac{1}{N} \sum_{i=1}^N x_i^2}
+\end{align}
+\]</span></p>
+<p>This makes the computation slightly simpler and faster. And for reasons that are still being actively studied, this also tends to make training a bit more stable than the full LayerNorm, especially in the Pre-Norm configuration. So, if you look at the source code of many modern open-source LLMs like Llama, you will find they use this exact Pre-Norm architecture with RMSNorm</p>
+<p>Okay, so we’ve tweaked the normalization. The next common place for tweaks is inside that other part of the block, the feed-forward MLP. The <strong>classic MLP</strong> used in the original Transformer is a very simple two-layer feed-forward network. You take your input <em>X</em> of dimension [<em>N</em> x <em>D</em>] project it up to a wider dimension, typically <em>4D</em> using <em>W<sub>1</sub></em> [<em>D</em> x <em>4D</em>] and <em>W<sub>2</sub></em> [<em>4D</em> x <em>D</em>], apply a non-linearity like ReLU, and then project it back down to D</p>
+<p><span class="math display">\[
+\underbrace{Y}_{N \times D} = \max(0, XW_1)W_2
+\]</span></p>
+<p>Very straightforward. But it turns out there are other ways to design this MLP block that work a bit better. A very popular variant today is called the <strong>SwiGLU MLP</strong>. Instead of one big projection up, we now have two separate linear projections, <em>W<sub>1</sub></em> and <em>W<sub>2</sub>,</em> [<em>D</em> x <em>H</em>]. The output of the first projection, <em>XW<sub>1</sub>,</em> is passed through a Swish activation function <span class="math inline">\(\sigma\)</span>. The output of the second projection, <em>XW<sub>2</sub>,</em> is not passed through an activation. We then take these two results and multiply them together element-wise. This is the “gating” part of the Gated Linear Unit, or GLU. Finally, that gated result is passed through a third projection matrix, <em>W<sub>3</sub></em> [<em>H</em> x <em>D</em>] to get the final output.</p>
+<p><span class="math display">\[
+Y = (\sigma(XW_1) \odot XW_2)W_3
+\]</span></p>
+<p>It’s a more complex interaction, but empirically, it just works better. To keep the number of parameters roughly the same as the classic MLP, you can set the intermediate dimension H to be 8D/3. Again, many modern LLMs like Llama use this exact SwiGLU formulation.</p>
+<p>Now, you might ask, why does this work better? What’s the deep theoretical reason for this specific combination of projections and gating? And this is one of those moments where, as a researcher, I have to be very honest with you. The paper that introduced this, “GLU Variants Improve Transformers,” has this wonderfully candid line</p>
+<blockquote class="blockquote">
+<p>“We offer no explanation as to why these architectures seem to work; we attribute their success, as all else, to divine benevolence.”</p>
+</blockquote>
+<p>And I think that’s a perfect encapsulation of a lot of deep learning research. We have some high-level intuitions—gating lets the network control information flow more dynamically—but often, these specific architectural choices are found through extensive empirical exploration. We try a bunch of things, and some just work better than others, and then we try to understand why after the fact. It’s a testament to the fact that this is still very much an empirical science.</p>
+<p>Okay, that brings us to the final, and perhaps most impactful, tweak to the modern Transformer architecture: the <strong>Mixture of Experts</strong>, or <strong>MoE</strong> introduced in paper <a href="https://arxiv.org/abs/1701.06538">“Outrageously Large Neural Networks: The Sparsely-Gated Mixture-of-Experts Layer”</a> by Shazeer et al, in 2017. This is a really big idea. We’ve talked about how these models have scaled up to hundreds of billions or even trillions of parameters. A major problem with that is that for every single input token, you have to do a matrix multiplication with all of those weights. The computational cost grows with the parameter count. The idea behind MoE is to decouple the number of parameters from the amount of compute. What if, instead of having one giant MLP in each block, we have E separate sets of MLP weights? Each of these MLPs is called an “expert.”</p>
+<p>Here’s how it works. For each token that enters the MoE layer, we use a small, learnable “router” network to decide which of the E experts are most relevant for processing this specific token. The router predicts a probability distribution over the experts, and we then route the token to be processed by only a small number, <em>A,</em> of the top-scoring experts (where <em>A</em> is much smaller than <em>E</em>). These are the <strong>active experts</strong>. This is a breakthrough because it means we can have a model with a massive number of parameters (by having many experts, E), but the computational cost for any given token only depends on the small number of active experts, A. It <strong>massively increases</strong> the parameter count without a proportional <strong>increase in compute</strong>. It allows for specialization, where different experts can learn to handle different types of inputs.</p>
+<p>And this MoE architecture is no longer a niche research idea. <strong>All of the biggest LLMs today</strong> GPT-4o, Claude 3.7, Gemini 2.5 Pro, all of them, almost certainly use some form of Mixture of Experts. This is how they are able to claim parameter counts in the trillions while still being trainable and runnable. The exact details are usually kept secret, but the general principle of sparse, conditional computation via MoE is the key enabling technology for the current generation of frontier models.</p>
+
+
+</section>
+</div>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script type="text/javascript">
+// Enhance theme switching experience
+document.addEventListener('DOMContentLoaded', function() {
+  // Add smooth transitions to all elements when theme changes
+  const style = document.createElement('style');
+  style.textContent = `
+* {
+transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
+}
+
+.navbar, .card, .table, .btn {
+transition: all 0.3s ease !important;
+}
+`;
+  document.head.appendChild(style);
+
+  // Enhance code copy functionality
+  const codeBlocks = document.querySelectorAll('pre code');
+  codeBlocks.forEach(function(codeBlock) {
+    codeBlock.parentElement.style.position = 'relative';
+  });
+
+  // Add fade-in animation for post listings
+  const posts = document.querySelectorAll('.post-listing .card');
+  posts.forEach(function(post, index) {
+    post.style.opacity = '0';
+    post.style.transform = 'translateY(20px)';
+    setTimeout(() => {
+      post.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+      post.style.opacity = '1';
+      post.style.transform = 'translateY(0)';
+    }, index * 100);
+  });
+
+  // Smooth scroll for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    });
+  });
+
+  // Enhanced table styling
+  const tables = document.querySelectorAll('table');
+  tables.forEach(function(table) {
+    if (!table.classList.contains('table')) {
+      table.classList.add('table', 'table-striped');
+    }
+
+    // Wrap tables in responsive container
+    if (!table.parentElement.classList.contains('table-responsive')) {
+      const wrapper = document.createElement('div');
+      wrapper.classList.add('table-responsive');
+      table.parentNode.insertBefore(wrapper, table);
+      wrapper.appendChild(table);
+    }
+  });
+
+  // Replace keyboard shortcuts on non-Mac platforms
+  const kPlatformMac = typeof navigator !== 'undefined' ? /Mac/.test(navigator.platform) : false;
+  if (!kPlatformMac) {
+    var kbds = document.querySelectorAll("kbd");
+    kbds.forEach(function(kbd) {
+      kbd.innerHTML = kbd.innerHTML.replace(/⌘/g, '⌃');
+    });
+  }
+
+  // Add reading progress indicator
+  function addReadingProgress() {
+    const article = document.querySelector('main article, main .content, .post-content');
+    if (article) {
+      const progressBar = document.createElement('div');
+      progressBar.style.cssText = `
+position: fixed;
+top: 0;
+left: 0;
+width: 0%;
+height: 3px;
+background: var(--bs-primary);
+z-index: 1000;
+transition: width 0.3s ease;
+`;
+      document.body.appendChild(progressBar);
+
+      window.addEventListener('scroll', function() {
+        const scrolled = window.scrollY;
+        const height = article.offsetHeight - window.innerHeight;
+        const progress = Math.min(scrolled / height * 100, 100);
+        progressBar.style.width = progress + '%';
+      });
+    }
+  }
+
+  // Only add reading progress on individual blog posts
+  if (document.querySelector('.post-title') || document.querySelector('article')) {
+    addReadingProgress();
+  }
+});
+
+// Theme preference detection and saving
+(function() {
+  // Save theme preference to localStorage
+  const themeToggle = document.querySelector('[data-bs-toggle="color-scheme"]');
+  if (themeToggle) {
+    themeToggle.addEventListener('click', function() {
+      setTimeout(() => {
+        const currentTheme = document.documentElement.getAttribute('data-bs-theme');
+        localStorage.setItem('quarto-color-scheme', currentTheme);
+      }, 100);
+    });
+  }
+
+  // Load saved theme preference
+  const savedTheme = localStorage.getItem('quarto-color-scheme');
+  if (savedTheme) {
+    document.documentElement.setAttribute('data-bs-theme', savedTheme);
+  }
+})();
+</script>
+
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/bhdai\.github\.io\/blog\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<input type="hidden" id="giscus-base-theme" value="light">
+<input type="hidden" id="giscus-alt-theme" value="dark">
+<script>
+  function loadGiscus() {
+    // Function to get the theme based on body class
+    const getTheme = () => {
+      let baseTheme = document.getElementById('giscus-base-theme').value;
+      let altTheme = document.getElementById('giscus-alt-theme').value;
+      if (authorPrefersDark) {
+          [baseTheme, altTheme] = [altTheme, baseTheme];
+      }
+      return document.body.classList.contains('quarto-dark') ? altTheme : baseTheme;
+    };
+    const script = document.createElement("script");
+    script.src = "https://giscus.app/client.js";
+    script.async = true;
+    script.dataset.repo = "bhdai/blog";
+    script.dataset.repoId = "R_kgDOMP9wjw";
+    script.dataset.category = "Blog";
+    script.dataset.categoryId = "DIC_kwDOMP9wj84Cs7wf";
+    script.dataset.mapping = "pathname";
+    script.dataset.reactionsEnabled = "1";
+    script.dataset.emitMetadata = "0";
+    script.dataset.inputPosition = "bottom";
+    script.dataset.theme = getTheme();
+    script.dataset.lang = "en";
+    script.crossOrigin = "anonymous";
+    // Append the script to the desired div instead of at the end of the body
+    document.getElementById("quarto-content").appendChild(script);
+  }
+  loadGiscus();
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+ Copyright 2025, Bui Huu Dai
+  </li>  
+</ul>
+    </div>   
+    <div class="nav-footer-center">
+
+<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/bhdai/blog/edit/main/posts/attention-and-transformers/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bhdai/blog/blob/main/posts/attention-and-transformers/index.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li><li><a href="https://github.com/bhdai/blog/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="cookie-consent-footer"><a href="#" id="open_preferences_center">Cookie Preferences</a></div></div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
+
+
+
+
+</body></html>

@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/attention-and-transformers/index.html",
       "/posts/cnn-architectures/index.html",
       "/posts/neural-network-and-backprobagation/index.html",
       "/posts/regularization_and_optimization/index.html",
